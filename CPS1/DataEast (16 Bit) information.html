@@ -1,0 +1,236 @@
+<HTML>
+<HEAD>
+<TITLE>DataEast (16 Bit) information</TITLE>
+</HEAD>
+<BODY TEXT="#000000" BACKGROUND="bkg.gif" FONT="#EDEDED" LINK="#FF0000" VLINK="#AF0000" ALINK="#FF0000">
+<CENTER>
+<!--#config timefmt="%I%M%S"-->
+<center>
+<TABLE BORDER="0" CELLPADDING="5" CELLSPACING="0" WIDTH="468" BGCOLOR="#000000">
+<TR>
+<TD ALIGN="left">
+<iframe src="http://www.vintagegaming.com/sponsors.shtml" width=468 height=60 marginwidth=0 marginheight=0 hspace=0 vspace=0 frameborder=0 scrolling=no bordercolor="#000000"></iframe>
+</TD>
+</TR>
+</TABLE>
+<A HREF="http://ad.doubleclick.net/jump/vintagegaming.com/;abr=!ie4;abr=!ie5;sz=468x60";ord=27297973?">
+<IMG BORDER=0 SRC="http://ad.doubleclick.net/ad/vintagegaming.com/;abr=!ie4;abr=!ie5a;sz=468x60";ord=27297973?"></a>
+</center>
+
+
+<H2>DataEast (16 Bit)</H2>
+</CENTER>
+<H4>
+<PRE>
+System Information:
+    Main CPU:   68000
+    Sound CPU:  6502
+    SoundChip:  YM3812, YM2203, OKIM6295
+
+68000 Memory Addresses:
+    $000000 $05FFFF Rom
+    $240000 $240007 Play Field 1 Control 0 (Text layer)  
+    $240010 $240017 Play Field 1 Control 1
+    $242000 $24207F Play Field 1 Column Scroll
+    $242400 $2427FF Play Field 1 Row Scroll
+    $244000 $245FFF Play Field 1 Data
+    $246000 $246007 Play Field 2 Control 0 (First tile layer)
+    $246010 $246017 Play Field 2 Control 1
+    $248000 $24807F Play Field 2 Column Scroll
+    $248400 $2487FF Play Field 2 Row Scroll
+    $24A000 $24A7FF Play Field 2 Data
+    $24C000 $24C007 Play Field 3 Control 0 (Second tile layer)
+    $24C010 $24C017 Play Field 3 Control 1
+    $24C800 $24C87F Play Field 3 Column Scroll
+    $24CC00 $24CFFF Play Field 3 Row Scroll
+    $24D000 $24D7FF Play Field 3 Data
+    $300000 $30001F Rotary Controller
+    $30C000 $30C00B Controls
+    $30C010 $30C01F Control Register (Priority, sound, etc.)
+    $310000 $3107FF Palette Ram (Red & Green bits)
+    $314000 $3147FF Palette Ram (Blue bits)
+    $FF8000 $FFBFFF Main ram
+    $FFC000 $FFC7FF Sprites
+
+Sprite data:  The unknown bits seem to be unused.
+    Byte 0:
+	Bit 0:	 	Y co-ord hi bit
+	Bit 1,2: 	?
+	Bit 3,4: 	Sprite height (1x, 2x, 4x, 8x)
+	Bit 5:	 	X flip
+	Bit 6: 	 	Y flip
+	Bit 7:	 	Only display Sprite if set
+    Byte 1: 		Y-coords
+    Byte 2:
+	Bit 0,1,2,3: 	Hi bits of sprite number
+	Bit 4,5,6,7: 	(Probably unused MSB's of sprite)
+    Byte 3: 	 	Low bits of sprite number
+    Byte 4:
+	Bit 0: 	 	X co-ords hi bit
+	Bit 1,2: 	?
+	Bit 3: 	 	Sprite flash (sprite is displayed every other frame)
+	Bit 4,5,6,7: 	Color
+    Byte 5: 	 	X-coords
+    Bytes 6-7:	 	Blank
+
+    Location $30C012, when written to, causes the sprite data to be DMA'd
+    from $FFC000 to ?. Must be used to display/change sprites.
+    Location $30C002, bit 7, indicates if the DMA is complete.
+    May have to be done during VBlank.
+
+    Sprite X and Y coordinates are flipped compared to the normal screen
+    coordinates. (ie 0, 0 is the lower right corner of the screen, and
+    255, 239 is the upper left corner).
+
+    Sprite Collumns are store in sequential tiles.
+    (ie 12 would be stored as 1324)
+        34
+
+Palette data:                                          
+    16 Entries per palette, 16 palettes for each plane and for sprites.
+    0x000 - character palettes
+    0x200 - sprite palettes
+    0x400 - tiles 1
+    0x600 - tiles 2
+
+    Palettes are split into two banks. Each color is 1 byte (0 - 255).
+    Bank1:
+        $GGRR (2 bytes)  
+
+    Bank2:
+        $00BB (2 Bytes)
+
+    All sprites, tiles, and characters use 0 as a transparent color.
+
+Tile data:
+    4 bit palette select, 12 bit tile select.
+    $PTTT   P = Palette (0 - $0F)    T = Tile (0 - $0FFF)
+
+    All games contain three BAC06 background generator chips, usual
+    (software) configuration is 2 chips of 16 * 16 tiles, 1 of 8 * 8.
+
+VBlank:
+    The VBlank uses IRQ 6. Interrupt enabled by setting the SR to $2300.
+
+Playfield control registers:
+   bank 0:
+   0:
+	Bit 0: 	set = 8*8 tiles, else 16*16 tiles
+	Bit 1: 	?
+	Bit 2: 	set enables rowscroll
+	Bit 3: 	set enables colscroll
+	Bit 7: 	set in playfield 1 is reverse screen (set via dip-switch)
+	Bit 7:	in other playfields unknown
+   2: ? (00 in bg, 03 in fg+text - maybe controls pf transparency?)
+   4: ? (always 00)
+   6: playfield shape: 00 = 4x1, 01 = 2x2, 02 = 1x4 (low 4 bits only)
+
+   bank 1:
+    	0: horizontal scroll
+    	2: vertical scroll
+    	4: Style of colscroll (low 4 bits, top 4 bits do nothing)
+    	6: Style of rowscroll (low 4 bits, top 4 bits do nothing)
+
+Rowscroll/Colscroll styles:
+    0: 256 scroll registers (Robocop)
+    1: 128 scroll registers
+    2:  64 scroll registers
+    3:  32 scroll registers (Heavy Barrel, Midres)
+    4:  16 scroll registers (Bad Dudes, Sly Spy)
+    5:   8 scroll registers (Hippodrome)
+    6:   4 scroll registers (Heavy Barrel)
+    7:   2 scroll registers (Heavy Barrel, used on other games but registers
+         kept at 0)
+    8:   1 scroll register (ie, none)
+
+    Values above are *multiplied* by playfield shape.
+
+Playfield priority (Bad Dudes, etc):
+    In the bottommost playfield, pens 8-15 can have priority over the next
+    playfield.
+    In that next playfield, pens 8-15 can have priority over sprites.
+
+    Bit 0:  Playfield inversion
+    Bit 1:  Enable playfield mixing (for palettes 8-15 only)
+    Bit 2:  Enable playfield/sprite mixing (for palettes 8-15 only)
+
+Playfield shape:
+    Play Field Control 0[6] & $0f
+    $00 4x1, 256 rows
+    $01 2x2, 512 rows
+    $02 1x4, 1024 rows
+
+    Scroll X            - Play Field Control 1[0] (Word)
+    Scroll Y            - Play Field Control 1[2] (Word)
+    Row Scroll Enable   - Play Field Control 0[0] & $04 (Byte)
+
+Control:
+    $30C010 Playfield & Sprite priority
+    $30C012 DMA flag
+    $30C014 6502 sound cpu
+    $30C016 Intel 8751 microcontroller
+    $30C018 Interrupt ack (VBL - IRQ 6)
+    $30C01A ?
+    $30C01E Reset Intel 8751? - not sure, all the games write here at startup
+
+Input: ($30C000)
+    $01 Up
+    $02 Down
+    $04 Left
+    $08 Right
+    $10 Button 1
+    $20 Button 2
+
+Start Buttons: ($30C002)
+    $04 Start 1
+    $08 Start 2
+
+Graphics:
+width           = 8
+height          = 8
+total           = 2048
+planes          = 4
+planeoffsets    = 0 262144 131072 393216
+xoffsets        = 0 1  2  3  4  5  6  7
+yoffsets        = 0 8 16 24 32 40 48 56
+charincrement   = 64
+
+width           = 16
+height          = 16
+total           = 4096
+planes          = 4
+planeoffsets    = 1572864 0 524288 1048576
+xoffsets        = 128 129 130 131 132 133 134 135  0  1  2  3  4   5   6   7
+yoffsets        =   0   8  16  24  32  40  48  56 64 72 80 88 96 104 112 120
+charincrement   = 256
+
+width           = 16
+height          = 16
+total           = 1024
+planes          = 4
+planeoffsets    = 262144 786432 0 524288
+xoffsets        = 128 129 130 131 132 133 134 135  0  1  2  3  4   5   6   7
+yoffsets        =   0   8  16  24  32  40  48  56 64 72 80 88 96 104 112 120
+charincrement   = 256
+
+width           = 16
+height          = 16
+total           = 3072
+planes          = 4
+planeoffsets    = 1048576 3145728 0 2097152 (Possibly incorrect)
+xoffsets        = 128 129 130 131 132 133 134 135  0  1  2  3  4   5   6   7
+yoffsets        =   0   8  16  24  32  40  48  56 64 72 80 88 96 104 112 120
+charincrement   = 256
+</PRE>
+</H4>
+<HR>
+<CENTER>
+<A HREF="http:\\www.vintagegaming.com">
+<IMG SRC="pacman_anim.gif" WIDTH=468 HEIGHT=60 BORDER=0><BR>
+</A>
+<FONT COLOR="#FF0000"><B>Hosted by the Vintage Gaming Network</B></FONT>
+</CENTER>
+</BODY>
+</HTML>
+
+

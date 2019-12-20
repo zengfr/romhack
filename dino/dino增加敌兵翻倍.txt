@@ -1,0 +1,19 @@
+﻿https://github.com/zengfr/romhack 
+@繁荣/sun 
+*增加敌兵**********************************************
+                org        $104430
+_ADD_ADD1
+                move.w #$4,d4
+_loop
+                jsr        $fdae
+                dbne        d4,_loop
+                bcs        _fd3c
+                jmp        $fd32
+_fd3c
+                jmp        $fd3c
+ 
+ 
+一个
+jsr ＄fdae为1倍
+
+你加个cmp筛选下需要翻倍的兵就好了

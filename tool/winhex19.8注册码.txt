@@ -1,0 +1,16 @@
+https://github.com/zengfr/romhack
+
+Name: DimitarSerg
+
+Addr: ds@mail.ua
+
+Addr: Ukraine
+
+Data: 0F557DBDC9F648EACF4065D7F857223E
+
+Data: 4E0656414E48F4DEE6991EC8205CB994
+
+Cksm: F22E328E
+————————————————
+版权声明：本文为CSDN博主「kunyus」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/kunyus/article/details/103476739

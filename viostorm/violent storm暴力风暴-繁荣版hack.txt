@@ -1,0 +1,14 @@
+copy压缩包roms文件夹的zip格式rom文件viostorm.zip,到你安装的模拟器的roms文件夹中,重启模拟器即可。
+游戏介绍:(hacked by zengfr)
+viostorm暴力风暴繁荣版加强(hack)
+1、我方多层彩色血条，3倍血量，3倍敌兵1V3
+2、场景格斗时我方、敌方变身随机颜色
+3、场景敌方随机出兵
+4、场景随机物品食物武器
+5、手持武器被打不掉地上
+6、前前A前冲、前前B前冲
+7、前冲加强攻击敌兵飞溅飞天
+8、血腥模式,最高难度,无限循环周目
+9、试玩下载地址:https://zengfr.gitee.io/home/emu/viostormfr.html (2020.03.25后可在线试玩和rom下载)
+10、试玩视频录像:https://space.bilibili.com/492484080/video
+11、试玩方法:点击游戏链接,点击开始游戏按钮,开始游戏:默认按键（可自行修改:shift投币+enter开始+4方向按键+按键zxas

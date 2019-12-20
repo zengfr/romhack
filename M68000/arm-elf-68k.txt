@@ -1,0 +1,95 @@
+https://github.com/georgjz/motorola-68k-assembly
+https://github.com/zengfr/romhack
+
+arm-linux-gcc arm-elf-gcc 区别在基于ARM的嵌入式系统开发中，常常用到交叉编译的GCC工具链有两种：
+
+
+arm-linux-*和 arm-elf-*，两者区别主要在于使用不同的C库文件。
+
+arm-linux-*使用 GNU的Glibc，而arm-elf-*一般使用 uClibc/uC-libc或者使用REDHAT专门为嵌入式系统 的开发的C库newlib.Glibc。
+
+uClibc/uC-libc以及 newlib都是C语言库文件，只是所应 用的领域不同而已，Glibc是针对PC开发的，uClibc/uC-libc是与Glibc API兼容的小型 
+化C语言库，实现了Glibc部分功能。
+
+
+　　关于uClibc/uC-libc的说明，详见如下： 
+　　There are two libc libraries commonly used with uClinux. uC-libc and 
+uClibc. They are quite different despite their similar names. Here is a 
+quick overview of how they are different. 
+　　uC-libc is the original library for uClinux. It was based on sources 
+from the Linux-8086 C library which was part of the ELKs project with m68000 
+support added by Jeff Dionne and Kenneth Albanowski. It is a fairly complete 
+libc implementation, however, some of the API's are a little non-standard 
+and quite a few common libc routines are not present. Currently it has 
+stable support for m68000, ColdFire and ARM (Non-MMU) architectures. It was 
+primary design goal is to be small and light weight. It does try to conform 
+to any standards, although its API tries to be compatible with most libcs, 
+it is not always exactly the same. 
+　　The uClinux distribution provides an environment that can compile using 
+either uC-libc or uClibc depending on your needs. For m68000 and Coldfire 
+platforms it is generally better to chose uC-libc as it supports shared 
+libraries and is the most commonly used libc for these CPUs. uClibc also 
+works quite well with almost all platforms supported by the distribution. 
+Which libc you choose to use will be decided by your requirements
+
+
+uClinux有两个经常使用的libc库：uC-libc和uClibc。虽然两者名字很相似，其实有差 
+别，下面就简单的介绍一下二者的不同之处。
+
+uC -libc是最早为uClinux开发的库，是 
+Jeff Dionne和Kenneth Albanowski为在EKLs项目中支持m68000在Linux-8086 C库源码 
+上移植的。uC-libc是一个完全的libc实现，但其中有一些api是非标准的，有些libc的 
+标准也没有实现。uC-libc稳定地支持 m68000，ColdFire和没有MMU的ARM。其主要设计 
+目标是“小”、"轻"，并尽量与标准一致，虽然它的API和很多libc兼容，但是似乎并 
+不像它期望的那样和所有标准一致。
+
+
+uClibc就是为了解决这个问题从uC-libc中发展出来的。它的所有API都是标准的(正确 
+的返回类型，参数等等)，它弥补了uC-libc中没有实现的libc标准，现在已经被移植到 
+多种架构中。一般来讲，它尽量兼容glibc以便使应用程序用uClibc改写变的容易。 
+uClibc能够在标准的 VM linux和uClinux上面使用。
+
+为了应用程序的简洁，它甚至可以 
+在许多支持MMU的平台上被编译成共享库。Erik Anderson在uClibc背后做了很多的工 
+作。uClibc支持许多系列的处理器：m68000，Coldfire，ARM，MIPS，v850， x86， 
+i960，Sparc，SuperH，Alpha，PowerPC和Hitachi 8。不断增加的平台支持显示uClibc 
+能够很容易的适应新的架构。uClinux发行版提供了环境能够让你选择使用uC-libc或是 
+uClibc编译。对于m68000和Coldfire平台来说，选择uC-libc还是稍微好一点，因为它 
+支持共享库，而共享库是这些cpu经常使用的 libc.uClibc也几乎和所有的平台都能很 
+好的工作。选择哪种libc取决于你的需求。
+
+
+newlib 是一个用于嵌入式系统的开放源代码的C语言程序库，由libc和libm两个库组 
+成，特点是轻量级，速度快，可移植到很多CPU结构上。newlib实现了许多复杂的功 
+能，包括字符串支持，浮点运算，内存分配(如malloc)和I/O流函数(printf，fprinf() 
+等等)。其中libc提供了c 语言库的实现，而libm提供了浮点运算支持。
+
+
+在为ARM交叉编译gcc编译器时，对gcc指定不同的配置选项时，使用的C语言库就不同， 
+gcc编译器默认使用Glibc，也可以使用 uClibc/uC-libc(基本兼容Glibc API)，当使用 
+--with-newlib时，gcc编译器不使用Glibc。当没有交叉编译Glibc时，可以使用 
+--with-newlib禁止连接Glibc而编译bootstrap gcc编译器。从gcc源目录下的 
+config/arm中的t-linux和t-arm-elf中可以看出，不同的--target也影响gcc连接C语言 
+库，t-linux(--target=arm-linux)默认使用Glibc，-arm-elf(--target=arm-elf)使用 
+- Dinhibit_libc禁止连接Glibc，这时我们就可以使用newlib等其他C语言库编译GCC工 
+具链。
+
+
+虽然GCC工具链配置了不同的的C语言库，但由于这些C语言库都可以用来支持GCC，它们 
+对核心数据的处理上不存在较大出入。因而arm-linux-* 和 arm-elf-*区别主要表现在 
+C语言库的实现上，例如不同系统调用，不同的函数集实现，不同的ABI\启动代码以及 
+不同系统特性等微小的差别。
+
+
+arm-linux-*和 arm-elf-*的使用没有一个绝对的标准，排除不同库实现的差异，gcc可 
+以编译任何系统。arm-linux-*和 arm-elf-*都可以用来编译裸机程序和操作系统，只 
+是在遵循下面的描述时系统程序显得更加协调：
+
+
+arm-linux-*针对运行linux的ARM机器，其依赖于指定的C语言库Glibc，因为同样使用 
+Glibc的linux而使得arm-linux-*在运行linux的ARM机器上编译显得更加和谐。 
+arm-elf-*则是一个独立的编译体系，不依赖于指定的C语言库Glibc，可以使用newlib 
+等其他C语言库，不要求操作系统支持，当其使用为嵌入式系统而设计的一些轻巧的C语 
+言库时编译裸机程序(没有linux等大型操作系统的程序)，如监控程序，bootloader等 
+能使得系统程序更加小巧快捷。
+本文来自: (www.91linux.com) 详细出处参考：http://www.91linux.com/html/article/qianrushiyingyong/20090609/17115.html

@@ -1,0 +1,58 @@
+https://github.com/zengfr/romhack
+Captain+Commando Memory Map
+Memory Map
+The following is a memory map that was generated based on the MAME source code (.180).  This information is only as accurate as the MAME driver is.  If you see any errors, please let me know what that error is.
+ 
+The Memory Area is related to where the information is from (CPU, Sound Board, etc..), and it may also reflect what it has in common with other hardware.
+Captain Commando (Capcom, 1991)
+Memory Area:main_map
+Address Range	Length	Function	Description
+0x0000-0x3FFFFF	4194304	ROM	
+0x800000-0x800007	8	Read Port	IN1 (/* Player input ports */)
+0x800018-0x80001F	8	Read	cps1_dsw_r (/* System input ports / Dip Switches */)
+0x800020-0x800021	2	Read NOP	(/* ? Used by Rockman ? not mapped according to PAL */)
+0x800030-0x800037	8	Write	cps1_coinctrl_w
+0x800100-0x80013F	64	Write, Shared	cps1_cps_a_w, cps_a_regs (/* CPS-A custom */)
+0x800140-0x80017F	64	Read/Write, Shared	cps1_cps_b_r, cps1_cps_b_w, cps_b_regs
+0x800180-0x800187	8	Write	cps1_soundlatch_w (/* Sound command */)
+0x800188-0x80018F	8	Write	cps1_soundlatch2_w (/* Sound timer fade */)
+0x900000-0x92FFFF	196608	RAM Write, Shared	cps1_gfxram_w, gfxram (/* SF2CE executes code from here */)
+0xFF0000-0xFFFFFF	65536	RAM, Shared	mainram
+Memory Area:sub_map
+Address Range	Length	Function	Description
+0x0000-0x7FFF	32768	ROM	
+0x8000-0xBFFF	16384	ROM Bank	bank1
+0xD000-0xD7FF	2048	RAM	
+0xF000-0xF001	2	Device Read/Write	2151, ym2151_device, read, write
+0xF002	1	Device Read/Write	oki, okim6295_device, read, write
+0xF004	1	Write	cps1_snd_bankswitch_w
+0xF006	1	Write	cps1_oki_pin7_w (/* controls pin 7 of OKI chip */)
+0xF008	1	Device Read	soundlatch, generic_latch_8_device, read (/* Sound command */)
+0xF00A	1	Device Read	soundlatch2, generic_latch_8_device, read (/* Sound timer fade */)
+ 
+ROM Map for this game
+ 
+This is the ROM map for the game.  This should tell you what address the ROM is at, how big it is, what it's used for.   
+Memory Area:aboardplds
+Address Range	Length	Label/Location	Description
+0x0000-0x0116	279	"prg1"	CRC(f1129744)
+0x0000-0x0116	279	"rom1"	CRC(41dc73b9)
+0x0000-0x0116	279	"sou1"	CRC(84f4b2fe)
+0x0000-0x0116	279	"buf1"	CRC(eb122de7)
+0x0000-0x0116	279	"ioa1"	CRC(59c7ee3b)
+Memory Area:audiocpu
+Address Range	Length	Label/Location	Description
+0x0000-0x7FFF	32768	"cc_09.11a"	CRC(698e8b58)
+Memory Area:bboardplds
+Address Range	Length	Label/Location	Description
+0x0000-0x0116	279	"ccprg1.11d"	CRC(e1c225c4)
+0x0000-0x0116	279	"cc63b.1a"	CRC(cae8f0f9)
+0x0000-0x0116	279	"iob1.12d"	CRC(3abc0700)
+Memory Area:cboardplds
+Address Range	Length	Label/Location	Description
+0x0000-0x0116	279	"ioc1.ic7"	CRC(0d182081)
+0x0000-0x0116	279	"c632b.ic1"	CRC(0fbd9270)
+Memory Area:oki
+Address Range	Length	Label/Location	Description
+0x0000-0x1FFFF	131072	"cc_18.11c"	CRC(6de2c2db)
+0x20000-0x3FFFF	131072	"cc_19.12c"	CRC(b99091ae)

@@ -1,0 +1,114 @@
+https://github.com/zengfr/romhack
+
+Violent Storm Memory Map 
+Memory Map
+The following is a memory map that was generated based on the MAME source code (.180).  This information is only as accurate as the MAME driver is.  If you see any errors, please let me know what that error is.
+ 
+The Memory Area is related to where the information is from (CPU, Sound Board, etc..), and it may also reflect what it has in common with other hardware.
+Violent Storm (Konami, 1993)
+Memory Area:mystwarr_map
+Address Range	Length	Function	Description
+0x0000-0x1FFFFF	2097152	ROM	(// main program)
+0x200000-0x20FFFF	65536	RAM, Shared	gx_workram
+0x400000-0x40FFFF	65536	Read/Write, Shared	k053247_scattered_word_r,k053247_scattered_word_w, spriteram
+0x480000-0x4800FF	256	Device Write	k055555, k055555_device, K055555_word_w
+0x482000-0x48200F	16	Device Read	k055673, k055673_device, k055673_rom_word_r
+0x482010-0x48201F	16	Device Write	k055673, k055673_device,k055673_reg_word_w
+0x484000-0x484007	8	Device Write	k055673, k055673_device, k053246_word_w
+0x48A000-0x48A01F	32	Device Write	k054338, k054338_device, word_w
+0x48C000-0x48C03F	64	Device Write	k056832, k056832_device,word_w
+0x490000-0x490001	2	Write	mweeprom_w
+0x492000-0x492001	2	Write NOP	(// watchdog)
+0x494000-0x494001	2	Read Port	P1_P2
+0x494002-0x494003	2	Read Port	P3_P4
+0x496000-0x496001	2	Read Port	IN0
+0x0001	Coin 1	Active Low
+0x0002	Coin 2	Active Low
+0x0004	Unknown	Active Low
+0x0008	Unknown	Active Low
+0x0010	Service 1	Active Low
+0x0020	Service 2	Active Low
+0x0040	Unknown	Active Low
+0x0080	Unknown	Active Low
+0x496002-0x496003	2	Read	eeprom_r
+0x498000-0x49801F	32	RAM	
+0x49800C-0x49800D	2	Write	sound_cmd1_w
+0x49800E-0x49800F	2	Write	sound_cmd2_w
+0x498014-0x498015	2	Read	sound_status_r
+0x49A000-0x49A001	2	Write	sound_irq_w
+0x49C000-0x49C01F	32	Device Read/Write 8-bit	k053252, k053252_device, read, write, 0x00ff
+0x49E000-0x49E007	8	Write	irq_ack_w (// VSCCS (custom))
+0x600000-0x601FFF	8192	Device Read/Write	k056832, k056832_device,ram_word_r,ram_word_w
+0x602000-0x603FFF	8192	Device Read/Write	k056832, k056832_device,ram_word_r,ram_word_w (// tilemap RAM mirror read(essential))
+0x680000-0x683FFF	16384	Device Read	k056832, k056832_device, mw_rom_word_r
+0x700000-0x701FFF	8192	RAM Device Write, Shared	palette, palette_device, write, palette
+Memory Area:mystwarr_sound_map
+Address Range	Length	Function	Description
+0x0000-0x7FFF	32768	ROM	
+0x0000-0xBFFF	49152	Write NOP	
+0x8000-0xBFFF	16384	ROM Bank	z80bank
+0xC000-0xDFFF	8192	RAM	
+0xE000-0xE22F	560	Device Read/Write	k054539_1, k054539_device, read, write
+0xE230-0xE3FF	464	RAM	
+0xE400-0xE62F	560	Device Read/Write	k054539_2, k054539_device, read, write
+0xE630-0xE7FF	464	RAM	
+0xF000	1	Device Write	soundlatch3, generic_latch_8_device, write
+0xF002	1	Device Read	soundlatch, generic_latch_8_device, read
+0xF003	1	Device Read	soundlatch2, generic_latch_8_device, read
+0xF800	1	Write	sound_ctrl_w
+0xFFF0-0xFFF3	4	Write NOP	(// unknown write)
+Memory Area:viostorm_map
+Address Range	Length	Function	Description
+0x0000-0x1FFFFF	2097152	ROM	(// main program)
+0x200000-0x20FFFF	65536	RAM, Shared	gx_workram
+0x210000-0x210FFF	4096	Device Read/Write	k055673, k055673_device, k053247_word_r,k053247_word_w
+0x211000-0x21FFFF	61440	RAM	
+0x240000-0x240007	8	Device Write	k055673, k055673_device, k053246_word_w
+0x244000-0x24400F	16	Device Read	k055673, k055673_device, k055673_rom_word_r
+0x244010-0x24401F	16	Device Write	k055673, k055673_device,k055673_reg_word_w
+0x24C000-0x24FFFF	16384	RAM	(// K053250 ram)
+0x250000-0x25000F	16	RAM	(// K053250 reg)
+0x254000-0x25401F	32	Device Write	k054338, k054338_device, word_w
+0x258000-0x2580FF	256	Device Write	k055555, k055555_device, K055555_word_w
+0x25C000-0x25C03F	64	Read/Write	K055550_word_r,K055550_word_w
+0x260000-0x26001F	32	Device Read/Write 8-bit	k053252, k053252_device, read, write, 0x00ff
+0x264000-0x264001	2	Write	sound_irq_w
+0x268000-0x26801F	32	RAM	
+0x26800C-0x26800D	2	Write	sound_cmd1_w
+0x26800E-0x26800F	2	Write	sound_cmd2_w
+0x268014-0x268015	2	Read	sound_status_r
+0x26C000-0x26C007	8	Device Write	k056832, k056832_device,b_word_w
+0x270000-0x27003F	64	Device Write	k056832, k056832_device,word_w
+0x274000-0x274001	2	Read Port	P1_P3
+0x274002-0x274003	2	Read Port	P2_P4
+0x278000-0x278001	2	Read Port	IN0
+0x0001	Coin 1	Active Low
+0x0002	Coin 2	Active Low
+0x0004	Unknown	Active Low
+0x0008	Unknown	Active Low
+0x0010	Service 1	Active Low
+0x0020	Service 2	Active Low
+0x0040	Unknown	Active Low
+0x0080	Unknown	Active Low
+0x278002-0x278003	2	Read	eeprom_r
+0x27C000-0x27C001	2	Write	mmeeprom_w
+0x27C000-0x27C001	2	Read NOP	(// watchdog lives here)
+0x300000-0x301FFF	8192	Device Read/Write	k056832, k056832_device,ram_word_r,ram_word_w
+0x302000-0x303FFF	8192	Device Read/Write	k056832, k056832_device,ram_word_r,ram_word_w (// tilemap RAM mirror read(essential))
+0x304000-0x3041FF	512	RAM	
+0x310000-0x311FFF	8192	Device Read	k056832, k056832_device, mw_rom_word_r
+0x330000-0x331FFF	8192	RAM Device Write, Shared	palette, palette_device, write, palette
+ 
+ROM Map for this game
+ 
+This is the ROM map for the game.  This should tell you what address the ROM is at, how big it is, what it's used for.   
+Memory Area:eeprom
+Address Range	Length	Label/Location	Description
+0x0000-0x007F	128	"viostorm.nv"	CRC(3cb1c96c)
+Memory Area:shared
+Address Range	Length	Label/Location	Description
+0x0000-0x1FFFFF	2097152	"168a06.1c"	CRC(25404fd7)
+0x200000-0x3FFFFF	2097152	"168a07.1e"	CRC(fdbbf8cc)
+Memory Area:soundcpu
+Address Range	Length	Label/Location	Description
+0x0000-0x1FFFF	131072	"168a05.7c"	CRC(507fb3eb)

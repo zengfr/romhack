@@ -1,0 +1,1584 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><HTML><HEAD>
+<TITLE>MSX Banzai! - The MSX Worshipping Shrine - V9990 Programmers Manual</TITLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+<LINK REL="StyleSheet" HREF="../banzai.css" TYPE="text/css">
+<STYLE TYPE="text/css">
+TABLE { margin-bottom: 1em; }
+TD {
+  padding: 2px 0.5em 2px 0.5em;
+  border: 1px solid;
+  border-left: 0;
+  text-align: center;
+}
+TH {
+  padding: 2px 0.5em 2px 0.5em;
+  border: 1px solid;
+  border-left: 0;
+  text-align: center;
+  vertical-align: top;
+}
+TR.port TD, TD.port, TR.port TH {
+  border: 0;
+  text-align: left;
+}
+TH.port {
+  border: 0;
+  text-align: right;
+}
+TD.first { border: 1px solid; }
+TH.first { border: 1px solid; text-align: left; }
+TD.block, TR.block TD { border-bottom: 0; }
+TR.block TH { border-bottom: 0; }
+
+.center { text-align: center; }
+div.center table { margin-left: auto; margin-right: auto; text-align: left; }
+</STYLE>
+</HEAD><BODY><!--#CONFIG TIMEFMT="%d %B %Y" -->
+<div id="menu"><A HREF="http://msxbanzai.tni.nl/"><IMG SRC="../msxbanzai.png" ALT="MSX Banzai! - The MSX Worshipping Shrine" WIDTH=632 HEIGHT=96></A><BR>
+<A HREF="/dev/">Development</A> | <A HREF="/computers/">Computers</A> | <A HREF="/magazine.html">Magazines</A> | <A HREF="/curiosity.html">Curiosities</A></div>
+
+<DIV STYLE="margin-right: 2em;">
+
+<H1>Yamaha V9990 E-VDP-III Programmers Manual</H1><DIV STYLE="margin-left: 1em;">
+<P>Targeted at Gfx9000 and Video9000 cartridges for MSX. Written by Patriek Lesparre. Thanks go to Marcel Delorme and Dan Derpaux for help.</P></DIV>
+
+<H1>CONTENTS</H1><DIV STYLE="margin-left: 1em;">
+<OL>
+<LI><A HREF="#outline">OUTLINE</A>
+<LI><A HREF="#basicinputoutput">BASIC INPUT/OUTPUT</A>
+	<OL>
+	<LI><A HREF="#registeraccess">ACCESS OF REGISTERS R#0 to R#28, R#32 to R#54</A>
+	<LI><A HREF="#vramaccess">ACCESS OF VRAM</A>
+	<LI><A HREF="#paletteaccess">ACCESS OF PALETTE</A>
+	<LI><A HREF="#commandexecution">EXECUTION OF COMMAND</A>
+	<LI><A HREF="#statusport">STATUS PORT</A>
+	<LI><A HREF="#interruptport">INTERRUPT PORT</A>
+	<LI><A HREF="#systemcontrolport">SYSTEM CONTROL PORT</A>
+	</OL>
+<LI><A HREF="#displaymodes">V9990 DISPLAY MODES</A>
+	<OL>
+	<LI><A HREF="#patternmode">PATTERN DISPLAY MODE</A>
+	<LI><A HREF="#bitmapmode">BIT MAP DISPLAY MODE</A>
+	<LI><A HREF="#registersettings">REGISTER SETTING VALUES FOR EACH DISPLAY MODE</A>
+	</OL>
+<LI><A HREF="#palettecontrol">CONTROL OF PALETTE</A>
+	<OL>
+	<LI><A HREF="#displaytypeselection">SELECTION OF DISPLAY TYPE</A>
+	</OL>
+<LI><A HREF="#vram">VRAM</A>
+	<OL>
+	<LI><A HREF="#p1vram">P1 VRAM</A>
+	<LI><A HREF="#p2vram">P2 VRAM</A>
+	<LI><A HREF="#bvram">B1-B6 VRAM</A>
+	</OL>
+<LI><A HREF="#spritecursor">Sprite and Cursor</A>
+	<OL>
+	<LI><A HREF="#sprite">Sprite (P1-P2)</A>
+	<LI><A HREF="#cursor">Cursor (B1-B6)</A>
+	</OL>
+<LI><A HREF="#command">COMMAND</A>
+	<OL>
+	<LI><A HREF="#commandmethod">Command execution method</A>
+	<LI><A HREF="#writeoperations">Write operations</A>
+	<LI><A HREF="#LMMC">LMMC (Logical Move to Memory from CPU)</A>
+	<LI><A HREF="#LMMV">LMMV (Logical Move to Memory from VDP)</A>
+	<LI><A HREF="#LMCM">LMCM (Logical Move to CPU from Memory)</A>
+	<LI><A HREF="#LMMM">LMMM (Logical Move to Memory from Memory)</A>
+	<LI><A HREF="#CMMC">CMMC (Character Move to Memory from CPU)</A>
+	<LI><A HREF="#CMMM">CMMM (Character Move to Memory from Memory)</A>
+	<LI><A HREF="#BMXL">BMXL (Byte Move to XY from Linear)</A>
+	<LI><A HREF="#BMLX">BMLX (Byte Move to Linear from XY)</A>
+	<LI><A HREF="#BMLL">BMLL (Byte Move to Linear from Linear)</A>
+	<LI><A HREF="#LINE">LINE</A>
+	<LI><A HREF="#SEARCH">SEARCH</A>
+	<LI><A HREF="#POINT">POINT</A>
+	<LI><A HREF="#PSET">PSET</A>
+	<LI><A HREF="#ADVANCE">ADVANCE</A>
+	</OL>
+<LI><A HREF="#v9990regspec">V9990 REGISTER SPECIFICATIONS</A>
+	<OL>
+	<LI><A HREF="#ioportspec">I/O PORT SPECIFICATIONS</A>
+	<LI><A HREF="#regspec">Register specifications</A>
+	</OL>
+<LI><A HREF="#timing">Timing</A>
+</OL></DIV>
+
+<H1 id="outline">OUTLINE</H1><DIV STYLE="margin-left: 1em;">
+	<P>The V9990 is a video display processor (VDP) which features as follows. Having a high-speed drawing and animation functions, it provides various screen modes which can be used widely for games, audio-visual, office automation and other purposes. Also, as a monitor, it supports many types of display units such as home TV sets, CRT for personal computers and liquid crystal panels.</P>
+
+	<H2>&lt;Game Specifications&gt;</H2><DIV STYLE="margin-left: 1em;">
+		<P>For this type, two pattern display modes are available as follows.</P>
+		<UL>
+		<LI>P1 (Display resolution 256x212, 2 layers)
+		<LI>P2 (Display resolution 512x212)
+		</UL>
+		<P>Various highly advanced functions are available such as powerful sprite function and dual-layer independent omnidirectional scroll function.</P></DIV>
+	<H2>&lt;AV Specifications&gt;</H2><DIV STYLE="margin-left: 1em;">
+		<P>For this type, four kinds of bit map display modes are available as follows.
+		They are capable of providing display on the NTSC or PAL frequency monitor.</P>
+		<UL>
+		<LI>B1 (Display resolution 256x212)
+		<LI>B2 (Display resolution 384x240)
+		<LI>B3 (Display resolution 512x212)
+		<LI>B4 (Display resolution 768X240)
+		</UL>
+		<UL style="list-style: square;">
+		<LI>Capable of doubling the resolution in the vertical direction by using the interlace.
+		<LI>Up to 32,768 colors/pixel can be displayed.
+		<LI>Built-in color palette (64 colors selected out of 32,768 colors)
+		<LI>Omnidirectional smooth scrolling is possible.
+		<LI>Superimposition and digitization are possible. (Video9000)
+		<LI>Allows use of the monitor screen to the full extent in four directions as the display range by using the over-scan mode (B2, B4) in such application as for the telopper.
+		<LI>Supports the high-speed hardware drawing commands such as the screen transfer, font color development and line.
+		<LI>The hardware cursor display function is available.
+		</UL></DIV>
+	<H2>&lt;OA Specifications&gt;</H2><DIV STYLE="margin-left: 1em;">
+		<P>For this type, two kinds of bit map display modes are available as follows. They can be displayed on the high resolution Monitor.</P>
+		<UL>
+		<LI>B5 (Display resolution 640X400)
+		<LI>B6 (Display resolution 640X480)
+		</UL>
+		<UL style="list-style: square;">
+		<LI>Up to 16 colors/pixel can be displayed. (Selectable out of 32,768 colors depending on the color palette)
+		<LI>Omnidirectional smooth scrolling is possible.
+		<LI>Supports the high-speed hardware drawing commands such as the screen transfer, font color development and line.
+		<LI>The hardware cursor display function is available.
+		</UL></DIV>
+	<H2>&lt;Others&gt;</H2><DIV STYLE="margin-left: 1em;">
+		<UL style="list-style: square;">
+		<LI>Built~in DA converter
+		<LI>Linear RGB output
+		<LI>Direct connection of CG ROM such as KANJI ROM is possible, but has not been implemented in Gfx9000 or Video9000. Further information regarding it is omitted from this manual.
+		<LI>Useable VRAM: Dual port DRAM (The access time is 120nS, but 100nS for the B6 mode.)
+			<UL style="list-style: none;">
+			<LI>64Kx4
+			<LI>128Kx8
+			<LI>256Kx4
+			</UL>
+		<LI>As the VRAM capacity, 128KB, 256KB and 512KB configurations are possible.
+		<LI>Capable of direct access from CPU to VRAM by means of the 16 bit bus.
+		<LI>Use of the LCD panel (1 screen panel and single drive type of 2 screen panel) is possible.
+		</UL></DIV>
+	</DIV>
+
+<H1 id="basicinputoutput">BASIC INPUT/OUTPUT</H1><DIV STYLE="margin-left: 1em;">
+	<P>Data is input and output to and from the V9990 through the <a href="#ioportspec">I/O ports (P#0 to P#F)</a>. Basically, as an access, both Read and Write are possible at all ports. But only Read is possible with the <a href="#p5">STATUS port (P#5)</a> and Write only with the <a href="#p7">SYSTEM CONTROL port (P#7)</a>.</P>
+
+	<H2 id="registeraccess">ACCESS OF REGISTERS R#0 to R#28, R#32 to R#54</H2><DIV STYLE="margin-left: 1em;">
+		<P>To set a value in the register, have the register No. output at <a href="#p4">REGISTER SELECT port (P#4)</a> and then the data at <a href="#p3">REGISTER DATA port (P#3)</a>.<BR>To obtain the value from the register, have the register No. output at <a href="#p4">P#4</a> and then read <a href="#p3">P#3</a>.<BR>The register No. is specified by using the lower 6 bits of the value at <a href="#p4">P#4</a> and the bit 7 (MSB) functions as WII (Write Increment Inhibit) and bit 6 as RII (Read Increment Inhibit). If WII is "1", automatic increment of the register No. by writing the data to the register is prohibited. If RII is "1", automatic increment of the register No. by reading the data of the register is prohibited.</P>
+
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>P#4 (Write)<TD CLASS=first>WII<TD>RII<TD COLSPAN=6>Register No. (R#n)
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>P#3 (Read/Write)<TD COLSPAN=8 CLASS=first>Register Data
+		<TR CLASS=port><TD><TD COLSPAN=8 STYLE="text-align: center;"><B>...</B>
+		</TABLE></DIV>
+
+	<H2 id="vramaccess">ACCESS OF VRAM</H2><DIV STYLE="margin-left: 1em;">
+		<P>To write a value in VRAM, set the target address to VRAM Write Base Address registers (R#0-R#2) and have the data output at <a href="#p0">VRAM DATA port (P#0)</a>. As the bit 7 (MSB) of R#2 functions as AII (Address Increment Inhibit), if it is "1", automatic address increment by writing the data is inhibited.</P>
+		<P>To read the data of VRAM, set the target address to VRAM Read Base Address registers (R#3-R#5) and read in the data of <a href="#p0">VRAM DATA port (P#0)</a>. As the bit 7 (MSB) of R#5 functions as AII (Address Increment Inhibit), if it is "1", automatic address increment by reading in the data is inhibited.</P>
+		<P>The address can be specified up to 19 bits (512K bytes), with lower 8 bits set to R#0 (or R#3), center 8 bits to R#1 (or R#4) and upper 3 bits to R#2 (or R#5).</P>
+		<P>Note: Always the full address must be written. Specifying partial addresses will not work correctly.</P>
+		<UL style="list-style: inside; padding: 0; color: aqua;">
+		<LI>VRAM Write
+		</UL>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>P#4 (Write)<TD CLASS=first>0<TD>0<TD>0<TD>0<TD>0<TD>0<TD>0<TD>0
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>P#3 (Write)<TD COLSPAN=8 CLASS=first>VRAM lower address<TD CLASS=port>(R#0 set)
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>P#3 (Write)<TD COLSPAN=8 CLASS=first>VRAM center address<TD CLASS=port>(R#1 set)
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>P#3 (Write)<TD CLASS=first>AII<TD COLSPAN=7>VRAM upper address<TD CLASS=port>(R#2 set)
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>P#0 (Write)<TD COLSPAN=8 CLASS=first>Data
+		<TR CLASS=port><TD><TD COLSPAN=8 STYLE="text-align: center;"><B>...</B>
+		</TABLE>
+
+		<UL style="list-style: inside; padding: 0; color: aqua;">
+		<LI>VRAM Read
+		</UL>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>P#4 (Write)<TD CLASS=first>0<TD>0<TD>0<TD>0<TD>0<TD>0<TD>1<TD>1
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>P#3 (Write)<TD COLSPAN=8 CLASS=first>VRAM lower address<TD CLASS=port>(R#3 set)
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>P#3 (Write)<TD COLSPAN=8 CLASS=first>VRAM center address<TD CLASS=port>(R#4 set)
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>P#3 (Write)<TD CLASS=first>AII<TD COLSPAN=7>VRAM upper address<TD CLASS=port>(R#5 set)
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>P#0 (Read)<TD COLSPAN=8 CLASS=first>Data
+		<TR CLASS=port><TD><TD COLSPAN=8 STYLE="text-align: center;"><B>...</B>
+		</TABLE>
+	</DIV>
+
+	<H2 id="paletteaccess">ACCESS OF PALETTE</H2><DIV STYLE="margin-left: 1em;">
+		<P>The palette data can be set or checked by setting the palette No. and RGB specification to the palette pointer (R#14) and reading or writing to the <a href="#p1">palette data port (P#1)</a>.</P>
+		<P>The palette No. is specified by using the upper 6 bits of R#14 and RGB by using the lower 2 bits (R=0, G=1, B=2). The lower 2 bits constitute a ternary counter which undergoes automatic increment in the order of RGB through the port access. Setting these counter bits to 3 manually will cause the next palette write to be ignored and the counter to wrap around to 0 on the same palette number.</P>
+		<P>It's possible to partially update the palette colors as changes to either Red, Green or Blue values take effect immediately.</P>
+		<P>It should be noted that how the palette setting is actually displayed also depends on the palette control register (R#13) setting.</P>
+
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>P#4 (Write)<TD CLASS=first>0<TD>0<TD>0<TD>0<TD>1<TD>1<TD>1<TD>0
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>P#3 (Write)<TD COLSPAN=6 CLASS=first>Palette No.<TD>0<TD>0<TD CLASS=port>(R#14 set)
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>P#1 (Write)<TD CLASS=first style="text-decoration: overline;">YS<TD>-<TD>-<TD COLSPAN=5>RED data
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>P#1 (Write)<TD CLASS=first>-<TD>-<TD>-<TD COLSPAN=5>GREEN data
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>P#1 (Write)<TD CLASS=first>-<TD>-<TD>-<TD COLSPAN=5>BLUE data
+		</TABLE>
+	</DIV>
+
+	<H2 id="commandexecution">EXECUTION OF COMMAND</H2><DIV STYLE="margin-left: 1em;">
+		<P>With the necessary parameter set to the command registers, set the operation code.  For transfer from CPU (or to CPU), the data is output to the <a href="#p2">command data port (P#2)</a> by the amount required after this stage.</P>
+	</DIV>
+
+	<H2 id="statusport">STATUS PORT</H2><DIV STYLE="margin-left: 1em;">
+		<P>Only by reading the <a href="#p5">status port (P#5, Read Only)</a>, the status of the V9990 can be checked.</P>
+	</DIV>
+
+	<H2 id="interruptport">INTERRUPT PORT</H2><DIV STYLE="margin-left: 1em;">
+		<P>The cause of interrupt can be determined by reading the <a href="#p6">interrupt flag port (P#6)</a>. As the flag is not reset automatically, "1" should be written to the applicable bit to reset it.</P>
+	</DIV>
+	
+	<H2 id="systemcontrolport">SYSTEM CONTROL PORT</H2><DIV STYLE="margin-left: 1em;">
+		<P>The <a href="#p7">system control port (P#7)</a> is only for writing. It can be used to reset the system and to select the master clock.</P>
+	</DIV>
+</DIV>
+
+<H1 id="displaymodes">V9990 DISPLAY MODES</H1><DIV STYLE="margin-left: 1em;">
+	<H2 id="patternmode">PATTERN DISPLAY MODES</H2><DIV STYLE="margin-left: 1em;">
+
+		<P STYLE="text-decoration: underline;">Pattern Display Function</P>
+
+		<TABLE CELLSPACING=0>
+		<TR CLASS=block><TH CLASS=first>Mode name<TD>P1<TD>P2
+		<TR CLASS=block><TH CLASS=first>Master clock frequency<TD>21.5MHz<TD>21.5MHz
+		<TR CLASS=block><TH CLASS=first>Pixel clock frequency<TD>5.4MHz<TD>10.7MHz
+		<TR CLASS=block><TH CLASS=first>Horizontal cycle<TD>15.7kHz (NTSC)<TD>15.7kHz (NTSC)
+		<TR CLASS=block><TH CLASS=first>Display resolution<TD>32x26.5 patterns (256x212 pixels)<TD>64x26.5 patterns (512x212 pixels)
+		<TR CLASS=block><TH CLASS=first>Image space<TD>64x64 patterns<TD>128x64 patterns
+		<TR CLASS=block><TH CLASS=first>Number of layers<TD>2 layers with priority control<TD>1 layer
+		<TR CLASS=block><TH CLASS=first>Pattern size<TD>8x8 pixels<TD>8x8 pixels
+		<TR CLASS=block><TH CLASS=first>Simultaneously displayed colors<TD>30 colors + transparant<TD>30 colors + transparant
+		<TR CLASS=block><TH CLASS=first>Color palette<TD>4 palettes of 16 colors out of 32768 colors<TD>4 palettes of 16 colors out of 32768 colors
+		<TR><TH CLASS=first>Number of patterns<TD>Layer "A": 8160 units<BR>Layer "B": 7680 units<TD>15360 units
+		</TABLE>
+
+		<P STYLE="text-decoration: underline;">Sprite Display Function</P>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>Size<TD>16x16 pixels
+		<TR CLASS=port><TH>Limited No. of displayed units<TD>125 on 1 screen<BR>16 on 1 line
+		<TR CLASS=port><TH>Displayed colors<TD>15 colors + clear color (for each pixel)<BR>Palette can be selected for each sprite (1 palette selected out of 4)
+		<TR CLASS=port><TH>Specification of display priority<TD>Priority between sprite and pattern layer can be set for each sprite. The sprite No. order is used for priority order among sprites.
+		<TR CLASS=port><TH>Pattern<TD>Selected from among 256 patterns<BR>The pattern data is shared with the pattern layer (the base address should be set in register R#25.)
+		</TABLE>
+
+	</DIV>
+
+	<H2 id="bitmapmode">BIT MAP DISPLAY MODES</H2><DIV STYLE="margin-left: 1em;">
+		<P STYLE="text-decoration: underline;">Bit map screen display function</P>
+
+		<TABLE CELLSPACING=0>
+		<TR CLASS=block><TH CLASS=first ROWSPAN=2>Mode<TH rowspan=2>Master clock<BR>(MHz)<TH rowspan=2>Pixel clock<BR>(MHz)<TH rowspan=2>Display resolution ()&nbsp;interlaced<BR>(pixel x pixel)<TH rowspan=2>Color depth<BR>(bits per pixel)<TH COLSPAN=4>Image size by width (lines)
+		<TR CLASS=block><TH>256 pixels<TH>512 pixels<TH>1024 pixels<th>2048 pixels
+
+		<TR CLASS=block><TD ROWSPAN=4 CLASS=first>*B0<TD ROWSPAN=4>14.3<TD ROWSPAN=4>3.6<TD ROWSPAN=4>Overscan NTSC<BR>192x240 (192x480)<BR>Overscan PAL<BR>192x290 (192x580)
+				<TD>16<TD>1024<td>512<td>256<td>
+		<TR CLASS=block><TD>8<TD>2048<td>1024<td>512<td>256
+		<TR CLASS=block><TD>4<TD>4096<td>2048<td>1024<td>512
+		<TR CLASS=block><TD>2<TD>8192<td>4096<td>2048<td>1024
+		
+		<TR CLASS=block><TD ROWSPAN=4 CLASS=first>B1<TD ROWSPAN=4>21.5<TD ROWSPAN=4>5.4<TD ROWSPAN=4>NTSC/PAL<BR>256x212 (256x424)
+				<TD>16<TD>1024<td>512<td>256<td>
+		<TR CLASS=block><TD>8<TD>2048<td>1024<td>512<td>256
+		<TR CLASS=block><TD>4<TD>4096<td>2048<td>1024<td>512
+		<TR CLASS=block><TD>2<TD>8192<td>4096<td>2048<td>1024
+
+		<TR CLASS=block><TD ROWSPAN=4 CLASS=first>B2<TD ROWSPAN=4>14.3<TD ROWSPAN=4>7.2<TD ROWSPAN=4>Overscan NTSC<BR>384x240 (384x480)<BR>Overscan PAL<BR>384x290 (384x580)
+				<TD>16<td><td>512<td>256<td>
+		<TR CLASS=block><TD>8<td><td>1024<td>512<td>256
+		<TR CLASS=block><TD>4<td><td>2048<td>1024<td>512
+		<TR CLASS=block><TD>2<td><td>4096<td>2048<td>1024
+
+		<TR CLASS=block><TD ROWSPAN=4 CLASS=first>B3<TD ROWSPAN=4>21.5<TD ROWSPAN=4>10.7<TD ROWSPAN=4>NTSC/PAL<br>512x212 (512x424)
+				<TD>16<td><td>512<td>256<td>
+		<TR CLASS=block><TD>8<td><td>1024<td>512<td>256
+		<TR CLASS=block><TD>4<td><td>2048<td>1024<td>512
+		<TR CLASS=block><TD>2<td><td>4096<td>2048<td>1024
+
+		<TR CLASS=block><TD ROWSPAN=2 CLASS=first>B4<TD ROWSPAN=2>14.3<TD ROWSPAN=2>14.3<TD ROWSPAN=2>Overscan NTSC<BR>768x240 (768x480)<BR>Overscan PAL<BR>768x290 (768x580)
+				<TD>4<td><td><td>1024<td>512
+		<TR CLASS=block><TD>2<td><td><td>2048<td>1024
+
+		<TR CLASS=block><TD ROWSPAN=2 CLASS=first>B5<TD ROWSPAN=2>21.5<TD ROWSPAN=2>21.5<TD ROWSPAN=2>640x400 @ 25.3kHz
+				<TD>4<td><td><td>1024<td>512
+		<TR CLASS=block><TD>2<td><td><td>2048<td>1024
+
+		<TR CLASS=block><TD ROWSPAN=2 CLASS=first>B6<TD ROWSPAN=2>25.2<TD ROWSPAN=2>25.2<TD ROWSPAN=2>640x480 @ 31.5kHz
+				<TD>4<td><td><td>1024<td>512
+		<TR CLASS=block><TD>2<td><td><td>2048<td>1024
+
+		<TR><TD ROWSPAN=2 CLASS=first>*B7<TD ROWSPAN=2>21.5<TD ROWSPAN=2>21.5<TD ROWSPAN=2>NTSC/PAL<br>1024x212 (1024x424)
+		<TD CLASS=block>4<TD CLASS=block><TD CLASS=block><TD CLASS=block>1024<td class=block>512
+		<TR><TD>2<td><td><td>2048<td>1024
+		<TR CLASS=port><TD COLSPAN=7>* Undocumented mode
+		</TABLE>
+
+		<P>Displayed color (RGB conversion system)</P>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=block><TH CLASS=first>bits per pixel<TH>Name<TH>RGB conversion system<TH>Number of displayed colors
+		<TR CLASS=block><TH CLASS=first>16<TD>BD16<TD>Direct RGB<BR>(<SPAN STYLE="text-decoration: overline;">YS</SPAN>:1bit, G:5bit, R:5bit, B:5bit)<TD>32768 colors
+		<TR CLASS=block><TH ROWSPAN=6 CLASS=first>8<TD>BD8<TD>Direct RGB<BR>(G:3bit,R:3bit,B:2bit)<TD>256 colors
+		<TR CLASS=block>			<TD>BYJK<TD>YJK Decoder<TD>19268 colors
+		<TR CLASS=block>			<TD>BYJKP<TD>YJK Decoder +<BR>Color palette<TD>12599 colors +<BR>16 colors out of 32768 colors
+		<TR CLASS=block>			<TD>BYUV<TD>YUV Decoder<TD>19268 colors
+		<TR CLASS=block>			<TD>BYUVP<TD>YUV Decoder +<BR>Color palette<TD>12599 colors +<BR>16 colors out of 32768 colors
+		<TR CLASS=block>			<TD>BP6<TD>Color palette<TD>64 colors out of 32768 colors
+		<TR CLASS=block><TH CLASS=first>4<TD>BP4<TD>Color palette<TD>16 colors out of 32768 colors
+		<TR><TH CLASS=first>2<TD>BP2<TD>Color palette<TD>4 colors out of 32768 colors
+		</TABLE>
+
+		<P STYLE="text-decoration: underline;">Cursor Function
+		<TABLE CELLSPACING=0><TR CLASS=port>
+		<TH><UL>
+		<LI>Size
+		<LI>Number of displayed units
+		<LI>Displayed color
+		<LI>Pattern
+		</UL>
+		<TD><UL style="list-style: none;">
+		<LI>32x32 pixels
+		<LI>2 in 1 screen
+		<LI>3 colors + EOR color on bit map screen + clear color
+		<LI>Any form
+		</UL>
+		</TABLE>
+	</DIV>
+
+	<H2 id="registersettings">REGISTER SETTING VALUES FOR EACH DISPLAY MODE</H2><DIV STYLE="margin-left: 1em;">
+
+		<TABLE CELLSPACING=0>
+		<TR CLASS=block><TH ROWSPAN=2 CLASS=first>Mode<TH>P#7<TH COLSPAN=4>R#6<TH COLSPAN=7>R#7
+		<TR CLASS=block><TH>MCS<TH>DSPM<TH>DCKM<TH>XIMM<TH>CLRM<TH>C25M<TH>SM1<TH>SM<TH>PAL<TH>EO<TH>IL<TH>HSCN
+		<TR CLASS=block><TH CLASS=first>P1<TD>0<TD>0<TD>0<TD>1<TD>1<TD>0<TD>0/1<TD>0/1<TD>0/1<TD>0/1<TD>0/1<TD>0
+		<TR CLASS=block><TH CLASS=first>P2<TD>0<TD>1<TD>1<TD>2<TD>1<TD>0<TD>0/1<TD>0/1<TD>0/1<TD>0/1<TD>0/1<TD>0
+		<TR CLASS=block><TH CLASS=first>*B0<TD>1<TD>2<TD>0<TD>0-3<TD>0-3<TD>0<TD>0/1<TD>0/1<TD>0/1<TD>0/1<TD>0/1<TD>0
+		<TR CLASS=block><TH CLASS=first>B1<TD>0<TD>2<TD>0<TD>0-3<TD>0-3<TD>0<TD>0/1<TD>0/1<TD>0/1<TD>0/1<TD>0/1<TD>0
+		<TR CLASS=block><TH CLASS=first>B2<TD>1<TD>2<TD>1<TD>1-3<TD>0-3<TD>0<TD>0/1<TD>0/1<TD>0/1<TD>0/1<TD>0/1<TD>0
+		<TR CLASS=block><TH CLASS=first>B3<TD>0<TD>2<TD>1<TD>1-3<TD>0-3<TD>0<TD>0/1<TD>0/1<TD>0/1<TD>0/1<TD>0/1<TD>0
+		<TR CLASS=block><TH CLASS=first>B4<TD>1<TD>2<TD>2<TD>2-3<TD>0-1<TD>0<TD>0/1<TD>0/1<TD>0/1<TD>0/1<TD>0/1<TD>0
+		<TR CLASS=block><TH CLASS=first>B5<TD>0<TD>2<TD>2<TD>2-3<TD>0-1<TD>0<TD>0<TD>0<TD>0<TD>0<TD>0<TD>1
+		<TR CLASS=block><TH CLASS=first>B6<TD>0<TD>2<TD>2<TD>2-3<TD>0-1<TD>1<TD>0<TD>0<TD>0<TD>0<TD>0<TD>1
+		<TR><TH CLASS=first>*B7<TD>0<TD>2<TD>2<TD>2-3<TD>0-1<TD>0<TD>0/1<TD>0/1<TD>0/1<TD>0/1<TD>0/1<TD>0
+		<TR CLASS=port><TD COLSPAN=13>* Undocumented mode
+		</TABLE>
+	</DIV>
+</DIV>
+
+<H1 id="palettecontrol">CONTROL OF PALETTE</H1><DIV STYLE="margin-left: 1em;">
+	<P>For the V9990, there are 10 types (display types) by which the data (2 to 16 bits) obtained from VRAM is transmitted to the D/A converter with 5 bits for each RGB as follows.</P>
+	<H2>1. PP</H2><DIV STYLE="margin-left: 1em;">
+		<P>Display type when the display mode is P1 or P2</P>
+		<P>Sprite colors are specified by Pattern data plus a palette offset specified in the Sprite Attribute Table.</P>
+		<P>Background colors are specified by Pattern data plus a palette offset in R#13. P1 layer "A" and P2 pattern pixels 0,1,4,5 use offset specified in R#13 PLTO3-2. P1 layer "B" and P2 pattern pixels 2,3,6,7 use offset specified in R#13 PLTO5-4.</P>
+	</DIV>
+	<H2>2. BYJK</H2><DIV STYLE="margin-left: 1em;">
+		<P>Display type when the display mode uses full YJK on the bit map. This mode is the same as V9958 YJK mode.</P>
+		<P>Cursor colors are specified by the Cursor Attribute Table plus a palette offset specified by R#28 CSPO5-2.</P>
+		<P>Background colors are specified by YJK bitmap data. Base color, specified by JK values, is shared among 4 pixels, each pixel has an individual Y (luminance) value.</P>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR CLASS=block><TD CLASS=port>1st pixel<TD CLASS=first COLSPAN=5>Y<TD COLSPAN=3>K (low)
+		<TR CLASS=block><TD CLASS=port>2nd pixel<TD CLASS=first COLSPAN=5>Y<TD COLSPAN=3>K (high)
+		<TR CLASS=block><TD CLASS=port>3rd pixel<TD CLASS=first COLSPAN=5>Y<TD COLSPAN=3>J (low)
+		<TR><TD CLASS=port>4th pixel<TD CLASS=first COLSPAN=5>Y<TD COLSPAN=3>J (high)
+		</TABLE>
+		<P>RGB-YJK conversion:
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD>R = Y + J<TD>Y = B/2 + R/4 + G/8
+		<TR CLASS=port><TD>G = Y + K<TD>J = R - Y
+		<TR CLASS=port><TD>B = 5/4Y - J/2 - K/4<TD>K = G - Y
+		</TABLE>
+	</DIV>
+	<H2>3. BYJKP</H2><DIV STYLE="margin-left: 1em;">
+		<P>Display type when the display mode uses YJK and palette mixed on the bit map. This mode is the same as V9958 YJKP (aka YAE) mode.</P>
+		<P>Same as BYJK, except that for each pixel bit A selects YJK or Palette mode. In Palette mode, colors are specified by Y value plus a palette offset specified in R#13 PLTO5-4.</P>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR CLASS=block><TD CLASS=port>1st pixel<TD CLASS=first COLSPAN=4>Y<TD>A<TD COLSPAN=3>K (low)
+		<TR CLASS=block><TD CLASS=port>2nd pixel<TD CLASS=first COLSPAN=4>Y<TD>A<TD COLSPAN=3>K (high)
+		<TR CLASS=block><TD CLASS=port>3rd pixel<TD CLASS=first COLSPAN=4>Y<TD>A<TD COLSPAN=3>J (low)
+		<TR><TD CLASS=port>4th pixel<TD CLASS=first COLSPAN=4>Y<TD>A<TD COLSPAN=3>J (high)
+		</TABLE>
+	</DIV>
+	<H2>4. BYUV</H2><DIV STYLE="margin-left: 1em;">
+		<P>Display type when the display mode uses full YUV on the bit map</P>
+		<P>Same as BYJK, but GREEN and BLUE channels are swapped, often resulting in better image quality.</P>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR CLASS=block><TD CLASS=port>1st pixel<TD CLASS=first COLSPAN=5>Y<TD COLSPAN=3>V (low)
+		<TR CLASS=block><TD CLASS=port>2nd pixel<TD CLASS=first COLSPAN=5>Y<TD COLSPAN=3>V (high)
+		<TR CLASS=block><TD CLASS=port>3rd pixel<TD CLASS=first COLSPAN=5>Y<TD COLSPAN=3>U (low)
+		<TR><TD CLASS=port>4th pixel<TD CLASS=first COLSPAN=5>Y<TD COLSPAN=3>U (high)
+		</TABLE>
+		<P>RGB-YUV conversion:
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD>R = Y + U<TD>Y = G/2 + R/4 + B/8
+		<TR CLASS=port><TD>G = 5/4Y - U/2 - V/4<TD>U = R - Y
+		<TR CLASS=port><TD>B = Y + V<TD>V = B - Y
+		</TABLE>
+	</DIV>
+	<H2>5. BYUVP</H2><DIV STYLE="margin-left: 1em;">
+		<P>Display type when the display mode uses YUV and palette mixed on the bit map</P>
+		<P>Same as BYJKP, but GREEN and BLUE channels are swapped, often resulting in better image quality.</P>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR CLASS=block><TD CLASS=port>1st pixel<TD CLASS=first COLSPAN=4>Y<TD>A<TD COLSPAN=3>V (low)
+		<TR CLASS=block><TD CLASS=port>2nd pixel<TD CLASS=first COLSPAN=4>Y<TD>A<TD COLSPAN=3>V (high)
+		<TR CLASS=block><TD CLASS=port>3rd pixel<TD CLASS=first COLSPAN=4>Y<TD>A<TD COLSPAN=3>U (low)
+		<TR><TD CLASS=port>4th pixel<TD CLASS=first COLSPAN=4>Y<TD>A<TD COLSPAN=3>U (high)
+		</TABLE>
+	</DIV>
+	<H2>6. BD16</H2><DIV STYLE="margin-left: 1em;">
+		<P>Display type when the display mode uses 16 bit data directly on the bit map (5 bits for each RGB plus <SPAN style="text-decoration: overline;">Ys</SPAN>)</P>
+		<P>Cursor colors are specified by the Cursor Attribute Table plus a palette offset specified by R#28 CSPO5-2.</P>
+		<P>Background data are specified in 16 bit as follows.</P>
+
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>1st byte<TD CLASS=first COLSPAN=3>R (bit 2-0)<TD COLSPAN=5>B
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>2nd byte<TD CLASS=first><SPAN style="text-decoration: overline;">Ys</SPAN><TD COLSPAN=5>G<TD COLSPAN=2>R (bit 4-3)
+		</TABLE>
+
+	</DIV>
+	<H2>7. BD8</H2><DIV STYLE="margin-left: 1em;">
+		<P>Display type when the display mode uses 8 bit data directly on the bit map (3, 3, 2 bits for each RGB, <SPAN style="text-decoration: overline;">Ys</SPAN> at ALL 0)</P>
+		<P>Cursor colors are specified by the Cursor Attribute Table plus a palette offset specified by R#28 CSPO5-2.</P>
+		<P>Background data are specified in 8 bit as follows.</P>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port><TD CLASS=first COLSPAN=3>G<TD COLSPAN=3>R<TD COLSPAN=2>B
+		</TABLE>
+		<P>Although this mode is similar to the RGB332 mode of V9938, because of the way these values are mapped on the 15 bit palette, the resulting colors will differ slightly. For instance, pure grey is not possible.</P>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>RED and GREEN
+		<TR CLASS=port><TD>3 bit value<TD>7<TD>6<TD>5<TD>4<TD>3<TD>2<TD>1<TD>0
+		<TR CLASS=port><TD>Palette value<TD>31<TD>27<TD>22<TD>18<TD>13<TD>9<TD>4<TD>0
+		<TR CLASS=port><TH>BLUE
+		<TR CLASS=port><TD>2 bit value<TD>3<TD><TD>2<TD><TD>1<TD><TD><TD>0
+		<TR CLASS=port><TD>Palette value<TD>31<TD><TD>21<TD><TD>11<TD><TD><TD>0
+		</TABLE>
+	</DIV>
+	<H2>8. BP6</H2><DIV STYLE="margin-left: 1em;">
+		<P>Display type when the display mode uses 8 bit data on the bit map through the palette</P>
+		<P>Cursor colors are specified by the Cursor Attribute Table plus a palette offset specified by R#28 CSPO5-2.</P>
+		<P>Background colors are specified by a 6 bit palette value, bits 7-6 are ignored.</P>
+	</DIV>
+	<H2>9. BP4</H2><DIV STYLE="margin-left: 1em;">
+		<P>Display type when the display mode uses 4 bit data and offset 2 bits on the bit map through the palette</P>
+		<P>Cursor colors are specified by the Cursor Attribute Table plus a palette offset specified by R#28 CSPO5-2.</P>
+		<P>Background colors are specified by a 4 bit value plus a palette offset specified in R#13 PLTO5-4.</P>
+		<P>Note: When setting the color palette data in the B4, B5 and B6 modes, use the same value for each corresponding pair of palette addresses 0 to 31 and 32 to 63, that is, 0 and 32, 1 and 33 and so on.</P>
+	</DIV>
+	<H2>10. BP2</H2><DIV STYLE="margin-left: 1em;">
+		<P>Display type when the display node uses 2 bit data and offset 4 bits on the bit map through the palette</P>
+		<P>Cursor colors are specified by the Cursor Attribute Table plus a palette offset specified by R#28 CSPO5-2.</P>
+		<P>Background colors are specified by a 2 bit value plus a palette offset specified in R#13 PLTO5-2.</P>
+		<P>Note: When setting the color palette data in the B4, B5 and B6 modes, use the same value for each corresponding pair of palette addresses 0 to 31 and 32 to 63, that is, 0 and 32, 1 and 33 and so on.</P>
+	</DIV>
+
+	<H2 id="displaytypeselection">SELECTION OF DISPLAY TYPE</H2><DIV STYLE="margin-left: 1em;">
+
+		<P>PALETTE CONTROL (WRITE ONLY)</P>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>R#13<TD CLASS=first COLSPAN=2>PLTM<TD>YAE<TD>PLTAIH<TD>PLTO5<TD>PLTO4<TD>PLTO3<TD>PLTO2
+		</TABLE>
+
+		<P>CURSOR SPRITE PALETTE OFFSET (WRITE ONLY)</P>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>R#28<TD CLASS=first>0<TD>0<TD>0<TD>0<TD COLSPAN=4>CSPO5-2
+		</TABLE>
+
+		<P>BACK DROP COLOR (READ/WRITE)</P>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>R#15<TD CLASS=first>0<TD>0<TD>BDC5<TD>BDC4<TD>BDC3<TD>BDC2<TD>BDC1<TD>BDC0
+		</TABLE>
+
+		<P>SCREEN MODE (READ/WRITE)</P>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>R#6<TD CLASS=first COLSPAN=2>DSPM<TD COLSPAN=2>DCKM<TD COLSPAN=2>XIMM<TD COLSPAN=2>CLRM
+		</TABLE>
+
+		<TABLE CELLSPACING=0>
+		<TR CLASS=block><TH CLASS=first><TH>DSPM<TH>PLTM<TH>CLRM<TH>YAE
+		<TR CLASS=block><TH CLASS=first>(1) PP<TD>0,1<TD>0<TD>1<TD>-
+		<TR CLASS=block><TH CLASS=first>(2) BYJK<TD>2<TD>2<TD>2<TD>0
+		<TR CLASS=block><TH CLASS=first>(3) BYJKP<TD>2<TD>2<TD>2<TD>1
+		<TR CLASS=block><TH CLASS=first>(4) BYUV<TD>2<TD>3<TD>2<TD>0
+		<TR CLASS=block><TH CLASS=first>(5) BYUVP<TD>2<TD>3<TD>2<TD>1
+		<TR CLASS=block><TH CLASS=first>(6) BD16<TD>2<TD>0<TD>3<TD>-
+		<TR CLASS=block><TH CLASS=first>(7) BD8<TD>2<TD>1<TD>2<TD>-
+		<TR CLASS=block><TH CLASS=first>(8) BP6<TD>2<TD>0<TD>2<TD>-
+		<TR CLASS=block><TH CLASS=first>(9) BP4<TD>2<TD>0<TD>1<TD>-
+		<TR><TH CLASS=first>(10) BP2<TD>2<TD>0<TD>0<TD>-
+		</TABLE>
+	</DIV>
+</DIV>
+
+<H1 id="vram">VRAM</H1><DIV STYLE="margin-left: 1em;">
+	<H2 id="p1vram">P1 VRAM</H2><DIV STYLE="margin-left: 1em;">
+		<P>Physical mapping: Addresses 00000-3FFFF in VRAM0 and 40000-7FFFF in VRAM1.
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>00000-3FDFF<TD>(Sprite) Pattern Data (Layer A)
+		<TR CLASS=port><TH>3FE00-3FFFF<TD>Sprite Attribute Table
+		<TR CLASS=port><TH>40000-7BFFF<TD>Pattern Data (Layer B)
+		<TR CLASS=port><TH>7C000-7DFFF<TD>PNT(A) - Pattern Name Table (Layer A)
+		<TR CLASS=port><TH>7E000-7FFFF<TD>PNT(B) - Pattern Name Table (Layer B)
+		</TABLE>
+		
+		<P>Pattern Data is layed out like a 4bpp bitmap with 256 pixel width, cut up in 8x8 patterns. Pattern 0 1st line starts at 00000, Pattern 0 2nd line starts at 00080 etc., Pattern 1 1st line starts at 00004 etc., Pattern 32 1st line starts at 00400 etc.</P>
+		<P>Sprite Pattern Data is shared with background Pattern Data, but 16x16 Patterns are used.</P>
+		
+		<P>The Name Table describes the entire Image Space, each Pattern is specified by a 16 bit value.</P>
+	</DIV>
+	<H2 id="p2vram">P2 VRAM</H2><DIV STYLE="margin-left: 1em;">
+		<P>Physical mapping: Pattern Data even addresses (bit0=0) in VRAM0 and odd addresses (bit0=1) in VRAM1, Sprite Attribute Table in VRAM0 and PNT in VRAM1.
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>00000-77FFF<TD>(Sprite) Pattern Data
+		<TR CLASS=port><TH>78000-7BDFF<TD>-
+		<TR CLASS=port><TH>7BE00-7BFFF<TD>Sprite Attribute Table
+		<TR CLASS=port><TH>7C000-7FFFF<TD>PNT
+		</TABLE>
+		
+		<P>Pattern Data is layed out like a 4bpp bitmap with 512 pixel width, cut up in 8x8 patterns. Pattern 0 1st line starts at 00000, Pattern 0 2nd line starts at 00100 etc., Pattern 1 1st line starts at 00004 etc., Pattern 64 1st line starts at 00800 etc.</P>
+		<P>Sprite Pattern Data is shared with background Pattern Data, but 16x16 Patterns are used.</P>
+		
+		<P>The Name Table describes the entire Image Space, each Pattern is specified by a 16 bit value.</P>
+	</DIV>
+	<H2 id="bvram">B1-B6 VRAM</H2><DIV STYLE="margin-left: 1em;">
+		<P>Physical mapping: even addresses (bit 0=0) in VRAM0 and odd addresses (bit0=1) in VRAM1.
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>00000-7FDFF<TD>Bitmap Data
+		<TR CLASS=port><TH>7FE00-7FFFF<TD>Cursor area (512 bytes)
+		</TABLE>
+	</DIV>
+</DIV>
+
+<H1 id="spritecursor">Sprite and Cursor</H1><DIV STYLE="margin-left: 1em;">
+
+	<H2 id="sprite">Sprite (P1-P2)</H2><DIV STYLE="margin-left: 1em;">
+		<P>Sprite size is 16x16, 125 sprites can be specified in the Sprite Attribute Table.
+		<P>Up to 16 sprites can be displayed on one horizontal line.
+
+		<UL style="list-style: inside; padding: 0; color: aqua;">
+		<LI>Sprite Priority
+		</UL>
+		<P>Each sprites can be displayed in front or behind of the front layer.</P>
+		<P>Sprites that are listed first in the Sprite Attribute Table have a higher priority than those listed last.</P>
+
+		<UL style="list-style: inside; padding: 0; color: aqua;">
+		<LI>Sprite Coordinate Space
+		</UL>
+		<P>Sprites exist in a seperate coordinate space from normal image space. Sprite coordinate (0,0) is always the top-left of the display area. The Sprite coordinate space is 1024x256 and display wrapping is done along its edges.</P>
+
+		<UL style="list-style: inside; padding: 0; color: aqua;">
+		<LI>Sprite Attribute Table
+		</UL>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR CLASS=block><TD CLASS=port>Offset +0<TD CLASS=first COLSPAN=8>Y
+		<TR CLASS=block><TD CLASS=port>Offset +1<TD CLASS=first COLSPAN=8>PAT
+		<TR CLASS=block><TD CLASS=port>Offset +2<TD CLASS=first COLSPAN=8>X (bit 7-0)
+		<TR><TD CLASS=port>Offset +3<TD CLASS=first COLSPAN=2>SC5-4<TD>P<TD>D<TD>-<TD>-<TD COLSPAN=2>X (bit 9-8)
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>Y<TD>: Sprite Y-coordinate (Actual display position is one line below specified)
+		<TR CLASS=port><TH>X<TD>: Sprite X-coordinate
+		<TR CLASS=port><TH>PAT<TD>: Sprite Pattern Number (Pattern Offset is specified in R#25 SGBA)
+		<TR CLASS=port><TH>P<TD>: Sprite is in front of the front layer when P=0, sprite is behind the front layer when P=1.
+		<TR CLASS=port><TH>D<TD>: Sprite is disabled when D=1
+		<TR CLASS=port><TH>SC5-4<TD>: Palette offset for sprite colors.
+		</TABLE>
+		<P>Even though there is room for 128 sprite entries, only the first 125 are functional. The extra 12 bytes are unused by the VDP and can be used at the programmer's discretion.</P>
+	</DIV>
+	<H2 id="cursor">Cursor (B1-B6)</H2><DIV STYLE="margin-left: 1em;">
+		<P>Cursor size is 32x32, 2 cursors can be specified and displayed on screen.</P>
+		<P>When using a cursor (enabled in R#8 SPD), 512 bytes from the upper address of VRAM (7FE00-7FFFF) are used as the data area for the cursor. Display is also possible in this area, no skipping occurs during display.</P>
+
+		<UL style="list-style: inside; padding: 0; color: aqua;">
+		<LI>Cursor Coordinate Space
+		</UL>
+		<P>Cursors exist in a seperate coordinate space from normal image space. Cursor coordinate (0,0) is always the top-left of the display area. The Cursor coordinate space is 1024x512 and display wrapping is done along its edges.</P>
+		
+		<UL style="list-style: inside; padding: 0; color: aqua;">
+		<LI>Cursor Attribute Table
+		</UL>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR CLASS=block><TD CLASS=port>7FE00<TD CLASS=first COLSPAN=8>Y (bit 7-0)
+		<TR CLASS=block><TD CLASS=port>7FE02<TD CLASS=first>-<TD>-<TD>-<TD>-<TD>-<TD>-<TD>-<TD>Y (bit 8)
+		<TR CLASS=block><TD CLASS=port>7FE04<TD CLASS=first COLSPAN=8>X (bit 7-0)
+		<TR><TD CLASS=port>7FE06<TD CLASS=first COLSPAN=2>CC1-0<TD>EOR<TD>D<TD>-<TD>-<TD COLSPAN=2>X (bit 9-8)
+		<TR CLASS=port><TD COLSPAN=9>+8 for 2nd cursor
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>Y<TD>: Cursor Y-coordinate (Actual display position is one line below specified, two lines for interlace)
+		<TR CLASS=port><TH>X<TD>: Cursor X-coordinate
+		<TR CLASS=port><TH>D<TD>: Cursor is disabled when D=1
+		<TR CLASS=port><TH>CC1-0<TD>: Cursor Color value (Added to palette offset specified in R#28 CSPO5-2). If CC1-0=0 and EOR=0, clear color is used.
+		<TR CLASS=port><TH>EOR<TD>: Cursor is displayed on screen with EOR color when EOR=1 and CC1-0=0
+		</TABLE>
+
+		<UL style="list-style: inside; padding: 0; color: aqua;">
+		<LI>Cursor Pattern Table
+		</UL>
+		<P>Cursor Pattern Table is located at 7FF00 (7FF80 for 2nd cursor).</P>
+		<P>Cursor pattern is specified by a bit pattern of 128 bytes. Each bit is a pixel, and each line of 32 pixels is specified in 4 consecutive bytes.</P>
+	</DIV>
+</DIV>
+
+<H1 id="command">COMMAND</H1><DIV STYLE="margin-left: 1em;">
+
+	<H2 id="commandmethod">Command execution method</H2><DIV STYLE="margin-left: 1em;">
+		<P>After setting the necessary parameter register, set the command to the operation code register, and it will be executed. As soon as execution is started, the <a href="#p5">status</a> CE is set to "1" and upon completion, it is reset to "0". Furthermore, the <a href="#p6">interrupt flag</a> CE is set to "1".</P>
+		<P>Most commands are issued after the necessary registers out of the following parameters are set. Also some commands require output and input of the necessary data at and through the <a href="#p2">command data port</a> after they are issued.</P>
+		<OL>
+		<LI>Source (for transfer) coordinate
+		<LI>Destination (for transfer) coordinate
+		<LI>Transfer range coordinates
+		<LI>Argument, logical operation and Write Mask
+		<LI>Font color
+		</OL>
+		<P>The following commands are available:</P>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=block><TH CLASS=first>Opcode<TH>Mnemonic<TH>Operation
+		<TR CLASS=block><TD CLASS=first>0<TD>STOP<TD STYLE="text-align: left;">Command being executed is stopped.
+		<TR CLASS=block><TD CLASS=first>1<TD>LMMC<TD STYLE="text-align: left;">Data is transferred from CPU to VRAM rectangle area.
+		<TR CLASS=block><TD CLASS=first>2<TD>LMMV<TD STYLE="text-align: left;">VRAM rectangle area is painted out.
+		<TR CLASS=block><TD CLASS=first>3<TD>LMCM<TD STYLE="text-align: left;">VRAM rectangle area data is transferred to CPU.
+		<TR CLASS=block><TD CLASS=first>4<TD>LMMM<TD STYLE="text-align: left;">Rectangle area data is transferred from VRAM to VRAM.
+		<TR CLASS=block><TD CLASS=first>5<TD>CMMC<TD STYLE="text-align: left;">CPU character data is color-developed and transferred to VRAM rectangle area.
+		<TR CLASS=block><TD CLASS=first>7<TD>CMMM<TD STYLE="text-align: left;">VRAM character data is color-developed and transferred to VRAM rectangle area.
+		<TR CLASS=block><TD CLASS=first>8<TD>BMXL<TD STYLE="text-align: left;">Data on VRAM linear address is transferred to VRAM rectangle area.
+		<TR CLASS=block><TD CLASS=first>9<TD>BMLX<TD STYLE="text-align: left;">VRAM rectangle area data is transferred onto VRAM linear address.
+		<TR CLASS=block><TD CLASS=first>10<TD>BMLL<TD STYLE="text-align: left;">Data on VRAM linear address is transferred onto VRAM linear address.
+		<TR CLASS=block><TD CLASS=first>11<TD>LINE<TD STYLE="text-align: left;">Straight line is drawn on X/Y-coordinates.
+		<TR CLASS=block><TD CLASS=first>12<TD>SEARCH<TD STYLE="text-align: left;">Border color coordinates on X/Y space are detected.
+		<TR CLASS=block><TD CLASS=first>13<TD>POINT<TD STYLE="text-align: left;">Color code of specified point on X/Y-coordinates is read out.
+		<TR CLASS=block><TD CLASS=first>14<TD>PSET<TD STYLE="text-align: left;">Drawing is executed at drawing point on X/Y-coordinates.
+		<TR><TD CLASS=first>15<TD>ADVANCE<TD STYLE="text-align: left;">Drawing point on X/Y-coordinates is shifted.
+		</TABLE>
+	</DIV>
+	<H2 id="writeoperations">Write operations</H2><DIV STYLE="margin-left: 1em;">
+		<P>Any command that writes to VRAM is using a Logical Operation (LOP) and a Write Mask (WM), specified as follows.</P>
+
+		<UL style="list-style: inside; padding: 0; color: aqua;">
+		<LI>Logical Operation
+		</UL>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>R#45<TD CLASS=first>0<TD>0<TD>0<TD>TP<TD>L11<TD>L10<TD>L01<TD>L00
+		</TABLE>
+		<P>WC (Write Color) is obtained through logical operation with SC (Source Color) and DC (Destination Color). The logical operation can be constructed as follows:
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>L00<TD>: WC value for the bit with SC=0 and DC=0.
+		<TR CLASS=port><TH>L01<TD>: WC value for the bit with SC=0 and DC=1.
+		<TR CLASS=port><TH>L10<TD>: WC value for the bit with SC=1 and DC=0.
+		<TR CLASS=port><TH>L11<TD>: WC value for the bit with SC=1 and DC=1.
+		<TR CLASS=port><TH>TP<TD>: When this bit is "1", the data with SC as all "0" (by pixel for the X/Y-coordinates and by byte for the linear address) is not transferred.
+		</TABLE>
+		<P>&lt;Example&gt;
+		<TABLE CELLSPACING=0>
+		<TR CLASS=block><TH CLASS=first>Logical Operation<TH>L11<TH>L10<TH>L01<TH>L00
+		<TR CLASS=block><TH CLASS=first>WC = SC<TD>1<TD>1<TD>0<TD>0
+		<TR CLASS=block><TH CLASS=first>WC = <SPAN STYLE="text-decoration: overline;">SC</SPAN><TD>0<TD>0<TD>1<TD>1
+		<TR CLASS=block><TH CLASS=first>WC = SC AND DC<TD>1<TD>0<TD>0<TD>0
+		<TR CLASS=block><TH CLASS=first>WC = SC OR DC<TD>1<TD>1<TD>1<TD>0
+		<TR><TH CLASS=first>WC = SC EOR DC<TD>0<TD>1<TD>1<TD>0
+		</TABLE>
+
+		<UL style="list-style: inside; padding: 0; color: aqua;">
+		<LI id="writemask">Write Mask
+		</UL>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>R#46<TD CLASS=first COLSPAN=8>WM (bit 7-0)
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>R#47<TD CLASS=first COLSPAN=8>WM (bit 15-8)
+		</TABLE>
+		<P>When drawing by means of commands, writing can be prohibited by bits. With WM (bit 7-0) and WM (bit 15-8), VRAM0 bit and VRAM1 bit are specified respectively. Then "1" is for write enable and "0" is for write prohibit.</P>
+		<P>In P1 mode, writing is prohibited on the side not specified as the transfer destination. (Layer "A":R#46, Layer "B":R#47)</P>
+	</DIV>
+
+	<H2 id="LMMC">LMMC (Logical Move to Memory from CPU)</H2><DIV STYLE="margin-left: 1em;">
+		<P>Transfer data from CPU to VRAM rectangle area.</P>
+		<P>Set DX, DY, NX, NY, DIY, DIX and finally OP.</P>
+		<P>Output the necessary number of bytes to the <a href="#p2">command data port (P#2)</a> as follows.</P>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>2bpp<TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>1st byte<TD CLASS=first COLSPAN=2>1st pixel<TD COLSPAN=2>2nd pixel<TD COLSPAN=2>3rd pixel<TD COLSPAN=2>4th pixel
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>2nd byte<TD CLASS=first COLSPAN=2>5th pixel<TD COLSPAN=2>6th pixel<TD COLSPAN=2>7th pixel<TD COLSPAN=2>8th pixel
+		<TR CLASS=port><TD><TD COLSPAN=8 STYLE="text-align: center;"><B>...</B>
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>4bpp<TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>1st byte<TD CLASS=first COLSPAN=4>1st pixel<TD COLSPAN=4>2nd pixel
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>2nd byte<TD CLASS=first COLSPAN=4>3rd pixel<TD COLSPAN=4>4th pixel
+		<TR CLASS=port><TD><TD COLSPAN=8 STYLE="text-align: center;"><B>...</B>
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>8bpp<TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>1st byte<TD CLASS=first COLSPAN=8>1st pixel
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>2nd byte<TD CLASS=first COLSPAN=8>2nd pixel
+		<TR CLASS=port><TD><TD COLSPAN=8 STYLE="text-align: center;"><B>...</B>
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>16bpp<TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>1st byte<TD CLASS=first COLSPAN=8>1st pixel color code low
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>2nd byte<TD CLASS=first COLSPAN=8>1st pixel color code high
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>3rd byte<TD CLASS=first COLSPAN=8>2nd pixel color code low
+		<TR CLASS=port><TD><TD COLSPAN=8 STYLE="text-align: center;"><B>...</B>
+		</TABLE>
+	</DIV>
+	
+	<H2 id="LMMV">LMMV (Logical Move to Memory from VDP)</H2><DIV STYLE="margin-left: 1em;">
+		<P>The VRAM rectangle area is painted out by using the color code.</P>
+		<P>Set DX, DY, NX, NY, DIY, DIX, FC finally and OP.</P>
+	</DIV>
+
+	<H2 id="LMCM">LMCM (Logical Move to CPU from Memory)</H2><DIV STYLE="margin-left: 1em;">
+		<P>The data of the rectangle area in VRAM is transferred to CPU.</P>
+		<P>Set SX, SY, NX, NY, DIY, DIX and finally OP.</P>
+		<P>After this, the data for necessary number of bytes is read from the <a href="#p2">command data port (P#2)</a>. See <A HREF="#LMMC">LMMC</A> for data format.</P>
+	</DIV>
+	
+	<H2 id="LMMM">LMMM (Logical Move to Memory from Memory)</H2><DIV STYLE="margin-left: 1em;">
+		<P>The rectangle area data is transferred from VRAM to VRAM.</P>
+		<P>Set SX, SY, DX, DY, NX, NY, DIY, DIX and finally OP.</P>
+	</DIV>
+
+	<H2 id="CMMC">CMMC (Character Move to Memory from CPU)</H2><DIV STYLE="margin-left: 1em;">
+		<P>The data for each character is transferred from CPU to the rectangle area in VRAM.</P>
+		<P>Set DX, DY, NX, NY, DIY, DIX, FC, BC and finally OP.</P>
+		<P>Output the necessary number of bytes to the <a href="#p2">command data port (P#2)</a>.</P>
+
+		<P>The character data is similar to the MSX kanji ROM. It's provided in the order of upper left, upper right, lower left and lower right blocks (8 bytes each) of the 16x16 font.</P>
+
+		<TABLE CELLSPACING=0>
+		<TR CLASS=block><TD CLASS=first>1st<BR>8 bytes<TD>2nd<BR>8 bytes<TD ROWSPAN=2 CLASS=port>Font : 16 pixels vertical x 16 pixels horizontal
+		<TR><TD CLASS=first>3rd<BR>8 bytes<TD>4th<BR>8 bytes
+		</TABLE>
+	</DIV>
+
+	<H2 id="CMMM">CMMM (Character Move to Memory from Memory)</H2><DIV STYLE="margin-left: 1em;">
+		<P>Data for each character is transferred from VRAM linear address to VRAM rectangle area.</P>
+		<P>Set SA, DX, DY, NX, NY, DIY, DIX, FC, BC and finally OP.</P>
+		<P>Data format is the same as for <A HREF="#CMMC">CMMC</A>.</P>
+	</DIV>
+
+	<H2 id="BMXL">BMXL (Byte Move to XY from Linear)</H2><DIV STYLE="margin-left: 1em;">
+		<P>The data on the linear address in VRAM is transferred to the rectangle area.</P>
+		<P>Set SA, DX, DY, NX, NY, DIY, DIX and finally OP.</P>
+	</DIV>
+		
+	<H2 id="BMLX">BMLX (Byte Move to Linear from XY)</H2><DIV STYLE="margin-left: 1em;">
+		<P>The data of the rectangle area in VRAM is transferred onto the linear address.</P>
+		<P>Set SX, SY, DA, NX, NY, DIY, DIX and finally OP.</P>
+	</DIV>
+		
+	<H2 id="BMLL">BMLL (Byte Move to Linear from Linear)</H2><DIV STYLE="margin-left: 1em;">
+		<P>The data on the linear address in VRAM is transferred onto the linear address.</P>
+		<P>Set SA, DA, NA, DIY, DIX and finally OP.</P>
+		<P>Note: BMLL operates on interleaved VRAM (as in B-modes) always, so that must be taken into account for using it in P1 or areas of P2. This means that source and destination addresses must be rotated one left and the correct <A HREF="#writemask">Write Mask</A> must be set.</P>
+	</DIV>
+
+	<H2 id="LINE">LINE</H2><DIV STYLE="margin-left: 1em;">
+		<P>A straight line is drawn from the reference point on VRAM.</P>
+		<P>Set DX, DY, MJ, MI, DIY, DIX, MAJ, FC and finally OP.</P>
+	</DIV>
+
+	<H2 id="SEARCH">SEARCH</H2><DIV STYLE="margin-left: 1em;">
+		<P>A border color (or non-border color) is searched for toward the right (or left) of the base point on VRAM.</P>
+		<P>Set SX, SY, DIX, NEQ, FC and finally OP.</P>
+		<P>Afterwards, BX (R#53,54) contains the border X-coordinate.</P>
+	</DIV>
+	
+	<H2 id="POINT">POINT</H2><DIV STYLE="margin-left: 1em;">
+		<P>The color code at the base point on VRAM is read out.</P>
+		<P>Set SX, SY and finally OP.</P>
+		<P>The (SX,SY) color code can now be read from the <a href="#p2">command data port (P#2)</a> as follows.</P>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>2bpp<TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port><TD CLASS=first COLSPAN=2>color code<TD COLSPAN=6>unspecified
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>4bpp<TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port><TD CLASS=first COLSPAN=4>color code<TD COLSPAN=4>unspecified
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>8bpp<TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port><TD CLASS=first COLSPAN=8>color code
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>16bpp<TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>1st byte<TD CLASS=first COLSPAN=8>color code low
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>2nd byte<TD CLASS=first COLSPAN=8>color code high
+		</TABLE>
+	</DIV>
+
+	<H2 id="PSET">PSET</H2><DIV STYLE="margin-left: 1em;">
+		<P>A point is drawn on VRAM. After that, the pointer can be advanced.</P>
+		<P>Set DX, DY, FC and finally OP, AYM, AYE, AXM and AXE.</P>
+		<P>DX, DY should not be set when using the current pointer.</P>	
+	</DIV>
+	
+	<H2 id="ADVANCE">ADVANCE</H2><DIV STYLE="margin-left: 1em;">
+		<P>The drawing pointer is moved.</P>
+		<P>Set DX, DY, and finally OP, AYM, AYE, AXM and AXE.</P>
+		<P>DX, DY should not be set when using the current pointer.</P>	
+	</DIV>
+</DIV>
+
+<H1 id="v9990regspec">V9990 REGISTER SPECIFICATIONS</H1><DIV STYLE="margin-left: 1em;">
+
+	<H2 id="ioportspec">I/O PORT SPECIFICATIONS</H2><DIV STYLE="margin-left: 1em;">
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD>P#0<TD><a href="#p0">VRAM DATA</a><TD>(R/W)
+		<TR CLASS=port><TD>P#1<TD><a href="#p1">PALETTE DATA</a><TD>(R/W)
+		<TR CLASS=port><TD>P#2<TD><a href="#p2">COMMAND DATA</a><TD>(R/W)
+		<TR CLASS=port><TD>P#3<TD><a href="#p3">REGISTER DATA</a><TD>(R/W)
+		<TR CLASS=port><TD>P#4<TD><a href="#p4">REGISTER SELECT</a><TD>(W)
+		<TR CLASS=port><TD>P#5<TD><a href="#p5">STATUS</a><TD>(R)
+		<TR CLASS=port><TD>P#6<TD><a href="#p6">INTERRUPT FLAG</a><TD>(R/W)
+		<TR CLASS=port><TD>P#7<TD><a href="#p7">SYSTEM CONTROL</a><TD>(W)
+		<TR CLASS=port><TD>P#8-B<TD>Kanji ROM
+		<TR CLASS=port><TD>P#C-F<TD>Reserved
+		</TABLE>
+		
+		<UL style="list-style: inside; padding: 0; color: aqua;">
+		<LI id="p0">VRAM DATA PORT (READ/WRITE)
+		</UL>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>P#0<TD CLASS=first COLSPAN=8>VRAM Data
+		</TABLE>
+		<UL style="padding-left: 1.5em;">
+		<LI>The data written in this port is written in the VRAM address specified by using R#0 to R#3. If writing to this port has taken place before completion of data write in VRAM, a WAIT signal is output.
+		<LI>By reading through this port, the VRAM address data specified by using R#3 to R#5 is obtained. If reading has taken place at this port before data preparation, a WAIT signal is output. When VRAM read address has been modified to prepare the VRAM address data at completion of data write to R#5, it must be written in R#5.
+		</UL>
+		
+		<UL style="list-style: inside; padding: 0; color: aqua;">
+		<LI id="p1">PALETTE DATA PORT (READ/WRITE)
+		</UL>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>P#1<TD CLASS=first colspan=8>Palette Data
+		</TABLE>
+		<UL style="padding-left: 1.5em;">
+		<LI>The data written in this port is written in the internal palette RAM.
+		<LI>By reading through this port, the internal palette RAM data can be obtained. A WAIT signal is output till the data has been prepared.
+		<LI>The palette RAM address is specified by using R#14.
+		<LI>The data format is as follows.
+		</UL>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR CLASS=block><TD CLASS=port>RED<TD CLASS=first style="text-decoration: overline;">YS<TD>-<TD>-<TD>R4<TD>R3<TD>R2<TD>R1<TD>R0
+		<TR CLASS=block><TD CLASS=port>GREEN<TD CLASS=first>-<TD>-<TD>-<TD>G4<TD>G3<TD>G2<TD>G1<TD>G0
+		<TR><TD CLASS=port>BLUE<TD CLASS=first>-<TD>-<TD>-<TD>B4<TD>B3<TD>B2<TD>B1<TD>B0
+		</TABLE>
+				
+		<UL style="list-style: inside; padding: 0; color: aqua;">
+		<LI id="p2">COMMAND DATA PORT (READ/WRITE)
+		</UL>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>P#2<TD CLASS=first colspan=8>Command Data
+		</TABLE>
+		<UL style="padding-left: 1.5em;">
+		<LI>The command data is read and written through this port. Access to this port when the <a href="#p5">status</a> TR bit is "0" while the command is being executed will result in an output of WAIT signal.
+		</UL>
+
+		<UL style="list-style: inside; padding: 0; color: aqua;">
+		<LI id="p3">REGISTER DATA PORT (READ/WRITE)
+		</UL>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>P#3<TD CLASS=first colspan=8>Register Data
+		</TABLE>
+		<UL style="padding-left: 1.5em;">
+		<LI>The data written in this port is written in the register specified by using <a href="#p4">P#4</a>.
+		<LI>By reading through this port, the register data specified by using <a href="#p4">P#4</a> can be obtained.
+		</UL>
+
+		<UL style="list-style: inside; padding: 0; color: aqua;">
+		<LI id="p4">REGISTER SELECT PORT (WRITE ONLY)
+		</UL>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>P#4<TD CLASS=first>WII<TD>RII<TD COLSPAN=6>Register No.
+		</TABLE>
+		<UL style="padding-left: 1.5em;">
+		<LI>Register No. specifies which register is accessed via <a href="#p3">P#3</a>.
+		<LI>The Register No. undergoes a plus "1" increment through <a href="#p3">P#3</a> access. However, when WII is "1", increment in writing at <a href="#p3">P#3</a> is prohibited and when RII is "1", increment in reading at <a href="#p3">P#3</a> is prohibited.
+		</UL>
+
+		<UL style="list-style: inside; padding: 0; color: aqua;">
+		<LI id="p5">STATUS PORT (READ ONLY)
+		</UL>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>P#5<TD CLASS=first>TR<TD>VR<TD>HR<TD>BD<TD>0<TD>MCS<TD>EO<TD>CE
+		</TABLE>
+		<UL style="padding-left: 1.5em;">
+		<LI>Various types of status data can be read out as follows.
+			<UL style="list-style: none;">
+			<LI>TR : Command data transfer ready. It is reset through <a href="#p2">P#2</a> access.
+			<LI>VR : Vertical non-display period. It is set when the drawing of VRAM content has stopped.
+			<LI>HR : Horizontal non-display period
+			<LI>BD : Border color detect at completion of SRCH command (becomes "1" when detected)
+			<LI>EO : In the second field period during interlace
+			<LI>CE : Command being executed
+			<LI>MCS: Content of <a href="#p7">P#7</a> MCS
+			</UL>
+		</UL>
+		
+		<UL style="list-style: inside; padding: 0; color: aqua;">
+		<LI id="p6">INTERRUPT FLAG PORT (READ/WRITE)
+		</UL>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>P#6<TD CLASS=first>0<TD>0<TD>0<TD>0<TD>0<TD>CE<TD>HI<TD>VI
+		</TABLE>
+		<UL style="padding-left: 1.5em;">
+		<LI>The interrupt flags can be read out as follows.
+			<UL style="list-style: none;">
+			<LI>CE : Command completion flag
+			<LI>HI : Display position flag
+			<LI>VI : Vertical display period completion flag
+			</UL>
+		<LI>By writing "1", the related bit flag is reset.
+		</UL>
+
+		<UL style="list-style: inside; padding: 0; color: aqua;">
+		<LI id="p7">SYSTEM CONTROL (WRITE ONLY)
+		</UL>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>P#7<TD CLASS=first>0<TD>0<TD>0<TD>0<TD>0<TD>0<TD>SRS<TD>MCS
+		</TABLE>
+		<UL style="list-style: none;">
+		<LI>SRS : Writing "1" will set all ports except this one in "power ON reset" state. "0" should be written to cancel it.
+		<LI>MCS : The internally used master clock is selected.
+			<UL style="list-style: none;">
+			<LI>1 : MCKIN terminal
+			<LI>0 : XTAL1 terminal
+			</UL>
+		</UL>
+		<P>NOTE) XTAL1 terminal is selected when "power ON reset".</P>
+	</DIV>
+
+	<H2 id="regspec">Register specifications</H2><DIV STYLE="margin-left: 1em;">
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD>R#0-2<TD>VRAM WRITE ADDRESS<TD>(W)
+		<TR CLASS=port><TD>R#3-5<TD>VRAM READ ADDRESS<TD>(W)
+		<TR CLASS=port><TD>R#6,7<TD>SCREEN MODE<TD>(R/W)
+		<TR CLASS=port><TD>R#8<TD>CONTROL<TD>(R/W)
+		<TR CLASS=port><TD>R#9-12<TD>INTERRUPT<TD>(R/W)
+		<TR CLASS=port><TD>R#13<TD>PALETTE CONTROL<TD>(W)
+		<TR CLASS=port><TD>R#14<TD>PALETTE POINTER<TD>(W)
+		<TR CLASS=port><TD>R#15<TD>BACK DROP COLOR<TD>(R/W)
+		<TR CLASS=port><TD>R#16<TD>DISPLAY ADJUST<TD>(R/W)
+		<TR CLASS=port><TD>R#17-24<TD>SCROLL CONTROL<TD>(R/W)
+		<TR CLASS=port><TD>R#25<TD>SPRITE GENERATOR BASE ADDRESS<TD>(R/W)
+		<TR CLASS=port><TD>R#26<TD>LCD CONTROL<TD>(R/W)
+		<TR CLASS=port><TD>R#27<TD>PRIORITY CONTROL<TD>(R/W)
+		<TR CLASS=port><TD>R#28<TD>CURSOR SPRITE PALETTE OFFSET<TD>(W)
+		<TR CLASS=port><TD>R#32-52<TD>COMMAND<TD>(W)
+		<TR CLASS=port><TD>R#53,54<TD>COMMAND<TD>(R)
+		</TABLE>
+		
+		<UL style="list-style: inside; padding: 0; color: aqua;">
+		<LI>VRAM WRITE ADDRESS (WRITE ONLY)
+		</UL>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>R#0<TD CLASS=first COLSPAN=8>VRAM Write Address (bit 7-0)
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>R#1<TD CLASS=first COLSPAN=8>VRAM Write Address (bit 15-8)
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>R#2<TD CLASS=first>AII<TD>0<TD>0<TD>0<TD>0<TD COLSPAN=3>VRAM Write Address (bit 18-16)
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>AII<TD>=0 : VRAM Write Address undergoes an increment of plus "1" only at the end of writing to P#0.
+		<TR CLASS=port><TD><TD>=1 : No increment.
+		</TABLE>
+
+		<UL style="list-style: inside; padding: 0; color: aqua;">
+		<LI>VRAM READ ADDRESS (WRITE ONLY)
+		</UL>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>R#3<TD CLASS=first COLSPAN=8>VRAM Read Address (bit 7-0)
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>R#4<TD CLASS=first COLSPAN=8>VRAM Read Address (bit 15-8)
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>R#5<TD CLASS=first>AII<TD>0<TD>0<TD>0<TD>0<TD COLSPAN=3>VRAM Read Address (bit 18-16)
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>AII<TD>=0 : VRAM Read Address undergoes an increment of plus "1" only at the end of reading at P#0.
+		<TR CLASS=port><TD><TD>=1 : No increment.
+		</TABLE>
+		
+		<UL style="list-style: inside; padding: 0; color: aqua;">
+		<LI>SCREEN MODE (READ/WRITE)
+		</UL>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>R#6<TD CLASS=first COLSPAN=2>DSPM<TD COLSPAN=2>DCKM<TD COLSPAN=2>XIMM<TD COLSPAN=2>CLRM
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>R#7<TD CLASS=first>0<TD>C25M<TD>SM1<TD>SM<TD>PAL<TD>EO<TD>IL<TD>HSCN
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>DSPM<TD>Display mode selection
+		<TR CLASS=port><TH>3<TD>: Stand-by mode (non-display, no VRAM refresh, kanji ROM readable)
+		<TR CLASS=port><TH>2<TD>: Bit map mode (Bl-6)
+		<TR CLASS=port><TH>1<TD>: P2 mode
+		<TR CLASS=port><TH>0<TD>: P1 mode
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>DCKM<TD COLSPAN=3>Pixel clock selection (used in combination with MCS of <a href="#p7">P#7</a>)
+		<TR CLASS=port><TD><TH>MCS=0<TH>MCS=1
+		<TR CLASS=port><TH>2<TD>: XTAL1<TD>MCKIN
+		<TR CLASS=port><TH>1<TD>: XTAL1/2<TD>MCKIN/2
+		<TR CLASS=port><TH>0<TD>: XTAL1/4<TD>*MCKIN/4<TD>(Number of division of master clock)
+		<TR CLASS=port><TD COLSPAN=4>* Undocumented setting
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>XIMM<TD>Selection of number of pixels in X direction of image space (Number of pixels in Y direction is automatically calculated from XIMM and CLRM)
+		<TR CLASS=port><TH>3<TD>: 2048 pixels
+		<TR CLASS=port><TH>2<TD>: 1024 pixels
+		<TR CLASS=port><TH>1<TD>: 512 pixels
+		<TR CLASS=port><TH>0<TD>: 256 pixels
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>CLRM<TD>Selection of bit number per pixel
+		<TR CLASS=port><TH>3<TD>: 16 bits/pixel
+		<TR CLASS=port><TH>2<TD>: 8 bits/pixel
+		<TR CLASS=port><TH>1<TD>: 4 bits/pixel
+		<TR CLASS=port><TH>0<TD>: 2 bits/pixel
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>C25M<TD>Selection of 640X480 mode, valid when HSCN is "1".
+		<TR CLASS=port><TH>1<TD>: B6 mode
+		<TR CLASS=port><TH>0<TD>: other modes
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>SM1<TD>Selection of total number of vertical lines during non-interlace, NTSC
+		<TR CLASS=port><TH>1<TD>: 263 lines (In combination with SM, the sub-carrier phase is inverted for each frame.)
+		<TR CLASS=port><TH>0<TD>: 262 lines
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>SM<TD>Selection of horizontal frequency (invalid when in B5 and B6 modes)
+		<TR CLASS=port><TH>1<TD>: 1H=fsc/227.5 (the sub-carrier phase is inverted for each line.)
+		<TR CLASS=port><TH>0<TD>: 1H=fsc/228
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>PAL<TD>Selection of PAL mode (invalid when in B5 and B6 modes)
+		<TR CLASS=port><TH>1<TD>: Vertical frequency becomes PAL specification.
+		<TR CLASS=port><TH>0<TD>: Vertical frequency becomes NTSC specification.
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>EO<TD>Selection of vertical resolution during interlace (invalid when in B5 and B6 modes)
+		<TR CLASS=port><TH>1<TD>: Twice the vertical resolution during non-interlace
+		<TR CLASS=port><TH>0<TD>: Same as during non-interlace
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>IL<TD>Selection of interlace mode (invalid when in B5 and B6 modes)
+		<TR CLASS=port><TH>1<TD>: Interlace
+		<TR CLASS=port><TH>0<TD>: Non-interlace
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>HSCN<TD>Selection of horizontal high scan mode
+		<TR CLASS=port><TH>1<TD>: B5, B6 modes
+		<TR CLASS=port><TH>0<TD>: other modes
+		</TABLE>
+
+		<UL style="list-style: inside; padding: 0; color: aqua;">
+		<LI>CONTROL (READ/WRITE)
+		</UL>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>R#8<TD CLASS=first>DISP<TD>SPD<TD>YSE<TD>VWTE<TD>VWM<TD>0<TD>1<TD>0
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>DISP<TD>Screen display enable
+		<TR CLASS=port><TH>1<TD>: Display appears on screen according to the VRAM content.
+		<TR CLASS=port><TH>0<TD>: Back drop color is displayed all over the screen.
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>SPD<TD>Sprite (cursor) Disable
+		<TR CLASS=port><TH>1<TD>: Sprite (cursor) is not displayed.
+		<TR CLASS=port><TH>0<TD>: Sprite (cursor) is displayed.
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>YSE<TD><SPAN style="text-decoration: overline;">YS</SPAN> signal output enable
+		<TR CLASS=port><TH>1<TD>: <SPAN style="text-decoration: overline;">YS</SPAN> signal is output.
+		<TR CLASS=port><TH>0<TD>: <SPAN style="text-decoration: overline;">YS</SPAN> signal is not output. (<SPAN style="text-decoration: overline;">YS</SPAN> terminal constantly remains as low level.)
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>VWTE<TD>VRAM serial data bus input/output control during digitization
+		<TR CLASS=port><TH>1<TD>: Dummy write transfer is executed during horizontal retrace line interval. (The serial data bus of VRAM becomes an input terminal.)
+		<TR CLASS=port><TH>0<TD>: Read transfer is executed during horizontal retrace line interval. (The serial data bus of VRAM becomes an output terminal.)
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>VWM<TD>VRAM write control during digitization
+		<TR CLASS=port><TH>1<TD>: Write transfer is executed during horizontal retrace line interval. (The data input into the serial data bus of VRAM during display period undergoes write transfer.)
+		<TR CLASS=port><TH>0<TD>: Write transfer is not executed.
+		</TABLE>
+
+		<UL style="list-style: inside; padding: 0; color: aqua;">
+		<LI>INTERRUPT (READ/WRITE)
+		</UL>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>R#9<TD CLASS=first>0<TD>0<TD>0<TD>0<TD>0<TD>IECE<TD>IEH<TD>IEV
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>R#10<TD CLASS=first COLSPAN=8>Interrupt Line (bit 7-0)
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>R#11<TD CLASS=first>IEHM<TD>0<TD>0<TD>0<TD>0<TD>0<TD COLSPAN=2>Interrupt Line (bit 9-8)
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>R#12<TD CLASS=first>0<TD>0<TD>0<TD>0<TD COLSPAN=4>Interrupt X
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>IECE<TD>Command end interrupt enable control
+		<TR CLASS=port><TH>1<TD>: <SPAN STYLE="text-decoration: overline;">INT0</SPAN> terminal becomes low level when CE flag of <a href="#p6">P#6</a> is "1".
+		<TR CLASS=port><TH>0<TD>: <SPAN STYLE="text-decoration: overline;">INT0</SPAN> terminal does not change according to CE flag.
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>IEV<TD>Interrupt enable during vertical retrace line interval.
+		<TR CLASS=port><TH>1<TD>: <SPAN STYLE="text-decoration: overline;">INT0</SPAN> terminal becomes low level when VI flag of <a href="#p6">P#6</a> is "1".
+		<TR CLASS=port><TH>0<TD>: <SPAN STYLE="text-decoration: overline;">INT0</SPAN> terminal does not change according to VI flag.
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>IEH<TD>Display position interrupt enable (Interrupt position is specified with Interrupt Line, Interrupt X and IEHM.)
+		<TR CLASS=port><TH>1<TD>: <SPAN STYLE="text-decoration: overline;">INT1</SPAN> terminal becomes low level when HI flag of <a href="#p6">P#6</a> is "1".
+		<TR CLASS=port><TH>0<TD>: <SPAN STYLE="text-decoration: overline;">INT1</SPAN> terminal does not change according to HI flag.
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>Interrupt Line<TD>: Specification of vertical position where display position interrupt occurs (Specified by means of line No. with the display start line as "0".)
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>Interrupt X<TD>: Specification of horizontal position where display position interrupt occurs (Specified by unit of 64 master clock with the display start position as "0".)
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>IEHM<TD>Selection of vertical position for display position interrupt
+		<TR CLASS=port><TH>1<TD>: Every line (value of Interrupt Line is ignored)
+		<TR CLASS=port><TH>0<TD>: Specified line
+		</TABLE>
+
+		<UL style="list-style: inside; padding: 0; color: aqua;">
+		<LI>PALETTE CONTROL (WRITE ONLY)
+		</UL>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>R#13<TD CLASS=first COLSPAN=2>PLTM<TD>YAE<TD>PLTAIH<TD>PLTO5<TD>PLTO4<TD>PLTO3<TD>PLTO2
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>PLTM<TD>Selection of color palette mode
+		<TR CLASS=port><TH>3<TD>: YUV mode
+		<TR CLASS=port><TH>2<TD>: YJK mode
+		<TR CLASS=port><TH>1<TD>: 256 color mode
+		<TR CLASS=port><TH>0<TD>: Palette mode
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>YAE<TD>Selection of YJK (YUV) and RGB mixing mode (valid when in YUV and YJK modes)
+		<TR CLASS=port><TH>1<TD>: YJK (YUV) and RGB images are displayed together.
+		<TR CLASS=port><TH>0<TD>: Only YJK (YUV) image is displayed.
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>PLTAIH<TD>Palette No. increment control at color palette read-out
+		<TR CLASS=port><TH>1<TD>: R#14 palette pointer is not changed by P#1 read-out.
+		<TR CLASS=port><TH>0<TD>: After P#1 read-out, R#14 palette pointer undergoes an increment.
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>PLTO5-2<TD>: Still screen palette No. offset
+		</TABLE>
+
+		<UL style="list-style: inside; padding: 0; color: aqua;">
+		<LI>PALETTE POINTER (WRITE ONLY)
+		</UL>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>R#14<TD CLASS=first COLSPAN=6>PLTA<TD COLSPAN=2>PLTP
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>PLTA<TD>: Palette No.(color code)
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>PLTP<TD>Specification of RGB
+		<TR CLASS=port><TH>2<TD>: BLUE
+		<TR CLASS=port><TH>1<TD>: GREEN
+		<TR CLASS=port><TH>0<TD>: RED
+		<TR CLASS=port><TD COLSPAN=2>After completion of access to P#1, an increment takes place by plus 1 only.<BR>PLTP is used as a 0 to 2 ternary counter.
+		</TABLE>
+
+		<UL style="list-style: inside; padding: 0; color: aqua;">
+		<LI>BACK DROP COLOR (READ/WRITE)
+		</UL>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>R#15<TD CLASS=first>0<TD>0<TD COLSPAN=6>BDC
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>BDC<TD>: Palette No. of back drop color
+		</TABLE>		
+
+		<UL style="list-style: inside; padding: 0; color: aqua;">
+		<LI>DISPLAY ADJUST (READ/WRITE)
+		</UL>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>R#16<TD CLASS=first COLSPAN=4>ADJV<TD COLSPAN=4>ADJH
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>ADJV<TD>: Vertical display position adjustment (4 bit signed)<TD>8 9 ... 15<TD>0<TD>1 ... 6 7
+		<TR CLASS=port><TD><TD>(by line)<TD>Down<TD>Center<TD>Up
+		<TR CLASS=port><TH>ADJH<TD>: Horizontal display position adjustment (4 bit signed)<TD>8 9 ... 15<TD>0<TD>1 ... 6 7
+		<TR CLASS=port><TD><TD><TD>Right<TD>Center<TD>Left
+		<TR CLASS=port><TD COLSPAN=5>(P1 and B1 by 1 pixel unit, P2, B2 and B3 by 2-pixel unit, B4, B5 and B6 by 4-pixel unit)
+		</TABLE>		
+
+		<UL style="list-style: inside; padding: 0; color: aqua;">
+		<LI>SCROLL CONTROL (READ/WRITE)
+		</UL>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>R#17<TD CLASS=first COLSPAN=8>SCAY (bit 7-0)
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>R#18<TD CLASS=first>R512<TD>R256<TD>0<TD COLSPAN=5>SCAY (bit 12-8)
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>R#19<TD CLASS=first>0<TD>0<TD>0<TD>0<TD>0<TD COLSPAN=3>SCAX (bit 2-0)
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>R#20<TD CLASS=first COLSPAN=8>SCAX (bit 10-3)
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>R#21<TD CLASS=first COLSPAN=8>SCBY (bit 7-0)
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>R#22<TD CLASS=first>*SDA<TD>*SDB<TD>0<TD>0<TD>0<TD>0<TD>0<TD>SCBY (bit 8)
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>R#23<TD CLASS=first>0<TD>0<TD>0<TD>0<TD>0<TD COLSPAN=3>SCBX (bit 2-0)
+		<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+		<TR><TD CLASS=port>R#24<TD CLASS=first>0<TD>0<TD COLSPAN=6>SCBX (bit 8-3)
+		<TR CLASS=port><TD COLSPAN=8>* Undocumented setting
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>SCAY<BR>SCAX<TD>: As display start coordinates for layer "A" of P1 mode and screens of other modes, X/Y-coordinates in the image space are specified by pixels. (When 16bpp is used in B2 and B3 modes, however, bit 0 is ignored and X-coordinate is specified by 2-pixel unit.)
+		<TR CLASS=port><TH>SCBY<BR>SCBX<TD>: For layer "B" of P1, X/Y-coordinates are specified in the same way as for SCAX/SCAY.
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>R512<TH>R256<TD>Number of roll page line in Y direction is specified.
+		<TR CLASS=port><TH>1<TH>0<TD>: Displayed page is rolled by 512 lines.
+		<TR CLASS=port><TH>0<TH>1<TD>: Displayed page is rolled by 256 lines.
+		<TR CLASS=port><TH>0<TH>0<TD>: Rolling by image space size takes place.
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>SDA<TD>: Set to "1" to disable layer "A" and sprites.
+		<TR CLASS=port><TH>SDB<TD>: Set to "1" to disable layer "B" and sprites.
+		</TABLE>
+		
+				
+		<UL style="list-style: inside; padding: 0; color: aqua;">
+		<LI>SPRITE GENERATOR BASE ADDRESS (READ/WRITE)
+		</UL>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR CLASS=block><TD CLASS=port>R#25<TD CLASS=first>0<TD>0<TD>0<TD>0<TD>SGBA17<TD>SGBA16<TD>SGBA15<TD>0<TD CLASS=port>P1 mode
+		<TR><TD CLASS=port><TD CLASS=first>0<TD>0<TD>0<TD>0<TD>SGBA18<TD>SGBA17<TD>SGBA16<TD>SGBA15<TD CLASS=port>P2 mode
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>SGBA18-15<TD>: Base address of P1/P2 mode sprite pattern data
+		</TABLE>		
+
+		<UL style="list-style: inside; padding: 0; color: aqua;">
+		<LI>LCD CONTROL (READ/WRITE)
+		</UL>
+		<P>Omitted (keep register R#26 as 0)</P>
+		
+		<UL style="list-style: inside; padding: 0; color: aqua;">
+		<LI>PRIORITY CONTROL (READ/WRITE)
+		</UL>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>R#27<TD CLASS=first>0<TD>0<TD>0<TD>0<TD COLSPAN=2>PRY<TD COLSPAN=2>PRX
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>PRY<TD>: When in P1 mode, the display Y-coordinate to exchange display priority order between layers "A" and "B" is specified. A unit of 64 lines is used and in the range lower than the specified line (including that line), layer "B" has priority. At "0", layer "A" has priority throughout the range.
+		<TR CLASS=port><TH>PRX<TD>: When in P1 mode, the display X-coordinate to exchange display priority order between layers "A" and "B" is specified. A unit of 64 pixels is used and in the range to the right of the specified pixel (including that pixel), layer "B" has priority. At "0", layer "A" has priority throughout the range.
+		</TABLE>
+		<P>&lt;Example&gt; When PRX=2 and PRY=2</P>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD><TH>1<TH>2<TH>3<TH>0<TH>(PRX)
+		<TR CLASS=port><TD><TH style="text-align: right;">0<TH>64<TH>128<TH>192<TH>256<TH>(pixel)
+		<TR CLASS=block><TH CLASS=port>1<TH CLASS=port>64<TD CLASS=first>A<TD>A<TD>B<TD>B
+		<TR CLASS=block><TH CLASS=port>2<TH CLASS=port>128<TD CLASS=first>A<TD>A<TD>B<TD>B
+		<TR CLASS=block><TH CLASS=port>3<TH CLASS=port>192<TD CLASS=first>B<TD>B<TD>B<TD>B
+		<TR><TH CLASS=port>0<TH CLASS=port>256<TD CLASS=first>B<TD>B<TD>B<TD>B<TH CLASS=port style="text-align: left;">(211)
+		<TR CLASS=port><TH>(PRY)<TH>(pixel)
+		</TABLE>
+
+		<UL style="list-style: inside; padding: 0; color: aqua;">
+		<LI>CURSOR SPRITE PALETTE OFFSET (WRITE ONLY)
+		</UL>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+		<TR><TD CLASS=port>R#28<TD CLASS=first>0<TD>0<TD>0<TD>0<TD COLSPAN=4>CSPO5-2
+		</TABLE>
+		<TABLE CELLSPACING=0>
+		<TR CLASS=port><TH>CSPO5-2<TD>: Palette No. offset of cursor
+		</TABLE>
+
+		<H2>COMMAND PARAMETER (WRITE ONLY, READ ONLY)</H2><DIV STYLE="margin-left: 1em;">
+			<UL style="list-style: inside; padding: 0; color: aqua;">
+			<LI>SOURCE X/Y-COORDINATE/LINEAR ADDRESS (WRITE ONLY)
+			</UL>
+			<TABLE CELLSPACING=0>
+			<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+			<TR CLASS=block><TD CLASS=port>R#32<TD CLASS=first COLSPAN=8>SX (bit 7-0)
+			<TR><TD CLASS=port><TD CLASS=first COLSPAN=8>SA (bit 7-0)
+			<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+			<TR><TD CLASS=port>R#33<TD CLASS=first>0<TD>0<TD>0<TD>0<TD>0<TD COLSPAN=3>SX (bit 10-8)
+			<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+			<TR CLASS=block><TD CLASS=port>R#34<TD CLASS=first COLSPAN=8>SY (bit 7-0)
+			<TR><TD CLASS=port><TD CLASS=first COLSPAN=8>SA (bit 15-8)
+			<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+			<TR CLASS=block><TD CLASS=port>R#35<TD CLASS=first>0<TD>0<TD>0<TD>0<TD COLSPAN=4>SY (bit 11-8)
+			<TR><TD CLASS=port><TD CLASS=first>0<TD>0<TD>0<TD>0<TD>0<TD COLSPAN=3>SA (bit 18-16)
+			</TABLE>
+			<TABLE CELLSPACING=0>
+			<TR CLASS=port><TH>SX<TD>: Specified with the X-coordinate of the image coordinate space (by pixels) and rolling to "0" occurs when a larger value than the image size is used for setting. (When in P1 mode, layer "A" is selected at SX9=0 and layer "B" at SX9=1.)
+			<TR CLASS=port><TH>SY<TD>: Specified with the Y-coordinate of the image coordinate space (by pixels) and rolling to "0" occurs when a larger value than the image size is used for setting.
+			<TR CLASS=port><TH>SA<TD>: Specified with the address on the VRAM map (by bytes).
+			</TABLE>
+		
+			<UL style="list-style: inside; padding: 0; color: aqua;">
+			<LI>DESTINATION X/Y-COORDINATE/LINEAR ADDRESS (WRITE ONLY)
+			</UL>
+			<TABLE CELLSPACING=0>
+			<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+			<TR CLASS=block><TD CLASS=port>R#36<TD CLASS=first COLSPAN=8>DX (bit 7-0)
+			<TR><TD CLASS=port><TD CLASS=first COLSPAN=8>DA (bit 7-0)
+			<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+			<TR><TD CLASS=port>R#37<TD CLASS=first>0<TD>0<TD>0<TD>0<TD>0<TD COLSPAN=3>DX (bit 10-8)
+			<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+			<TR CLASS=block><TD CLASS=port>R#38<TD CLASS=first COLSPAN=8>DY (bit 7-0)
+			<TR><TD CLASS=port><TD CLASS=first COLSPAN=8>DA (bit 15-8)
+			<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+			<TR CLASS=block><TD CLASS=port>R#39<TD CLASS=first>0<TD>0<TD>0<TD>0<TD COLSPAN=4>DY (bit 11-8)
+			<TR><TD CLASS=port><TD CLASS=first>0<TD>0<TD>0<TD>0<TD>0<TD COLSPAN=3>DA (bit 18-16)
+			</TABLE>
+			<TABLE CELLSPACING=0>
+			<TR CLASS=port><TH>DX<TD>: Specified with the X-coordinate of the image coordinate space (by pixels) and rolling to "0" occurs when a larger value than the image size is used for setting. (When in P1 mode, layer "A" is selected at DX9=0 and layer "B" at DX9=1.)
+			<TR CLASS=port><TH>DY<TD>: Specified with the Y-coordinate of the image coordinate space (by pixels) and rolling to "0" occurs when a larger value than the image size is used for setting.
+			<TR CLASS=port><TH>DA<TD>: Specified with the address on the VRAM map (by bytes).
+			</TABLE>
+
+			<UL style="list-style: inside; padding: 0; color: aqua;">
+			<LI>TRANSFER PIXEL NUMBER XY/LINEAR/LINE MINOR, MAJOR (WRITE ONLY)
+			</UL>
+			<TABLE CELLSPACING=0>
+			<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+			<TR CLASS=block><TD CLASS=port>R#40<TD CLASS=first COLSPAN=8>NX (bit 7-0)
+			<TR CLASS=block><TD CLASS=port><TD CLASS=first COLSPAN=8>NA (bit 7-0)
+			<TR><TD CLASS=port><TD CLASS=first COLSPAN=8>MJ (bit 7-0)
+			<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+			<TR CLASS=block><TD CLASS=port>R#41<TD CLASS=first>0<TD>0<TD>0<TD>0<TD>0<TD COLSPAN=3>NX (bit 10-8)
+			<TR><TD CLASS=port><TD CLASS=first>0<TD>0<TD>0<TD>0<TD COLSPAN=4>MJ (bit 11-8)
+			<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+			<TR CLASS=block><TD CLASS=port>R#42<TD CLASS=first COLSPAN=8>NY (bit 7-0)
+			<TR CLASS=block><TD CLASS=port><TD CLASS=first COLSPAN=8>NA (bit 15-8)
+			<TR><TD CLASS=port><TD CLASS=first COLSPAN=8>MI (bit 7-0)
+			<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+			<TR CLASS=block><TD CLASS=port>R#43<TD CLASS=first>0<TD>0<TD>0<TD>0<TD COLSPAN=4>NY (bit 11-8)
+			<TR CLASS=block><TD CLASS=port><TD CLASS=first>0<TD>0<TD>0<TD>0<TD>0<TD COLSPAN=3>NA (bit 18-16)
+			<TR><TD CLASS=port><TD CLASS=first>0<TD>0<TD>0<TD>0<TD COLSPAN=4>MI (bit 11-8)
+			</TABLE>
+			<TABLE CELLSPACING=0>
+			<TR CLASS=port><TH>NX<TD>: The number of pixels in X direction of the image coordinate space is specified and rolling to "0" occurs when the specified range exceeds the image size. (Maximum value is 2048 pixels when all "0".)
+			<TR CLASS=port><TH>NY<TD>: The number of pixels in Y direction of the image coordinate space is specified and rolling to "0" occurs when the specified range exceeds the image size. (Maximum value is 4096 pixels when all "0".)
+			<TR CLASS=port><TH>NA<TD>: The number of bytes on the VRAM map is specified and rolling to address "0" occurs when the specified range exceeds the VRAM capacity. (Maximum value is 512K bytes when all "0".)<BR>Note) 256 bytes when NA bit 7-0 are all "0".
+			<TR CLASS=port><TH>MJ<TD>: The length of the longer side of the rectangle whose diagonal line is the same as the drawn line is specified by pixels. When the specified range exceeds the image size, rolling to "0" occurs.
+			<TR CLASS=port><TH>MI<TD>: The length of the shorter side of the rectangle whose diagonal line is the same as the drawn line is specified by pixels. When the specified range exceeds the image size, rolling to "0" occurs.
+			</TABLE>
+
+			<UL style="list-style: inside; padding: 0; color: aqua;">
+			<LI>ARGUMENT (WRITE ONLY)
+			</UL>
+			<TABLE CELLSPACING=0>
+			<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+			<TR><TD CLASS=port>R#44<TD CLASS=first>0<TD>0<TD>0<TD>0<TD>DIY<TD>DIX<TD>NEQ<TD>MAJ
+			</TABLE>
+			<TABLE CELLSPACING=0>
+			<TR CLASS=port><TH>DIY, DIX<TD>: The transfer direction (plus direction at "0" and minus direction at "1") from the base coordinates is specified. With BMXL and BMLX, however, the linear address specified side is fixed to "plus" and with BMLL, both X and Y are specified to the same direction.
+			<TR CLASS=port><TH>NEQ<TD>: In the border color specification for SEARCH, "0" is for specified color detection and "1" is for non-specified color detection.
+			<TR CLASS=port><TH>MAJ<TD>: In the line inclination specification for LINE, X is the longer side and Y the shorter side at "0" while Y is the longer side and X the shorter side at "1".
+			</TABLE>
+
+			<UL style="list-style: inside; padding: 0; color: aqua;">
+			<LI>LOGICAL OPERATION (WRITE ONLY)
+			</UL>
+			<TABLE CELLSPACING=0>
+			<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+			<TR><TD CLASS=port>R#45<TD CLASS=first>0<TD>0<TD>0<TD>TP<TD>L11<TD>L10<TD>L01<TD>L00
+			</TABLE>
+			<P>See <A HREF="#writeoperations">Command &gt; Write Operations</A>.</P>
+
+			<UL style="list-style: inside; padding: 0; color: aqua;">
+			<LI>WRITE MASK (WRITE ONLY)
+			</UL>
+			<TABLE CELLSPACING=0>
+			<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+			<TR><TD CLASS=port>R#46<TD CLASS=first COLSPAN=8>WM (bit 7-0)
+			<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+			<TR><TD CLASS=port>R#47<TD CLASS=first COLSPAN=8>WM (bit 15-8)
+			</TABLE>
+			<P>See <A HREF="#writemask">Command &gt; Write Operations &gt; Write Mask</A>.</P>
+		
+			<UL style="list-style: inside; padding: 0; color: aqua;">
+			<LI>FONT COLOR (WRITE ONLY)
+			</UL>
+			<TABLE CELLSPACING=0>
+			<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+			<TR><TD CLASS=port>R#48<TD CLASS=first COLSPAN=8>FC (bit 7-0)
+			<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+			<TR><TD CLASS=port>R#49<TD CLASS=first COLSPAN=8>FC (bit 15-8)
+			<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+			<TR><TD CLASS=port>R#50<TD CLASS=first COLSPAN=8>BC (bit 7-0)
+			<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+			<TR><TD CLASS=port>R#51<TD CLASS=first COLSPAN=8>BC (bit 15-8)
+			</TABLE>
+			<TABLE CELLSPACING=0>
+			<TR CLASS=port><TH>FC<TD>: Color code of font data "1".
+			<TR CLASS=port><TH>BC<TD>: Color code of font data "0"
+			</TABLE>
+			<P>Correspondence of bits 7-0 and bits 15-8 is the same as for <A HREF="#writemask">Write Mask</A>.</P>
+			<P>Depending on conditions of R#6 (CLRM), use the following data setting for FC and BC.<BR>16bpp - Write 16 bit data.<BR>8bpp - Write the same data for bit 7-0 and bit 15-8.<BR>4bpp - Write the same data for bit 3-0, bit 7-4, bit 11-8 and bit 15-12.<BR>2bpp - Fill with the same eight 2 bit unit data.</P>
+		
+			<UL style="list-style: inside; padding: 0; color: aqua;">
+			<LI>OPERATION CODE (WRITE ONLY)
+			</UL>
+			<TABLE CELLSPACING=0>
+			<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+			<TR><TD CLASS=port>R#52<TD CLASS=first COLSPAN=4>OP<TD>AYM<TD>AYE<TD>AXM<TD>AXE
+			</TABLE>
+			<P>Set OP according to <A HREF="#commandmethod">Command execution method</A>.</P>
+			<P>With PSET and ADVANCE, the drawing point can be shifted after executing the command.</P>
+			<TABLE CELLSPACING=0>
+			<TR CLASS=port><TH>AXE<TH>AXM<TD>
+			<TR CLASS=port><TH>0<TH>0<TD>: (DX,DY) is used as a pointer.
+			<TR CLASS=port><TH>0<TH>1<TD>: The pointer is not shifted.
+			<TR CLASS=port><TH>1<TH>0<TD>: The pointer is shifted to the right by 1 pixel.
+			<TR CLASS=port><TH>1<TH>1<TD>: The pointer is shifted to the left by 1 pixel.
+			</TABLE>
+			<TABLE CELLSPACING=0>
+			<TR CLASS=port><TH>AYE<TH>AYM<TD>
+			<TR CLASS=port><TH>0<TH>0<TD>: The pointer is not shifted.
+			<TR CLASS=port><TH>0<TH>1<TD>: The pointer is not shifted.
+			<TR CLASS=port><TH>1<TH>0<TD>: The pointer is shifted down by 1 pixel.
+			<TR CLASS=port><TH>1<TH>1<TD>: The pointer is shifted up by 1 pixel.
+			</TABLE>
+
+			<UL style="list-style: inside; padding: 0; color: aqua;">
+			<LI>SEARCH COMMAND BORDER COORDINATE (READ ONLY)
+			</UL>
+			<TABLE CELLSPACING=0>
+			<TR CLASS=port><TD><TD>b7<TD>b6<TD>b5<TD>b4<TD>b3<TD>b2<TD>b1<TD>b0
+			<TR><TD CLASS=port>R#53<TD CLASS=first COLSPAN=8>BX (bit 7-0)
+			<TR CLASS=port><TD><TD COLSPAN=8>&nbsp;
+			<TR><TD CLASS=port>R#54<TD CLASS=first>0<TD>0<TD>0<TD>0<TD>0<TD COLSPAN=3>BX (bit 10-8)
+			</TABLE>
+			<P>When the border color is detected after the SEARCH command has been executed, the X-coordinate then can be read.</P>
+		</DIV>
+	</DIV>
+</DIV>
+<H1 id="timing">Timing</H1><DIV STYLE="margin-left: 1em;">
+	<TABLE CELLSPACING=0>
+	<TR CLASS=block><TH CLASS=first ROWSPAN=2>Vertical Timing (NTSC)<TH COLSPAN=2>Non-interlace<TH COLSPAN=2>Interlace
+	<TR CLASS=block><TH>SM1=0<TH>SM1=1<TH>1st field<TH>2nd field
+	<TR CLASS=block><TD CLASS=first>Vertical cycle<TD>262 H<TD>263 H<TD COLSPAN=2>262.5 H
+	<TR CLASS=block><TD CLASS=first COLSPAN=5>
+	<TR CLASS=block><TD CLASS=first>Top retrace line erase period<TD>15 H<TD>16 H<TD>15 H<TD>15.5 H
+	<TR CLASS=block><TD CLASS=first>Top border period *<TD COLSPAN=4>14 H
+	<TR CLASS=block><TD CLASS=first>Vertical display period<TD COLSPAN=4>212 H
+	<TR CLASS=block><TD CLASS=first>Bottom border period *<TD COLSPAN=4>14 H
+	<TR CLASS=block><TD CLASS=first>Bottom retrace line erase period<TD COLSPAN=2>4 H<TD>4.5 H<TD>4 H
+	<TR><TD CLASS=first>Vertical synchronous pulse width<TD COLSPAN=4>3 H
+	<TR CLASS=port><TD COLSPAN=4>* The border period becomes the display period during over-scan.
+	</TABLE>
+	<TABLE CELLSPACING=0>
+	<TR CLASS=block><TH CLASS=first ROWSPAN=2>Vertical Timing (PAL)<TH ROWSPAN=2>Non-interlace<TH COLSPAN=2>Interlace
+	<TR CLASS=block><TH>1st field<TH>2nd field
+	<TR CLASS=block><TD CLASS=first>Vertical cycle<TD>313 H<TD COLSPAN=2>312.5 H
+	<TR CLASS=block><TD CLASS=first COLSPAN=4>
+	<TR CLASS=block><TD CLASS=first>Top retrace line erase period<TD>15 H<TD>14 H<TD>14.5 H
+	<TR CLASS=block><TD CLASS=first>Top border period *<TD COLSPAN=3>41 H
+	<TR CLASS=block><TD CLASS=first>Vertical display period<TD COLSPAN=3>212 H
+	<TR CLASS=block><TD CLASS=first>Bottom border period *<TD COLSPAN=3>37 H
+	<TR CLASS=block><TD CLASS=first>Bottom retrace line erase period<TD>5 H<TD>5.5 H<TD>5 H
+	<TR><TD CLASS=first>Vertical synchronous pulse width<TD COLSPAN=3>3 H
+	<TR CLASS=port><TD COLSPAN=4>* The border period becomes the display period during over-scan.
+	</TABLE>
+	
+	<TABLE CELLSPACING=0>
+	<TR CLASS=block><TH CLASS=first ROWSPAN=2>Horizontal Timing (SM=0)<TH COLSPAN=2>Time
+	<TR CLASS=block><TH>When using 21MHz<TH>When using 14MHz
+	<TR CLASS=block><TD CLASS=first>Horizontal cycle<TD COLSPAN=2>63.70 &micro;s
+	<TR CLASS=block><TD CLASS=first COLSPAN=3>
+	<TR CLASS=block><TD CLASS=first>Left retrace line erase period<TD>4.66 &micro;s<TD>3.91 &micro;s
+	<TR CLASS=block><TD CLASS=first>Left border period<TD>2.61 &micro;s<TD>0 &micro;s
+	<TR CLASS=block><TD CLASS=first>Horizontal display period<TD>47.68 &micro;s<TD>53.64 &micro;s
+	<TR CLASS=block><TD CLASS=first>Right border period<TD>2.61 &micro;s<TD>0 &micro;s
+	<TR CLASS=block><TD CLASS=first>Right retrace line erase period<TD>1.49 &micro;s<TD>1.40 &micro;s
+	<TR><TD CLASS=first>Horizontal synchronous pulse width<TD>4.66 &micro;s<TD>4.75 &micro;s
+	</TABLE>
+
+	<TABLE CELLSPACING=0>
+	<TR CLASS=block><TH CLASS=first ROWSPAN=2>Horizontal Timing (SM=1)<TH COLSPAN=2>Time
+	<TR CLASS=block><TH>When using 21MHz<TH>When using 14MHz
+	<TR CLASS=block><TD CLASS=first>Horizontal cycle<TD COLSPAN=2>63.56 &micro;s
+	<TR CLASS=block><TD CLASS=first COLSPAN=3>
+	<TR CLASS=block><TD CLASS=first>Left retrace line erase period<TD>4.52 &micro;s<TD>3.77 &micro;s
+	<TR CLASS=block><TD CLASS=first>Left border period<TD>2.61 &micro;s<TD>0 &micro;s
+	<TR CLASS=block><TD CLASS=first>Horizontal display period<TD>47.68 &micro;s<TD>53.64 &micro;s
+	<TR CLASS=block><TD CLASS=first>Right border period<TD>2.61 &micro;s<TD>0 &micro;s
+	<TR CLASS=block><TD CLASS=first>Right retrace line erase period<TD>1.49 &micro;s<TD>1.40 &micro;s
+	<TR><TD CLASS=first>Horizontal synchronous pulse width<TD>4.66 &micro;s<TD>4.75 &micro;s
+	</TABLE>
+</DIV>
+
+<P><SMALL>Notes to self:<BR>
+- Investigate snow when updating palette during display time. Seems to be internal bus-conflict... Initial tests indicate snow appears at the exact time the palette registers are written, but ONLY if a color other than the backdrop color is currently visible. Other tests indicate snow does appear in the bottom border when palette was written after polling for VR.<BR>
+- Investigate R#17 behaviour when writing during display time. Initial tests indicate this doesn't happen in P1 mode (layer "A" tested), and as soon as R#17 is written mid-screen, the screen 'starts over', meaning from that point scanline 0 and on will be drawn again but with the scroll offset applied. (note: slight jittery movement was encountered when writing R#17 during a certain point in border/retrace period, unconfirmed). Also interesting to see if forced blanking (display disable) has any effect.<BR>
+- Investigate possible bug in LMMC command (possibly only CE bit) when using coordinates (0,0)-(255,211) in P1 mode.<BR>
+- Investigate if BMLL's interleaved VRAM handling also counts for BMLX and BMXL (most likely so).
+</SMALL></P>
+
+</DIV>
+<HR><DIV STYLE="font-size: smaller;">Last updated: <!--#ECHO VAR="LAST_MODIFIED" -->. &copy; by <A HREF="mailto:patriekl@dds.nl">Patriek Lesparre</A>. Hosted by <A HREF="http://www.tni.nl/">The New Image</A>.</DIV></BODY></HTML>

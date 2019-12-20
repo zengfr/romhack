@@ -1,0 +1,137 @@
+﻿https://github.com/zengfr/romhack
+7 Assembler Directives
+All assembler directives have names that begin with a period (‘.’). The names are case insensitive for most targets, and usually written in lower case.
+
+This chapter discusses directives that are available regardless of the target machine configuration for the GNU assembler. Some machine configurations provide additional directives. See Machine Dependencies.
+
+• Abort:	  	.abort
+• ABORT (COFF):	  	.ABORT
+
+• Align:	  	.align [abs-expr[, abs-expr[, abs-expr]]]
+• Altmacro:	  	.altmacro
+• Ascii:	  	.ascii "string"…
+• Asciz:	  	.asciz "string"…
+• Balign:	  	.balign [abs-expr[, abs-expr]]
+• Bundle directives:	  	.bundle_align_mode abs-expr, etc
+• Byte:	  	.byte expressions
+• CFI directives:	  	.cfi_startproc [simple], .cfi_endproc, etc.
+• Comm:	  	.comm symbol , length
+• Data:	  	.data subsection
+• Dc:	  	.dc[size] expressions
+• Dcb:	  	.dcb[size] number [,fill]
+• Ds:	  	.ds[size] number [,fill]
+• Def:	  	.def name
+• Desc:	  	.desc symbol, abs-expression
+• Dim:	  	.dim
+
+• Double:	  	.double flonums
+• Eject:	  	.eject
+• Else:	  	.else
+• Elseif:	  	.elseif
+• End:	  	.end
+• Endef:	  	.endef
+
+• Endfunc:	  	.endfunc
+• Endif:	  	.endif
+• Equ:	  	.equ symbol, expression
+• Equiv:	  	.equiv symbol, expression
+• Eqv:	  	.eqv symbol, expression
+• Err:	  	.err
+• Error:	  	.error string
+• Exitm:	  	.exitm
+• Extern:	  	.extern
+• Fail:	  	.fail
+• File:	  	.file
+• Fill:	  	.fill repeat , size , value
+• Float:	  	.float flonums
+• Func:	  	.func
+• Global:	  	.global symbol, .globl symbol
+• Gnu_attribute:	  	.gnu_attribute tag,value
+• Hidden:	  	.hidden names
+
+• hword:	  	.hword expressions
+• Ident:	  	.ident
+• If:	  	.if absolute expression
+• Incbin:	  	.incbin "file"[,skip[,count]]
+• Include:	  	.include "file"
+• Int:	  	.int expressions
+• Internal:	  	.internal names
+
+• Irp:	  	.irp symbol,values…
+• Irpc:	  	.irpc symbol,values…
+• Lcomm:	  	.lcomm symbol , length
+• Lflags:	  	.lflags
+• Line:	  	.line line-number
+
+• Linkonce:	  	.linkonce [type]
+• List:	  	.list
+• Ln:	  	.ln line-number
+• Loc:	  	.loc fileno lineno
+• Loc_mark_labels:	  	.loc_mark_labels enable
+• Local:	  	.local names
+
+• Long:	  	.long expressions
+
+• Macro:	  	.macro name args…
+• MRI:	  	.mri val
+• Noaltmacro:	  	.noaltmacro
+• Nolist:	  	.nolist
+• Nops:	  	.nops size[, control]
+• Octa:	  	.octa bignums
+• Offset:	  	.offset loc
+• Org:	  	.org new-lc, fill
+• P2align:	  	.p2align [abs-expr[, abs-expr[, abs-expr]]]
+• PopSection:	  	.popsection
+• Previous:	  	.previous
+
+• Print:	  	.print string
+• Protected:	  	.protected names
+
+• Psize:	  	.psize lines, columns
+• Purgem:	  	.purgem name
+• PushSection:	  	.pushsection name
+
+• Quad:	  	.quad bignums
+• Reloc:	  	.reloc offset, reloc_name[, expression]
+• Rept:	  	.rept count
+• Sbttl:	  	.sbttl "subheading"
+• Scl:	  	.scl class
+• Section:	  	.section name[, flags]
+
+• Set:	  	.set symbol, expression
+• Short:	  	.short expressions
+• Single:	  	.single flonums
+• Size:	  	.size [name , expression]
+• Skip:	  	.skip size [,fill]
+
+• Sleb128:	  	.sleb128 expressions
+• Space:	  	.space size [,fill]
+• Stab:	  	.stabd, .stabn, .stabs
+
+• String:	  	.string "str", .string8 "str", .string16 "str", .string32 "str", .string64 "str"
+• Struct:	  	.struct expression
+• SubSection:	  	.subsection
+• Symver:	  	.symver name,name2@nodename
+
+• Tag:	  	.tag structname
+
+• Text:	  	.text subsection
+• Title:	  	.title "heading"
+• Type:	  	.type <int | name , type description>
+
+• Uleb128:	  	.uleb128 expressions
+• Val:	  	.val addr
+
+• Version:	  	.version "string"
+• VTableEntry:	  	.vtable_entry table, offset
+• VTableInherit:	  	.vtable_inherit child, parent
+
+• Warning:	  	.warning string
+• Weak:	  	.weak names
+• Weakref:	  	.weakref alias, symbol
+• Word:	  	.word expressions
+• Zero:	  	.zero size
+• 2byte:	  	.2byte expressions
+• 4byte:	  	.4byte expressions
+• 8byte:	  	.8byte bignums
+• Deprecated:	  	Deprecated Directives

@@ -1,0 +1,5 @@
+﻿https://github.com/zengfr/romhack
+
+dino 1p mame debug内存调试示例
+
+wp ffb274,e0,w,{b@wpaddr!=wpdata and w@wpaddr!=wpdata and wpdata<=0x2},{printf "%8x %8x %4x %2x %4x A0:%8x %8x %8x %8x %8x %8x %8x D0:%8x %8x %8x %8x %8x %8x %8x %8x",pc,wpaddr,w@wpaddr,b@wpaddr,wpdata,a0,a1,a2,a3,a4,a5,a6,a7,d0,d1,d2,d3,d4,d5,d6,d7;g;}

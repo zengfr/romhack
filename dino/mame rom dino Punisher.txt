@@ -1,0 +1,371 @@
+https://github.com/zengfr/romhack
+https://solvalou.com/arcade/roms/T/punisher
+
+CADILLACS AND DINOSAURS (WORLD 930201) ARCADE ROM
+Capcom 1993
+Below is a table representhing the roms for Cadillacs and Dinosaurs (World 930201) and its clones (if any). Red roms are similar between all versions but green roms differ, which means that if you wish to change the game's region or language, it may be possible make the change simply by reprogramming fresh roms with other version's contents.
+
+Note that the rom information displayed here is automatically parsed from Multiple Arcade Machine Emulator (MAME) C source code, so some of it can be incorrect. However, if you notice that some parts of the data are constantly incorrectly displayed in more than one game, please contact me so that I can fix the problem.
+
+dino
+Cadillacs and Dinosaurs (World 930201)
+ 
+CPU1 chips:
+
+
+cde_23a.rom
+8x512.0kbits
+0x000000 ->
+
+
+cde_22a.rom
+8x512.0kbits
+0x080000 ->
+
+
+cde_21a.rom
+8x512.0kbits
+0x100000 ->
+ 
+CPU2 chips:
+
+
+cd_q.rom
+8x32.0kbits
+0x00000 ->
+ 
+SOUND1 chips:
+
+
+cd_q1.rom
+8x512.0kbits
+0x000000 ->
+
+
+cd_q2.rom
+8x512.0kbits
+0x080000 ->
+
+
+cd_q3.rom
+8x512.0kbits
+0x100000 ->
+
+
+cd_q4.rom
+8x512.0kbits
+0x180000 ->
+ 
+dinou
+Cadillacs and Dinosaurs (US 930201)
+ 
+CPU1 chips:
+
+
+cdu.23a
+8x512.0kbits
+0x000000 ->
+
+
+cdu.22a
+8x512.0kbits
+0x080000 ->
+
+
+cde_21a.rom
+8x512.0kbits
+0x100000 ->
+ 
+CPU2 chips:
+
+
+cd_q.rom
+8x32.0kbits
+0x00000 ->
+ 
+SOUND1 chips:
+
+
+cd_q1.rom
+8x512.0kbits
+0x000000 ->
+
+
+cd_q2.rom
+8x512.0kbits
+0x080000 ->
+
+
+cd_q3.rom
+8x512.0kbits
+0x100000 ->
+
+
+cd_q4.rom
+8x512.0kbits
+0x180000 ->
+ 
+dinoj
+Cadillacs Kyouryuu-Shinseiki (Japan 930201)
+ 
+CPU1 chips:
+
+
+cdj-23a.8f
+8x512.0kbits
+0x000000 ->
+
+
+cdj-22a.7f
+8x512.0kbits
+0x080000 ->
+
+
+cde_21a.rom
+8x512.0kbits
+0x100000 ->
+ 
+CPU2 chips:
+
+
+cd_q.rom
+8x32.0kbits
+0x00000 ->
+ 
+SOUND1 chips:
+
+
+cd_q1.rom
+8x512.0kbits
+0x000000 ->
+
+
+cd_q2.rom
+8x512.0kbits
+0x080000 ->
+
+
+cd_q3.rom
+8x512.0kbits
+0x100000 ->
+
+
+cd_q4.rom
+8x512.0kbits
+0x180000 ->
+
+
+Capcom 1993
+Below is a table representhing the roms for The Punisher (World 930422) and its clones (if any). Red roms are similar between all versions but green roms differ, which means that if you wish to change the game's region or language, it may be possible make the change simply by reprogramming fresh roms with other version's contents.
+
+Note that the rom information displayed here is automatically parsed from Multiple Arcade Machine Emulator (MAME) C source code, so some of it can be incorrect. However, if you notice that some parts of the data are constantly incorrectly displayed in more than one game, please contact me so that I can fix the problem.
+
+punisher
+The Punisher (World 930422)
+ 
+CPU1 chips:
+
+
+pse_26.rom
+8x128.0kbits
+0x000000 ->
+
+
+pse_30.rom
+8x128.0kbits
+0x000001 ->
+
+
+pse_27.rom
+8x128.0kbits
+0x040000 ->
+
+
+pse_31.rom
+8x128.0kbits
+0x040001 ->
+
+
+pse_24.rom
+8x128.0kbits
+0x080000 ->
+
+
+pse_28.rom
+8x128.0kbits
+0x080001 ->
+
+
+pse_25.rom
+8x128.0kbits
+0x0c0000 ->
+
+
+pse_29.rom
+8x128.0kbits
+0x0c0001 ->
+
+
+ps_21.rom
+8x512.0kbits
+0x100000 ->
+ 
+CPU2 chips:
+
+
+ps_q.rom
+8x32.0kbits
+0x00000 ->
+ 
+SOUND1 chips:
+
+
+ps_q1.rom
+8x512.0kbits
+0x000000 ->
+
+
+ps_q2.rom
+8x512.0kbits
+0x080000 ->
+
+
+ps_q3.rom
+8x512.0kbits
+0x100000 ->
+
+
+ps_q4.rom
+8x512.0kbits
+0x180000 ->
+ 
+punishru
+The Punisher (US 930422)
+ 
+CPU1 chips:
+
+
+psu26.rom
+8x128.0kbits
+0x000000 ->
+
+
+psu30.rom
+8x128.0kbits
+0x000001 ->
+
+
+psu27.rom
+8x128.0kbits
+0x040000 ->
+
+
+psu31.rom
+8x128.0kbits
+0x040001 ->
+
+
+psu24.rom
+8x128.0kbits
+0x080000 ->
+
+
+psu28.rom
+8x128.0kbits
+0x080001 ->
+
+
+psu25.rom
+8x128.0kbits
+0x0c0000 ->
+
+
+psu29.rom
+8x128.0kbits
+0x0c0001 ->
+
+
+ps_21.rom
+8x512.0kbits
+0x100000 ->
+ 
+CPU2 chips:
+
+
+ps_q.rom
+8x32.0kbits
+0x00000 ->
+ 
+SOUND1 chips:
+
+
+ps_q1.rom
+8x512.0kbits
+0x000000 ->
+
+
+ps_q2.rom
+8x512.0kbits
+0x080000 ->
+
+
+ps_q3.rom
+8x512.0kbits
+0x100000 ->
+
+
+ps_q4.rom
+8x512.0kbits
+0x180000 ->
+ 
+punishrj
+The Punisher (Japan 930422)
+ 
+CPU1 chips:
+
+
+psj23.bin
+8x512.0kbits
+0x000000 ->
+
+
+psj22.bin
+8x512.0kbits
+0x080000 ->
+
+
+ps_21.rom
+8x512.0kbits
+0x100000 ->
+ 
+CPU2 chips:
+
+
+ps_q.rom
+8x32.0kbits
+0x00000 ->
+ 
+SOUND1 chips:
+
+
+ps_q1.rom
+8x512.0kbits
+0x000000 ->
+
+
+ps_q2.rom
+8x512.0kbits
+0x080000 ->
+
+
+ps_q3.rom
+8x512.0kbits
+0x100000 ->
+
+
+ps_q4.rom
+8x512.0kbits
+0x180000 ->
+ 
+
+ 

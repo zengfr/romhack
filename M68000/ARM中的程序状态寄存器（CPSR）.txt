@@ -1,0 +1,420 @@
+﻿https://github.com/zengfr/romhack
+
+ARM中的程序状态寄存器（CPSR）
+30 29 28 27 26       7  6  5  4  3  2  1  0
+N  Z  C  V  Q  DNM(RAZ) I  F  T  M4 M3 M2 M1 M0
+|  |  |  |____ Overflow : (Signed) Overflow/Underflow : The V flag works the same as the C flag, but for signed operations.
+|  |  |        the result of which will not fit into a 32bit destination register.
+|  |  |_______ Carry : (Unsigned) Overflow/Underflow :
+|  |           The C flag is set if the result of an Unsigned operation overflows the 32-bit result register.
+|  |           the result of which will not fit into a 32bit destination register.
+|  |           Basically the Carry flag is just the carry-out of the 32-bit adder (ie. bit 32).
+|  |__________ Zero : The Z flag is set if the result of the flag-setting instruction is zero.
+|_____________ Negative : The N flag is set by an instruction if the result is negative.
+               In practice, N is set to the two's complement sign bit of the result (bit 31).
+
+For example, 0x7fffffff is the largest positive two's complement integer that can be represented in 32 bits,
+so 0x7fffffff + 0x7fffffff = 0xFFFFFFFE triggers a signed overflow, V=1
+but not an Unsigned overflow (or carry) C=0 :
+
+the result, 0xfffffffe, is correct if interpreted as an Unsigned quantity,
+but represents a negative value (-2) if interpreted as a signed quantity.
+
+Consider the following example:
+
+    ldr r1, =0xffffffff
+    ldr r2, =0x00000001
+    adds r0, r1, r2
+
+The result of the operation would be 0x1-00000000,
+but the top bit is lost because it does not fit into the 32-bit destination register and
+so the real result is 0x00000000.
+
+In this case, the flags will be set as follows:
+  N = 0 : bit31 of result
+  Z = 1 : result is 0
+  C = 1 : bit32 of result : 4294967295 + 1 = 4294967296 : We lost some data because the result did not fit into 32 bits
+  V = 0 : (-1) + 1 = 0 : That operation clearly does not overflow
+
+  NV                          NeVer, so very useful. You should not use this code anyway
+  AL                          ALways, the default condition so does not need to be specified
+
+  EQ      Z==1                Equal                               : Z set
+  NE      Z==0                Not equal                           : Z clear
+
+  MI      N==1                Minus/negative                      : N set
+  PL      N==0                Plus/positive or zero               : N clear
+
+　CS 　   C==1 　　　　　　　    Unsigned overflow                   : C set
+　CC 　   C==0  　　　　　　     Unsigned No overflow　　            : C clear
+
+  VS      V==1                Signed overflow                     : V set
+  VC      V==0                Signed No overflow                  : V clear
+
+　LO 　   C==0  　　　　　　     Unsigned lower 　　　　              : C clear
+  LS     C==1 || Z==0 　　　   Unsigned lower or same 　　　　　　   : C clear or Z set
+　HS 　   C==1 　　　　　　　    Unsigned higher or same 　          : C set
+  HI　　　C==1 && Z==0 　　　   Unsigned higher 　　　　　　　　　　   : C set and Z clear
+
+  LT      N != V              Signed less than                    : N != V
+  LE      Z == 1 || N != V    Signed less than or equal           : Z == 1 || N != V
+  GE      N == V              Signed greater than or equal        : N == V
+  GT      Z == 0 && N == V    Signed greater than                 : Z == 0 && N == V
+
+
+Here follows a list of available conditional codes:
+
+  AL - ALways, the default condition so doesn't need to be specified
+  NV - NeVer, so very useful. You should not use this code anyway...
+
+  VS - Overflow Set If the V flag is set after an arithmetical operation,
+       the result of which will not fit into a 32bit destination register.
+  VC - Overflow Clear If the V flag is clear, the reverse of VS.
+  PL - Plus If the N flag is clear after an arithmetical operation.
+       For the purposes of defining 'plus', zero is positive because it isn't negative...
+  MI - Minus  If the N flag is set after an arithmetical operation.
+
+  EQ - Equal  If the Z flag is set after a comparison.
+  NE - Not Equal  If the Z flag is clear after a comparison.
+  HI - Higher Than (Unsigned) If after a comparison the C flag is set AND the Z flag is clear.
+  LS - Lower Than or Same (Unsigned)  If after a comparison the C flag is clear OR the Z flag is set.
+
+  CS - Carry Set  Set if the C flag is set after an arithmetical operation OR a shift operation,
+       the result of which cannot be represented in 32bits.
+       You can think of the C flag as the 33rd bit of the result.
+  CC - Carry Clear  The reverse of CS.
+
+  GE - Greater Than or Equal (signed) If after a comparison...
+       the N flag is set AND the V flag is set or...
+       the N flag is clear AND the V flag is clear.
+
+  GT - Greater Than (signed)  If after a comparison...
+       the N flag is set AND the V flag is set or...
+       the N flag is clear AND the V flag is clear and... the Z flag is clear.
+
+  LE - Less Than or Equal To (signed) If after a comparison...
+       the N flag is set AND the V flag is clear or...
+       the N flag is clear AND the V flag is set and... the Z flag is set.
+
+  LT - Less Than (signed) If after a comparison...
+       the N flag is set AND the V flag is clear or...
+       the N flag is clear AND the V flag is set.
+
+  AL - Always The default condition, so does not need to be explicity stated.
+  NV - Never Not particularly useful, it states that the instruction should never be executed. A kind of Poor Mans' NOP.
+       NV was included for completeness (as the reverse of AL), but you should not use it in your own code.
+
+  BEQ   Branch if EQual
+  BNE   Branch if Not Equal
+  BVS   Branch if oVerflow Set
+  BVC   Branch if oVerflow Clear
+  BHI   Branch if HIgher
+  BLS   Branch if Lower or the Same
+  BPL   Branch if PLus
+  BMI   Branch if MInus
+
+  BCS   Branch if Carry Set
+  BHS   Branch if Higher or Same
+  BCC   Branch if Carry Clear
+  BLO   Branch if LOwer
+
+
+  BGE   Branch if Greater than or Equal
+  BGT   Branch if Greater Than
+  BLE   Branch if Less than or Equal
+  BLT   Branch if Less Than
+
+Somewhere in the specifications of ARM CPUs it states that CMP is like a SUB instruction without register overwrite
+
+  mov  r0,0
+  mov  r1,1
+  cmp  r0,r1
+
+As "cmp r0,r1" is equivalent to "sub r0,r0,r1" (without writing r0) and equivalent to "r0 - r1"
+then the Carry flag (C) should be set in this example, but IT IS NOT, at least for the CMP instruction.
+
+This means that the CS (Carry Set) and CC (Carry Clear) condition codes must be interpreted inverted:
+  CC : "r0 Unsigned lower than r1",           (normally r0 > r1)
+  CS : "r0 Unsigned higher or same than r1",  (normally r0 <= r1)
+
+This leads to weird condition codes for comparing and branching, for people that have been programming i86 and 68000.
+Is this a specification fault of ARM?
+
+Yes, it's different from some architectures
+It's not wrong, it's just different. ARM uses C as a NOT-borrow flag for subtraction operations.
+
+Borrow is the inverted Carry:
+  r0 <  r1: r0 + complement2(r1)  -> Carry Clear
+  r0 >= r1: r0 + complement2(r1)  -> Carry Set
+
+Because, when using ADD with the 2complement of the substractor,
+and substractor is higher, the Carry is not set (Borrow).
+But if the substractor is lower, and adding its 2complement, the carry is set (Borrow).
+
+You mean that when using SUB it negates the Carry,very advanced. :)
+Maybe it uses a complement2() and Add() the ARM processor, when instructing a SUB.
+
+Basically the Carry flag is just the carry-out of the 32-bit adder (ie. bit 32).
+There is no borrow flag or anything similar.
+
+The ARM-ARM explicitly states that subtract is done
+by inverting the input and forcing the carry input flag to 1.
+
+You're right that the meaning of that carry flag depends on the operation you've done,
+after an add it gives you Unsigned overflow, after subtract it tells you which operand is larger.
+If you use CC/CS for add, and LO/HI/LS/HS for sub
+then you can avoid having to think about the details...
+
+All ALUs use ones-complement and set the carry-in to implement subtract.
+This is almost the same as your complement2()
+except when both operands are zero (0 + 0 gives carry clear, 0 - 0 gives carry set).
+
+条件码标志
+  N、Z、C、V均为条件码标志位。它们的内容可被算术或逻辑运算的结果所改变, 并且可以决定某条指令是否被执行。条件码标志各位的具体含义如下表所示:
+    N——本位设置成当前指令运算结果的bit[31]的值。当两个表示的有符号整数运算时, n=1表示运算结果为负数, n=0表示结果为正书或零。
+    Z——Z=1表示运算的结果为零；Z=0表示运算的结果不为零。对于CMP指令, Z=1表示进行比较的两个数大小相等。
+    V——对于加减运算指令, 当操作数和运算结果为二进制的补码表示的带符号数时, V=1表示符号为溢出；通常其他指令不影响V位。
+    C——下面分四种情况讨论C的设置方法:
+      在加法指令中（包括比较指令CMN）, 当结果产生了进位,则C=1,表示无符号运算发生上溢出；其他情况C=0。
+      在减法指令中（包括比较指令CMP）, 当运算中发生借位, 则C=0, 表示无符号运算数发生下溢出；其他情况下C=1。
+      对于包含移位操作的非加减运算指令, C中包含最后一次溢出的的位的数值,
+      对于其他非加减运算指令, C位的值通常不受影响
+
+指令的条件码
+  条件码 助记符后缀   标 志                 含 义
+ NV            忽略
+ AL            忽略                  无条件执行
+ EQ            Z置位                 相等
+ NE            Z清零                 不相等
+ MI            N置位                 负数
+ PL            N清零                 正数或零
+ VS            V置位                 溢出
+ VC            V清零                 未溢出
+ LS            C清零Z置位            无符号数小于或等于
+ HI            C置位Z清零            无符号数大于
+ CS            C置位                 无符号数大于或等于
+ HS            C置位                 无符号数大于或等于
+ CC            C清零                 无符号数小于
+ LO            C清零                 无符号数小于
+ GE            N等于V                带符号数大于或等于
+ LT            N不等于V              带符号数小于
+ GT            Z清零且（N等于V）     带符号数大于
+ LE            Z置位或（N不等于V）   带符号数小于或等于
+
+比较指令通常用于把一个寄存器与一个32位的值进行比较或测试.
+比较指令根据结果更新cpsr的标志位,但不影响参与比较的寄存器内容.
+在设置标志位后,其他指令可通过条件执行来改变程序的执行流程.
+对于比较指令,不需要使用S后缀就可以改变标志位.
+
+指令语法:<指令>{<cond>} Rn, Rs // 其中Rs是桶形移位器的操作结果
+  CMN   取负比较    标记根据 Rn + Rs 的值设置
+  CMP   比较        标记根据 Rn - Rs 的值设置
+  TEQ   等值测试    标记根据 Rn ^ Rs 的值设置
+  TST   位测试      标记根据 Rn & Rs 的值设置
+
+  cmp     Works like subs, but does not store the result.
+  cmn     Works like adds, but does not store the result.
+  tst     Works like ands, but does not store the result.
+  teq     Works like eors, but does not store the result.
+
+CMP/CMN 比较指令本质上就是一个不返回运算结果的减法指令;
+TST     指令就是一个没有保存结果的逻辑与操作;
+TEQ     则是一个逻辑异或操作.对于每个操作,不需要保存结果,只根据结果影响cpsr.
+
+//------------------------------------------------------------------------------------------------------------------------------
+// 关于C、V值更多的解释
+//------------------------------------------------------------------------------------------------------------------------------
+
+  处理器对两个操作数进行运算时,
+  按照无符号数求得结果, 并相应设置进位标志C；
+  同时, 根据是否超出有符号数的范围设置溢出标志V。
+  如果将参加运算的操作数认为是无符号数, 就应该关心进位；
+  如果将参加运算的操作数认为是有符号数, 则要注意是否溢出。
+
+  溢出标志V和进位标志C是两个意义不同的标志。
+
+    进位标志C表示无符号数运算结果是否超出范围 -- 运算结果仍然正确(部分)
+    溢出标志V表示有符号数运算结果是否超出范围 -- 运算结果已经不正确
+
+      处理器内部以补码表示有符号数,
+      8个二制位能够表达的整数范围是: +127 ~ -128,
+      16位表达的范围是: +32767 ~ -128。
+      如果运算结果超出了这个范围, 就是产生了溢出,
+      有溢出, 说明有符号数的运算结果需要考虑溢出情况。
+
+      判断运算结果是否溢出有一个简单的规则:
+两个正数相加得到负数,就是溢出了. (或一个正数减一个负数)
+两个负数相加得到正数,就是溢出了.
+一个正数和一个负数相加不可能溢出
+      当两个相同符号数相加，而运算结果的符号与原数据符号相反时，产生溢出
+
+    3A + 7C＝B6
+    无符号数运算：58＋124＝182 范围内，无进位
+    有符号数运算：58＋124＝182 范围外，有溢出
+
+    AA + 7C＝ 1 26
+    无符号数运算：170＋124＝294 范围外，有进位
+    有符号数运算：－86＋124＝38 范围内，无溢出
+
+  处理器对两个操作数进行运算时按照无符号数求得结果，
+  并相应设置进位标志CF - 根据是否超出有符号数的范围设置溢出标志OF。
+
+
+x86处理器的EFLAGS的CF位和ARM的CSPR的C位，
+在使用加法指令的时候对进位的影响是一样的，
+  如果有进位，那么x86处理器的EFLAGS的CF位，否则没有产生进位则CF被置0
+  如果有进位，那么ARM的CSPR的C位都置1，否则没有产生进位则C被置0
+
+在使用减法指令的时候，
+  X86的做法是，如果产生借位，那么CF位置1，否则没有产生借位则CF被置0
+
+  ARM的做法是，如果减法产生借位（无符号数下溢）则C被置0, 否则没有产生借位（没有溢出）则C被置1
+    比如：1 - 2 被视为：1 + (-2) = 0x0000 0001 + 0xFFFF FFFE = 0xFFFF FFFF : 虽然产生了借位，但进位 CF 为0。因为没有跨过32位最大无符号数的界限。
+    又如：2 - 1 被视为：2 + (-1) = 0x0000 0002 + 0xFFFF FFFF = 0x0000 0001 : 虽然没有产生借位，但进位 CF 为1。因为跨过了32位最大无符号数的界限。
+    CF = Bit32
+
+ADD     加法。
+ADC     带进位加法。
+
+SUB     减法。
+SBC     带进位减法。
+
+RSB     反向减法。
+RSC     带进位反向减法（仅 ARM）。
+
+ADC, ADD, RSB, SBC, and SUB
+
+  ADD{S} {Rd,} Rn, <Rm|#imm>
+  SUB{S} {Rd,} Rn, <Rm|#imm>
+  ADCS   {Rd,} Rn, Rm
+  SBCS   {Rd,} Rn, Rm
+  RSBS   {Rd,} Rn, Rm, #0
+
+Operation
+
+  The ADD instruction adds the value in Rn to the value in Rm
+    or an immediate value specified by imm
+    and places the result in the register specified by Rd.
+
+  The ADDS instruction performs the same operation as ADD and also updates the N, Z, C and V flags.
+
+  The ADCS instruction adds the value in Rn to the value in Rm,
+    adding a further one if the carry flag is set,
+    places the result in the register specified by Rd and updates the N, Z, C, and V flags.
+
+  The SUB instruction subtracts the value in Rm or the immediate specified by imm.
+    It places the result in the register specified by Rd.
+
+  The SUBS instruction performs the same operation as SUB and also updates the N, Z, C and V flags.
+
+  The SBCS instruction subtracts the value of Rm from the value in Rn,
+    deducts a further one if the carry flag is set.
+    It places the result in the register specified by Rd and updates the N, Z, C and V flags.
+
+
+  The RSBS instruction subtracts the value in Rn from zero, producing the arithmetic negative of the value,
+  and places the result in the register specified by Rd and updates the N, Z, C and V flags.
+
+  Use ADC and SBC to synthesize multiword arithmetic, see Examples.
+
+  Example 3.1. 64-bit addition
+    ADDS    R0, R0, R2    ; add the least significant words
+    ADCS    R1, R1, R3    ; add the most significant words with carry
+
+  Example 3.1 shows two instructions that add a 64-bit integer contained in R0 and R1
+  to another 64-bit integer contained in R2 and R3,
+  and place the result in R0 and R1.
+
+  Example 3.2. 96-bit subtraction
+    SUBS    R4, R4, R1    ; subtract the least significant words
+    SBCS    R5, R5, R2    ; subtract the middle words with carry
+    SBCS    R6, R6, R3    ; subtract the most significant words with carry
+
+  Multiword values do not have to use consecutive registers.
+  Example 3.2 shows instructions that subtract a 96-bit integer contained in R1, R2, and R3
+  from another contained in R4, R5, and R6.
+  The example stores the result in R4, R5, and R6.
+
+  Example 3.3.  Arithmetic negation
+    RSBS    R7, R7, #0    ; subtract R7 from zero
+  Example 3.3 shows the RSBS instruction used
+  to perform a 1's complement of a single register.
+
+CMP and CMN
+  Compare and Compare Negative.
+  Syntax
+  CMN Rn, Rm
+  CMP Rn, #imm
+  CMP Rn, Rm
+  where:
+    Rn    is the register holding the first operand.
+    Rm    is the register to compare with.
+    imm    is the immediate value to compare with.
+
+  Operation
+
+  These instructions compare the value in a register with either the value in another register or an immediate value.
+  They update the condition flags on the result, but do not write the result to a register.
+
+  The CMP instruction subtracts either the value in the register specified by Rm,
+  or the immediate imm from the value in Rn and updates the flags.
+  This is the same as a SUBS instruction, except that the result is discarded.
+
+  The CMN instruction adds the value of Rm to the value in Rn and updates the flags.
+  This is the same as an ADDS instruction, except that the result is discarded.
+
+//------------------------------------------------------------------------------------------------------------------------------
+// (经典解释)：原码、反码和补码
+//------------------------------------------------------------------------------------------------------------------------------
+处理器内部以补码表示有符号数<无符号数> : 数值一律用补码来表示（存储）?
+
+补码的设计目的是: 使减法运算转换为加法运算
+两个用补码表示的数相加时，如果最高位（符号位）有进位，则进位被舍弃。
+
+计算机里面，只有加法器，没有减法器，所有的减法运算，都必须用加法进行
+计算时加上正数，是不需要进行求取补数的；
+只有进行减法（或者加上负数），才需要对减数求补数。
+
+二进制数的模
+位二进制数的模可以按照十进制写成 2^8，1-0000-0000           按照十进制，它就是 256
+位数二进制数的模可以按照十进制 2^16，1-0000-0000-0000-0000 按照十进制，它就是 65536
+
+补码就是按照这个要求来定义的：正数不变，负数即用模减去绝对值
+
+正数不变 : 正数的补码和原码相同 :  127 --> 0111-1111
+负数补码 : 负数即用模减去绝对值 : -127 --> 256 - 127 = 129 --> 1000-0001
+           相当于是将其原码绝对值各位求反之后在末位再加1
+           : 127 --> 111-1111
+           : NOT --> 000-0000
+           : +1      000-0001
+           :         000-0001
+           :符号位 1 000-0001
+
+正数的最高位都是0，负数的最高位都是1。
+这最高位的1、0是自然出现的
+  -- 正数的补码都是和原码相同。
+  -- 负数的补码是负数即用模减去绝对值
+  -128 -127 .. -1 0 1 .. 127
+
+一个数和它的补码是可逆的。已知一个数的补码，求原码的操作分两种情况 :
+
+如果补码的MSB=“0”，表示是一个正数，所以补码就是该数的原码。
+如果补码的MSB=“1”，表示是一个负数，求原码的操作可以是：
+                     模减去绝对值 : 符号位为1，其余各位取反，然后再整个数加1。
+0000-0000
+                     - 1000-0001
+                     -----------
+                       0111-1111
+
+
+
+  8个二制位能够表达的整数范围是: +127 ~ -128,
+  16位表达的范围是: +32767 ~ -128。
+
+无符号数  127               128       129             255         0         1             127             128
+
+          0-1111111 <---    1-0000000 1-0000001 ....  1-1111111   0-0000000 0-0000001 ... 0-1111111  ---> 1-0000000
+
+有符号数  127 : Underflow   -128      -127            -1          0         1             127             -128 : Overflow
+          正数 <--- 负数    负数     符号位=1        负数           正数       符号位=0       正数        ---> 负数
+                            数值取反 + 1                          数值不变

@@ -1,0 +1,94 @@
+;https://gitee.com/zengfr/romhack
+;https://github.com/zengfr/romhack
+{	game = "dino",
+	address = {
+		screen_left = 0xFF8744,
+		game_phase  = 0xFF0A4B,
+	},
+	offset = {
+		flip_x = 0x24,
+		pos_x  = 0x08,
+		pos_z  = 0x10,
+	},
+	objects = {
+		{address = 0xFF8874, number = 0x18, space = 0x0C0, active = {0x14,0x16,0x4C,0xB0}, projectile = true}, --items
+		{address = 0xFFB274, number = 0x03, space = 0x180, alive = 0x6C, invulnerable = 0x118}, --players
+		{address = 0xFFB6F4, number = 0x18, space = 0x0C0, alive = 0x6C, projectile = true}, --etc
+		{address = 0xFFC8F4, number = 0x18, space = 0x0E0, alive = 0x6C}, --enemies
+	},
+	box = {
+		radius_read = memory.readword,
+		val_x = 0x4, val_y = 0x8, rad_x = 0x6, rad_y = 0xA,
+		radscale = 2,
+	},
+	box_list = {
+		{id_ptr = 0x48, type = "vulnerability", special_offset = 0x2},
+		{id_ptr = 0x48, type = "vulnerability", special_offset = 0xE},
+		{id_ptr = 0x49, type = "attack", special_offset = 0x2},
+	},
+	id_read = memory.readbyte,
+	exist_val = 0x0101,
+	box_address = function(obj, box, box_entry)
+		local address = memory.readdword(obj.base + 0x44)
+		if address == 0x106000 then --dinosaurs
+			address = address + memory.readword(address + box.id * 2)
+			if not box_entry.special_offset or (memory.readword(address) == 0 and box_entry.special_offset > 0x2) then
+				return nil
+			end
+			return address + box_entry.special_offset
+		end
+		return address + box.id * 0xC --everything else
+	end,
+},
+{	game = "punisher",
+	address = {
+		camera_mode = 0xFF5BD3,
+		screen_left = {[1] = 0xFF7376, [88] = 0xFF747C},
+		game_phase  = 0xFF4E81,
+	},
+	offset = {
+		flip_x = 0x07,
+		pos_x  = 0x20,
+		pos_z  = 0x28,
+		hitbox_ptr = 0x30,
+	},
+	objects = {
+		{address = 0xFF8E68, number = 0x02, space = 0x100}, --players
+		{address = 0xFF9068, number = 0x20, space = 0x0C0, projectile = true}, --shots
+		{address = 0xFFA868, number = 0x10, space = 0x0C0, hp = 0x36, alive = 0x16, active = 0x1A}, --enemies
+		{address = 0xFFB468, number = 0x19, space = 0x0C0, active = {0x1C,0x86}, projectile = true}, --big items
+		{address = 0xFFC728, number = 0x38, space = 0x0C0, alive = 0x0A, projectile = true}, --shots & small items
+	},
+	box = {
+		radius_read = memory.readword,
+		val_x = 0x4, val_y = 0x8, rad_x = 0x6, rad_y = 0xA,
+		radscale = 2,
+	},
+	box_list = {
+		{id_ptr = 0x3E, type = "vulnerability"},
+		{id_ptr = 0x3C, type = "attack"},
+	},
+	id_read = memory.readword,
+	box_address = function(obj, box, box_entry)
+		local address = memory.readdword(obj.base + 0x30) + box.id
+		if memory.readword(obj.base + 0x1A) == 0x2C and box.type == "proj. attack" then --lasers
+			obj.box_count = memory.readword(address)
+			obj.dx        = memory.readwordsigned(address + 0x2) * (obj.flip_x > 0 and -1 or 1)
+			obj.dy        = memory.readwordsigned(address + 0x4)
+			for n = 1, obj.box_count do
+				local box = {
+					type = box.type,
+					left   = obj.pos_x + obj.dx * (n-1),
+					top    = obj.pos_y - obj.dy * (n-1), 
+					right  = obj.pos_x + obj.dx * n,
+					bottom = obj.pos_y - obj.dy * n,
+				}
+				box.val_x = (box.left + box.right)/2
+				box.val_y = (box.top + box.bottom)/2
+				table.insert(obj, box)
+			end
+			return nil
+		end
+		return address
+	end,
+},

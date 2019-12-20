@@ -1,0 +1,33 @@
+https://github.com/zengfr/romhack
+Administrative Privileges
+erfg12 edited this page on 22 Mar 2018 ¡¤ 7 revisions
+When creating a new trainer project with the memory.dll you need to have the program run with raised privileges. In order to make Windows ask for admin privileges when the application is opened, you need to do the follow changes to your project:
+
+You can do OneClick security with a code signing certificate, or...
+
+In Visual Studio...
+
+Project > Add New Item > Visual C# Items > General > "Application Manifest File".
+
+Change the requestedExecutionLevel element to:
+
+<requestedExecutionLevel level="requireAdministrator" uiAccess="false" />
+
+
+    static async void Test4MemLib(string[] args)
+        {
+                Mem MemLib = new Mem();
+              MemLib.OpenProcess("mame64.exe");
+            StringBuilder sb = new StringBuilder();
+            foreach (var item in MemLib.modules)
+            {
+                sb.AppendFormat("{0} - {1}{2}", item.Key, item.Value, Environment.NewLine);
+            }
+            string result = sb.ToString().TrimEnd();
+            Console.WriteLine("Modules:{0}", result);
+            long myAoBScan = (await MemLib.AoBScan("00 FF 0E 66 00 00 04 1A 00 00 00 C2")).FirstOrDefault();
+            long myAoBScan2 = (await MemLib.AoBScan("00 FF 0E 66")).FirstOrDefault();
+            byte[] bb = MemLib.readBytes("base+0x00",16);
+            Console.WriteLine("myAoBScan:{0}", myAoBScan);
+            Console.ReadLine();
+        }

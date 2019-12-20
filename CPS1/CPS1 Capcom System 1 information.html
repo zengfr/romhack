@@ -1,0 +1,256 @@
+<HTML>
+<HEAD>
+<TITLE>Capcom System 1 information</TITLE>
+</HEAD>
+<BODY TEXT="#000000" BACKGROUND="bkg.gif" FONT="#EDEDED" LINK="#FF0000" VLINK="#AF0000" ALINK="#FF0000">
+<CENTER>
+<!--#config timefmt="%I%M%S"-->
+<center>
+<TABLE BORDER="0" CELLPADDING="5" CELLSPACING="0" WIDTH="468" BGCOLOR="#000000">
+<TR>
+<TD ALIGN="left">
+<iframe src="http://www.vintagegaming.com/sponsors.shtml" width=468 height=60 marginwidth=0 marginheight=0 hspace=0 vspace=0 frameborder=0 scrolling=no bordercolor="#000000"></iframe>
+</TD>
+</TR>
+</TABLE>
+<A HREF="http://ad.doubleclick.net/jump/vintagegaming.com/;abr=!ie4;abr=!ie5;sz=468x60";ord=46597290?">
+<IMG BORDER=0 SRC="http://ad.doubleclick.net/ad/vintagegaming.com/;abr=!ie4;abr=!ie5a;sz=468x60";ord=46597290?"></a>
+</center>
+
+
+<H2>Capcom System 1</H2>
+</CENTER>
+<H4>
+<PRE>
+System Information:
+    Resolution 384 x 224 (3 Graphics planes / 16 colors per tile)
+    32 Palette of 16 colors per Scroll and Sprites (4 palette blocks total)
+    Max sprites 256? Sprite size from 16 x 16 to 240(256?) x 240(256?)
+    M680000 CPU for game.
+    Z80, YM-2151 and OKIM6295 for sound.
+
+68000 Memory Addresses:
+    $000000 $1fffff 68000 ROM
+    $800000 $800003 Player input ports        
+    $800010 $800013 ??
+    $800018 $80001f Input ports
+    $800020 $800021 ? Used by Rockman ?
+    $800030 $800031 Coin Control
+    $800040 $800041 Forgotten Dial 0 reset
+    $800048 $800049 Forgotten Dial 1 reset
+    $800052 $800055 forgotten worlds
+    $80005a $80005d forgotten worlds
+    $800176 $800177 Extra input ports
+    $800100 $8001ff Output ports
+    $800180 $800181 Sound command
+    $800188 $800189 Sound fade
+    $8001fc $8001fc Input ports (SF Rev E)
+    $900000 $92ffff Gfx ram
+    $f0e000 $f0efff Slammasters protection
+    $f18000 $f19fff QSound RAM
+    $f1c000 $f1c001 Player 3 controls (later games)
+    $f1c002 $f1c003 Player 4 controls (later games - muscle bombers)
+    $f1c004 $f1c005 Coin control2 (later games)
+    $f1c006 $f1c007 EEPROM
+    $ff0000 $ffffff RAM
+	
+Sound Memory Addresses:
+    $0000 $7fff ROM
+    $8000 $bfff Bank 1
+    $d000 $d7ff RAM
+    $f000 $f000 YM2151 Register Port 0
+    $f001 $f001 YM2151 Status Port 0
+    $f002 $f002 OKIM6295 Status _0
+    $f002 $f002 OKIM6295 Data 0
+    $f004 $f004 Sound Bankswitch
+    $f008 $f008 Sound Latch
+    $f00a $f00a Sound timer fade
+
+QSound Memory Addresses:
+    $0000 $7fff ROM
+    $8000 $bfff banked (contains music data)
+    $c000 $cfff RAM
+    $d007 $d007 QSound Status
+    $d000 $d000 QSound Data High
+    $d001 $d001 QSound Data Low
+    $d002 $d002 QSound Cmd
+    $d003 $d003 QSound Bank Switch
+    $f000 $ffff RAM
+
+OUTPUT PORTS (Base address $800000):
+    $00-$01     OBJ RAM base (/256)
+    $02-$03     Scroll1 RAM base (/256)
+    $04-$05     Scroll2 RAM base (/256)
+    $06-$07     Scroll3 RAM base (/256)
+    $08-$09     "Other" RAM - Scroll distortion (/256)
+    $0a-$0b     Palette base (/256)
+    $0c-$0d     Scroll 1 X
+    $0e-$0f     Scroll 1 Y
+    $10-$11     Scroll 2 X
+    $12-$13     Scroll 2 Y
+    $14-$15     Scroll 3 X
+    $16-$17     Scroll 3 Y
+    $18-$19     Related to X pos (xored with $1e0 then $20 added when flip)
+    $1a-$1b     Related to Y pos (xored with $100 when screen flip on)
+    $1c-$1d     Related to X pos (xored with $1e0 then $20 added when flip)
+    $1e-$1f     Related to Y pos (xored with $100 when screen flip on)
+    $20-$21     start offset for the rowscroll matrix
+    $22-$23     unknown but widely used - usually $0e. bit 0 enables rowscroll
+                  on layer 2. bit 15 is flip screen.
+
+Registers move from game to game.. following example Final Fight:
+    $66-$67     Priority mask Sprites
+    $68-$69     Priority mask Layer 1
+    $6a-$6b     Control register (usually $003f)
+    $6e-$6f     Video control register (Layer Enable)
+                Scroll 1 Enable $02
+                Scroll 2 Enable $0C
+                Scroll 2 Enable $0C
+    $70-$71     Priority mask Layer 0
+    $72-$73     Priority mask Layer 2
+
+Fixed registers:
+    $80-$81     Sound command
+    $88-$89     Sound fade
+
+Scroll sizes:
+    Scroll 2 (16 x 16) Width    32 (64 bytes between each horiz. position)
+    Scroll 2 (16 x 16) Height   32
+
+    Offset of each palette entry
+    Sprite Palette  0 to 31 (16 colors per Palette)
+    Scroll1 Palette 32 to 63 (16 colors per Palette)
+    Scroll2 Palette 64 to 95 (16 colors per Palette)
+    Scroll3 Palette 96 to 127 (16 colors per Palette)
+
+    Sprite Table Size   $0800 
+    Row Scroll Size     $0800 
+  
+Scroll 1 (8 x 8 tiles):
+    Attribute word layout:
+        $0001    colour
+        $0002    colour
+        $0004    colour
+        $0008    colour
+        $0010    colour
+        $0020    X Flip
+        $0040    Y Flip
+        $0080
+        $0100
+        $0200
+        $0400
+        $0800
+        $1000
+        $2000
+        $4000
+        $8000
+
+Scroll 2 (16 x 16 tiles):
+    Attribute word layout:
+        $0001    colour
+        $0002    colour
+        $0004    colour
+        $0008    colour
+        $0010    colour
+        $0020    X Flip
+        $0040    Y Flip
+        $0080    ??? Priority
+        $0100    ??? Priority
+        $0200
+        $0400
+        $0800
+        $1000
+        $2000
+        $4000
+        $8000
+
+Scroll 3 (32x32 tiles):
+    Attribute word layout:
+        $0001    colour
+        $0002    colour
+        $0004    colour
+        $0008    colour
+        $0010    colour
+        $0020    X Flip
+        $0040    Y Flip
+        $0080
+        $0100
+        $0200
+        $0400
+        $0800
+        $1000
+        $2000
+        $4000
+        $8000
+
+Sprites:
+    Sprites are represented by a number of 8 byte values
+    xx xx yy yy nn nn aa aa
+    where xxxx  = x position
+    yyyy        = y position
+    nnnn        = tile number
+    aaaa        = attribute word
+        $0001  colour
+        $0002  colour
+        $0004  colour
+        $0008  colour
+        $0010  colour
+        $0020  X Flip
+        $0040  Y Flip
+        $0080  unknown
+        $0100  X block size (in sprites)
+        $0200  X block size
+        $0400  X block size
+        $0800  X block size
+        $1000  Y block size (in sprites)
+        $2000  Y block size
+        $4000  Y block size
+        $8000  Y block size
+
+    The end of the table (may) be marked by an attribute value of $FF00.
+    To use block sprites, the sprites must be layed out in 16 tile
+    (256 pixel) wide blocks.
+
+Input:
+    Player 1 input is $800000 (WORD)
+        $01 Right
+        $02 Left
+        $04 Up
+        $08 Down
+        $10 Button 1    
+        $20 Button 2    
+        $40 Button 3(?) Not used in Final Fight.
+        $80 Button 4(?) 
+
+IRQs:
+    IRQ 2 (Normal 68000 IRQ 2) is the VBlank IRQ
+    IRQ 4 (?)
+
+Comments from Paul Leaman:
+The graphics are all stored in planar format with 4 bits per pixel. The
+graphics appear to be organised in 4 separate banks of memory. There are
+2 banks with two planes per bank for the left half of 16x16 tiles and 2
+further banks for the right half of the 16x16 tiles.
+
+The graphics are very flexible. You aren't restricted to set numbers of
+characters, tiles or sprites. This makes it a perfect system for developing
+new games.
+
+There is a lump of video RAM that holds the sprites, palette, scroll 1,
+scroll 2 and scroll 3. The actual base adresses of these areas within the
+video RAM are controlled by registers. By altering the base addresses, it
+looks like you can double-buffer sprites etc.
+
+There are a set of output registers that control the scrolling and base
+adresses of the video RAM and various layer priorities etc.
+</PRE>
+</H4>
+<HR>
+<CENTER>
+<A HREF="http:\\www.vintagegaming.com">
+<IMG SRC="pacman_anim.gif" WIDTH=468 HEIGHT=60 BORDER=0><BR>
+</A>
+<FONT COLOR="#FF0000"><B>Hosted by the Vintage Gaming Network</B></FONT>
+</CENTER>
+</BODY>
+</HTML>

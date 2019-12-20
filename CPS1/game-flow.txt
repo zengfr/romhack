@@ -1,0 +1,101 @@
+GAMEFLOW
+
+
+
+GAME START
+
+Start
+SystemInit
+	VDP_Init
+	InitZ80
+	InitRamVdpData
+	GameInit
+		LoadBaseTiles
+		CheckRegion
+		NewGame
+			(details below when used for a real new game)
+		DisplaySegaLogo
+			Enable configuration mode cheat control
+			Enable debug mode cheat control
+	(Debug mode if activated)
+	GameIntro
+		PlayIntroOrEndCutscene
+			script  IntroCutscene1
+			script  IntroCutscene2
+			script  IntroCutscene3
+			script  IntroCutscene4
+		TitleScreen
+		If no action, game reset by going back to Start
+		DisplayWitchScreen
+		CheckSRAM
+		Witch intro music and text
+		WitchMainMenu
+			WitchNew
+				NewGame
+					InitGameSettings
+						Clear all flags and important game variables
+						HARDCODED values :
+							Starting Special Battle Record
+							Initial Message Speed
+					InitCharacterDataInRAM
+					HARDCODED starting gold amount
+					Make main character join Force
+				NameCharacter(s)
+				(CheatModeConfiguration)
+				WitchMainMenu (difficulty choice)
+				HARDCODED values :
+					starting map
+					starting X
+					starting Y
+					starting facing
+				MainLoop (see detailed flow)
+			WitchLoad
+			WitchDel
+			WitchCopy
+
+
+
+
+MAIN LOOP
+
+CheckMapSwitch
+CheckBattle
+If battle found then 
+		BattleLoop (returns when battle ends)
+CheckMapSwitch
+ExplorationLoop (returns when warping)
+
+
+
+EXPLORATION LOOP 
+
+Init :
+	HealAliveCharsAndImmortals
+	FadeOutToBlackAll
+	GetMapSetupEntityList
+	InitMapEntities
+	LoadMapEntitySprites
+	ClearMapTempFlags
+	LoadMap
+	SetBaseVIntFunctions
+	RunMapSetupInitFunction
+	PlayMapMusic
+	FadeInFromBlack
+Loop :
+	SetMoveSfx
+	WaitForEvent
+		ProcessMapEvent
+			ProcessMapEventType1 (Warp event, then return to main loop)
+			ProcessMapEventType2 (get into caravan)
+			ProcessMapEventType3 (get into raft)
+			ProcessMapEventType4 (get out of caravan)
+			ProcessMapEventType5 (get out of raft)
+		ProcessPlayerAction
+			Debug actions (if debug mode)
+				DebugModeActionSelect (P1 C + P2 A)
+				DebugFlagSetter (P1 C + P2 B)
+				DebugMapScript (P1 C + P2 C)
+			RunEntityEvent
+			CheckArea (item or description)
+			CaravanActions
+			MainMenuActions

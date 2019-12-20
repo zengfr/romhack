@@ -1,0 +1,91 @@
+https://github.com/zengfr/romhack
+
+Memory Map
+The following is a memory map that was generated based on the MAME source code (.180).  This information is only as accurate as the MAME driver is.  If you see any errors, please let me know what that error is.
+ 
+The Memory Area is related to where the information is from (CPU, Sound Board, etc..), and it may also reflect what it has in common with other hardware.
+Cadillacs and Dinosaurs (Capcom, 1993)
+Memory Area:main_map
+Address Range	Length	Function	Description
+0x0000-0x3FFFFF	4194304	ROM	
+0x800000-0x800007	8	Read Port	IN1 (/* Player input ports */)
+0x800018-0x80001F	8	Read	cps1_dsw_r (/* System input ports / Dip Switches */)
+0x800020-0x800021	2	Read NOP	(/* ? Used by Rockman ? not mapped according to PAL */)
+0x800030-0x800037	8	Write	cps1_coinctrl_w
+0x800100-0x80013F	64	Write, Shared	cps1_cps_a_w, cps_a_regs (/* CPS-A custom */)
+0x800140-0x80017F	64	Read/Write, Shared	cps1_cps_b_r, cps1_cps_b_w, cps_b_regs
+0x800180-0x800187	8	Write	cps1_soundlatch_w (/* Sound command */)
+0x800188-0x80018F	8	Write	cps1_soundlatch2_w (/* Sound timer fade */)
+0x900000-0x92FFFF	196608	RAM Write, Shared	cps1_gfxram_w, gfxram (/* SF2CE executes code from here */)
+0xFF0000-0xFFFFFF	65536	RAM, Shared	mainram
+Memory Area:qsound_main_map
+Address Range	Length	Function	Description
+0x0000-0x1FFFFF	2097152	ROM	
+0x800000-0x800007	8	Read Port	IN1 (/* Player input ports */)
+0x800018-0x80001F	8	Read	cps1_dsw_r (/* System input ports / Dip Switches */)
+0x800030-0x800037	8	Write	cps1_coinctrl_w
+0x800100-0x80013F	64	Write, Shared	cps1_cps_a_w, cps_a_regs (/* CPS-A custom */)
+0x800140-0x80017F	64	Read/Write, Shared	cps1_cps_b_r, cps1_cps_b_w, cps_b_regs (/* CPS-B custom (mapped by LWIO/IOB1 PAL on B-board) */)
+0x900000-0x92FFFF	196608	RAM Write, Shared	cps1_gfxram_w, gfxram (/* SF2CE executes code from here */)
+0xF00000-0xF0FFFF	65536	Read	qsound_rom_r (/* Slammasters protection */)
+0xF18000-0xF19FFF	8192	Read/Write	qsound_sharedram1_r, qsound_sharedram1_w (/* Q RAM */)
+0xF1C000-0xF1C001	2	Read Port	IN2 (/* Player 3 controls (later games) */)
+0xF1C002-0xF1C003	2	Read Port	IN3 (/* Player 4 controls ("Muscle Bombers") */)
+0x00ff	Unused	Active Low
+0xF1C004-0xF1C005	2	Write	cpsq_coinctrl2_w (/* Coin control2 (later games) */)
+0xF1C006-0xF1C007	2	Read Port, Write Port	EEPROMIN, EEPROMOUT
+0xF1E000-0xF1FFFF	8192	Read/Write	qsound_sharedram2_r, qsound_sharedram2_w (/* Q RAM */)
+0xFF0000-0xFFFFFF	65536	RAM, Shared	mainram
+Memory Area:qsound_sub_map
+Address Range	Length	Function	Description
+0x0000-0x7FFF	32768	ROM	
+0x8000-0xBFFF	16384	ROM Bank	bank1 (/* banked (contains music data) */)
+0xC000-0xCFFF	4096	RAM, Shared	qsound_ram1
+0xD000-0xD002	3	Device Write	qsound, qsound_device, qsound_w
+0xD003	1	Write	qsound_banksw_w
+0xD007	1	Device Read	qsound, qsound_device, qsound_r
+0xF000-0xFFFF	4096	RAM, Shared	qsound_ram2
+Memory Area:sub_map
+Address Range	Length	Function	Description
+0x0000-0x7FFF	32768	ROM	
+0x8000-0xBFFF	16384	ROM Bank	bank1
+0xD000-0xD7FF	2048	RAM	
+0xF000-0xF001	2	Device Read/Write	2151, ym2151_device, read, write
+0xF002	1	Device Read/Write	oki, okim6295_device, read, write
+0xF004	1	Write	cps1_snd_bankswitch_w
+0xF006	1	Write	cps1_oki_pin7_w (/* controls pin 7 of OKI chip */)
+0xF008	1	Device Read	soundlatch, generic_latch_8_device, read (/* Sound command */)
+0xF00A	1	Device Read	soundlatch2, generic_latch_8_device, read (/* Sound timer fade */)
+ 
+ROM Map for this game
+ 
+This is the ROM map for the game.  This should tell you what address the ROM is at, how big it is, what it's used for.   
+Memory Area:aboardplds
+Address Range	Length	Label/Location	Description
+0x0000-0x0116	279	"buf1"	CRC(eb122de7)
+0x0000-0x0116	279	"ioa1"	CRC(59c7ee3b)
+0x0000-0x0116	279	"prg2"	CRC(4386879a)
+0x0000-0x0116	279	"rom1"	CRC(41dc73b9)
+Memory Area:audiocpu
+Address Range	Length	Label/Location	Description
+0x0000-0x7FFF	32768	"cd_q.5k"	CRC(605fdb0b)
+Memory Area:bboardplds
+Address Range	Length	Label/Location	Description
+0x0000-0x0116	279	"iob1.12d"	CRC(3abc0700)
+0x0000-0x0116	279	"cd63b.1a"	CRC(ef72e902)
+0x0000-0x0116	279	"bprg1.11d"	CRC(31793da7)
+Memory Area:cboardplds
+Address Range	Length	Label/Location	Description
+0x0000-0x0116	279	"ioc1.ic1"	CRC(0d182081)
+Memory Area:dboardplds
+Address Range	Length	Label/Location	Description
+0x0000-0x0116	279	"d8l1.8l"	CRC(539fc7da)
+0x0000-0x0116	279	"d7l1.7l"	CRC(27b7410d)
+0x0000-0x0116	279	"d10f1.10f"	CRC(6619c494)
+0x0000-0x0116	279	"d9k2.9k"	CRC(cd85a156)
+Memory Area:qsound
+Address Range	Length	Label/Location	Description
+0x0000-0x7FFFF	524288	"cd-q1.1k"	CRC(60927775)
+0x80000-0xFFFFF	524288	"cd-q2.2k"	CRC(770f4c47)
+0x100000-0x17FFFF	524288	"cd-q3.3k"	CRC(2f273ffc)
+0x180000-0x1FFFFF	524288	"cd-q4.4k"	CRC(2c67821d)

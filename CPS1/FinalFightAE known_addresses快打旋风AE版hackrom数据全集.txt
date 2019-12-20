@@ -1,0 +1,297 @@
+
+FinalFightAE known_addresses快打旋风AE版hackrom数据全集.txt
+
+收集整理:zengfr
+资料备份1:https://github.com/zengfr/romhack
+资料备份2:https://gitee.com/zengfr/romhack
+
+800000		(b) Input 2P
+800001		(b) Input 1P
+
+			Input bit mask: X321 UDLR
+				X = unused, but might correspond to JAMMA button 4? Might warrant testing.
+				3 = JAMMA Button 3 (referred to as a cheat button in MAME, triggers SUPER attack in "Japan Hack")
+				2 = JAMMA Button 2 (Jump)
+				1 = JAMMA Button 1 (Attack)
+				U = Joy Up
+				D = Joy Down
+				L = Joy Left
+				R = Joy Right
+
+800018		(b) Other Inputs
+			
+			Other Inputs bit mask: XS21 XXAB
+				
+				x = unknown or unused
+				2 = 2P Start
+				1 = 1P Start
+				A = 2P Coin
+				B = 1P Coin
+				S = Service Mode toggle
+				
+80001A     Dip Switch A
+80001C     Dip Switch B
+80001E     Dip Switch C
+
+========
+VRAM MAP
+========
+OBJ: 900000
+SCROLL 1: 908000
+SCROLL 2: 90C000
+SCROLL 3: 910000
+Palettes: 914000
+
+Base B Registers: 800140
+
+WORK RAM MAP:
+
+FF86e8 to FD90a7 Enemy memory regions, c0 bytes each, 13 slots
+
+FF90a8 to FF9527 Weapons, c0 bytes each, 6 slots
+
+FF9528 to FF9B27 Boss memory, c0 bytes each, 8 slots
+
+FF9B28 to FFB0E8 Different game play handlers memory, such as perfect bonus draw or bonus winner draw handlers, $1d slots
+
+FF13A8		(l) Offset of current target's namebar data
+
+Player 1 input: ffff805c
+Player 2 input: ffff805e
+
+Player active flags: ff807f (1 for p1, 2 for p2, 3 both)
+
+FF0740 to FF0FFF       Top level entity stacks
+FF1000 to FF10FF       Entity manager entity table
+FF1100 to FF110F       Entity manager control ram
+
+FF1244 to F1284        P2 top level entity work ram
+
+FF13A8        	(l) Offset of 1P current target's namebar data
+
+---------------------
+CHARSEL RAM
+---------------------
+FF1514      (b) Bit flags for which players are making a selection: xxxx x321
+FF151E		(w) Charsel countdown timer
+FF1520		(b) Bit flags for active players: xxxx x321
+FF1525		(b)	Charsel 1P base addr and character selection (00 = Guy, 02 = Cody, 04 = Haggar)
+FF152D		(b)	Charsel 2P base addr and character selection (00 = Guy, 02 = Cody, 04 = Haggar)
+---------------------
+
+FF1576      Start of dynamite scene main work ram ($80 bytes)
+FF15F6      Start of dynamite scene p1 draw handler work ram ($30 bytes)
+FF1626      Start of dynamite scene p2 draw handler work ram ($30 bytes)
+
+FF8000 	    (w) Program state, 0 is menu, 2 char select, 6 game play, only game play continually hits game_state jump
+FF800A		(w) Frame counter for Region Warning Screen.
+
+FF801E      (w) score table fifo tail
+FF8020      (w) score table fifo head
+
+FF804c      (b) Inserted credits
+FF805A      (b) Combined player start button data
+FF805C		(b) Controller Inputs 1P, current frame (gets copied to 1P RAM during active gameplay)
+FF805D		(b) Controller inputs 1P, previous frame
+FF805E		(b) Controller Inputs 2P, current frame (gets copied to 2P RAM during active gameplay)
+FF805F		(b) Controller Inputs 2P, previous frame
+
+FF8064      (b) Dip switch B mirror
+FF8065      (b) Dip switch A mirror
+FF8067      (b) Dip switch C mirror
+
+FF807E      (b) Non zero = Free play!
+FF807f      (b) Active player bits, bit 0 - p1, bit 1 - p2
+
+FF8082		(b) Game started.
+					Cleared after memtest (xref: 1705A, 170FC)
+					Set when 1P/2P Start pressed at title (xref: 1182)
+FF8084		(b)	Debug switch (0 = disabled, >0 = enabled)
+FF808D		(b) Unknown, cleared at end of clear_all_layers (xref $2652)
+FF808E		(b) Service Mode Menu? Needs verification.
+
+FF80A6		(w) Frame counter
+FF80A8		(w) DIFFICULTY A setting. Increments when DIFFICULTY A Counter reaches max value.
+FF80AC		(w) DIFFICULTY B setting. Normally can only be set at power-on via dip switches.
+FF80AF        	(b) Time counter
+FF80B0    		(w) Time counter microseconds. Counts up to 01E0 before Time decrements and microseconds roll back to 0.
+FF80BA		(w) Default TIME value for current sublevel
+FF80BE		(b) Level ID
+FF80BF		(b) Sublevel ID
+
+FF80E0		(l) Address pointer for something to do with player inputs in VRAM. Seems to always be 91C000 (xref 2B76)
+FF80E4		(l) Address pointer relating to 1P inputs in VRAM. Seems to always be 920000.
+
+FF80F4		(l) Address pointer relating to 2P inputs in VRAM. Seems to always be 928000.
+
+FF8114		(w) DIFFICULTY A Counter. When max value reached, DIFFICULTY A is incremented by 1 and counter is reset.
+FF8116		(b) Player scrolling enabled/disabled. 00 = enabled, 01 = disabled. Used in some demo sequences.
+
+FF8122		(b) Bonus stage active flag
+FF8123		(b) Uknown, checked as condition to not run difficulty handler (code xref 52FE). Is cleared on new sublevel load (including new level load)
+FF812A		(b) Gameplay demo switch, sublevel intro (00 = not in demo, 01 = in demo)
+FF812B		(b) A flag used during the Uptown elevator demo
+FF8129 		(b) Gameplay demo switch, sublevel outro (00 = not in demo, 01 = in demo, FF = signal demo end?)
+
+FF812e      (w) Memory location of active boss
+
+FF8204 to FF8283 (tbl) Score fifo, 128 bytes
+
+FF8284 to FF8304  (tbl) 1P statusbar target queue table. 8 byte entries.
+			word 0 = offset of target's mem region from FF0000. This word cleared after bar is drawn.
+			word 1 = target current health
+			word 2 = target previous health
+			word 3 = target max health
+			
+FF8304 to FF8384   (tbl) 2P statusbar target queue table. Same format at 1P's.
+
+FF8384        (w) 1P statusbar target queue head pointer
+FF8386        (w) 1P statusbar target queue tail pointer
+FF8388		(w) 2P statusbar target queue head pointer
+FF838A		(w) 2P statusbar target queue tail pointer
+
+FF840C		(w) Level scroll RAM base address
+FF840E		(b) Level scroll state0
+	
+FF8412		(l) Level scroll X-pos
+FF8416		(l) Level scroll Y-pos
+
+FF8436		(w)	Level scroll X current limit (for enemy gates, etc)
+	
+FF845A		(w) Preserved level scroll X-pos
+FF845C		(w) Preserved level scroll Y-pos
+
+FF850C		(l) Pointer to 1st place High Score
+FF8510		(l) Pointer to 2nd place High Score
+FF8514		(l) Pointer to 3rd place High Score
+FF8518		(l) Pointer to 4th place High Score (obsolete, not calculated)
+FF851C		(l) Pointer to 5th place High Score (obsolete, not calculated)
+
+    HIGH SCORE TABLE
+    8 byte entries. A A A A B B B X
+    A = Score digits in nybbles
+    B = ASCII initials
+    X = unused
+
+FF8520		(l) High Score Entry 1 - Points (Default 1ST. 20000 PTS NIN)
+FF8524		(l) High Score Entry 1 - Initials (Default 1ST. 20000 PTS NIN)
+FF8528		(l) High Score Entry 2 - Points (Default 2ND. 19000 PTS KNK)
+FF852C		(l) High Score Entry 2 - Initials (Default 2ND. 19000 PTS KNK)
+FF8530		(l) High Score Entry 3 - Points (Default 3RD. 18000 PTS SIN)
+FF8534		(l) High Score Entry 3 - Initials (Default 3RD. 18000 PTS SIN)
+FF8538		(l) High Score Entry 4 - Points (Unused Default 4TH. 17000 PTS CAP)
+FF853C		(l) High Score Entry 4 - Initials (Unused Default 4TH. 17000 PTS CAP)
+FF8540		(l) High Score Entry 5 - Points (Unused Default 5TH. 16000 PTS CAP)
+FF8544		(l) High Score Entry 5 - Initials (Unused Default 5TH. 16000 PTS CAP)
+
+PLAYER 1 RAM - C0 bytes long
+
+FF8568		(b) 1P RAM start/1P Active Status (00 = inactive, non-zero = active)
+FF856A		(b) 1P state0 ;	Offset for state machine
+								00 = Just initialized
+								02 = Normal gameplay
+								04 = Dead
+								06 = Game Over/Uninit entity
+								08 = Level Intro Demo Mode
+								0A = Level Outro Demo Mode
+								0C = ?
+FF856B		(b) 1P state1
+FF856C		(b) 1P state2
+FF856D		(b) 1P state3
+	
+FF856E		(w) 1P X-pos
+FF8570		(b) 1P X-pos micropixel
+
+FF8572		(w) 1P Y-pos
+FF8574		(b) 1P Y-pos micropixel
+
+FF8576		(w) 1P Y-pos origin
+FF8578		(b) 1P Y-pos origin micropixel
+
+FF857A		(b) Player entity class ID (always 00)
+FF857B		(b) Player number byte (00 = 1P, 01 = 2P)
+FF857C		(b) 1P Player ID 00 = Guy, 01 = Cody, 02 = Haggar
+			
+FF8590		(b) 1P Animation frame counter
+FF8592		(w) 1P Animation frame pointer
+FF8594		(w) 1P Animation controller?
+FF8596		(b) 1P Direction facing 00 = right, 01 = left
+FF859A		(l) 
+FF859E		(b) Movement direction
+					00 = up
+					01 = up/right
+					02 = right
+					03 = down/right
+					04 = down
+					05 = down/left
+					06 = left
+					07 = up/left
+					08 = stand still
+					
+FF85A8		(b) 1P Grip state (00 = no grip, 01 = player is gripping, FF = player is being gripped)
+FF85AC		(w) RAM slot offset from FF8000 of 1P target grip entity
+
+FF85EA		(b) 1P Input, current frame
+FF85EB		(b) 1P Input, previous frame
+FF85EC		(l)	1P Score, same format as seen in High Score table entries
+
+FF85F9		(b) 1P intro/outro demo leader state (00 = leader, !0 = follower)
+			
+FF8617		(b) 1P Preserved frame of walk cycle
+
+PLAYER 2 RAM - C0 bytes long
+
+FF:8628		(b) 2P RAM start/2P Active Status (00 = inactive, non-zero = active) 
+
+FF86AA		(b) 2P Input, current frame
+FF86AB		(b) 2P Input, previous frame
+FF86AC		(l)	2P Score, same format as seen in High Score table entries
+
+
+
+FFB228		 Base address for unique entity class 0C which controls Rolento's elevator
+
+FFCDE8		(guesswork) Large table for keeping track of available RAM slots for different entities. Outrodemo code uses this table to get a boss RAM slot for spawning BossAndore
+FFCF38		(w) Bossram number of free slots
+FFCF3A		(l) Next available Boss ram slot
+
+
+
+FFD46A		(b) 1P and 2P current status (xref sub $61D56)
+				0000 00BA
+				A = 1P status (0 = inactive)
+				B = 2P status
+
+FFD480		(b) Two credits to click in
+
+FFD478		(b) Incremented 
+				
+FFD6AC		(b) Is set during the character bio gameplay demos, but not the other attract mode gameplay demos. (xref (r) 2B4A) (xref (w) 1705E (=0); 17ADC (=1, Guy Bio Demo start); 17BF0 (=0, Guy Bio Demo end); 17C14 (=1, Cody Bio Demo start); 17D28 (=0, Cody Bio Demo end); 17D4C (=1, Haggar Bio Demo start); 17E60 (=0, Haggar Bio Demo end); 1188 (=0, new game start)
+
+
+ROM:
+
+65e7e - Index table for small text string table
+
+ENEMY ID STRUCTURE
+
+00 00 BRED
+00 01 DUG
+00 02 JAKE
+00 03 SIMONS
+01 00 J
+01 01 TWO.P
+02 00 AXL
+02 01 SLASH
+03 00 ANDORE Jr
+03 01 ANDORE
+03 02 G.ANDORE
+03 03 U.ANDORE
+03 04 F.ANDORE
+04 00 G.ORIBER
+04 01 BILL BULL
+04 02 WONG WHO
+05 00 HOLLY WOOD
+05 01 EL GADO
+06 00 ROXY
+06 01 POISON

@@ -1,0 +1,175 @@
+<HTML>
+<HEAD>
+<TITLE>Sega System 16 information</TITLE>
+</HEAD>
+<BODY TEXT="#000000" BACKGROUND="bkg.gif" FONT="#EDEDED" LINK="#FF0000" VLINK="#AF0000" ALINK="#FF0000">
+<CENTER>
+<!--#config timefmt="%I%M%S"-->
+<center>
+<TABLE BORDER="0" CELLPADDING="5" CELLSPACING="0" WIDTH="468" BGCOLOR="#000000">
+<TR>
+<TD ALIGN="left">
+<iframe src="http://www.vintagegaming.com/sponsors.shtml" width=468 height=60 marginwidth=0 marginheight=0 hspace=0 vspace=0 frameborder=0 scrolling=no bordercolor="#000000"></iframe>
+</TD>
+</TR>
+</TABLE>
+<A HREF="http://ad.doubleclick.net/jump/vintagegaming.com/;abr=!ie4;abr=!ie5;sz=468x60";ord=70468139?">
+<IMG BORDER=0 SRC="http://ad.doubleclick.net/ad/vintagegaming.com/;abr=!ie4;abr=!ie5a;sz=468x60";ord=70468139?"></a>
+</center>
+
+
+<H2>Sega System 16</H2>
+</CENTER>
+<H4>
+<PRE>
+System Information:
+   Main CPU is a Motorola 68000 at 10 Mhz with 64K RAM ( + video RAM )
+   Sound CPU is a Zilog Z80 (at 4 Mhz ?)
+   Sounds chip are Yamaha 2151 (FM) and 3012 (DAC)
+
+Memory Map:
+    $00000000   Main 68000 code + misc. data
+    $0001FFFF   
+    $00400000   Scroll video RAM
+    $0040FFFF   
+    $00410000   Fixed video RAM (text page) + video registers
+    $00410FFF            
+    $00440000  Sprites control registers
+    $004403FF                
+    $00840000  Color memory (2048 palette registers)
+    $00840FFF
+    $00C40000  I/O Registers
+    $FFFE0007  Used to control the Z80 program (for sound)
+    $FFFFC000  Main RAM
+    $FFFFFFFF
+
+Scroll Video Ram:
+   The scroll video RAM can contain up to 16384 tiles (256 lines of 64
+   characters). There are 2 bytes for each tile, this is the format:
+
+     AAAAAAAA BBBBBBBB  B7->B0 Tiles number in the bank (256)
+    +76543210+76543210+	A3->A0 Bank selector (16)
+    +--------+--------+ A4     Bank page selection (32 banks/page, 256 chars/bank)                                                    
+                        A5     Priority flag
+                        A7->A6 *function not found yet*
+
+   Colors: the color base register number is BANK * 4.
+
+   Bank selection: If bit A4=0 the bank selected is the value of A3 to A0,
+   if A4 is set to 1 the bank number is:
+   (value of A3 to A0) * 16 * (value of byte $FFFFF095)
+
+Fixed Video RAM
+   The fixed video RAM can contain up to 2048 tiles (but only 26 lines of 42
+   characters are used). There are 2 bytes for each tile, this is the format:
+
+     AAAAAAAA BBBBBBBB  B7->B0 Tiles number in the bank (256)
+    +76543210+76543210+	A0 Bank selector (0 or 1 only)
+    +--------+--------+	A7->A1 Color selector
+
+Color Video Ram:
+   The color video RAM can contain up to 2048 color registers. The 1024 first
+   registers are used for text and scroll video display and the last 1024 are
+   used for sprites. There are 2 bytes for each register, this is the format:
+
+Palette:
+     GBGRBBBB GGGGRRRR  R4->R0 Red value (0-15)
+    +54443210+32103210+ G0->G5 Green value (0-31)
+    +--------+--------+ B4->B0 Blue Value (0-15)
+
+Main Ram:
+   This memory contains, RAM, registers and SRAM.
+
+   Some special bytes:
+   F018: if bit5 is set 1, the screen is not updated
+   F01C: Timer ?
+   F01E: Sprites inactive if set to 0xFF
+   FF00-FFFF : SRAM in Altered Beast and normal RAM in Shinobi.
+
+Video Registers:
+$410E98 Horizontal foreground scroll register (Word)
+$410E9A Horizontal background scroll register (Word)
+$410E90 Vertical background scroll register (Byte)
+$410E92 Vertical foreground scroll register (Byte)
+$418000 Refresh enable
+        $20 Enable refresh
+        $01 Clear screen
+$418028 Video page selection register for background (Word)
+$418038 Video page selection register for foreground (Word)
+$440000 The sprites registers. There are 16 control bytes for each
+$4403FF sprite (64 sprites maximum).
+	0	bottom--	top-----	(screen coordinates)
+	1	???????X	XXXXXXXX	(screen coordinate)
+	2	???????F	FWWWWWWW	(flipx, flipy, logical width)
+	3	TTTTTTTT	TTTTTTTT	(pen data)
+	4	????BBBB	PPCCCCCC	(attributes: bank, priority, color)
+	5	??????ZZ	ZZZZZZZZ	zoomx
+	6	??????ZZ	ZZZZZZZZ	zoomy (defaults to zoomx)
+	7	?						"sprite offset"
+
+    $00 : last sprite line on the screen
+    $01 : first sprites line on the screen (sprites height = [00]-[01])
+    $02 : high value of the sprite X position
+    $03 : low value of the sprite X position (X = [02] * 256 + [03])
+    $04 : horizontal sprite flipping flag (flip if value = 01)
+    $05 : sprite width (real width = [05] * 2) (!! signed byte)
+          if the bit7 is set to 1, the sprite is flipped vertically
+    $06 : high value of sprite rom position 
+    $07 : low value of sprite rom position
+    $08 : sprite bank selector
+          bit7-bit4 are always at 1 if the sprite is active
+          bit3-bit0 is the sprite bank number (0-F)
+    $09 : sprites priority and base color register selector
+          bit7-bit6: 10 - foreground sprite
+                    01 - background sprite
+                    11 - sprite over everything
+          bit5-bit0: base color registers (is 1024 + 16 * value)
+    $0A : zoom function \
+    $0B : zoom function - unknown format (never used in Shinobi)
+    $0C to $0F are not used in current emulated games
+   
+    The sprite location in bank is ([06] * 256 + [07] + [05]) * 2
+
+I/O Registers:
+$C41003 1st Player Control
+    Bit 0 - Magic   Bit 4 - Down
+    Bit 1 - Attack  Bit 5 - Up
+    Bit 2 - Jump    Bit 6 - Right
+    Bit 3 - Unused  Bit 7 - Left
+$C41007 2nd Player Control    same as 1P
+$C41001 General Controls
+    Bit 0 - Coin 1  Bit 4 - 1P Start
+    Bit 1 - Coin 2  Bit 5 - 2P Start
+    Bit 2 - Test    Bit 6 - Unused
+    Bit 3 - Service Bit 7 - Unused
+$C42001 Dip Switch settings #1 - Game configuration
+$C42003 Dip Switch settings #2 - Coin configuration
+
+Graphics Formats:
+   The sprites: there are 4 bits / pixels (16 colors), colors 0 and 15 are
+   used for transparency. There are 2 pixels coded in each byte, the first
+   pixel coded in bit7 to 4 and the second in bit3 to 0.
+
+   The tiles: the size is 8x8 pixels and there are 3 bits / pixels
+   (8 colors), color 0 is used for transparency.
+
+Sega System 16 Video Hardware:
+    Each scrolling layer (foreground, background) is an arrangement
+    of 4 pages selected from 16 available pages, laid out as follows:
+
+	Page0  Page1
+	Page2  Page3
+
+    Each page is an arrangement of 8x8 tiles, 64 tiles wide, and
+    32 tiles high.
+</PRE>
+</H4>
+<HR>
+<CENTER>
+<A HREF="http:\\www.vintagegaming.com">
+<IMG SRC="pacman_anim.gif" WIDTH=468 HEIGHT=60 BORDER=0><BR>
+</A>
+<FONT COLOR="#FF0000"><B>Hosted by the Vintage Gaming Network</B></FONT>
+</CENTER>
+</BODY>
+</HTML>

@@ -1,0 +1,80 @@
+https://github.com/zengfr/romhack
+
+Edit: IIRC but I might have Width and Height wrong order.
+Sprite format(CPS2) XXXX BBYY LLLL WHPP
+X = X postion
+B = Bank
+Y = Y Position
+L = Location
+W = Tiles(Width)
+H = Tiles
+P = Palette and Flip
+
+
+
+
+
+
+
+
+
+Some more observations. I patched a bit of code to add 8000 to the first parameter of the sprite list. It didn't work out. Seems there might be something with the first 0x1f at 708000-70801f.
+If i zero out the first 0x1f i already get partial sprites visible. If i leave the first 0x1f filled as it would have been on 900000 / 904000 + 1F the game hates me and wants to display no sprites.
+I manually updated the first page of sprites , leaving the first 0x1f filled with zeroes. Sort of works:
+
+Image
+
+We can see there's an offset problem x/y. CPS1 does not use this, i guess some more mods to the sprite code are needed.
+
+This is what charles tells us about sprites on CPS2:
+Code: Select all
+
+ +$00 : pp-- ---- ---- ---- : Priority bits (0=lowest(backmost), 3=highest(frontmost))
+ +$00 : ---- --xx xxxx xxxx : X coordinate
+ +$02 : e--- ---- ---- ---- : End of list flag (1= Hide this and all remaining sprites, 0= Show this sprite)
+ +$02 : -nn- ---- ---- ---- : Tile number bits 17,16
+ +$02 : ---- --yy yyyy yyyy : Y coordinate
+ +$04 : nnnn nnnn nnnn nnnn : Tile number bits 15-0
+ +$06 : hhhh ---- ---- ---- : Sprite height (1 to 16 rows of tiles)
+ +$06 : ---- wwww ---- ---- : Sprite width (1 to 16 columns of tiles)
+ +$06 : ---- ---- o--- ---- : Coordinate offset (0= Offset by X:-64,Y:-16, 1= No offset)
+ +$06 : ---- ---- -yx- ---- : Y flip, X flip (1= enable, 0= disable)
+ +$06 : ---- ---- ---p pppp : Palette number (0-31)
+ Sprites are positioned in a virtual 1024x1024 space.
+The main problem with the non-displaying sprites was in the first two bits.
+Part of the Punisher sprite as seen in ram at 0x700000 on cps2.
+Code: Select all
+
+8106 005A 1011 0020 works
+0106 005A 1011 0020 does not work.
+From some old cps1 doc:
+Code: Select all
+
+Sprites:
+    Sprites are represented by a number of 8 byte values
+    xx xx yy yy nn nn aa aa
+    where xxxx  = x position
+    yyyy        = y position
+    nnnn        = tile number
+    aaaa        = attribute word
+        $0001  colour
+        $0002  colour
+        $0004  colour
+        $0008  colour
+        $0010  colour
+        $0020  X Flip
+        $0040  Y Flip
+        $0080  unknown
+        $0100  X block size (in sprites)
+        $0200  X block size
+        $0400  X block size
+        $0800  X block size
+        $1000  Y block size (in sprites)
+        $2000  Y block size
+        $4000  Y block size
+        $8000  Y block size
+
+    The end of the table (may) be marked by an attribute value of $FF00.
+    To use block sprites, the sprites must be layed out in 16 tile
+    (256 pixel) wide blocks.
+What i read in the old cps1 doc does not seem to match quite what i see with punisher, or i am looking at it the wrong way.

@@ -1,0 +1,2591 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Neo-Geo Assembly Programming for the Absolute Beginner</title>
+<link rel="stylesheet" title="Dark" href="./css/desktop_whiteblack.css" type="text/css" media="screen">
+<link rel="alternate stylesheet" title="Bright" href="./css/desktop_blackwhite.css" type="text/css" media="screen">
+</head>
+<body>
+<div id="title"><h1>Neo-Geo Assembly Programming for the Absolute Beginner</h1>
+Written by <a href="http://ajworld.net/neogeodev/">freem</a> at the tail end of 2015,
+spilling into the beginning of 2016<br/>
+release candidate version 1b (2016/02/02 18:57 Central USA Time/GMT-6)</div>
+
+<h2>Foreword</h2>
+<p>After spending over a year and a half working with this wonderful platform,
+I was requested to make a "from scratch" guide to Neo-Geo programming. This guide
+does not use any libraries (e.g. the NeoBitz kit, DATLib, or freemlib for Neo-Geo).
+If the idea of doing <em>everything</em> in assembly language scares you, there's
+a few alternatives out there for coding Neo-Geo games in C. (All of them either
+spawn from or require parts of the original kit by Fabrice Martinez, Jeff Kurtz,
+et al.)</p>
+
+<p>If the white-on-black color scheme annoys you, please switch to the "Bright"
+color scheme.</p>
+
+<h2>WIP Notes</h2>
+<p>This guide still assumes a lot of information. These gaps will (hopefully)
+be covered in the future.</p>
+
+<p>Things I can think of off the top of my head:</p>
+<ul>
+<li>Visual representation of Fix layer.</li>
+<li>Very basic sprite handling.</li>
+<li>How to handle attract mode, user modes (e.g. demo, gameplay), etc; This might
+be better suited for a later tutorial.</li>
+</ul>
+<p>If there is anything missing from this list that you think should be mentioned,
+please let me know via e-mail (ajk187 on gmail) or on IRC: chat.freenode.org #neogeodev</p>
+
+<p>The actual code is being worked on as well.</p>
+<ul>
+<li>On 2015/12/29, the Dummy sound driver reached the first release candidate stage.</li>
+<li>On 2015/01/21, the first release candidate of the package has been posted.</li>
+</ul>
+
+<hr/>
+
+<h2>Table of Contents</h2>
+<ol>
+<li>
+	<a href="#intro">Introduction</a>
+	<ol>
+		<li><a href="#intro_terms">Terminology/Legend</a></li>
+	</ol>
+</li>
+
+<li>
+	<a href="#neogeo">The Neo-Geo</a>
+	<ol>
+		<li><a href="#ng_specs">Specifications</a></li>
+		<li><a href="#ng_limits">Limitations</a></li>
+	</ol>
+</li>
+
+<li>
+	<a href="#68k">The Motorola 68000</a>
+	<ol>
+		<li><a href="#68k_size">Data Sizes</a></li>
+		<li><a href="#68k_regs">Registers</a></li>
+		<li><a href="#68k_mode">User and Supervisor Modes</a></li>
+		<li><a href="#68k_irq">Interrupts</a></li>
+		<li><a href="#68k_isa">The Instruction Set</a></li>
+	</ol>
+</li>
+
+<li>
+	<a href="#tool">Tools and Utilities</a>
+	<ol>
+		<li><a href="#tool_asm">Assemblers</a></li>
+		<li><a href="#tool_link">Linkers</a></li>
+		<li><a href="#tool_gfx">Graphics Tools</a></li>
+		<li><a href="#tool_sfx">Sound Tools</a></li>
+		<li><a href="#tool_other">Other Tools</a></li>
+	</ol>
+</li>
+
+<li>
+	<a href="#setup">Tools and Workspace Setup</a>
+	<ol>
+		<li><a href="#setup_tools">Tools</a></li>
+		<li><a href="#setup_workspace">Workspace</a></li>
+	</ol>
+</li>
+
+<li>
+	<a href="#structure">Neo-Geo Program Structure</a>
+	<ol>
+		<li><a href="#structure_68kvector">68000 Vectors</a></li>
+		<li><a href="#structure_ngheader">Neo-Geo Header</a></li>
+		<li><a href="#structure_softdips">Software Dips</a></li>
+		<li><a href="#structure_security">Security Code</a></li>
+		<li><a href="#structure_routines">Required Routines</a></li>
+	</ol>
+</li>
+
+<li>
+	<a href="#regsbios">Neo-Geo Registers and System ROM</a>
+	<ol>
+		<li><a href="#regsbios_regs">Neo-Geo Hardware Registers</a></li>
+		<li><a href="#regsbios_bios">The System ROM</a></li>
+	</ol>
+</li>
+
+<li>
+	<a href="#graphics">Graphics System Details</a>
+	<ol>
+		<li><a href="#graphics_registers">Registers</a></li>
+		<li><a href="#graphics_vram">VRAM</a></li>
+		<li><a href="#graphics_fix">Fix Layer</a></li>
+		<li><a href="#graphics_sprites">Sprites</a></li>
+	</ol>
+</li>
+
+<li>
+	<a href="#helloworld">Creating a simple "Hello World" program</a>
+	<ol>
+		<li><a href="#helloworld_contents">Example Project Contents</a></li>
+		<li><a href="#helloworld_vector">The Vectors and Neo-Geo Header</a></li>
+		<li><a href="#helloworld_required">Required Routines</a></li>
+		<li><a href="#helloworld_interrupts">Interrupts</a></li>
+		<li><a href="#helloworld_structure">Code Structure</a></li>
+		<li><a href="#helloworld_fixdisplay">Displaying Items on the Fix Layer</a></li>
+		<li><a href="#helloworld_manual">The "Hello World" String (Manual)</a></li>
+		<li><a href="#helloworld_routine">The "Hello World" String (Routine)</a></li>
+		<li><a href="#helloworld_build">Build Process</a></li>
+		<li><a href="#helloworld_mame">Running the Demo in MAME</a></li>
+	</ol>
+</li>
+
+<li><a href="#reading">Further Reading</a></li>
+</ol>
+
+<hr/>
+
+<h2><a name="intro">Introduction</a></h2>
+<p>This guide is meant to be a beginner's first port of call for learning how to
+program for the Neo-Geo. Some sort of previous programming experience would be
+good to have, even if it's not assembly language.</p>
+
+<p>I can't possibly teach you everything there is to know about the Neo-Geo, sadly.
+That's outside the scope of this document for many reasons, not the least of which
+is that I dislike writing Z80 sound code. :D <br/>
+Plus, introducing too many things this early will likely scare you off.</p>
+
+<p>At this time, the guide assumes you know how to use your computer and how to
+set up various things (e.g. adding programs to and/or changing the PATH).</p>
+
+<h3><a name="intro_terms">Terminology/Legend</a></h3>
+<p>This guide uses a bit of programming jargon that you might not be familiar with.</p>
+
+<h4>Binary Numbers</h4>
+<p>In this guide, binary numbers (0 or 1 for each bit) are displayed
+with a <strong>% prefix</strong> (e.g. %00001111, which is $0F (decimal 15)).</p>
+
+<h4>Hexadecimal Numbers ("hex")</h4>
+<p>In this guide, hex numbers ($0-$F, representing decimal numbers 0-15) are
+displayed with a <strong>$ prefix</strong> (e.g. $10FD80).</p>
+
+<h4>Binary Coded Decimal ("BCD")</h4>
+<p>Binary coded decimal involves using hex values $0-$9 to represent decimal numbers.
+For example, the decimal number 20 would be encoded as hex $20.</p>
+
+<h4>Endianness</h4>
+<p>Generally, processors don't agree on how data is stored internally. There are
+two competing formats, <strong>big endian</strong> (also referred to as "network
+byte order" in other docs) and <strong>little endian</strong>.</p>
+<p>In little endian, the most significant byte is the first to be written, so a
+hex value of $12345678 is stored as $78 $56 $34 $12.</p>
+<p>Luckily, the Neo-Geo doesn't use little endian; it uses big endian instead. A
+hex value of $12345678 will be stored in big endian as $12 $34 $56 $78.</p>
+
+<hr/>
+
+<h2><a name="neogeo">The Neo-Geo</a></h2>
+<p>The Neo-Geo was SNK (and ADK's) solution for arcade operators to switch out
+games easily. It ended up being quite popular, being released in 1989, with the
+last official game being released in 2004. In addition to the arcade machines
+(called "MVS" or "Multi Video System"), there was a home version produced. Later,
+a couple of CD versions of the system were released as well.</p>
+
+<h3><a name="ng_specs">Specifications</a></h3>
+<p>For the time, the Neo-Geo provided a lot of power.</p>
+<ul>
+<li><strong>Main CPU</strong> &mdash; Motorola 68000</li>
+<li><strong>Sound CPU</strong> &mdash; Zilog Z80</li>
+<li><strong>Sound Chip</strong> &mdash; Yamaha YM2610</li>
+<li><strong>DAC Chip</strong> &mdash; Yamaha YM3016</li>
+<li><strong>Graphics Chip</strong> &mdash; custom SNK LSPC ("Line Sprite Controller") and others</li>
+<li><strong>Display Resolution</strong> &mdash; 320x224 (NTSC), 320x240 (PAL)</li>
+</ul>
+
+<hr class="midsection" />
+
+<h3><a name="ng_limits">Limitations</a></h3>
+<p>The cart and CD systems have different sets of limitations. Unless you're
+trying to make the most detailed game ever, you probably won't run into them.</p>
+
+<h4>Shared</h4>
+<p>Both system types run into these limits:</p>
+<ul>
+<li>380 displayable sprites</li>
+<li>96 sprites per scanline</li>
+<li>The palette allows for 256 sets of 16 colors.</li>
+<li>Fix layer can only use the first 16 palettes.</li>
+</ul>
+
+<h4>Cart Systems</h4>
+<p>Cart systems aren't limited by much, since pretty much everything is loaded from ROM.
+Cartridges also have the <em>advantage</em> of being able to use custom hardware. (Some
+examples are the <a href="https://wiki.neogeodev.org/index.php?title=File:Prog-hero_mvs.jpg">link jacks and extra processor on League Bowling and Riding Hero</a>,
+the <a href="https://wiki.neogeodev.org/index.php?title=PROGEOP">CPLD on Metal Slug X</a>,
+and the <a href="https://wiki.neogeodev.org/index.php?title=NEO-CMC">NEO-CMC</a>,
+among others.)</p>
+
+<ul>
+<li><strong>Program data</strong> &mdash; 1MB (without bankswitching)</li>
+<li><strong>Sprite data</strong> &mdash; 128MB (without bankswitching)</li>
+<li><strong>Fix layer data</strong> &mdash; 128KB (without custom hardware)</li>
+<li><strong>ADPCM sample data</strong> &mdash; 16MB</li>
+<li><strong>Music driver data</strong> &mdash; 64KB (without bankswitching)</li>
+</ul>
+
+<h4>CD Systems</h4>
+<p>CD systems are limited in a number of ways, since most data is loaded into RAM.</p>
+
+<ul>
+<li><strong>Total disc size</strong> &mdash; 640-700MB??</li>
+<li><strong>PRG/Program data</strong> &mdash; 2MB?</li>
+<li><strong>SPR/Sprite data</strong> &mdash; 4MB (in 1MB banks?)</li>
+<li><strong>FIX/Fix layer data</strong> &mdash; 128KB</li>
+<li><strong>PCM/PCM sample data</strong> &mdash; 512KB?</li>
+<li><strong>Z80/Music driver data</strong> &mdash; 64KB</li>
+<li><strong>Redbook audio tracks</strong> &mdash; 99?</li>
+<li><strong>No ADPCM-B playback</strong></li>
+<li><strong>No external memory card</strong> (internal/on-board backup memory is available instead)</li>
+<li><strong>No custom hardware</strong> (e.g. SMA chip, CPLDs, etc.)</li>
+</ul>
+
+<p>Getting around these limitations requires loading different files off of the
+disc. When switching a large amount of data, a loading screen should be used.</p>
+
+<hr class="midsection" />
+
+<p>More technical information is found in later sections, closer to the program
+example.</p>
+
+<hr/>
+
+<h2><a name="68k">The Motorola 68000</a></h2>
+<p>At the heart of the Neo-Geo is the Motorola 68000 processor (also manufactured
+by third parties). The same processor (though sometimes a later revision) powers the
+Sega Genesis/Mega Drive, the Commodore Amiga (non-PPC versions), and many arcade
+games of the 1980s and 1990s. You might see the processor being referred to as "m68k"
+or "680x0" in various literature.</p>
+
+<p>Though the 68000 is a 16-bit processor (defined by the external bus size), it is
+more than capable of handling 32-bit values.</p>
+
+<h3><a name="68k_size">Data Sizes</a></h3>
+<p>On the 68000, the size of the data type you use plays an important role in the
+program's layout. The original 68000 is not capable of accessing words and longwords
+on "odd" addresses, so e.g. a word read (two bytes) from $102061 will cause an error.
+This is a very important thing to note, as your code may compile fine, but running
+it will cause a reset.</p>
+
+<table>
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Size</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>byte</td>
+			<td>1 byte (8 bits)</td>
+		</tr>
+		<tr>
+			<td>word</td>
+			<td>2 bytes (16 bits)</td>
+		</tr>
+		<tr>
+			<td>longword/long</td>
+			<td>4 bytes (32 bits)</td>
+		</tr>
+		<tr>
+			<td>quadword/quad</td>
+			<td>8 bytes (64 bits, split across two registers)</td>
+		</tr>
+	</tbody>
+</table>
+
+<h3><a name="68k_regs">Registers</a></h3>
+<p>The 68000 family gives you access to 8 data registers, 7 address registers,
+the stack pointer, and a few others. All registers are 32-bit.</p>
+<table>
+	<thead>
+		<tr>
+			<th>Register Name</th>
+			<th>Type</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>d0-d7</td>
+			<td>Data</td>
+		</tr>
+		<tr>
+			<td>a0-a6</td>
+			<td>Address</td>
+		</tr>
+		<tr>
+			<td>a7/sp</td>
+			<td>Stack Pointer (User)</td>
+		</tr>
+		<tr>
+			<td>pc</td>
+			<td>Program Counter</td>
+		</tr>
+		<tr>
+			<td>ccr</td>
+			<td>Condition Code Register</td>
+		</tr>
+		<tr>
+			<td>sr</td>
+			<td>Status Register</td>
+		</tr>
+	</tbody>
+</table>
+
+<h3><a name="68k_mode">User and Supervisor Modes</a></h3>
+<p>The 68000 has two modes of operation: User mode and Supervisor mode. The
+difference between the two modes is the instructions that are available for use.
+For Neo-Geo development, you're going to be using Supervisor mode, since the System
+ROM uses privileged instructions. It's easier to just set it and forget it,
+compared to using User mode and having to remember to switch back to supervisor
+before calling a system ROM routine, etc.</p>
+
+<h3><a name="68k_irq">Interrupts</a></h3>
+<p>The 68K family is capable of servicing hardware interrupts. On the Neo-Geo,
+these are used for horizontal and vertical blanking. (The CD systems also seem
+to use the third interrupt for file loading?)</p>
+<p>The interrupts are explained in more detail in the example section.</p>
+
+<h3><a name="68k_isa">The Instruction Set</a></h3>
+<p>The 68000's instruction set is much too large to cover here, so you are suggested
+to pick up some extra documentation. The primary reference for the 680x0 family
+is the <u>Motorola M68000 Family Programmer's Reference Manual</u>, which is
+available for download from NXP's site. (See <a href="#reading">Further Reading</a>.)</p>
+
+<p>Other good sources are Internet source engines and possibly your local library.
+There's a lot of literature available for the 68000 family, but remember that you're
+only dealing with the base 68000 (and not any of the successors) without a FPU.</p>
+
+<p><a href="http://mrjester.hapisan.com/04_MC68/">MarkeyJester's 68k Tutorial</a>
+is a good resource for beginners.</p>
+
+<hr/>
+
+<h2><a name="tool">Tools and Utilities</a></h2>
+<p>In order to create the data necessary for a Neo-Geo game/utility/whatever, you're
+going to need some tools.</p>
+
+<h3><a name="tool_asm">Assemblers</a></h3>
+<p>The assembler handles the job of taking your source code and spitting out the
+relevant data in binary format. There are many more assemblers out there than
+what is listed here.</p>
+
+<h4><a href="http://sun.hasenbraten.de/vasm/">vasm</a></h4>
+<p>vasm is a cross-platform assembler that supports a number of architectures,
+including 68000 and Z80. This tutorial uses vasm for assembly.</p>
+
+<h4><a href="https://www.gnu.org/software/binutils/">GNU assembler</a> ("gas")</h4>
+<p>The GNU assembler ("as", "gas") is another option. Its default syntax for M68K
+leaves a bit to be desired, but there are options for getting around it.</p>
+
+<h4><a href="http://john.ccac.rwth-aachen.de:8000/as/">The Macroassembler AS</a></h4>
+<p>AS is another cross-platform assembler that targets a number of architectures.</p>
+
+<hr class="midsection" />
+
+<h3><a name="tool_link">Linkers</a></h3>
+<p>While a linker isn't exactly required, it helps a lot with bigger projects.</p>
+
+<h4><a href="http://sun.hasenbraten.de/vlink/">vlink</a></h4>
+<p>vlink is the recommended linker to use with vasm. It is the linker that
+would be used if this project was more than a simple "Hello World".</p>
+
+<h4><a href="https://www.gnu.org/software/binutils/">GNU linker</a> ("ld")</h4>
+<p>The GNU linker can also be used, if you have a toolchain that supports it.</p>
+
+<hr class="midsection" />
+
+<h3><a name="tool_gfx">Graphics Tools</a></h3>
+<p>Many tools for graphics exist, including converters, viewers, and editors.
+A lot of these tools are Windows-only.</p>
+
+<h4><a href="http://blastar.citavia.de/">NGFX</a></h4>
+<p>NGFX is a tool by blastar for viewing and editing various Neo-Geo graphic formats.
+A public version has not yet been released.</p>
+
+<h4><a href="https://www.dropbox.com/s/je72o63555mbvj1/DATlib_0.2.rar?dl=0">DATLib graphics tools</a></h4>
+<p>A few graphics tools are included with DATLib. This is probably your best bet
+for easily creating Neo-Geo format graphics (until NGFX is released, anyways).</p>
+
+<h4><a href="http://www.geocities.jp/yy_6502/">YY-CHR</a></h4>
+<p>YY-CHR is a graphics editor for various game formats. While the original YY-CHR
+can run in Wine, the later YY-CHR.NET version does not.</p>
+
+<h4><a href="../NeoFixFormat_1.0.zip">NeoFixFormat</a></h4>
+<p>NeoFixFormat is a YY-CHR.NET plugin that allows you to edit Neo-Geo fix tiles.</p>
+
+<h4><a href="https://github.com/freem/NeoSpriteConv">NeoSpriteConv</a></h4>
+<p>Converts 4BPP Sega Master System/Game Gear/Wonderswan Color graphics to a format
+the Neo-Geo can understand (after some manipulation; see ROMWak below).</p>
+
+<hr class="midsection" />
+
+<h3><a name="tool_sfx">Sound Tools</a></h3>
+<p>If there's a weak point in the current Neo-Geo homebrew development scene, it's
+sound. Luckily, 2015 was the year of a few good sound-related tool releases.</p>
+
+<h4><a href="https://www.facebook.com/Neobitz/photos/a.462349983789893.110879.221161891242038/1093044660720419/?type=3">Neo Sound Builder</a></h4>
+<p>Jeff Kurtz's Neo Sound Builder enables you to create ADPCM-A samples and handles
+placement and addresses for you.</p>
+
+<h4><a href="https://github.com/freem/adpcma">ADPCM-A Encoder</a></h4>
+<p>Command line ADPCM-A encoder by freem.</p>
+
+<h4><a href="http://www.smspower.org/forums/11965-VGMLoggingWithOtherEmulators?start=200#66597">ADPCM-B Encoder</a></h4>
+<p>Command line ADPCM-B encoder by ValleyBell and Fred/FRONT.</p>
+
+<hr class="midsection" />
+
+<h3><a name="tool_other">Other Tools</a></h3>
+<p>There are a few other tools that are extremely helpful to have around when
+developing for the Neo-Geo.</p>
+
+<h4><a href="https://www.gnu.org/software/make/#content">GNU make</a></h4>
+<p>GNU Make is just one way of creating a system to build your project.
+Its lack of arithmetic commands (which would be useful for creating the C ROMs)
+may make you want to choose another option.</p>
+
+<h4><a href="https://github.com/freem/romwak">ROMwak</a></h4>
+<p>Originally created by Jeff Kurtz, ROMwak allows you to perform many simple
+binary manipulations (e.g. byteswapping, padding).</p>
+
+<h4><a href="http://cdrtools.sourceforge.net/private/cdrecord.html">mkisofs</a></h4>
+<p>mkisofs is a part of the cdrtools suite. It creates an .iso image, which you
+can then burn and use on your Neo-Geo CD.</p>
+
+<h4><a href="http://mamedev.org/">chdman</a></h4>
+<p>chdman is used to create .chd files from CD images. This is useful for when
+you want to test your Neo-Geo CD program on MAME before burning it to a disc.</p>
+
+<hr/>
+
+<h2><a name="setup">Tools and Workspace Setup</a></h2>
+<p>Before we can begin creating the Hello World project, the tools will need to
+be installed and runnable.</p>
+
+<h3><a name="setup_tools">Tools</a></h3>
+<p>You can use whatever tools you're most comfortable with, but this guide will
+be using vasm (68k target, Motorola syntax) as the assembler. Since the Hello
+World program is small, we don't really need a linker. The graphics are already
+supplied, so you don't have to mess with those if you don't want to.</p>
+
+<p>The source code and binary for the simplest possible sound driver are also
+included. You do not need to have vasm (z80 target, oldstyle syntax) installed unless
+you want to rebuild the sound driver from source.</p>
+
+<h3><a name="setup_workspace">Workspace</a></h3>
+<p>Setting up a project workspace is a matter of personal preference. For the
+most part, I like keeping items separated in directories, based on need.</p>
+
+<p>My typical project workspace looks like this:</p>
+<ul>
+<li><strong>_cart/</strong> &mdash; Output folder for the cartridge ROMs.</li>
+<li><strong>_cd/</strong> &mdash; Folder for holding Neo-Geo CD-specific files.</li>
+<li><strong>pcm/</strong> &mdash; Contains ADPCM-A and ADPCM-B samples.</li>
+<li><strong>spr/</strong> &mdash; Contains sprite data (4BPP Master System/GG/Wonderswan format).</li>
+<li><strong>src_68k/</strong> &mdash; 68000 source code (main program)</li>
+<li><strong>src_z80/</strong> &mdash; Z80 source code (sound program)</li>
+<li><strong>*.fix</strong> &mdash; My fix file typically lives in the root and is copied as needed.</li>
+<li><strong>Makefile</strong> &mdash; A makefile for GNU make.</li>
+</ul>
+<p>You are free to either use or ignore this; modify it to your liking, and
+so on.</p>
+
+<hr/>
+
+<h2><a name="structure">Neo-Geo Program Structure</a></h2>
+
+<h3><a name="structure_68kvector">68000 Vectors</a></h3>
+<p>As with most (if not all) 68k binaries, the first 256 ($100) bytes define
+various addresses for the machine to use. This is typically called the "vector"
+section. The vectors are slightly different depending on if you're targeting cart
+or CD systems. The values marked "(your choice)" are up to you. A typical
+define for these is $C00426, which will reset the system.</p>
+
+<p>All values here are longwords (4 bytes each). (Only three bytes are shown for clarity, as the topmost byte will be $00 in all cases.)</p>
+
+<h4>Cart Systems</h4>
+<table>
+	<thead>
+		<tr>
+			<th>Address</th>
+			<th>Name</th>
+			<th>Description</th>
+			<th>Suggested Default</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>$00</td>
+			<td>Initial Supervisor Stack Pointer</td>
+			<td>Starting location of the supervisor stack.</td>
+			<td>$10F300</td>
+		</tr>
+		<tr>
+			<td>$04</td>
+			<td>Initial Program Counter</td>
+			<td>The first address the program runs on boot.</td>
+			<td>$C00402</td>
+		</tr>
+		<tr>
+			<td>$08</td>
+			<td>Bus Error</td>
+			<td>Used by the development BIOS to launch the built-in monitor.</td>
+			<td>$C00408</td>
+		</tr>
+		<tr>
+			<td>$0C</td>
+			<td>Address Error</td>
+			<td></td>
+			<td>$C0040E</td>
+		</tr>
+		<tr>
+			<td>$10</td>
+			<td>Illegal Instruction</td>
+			<td>Run upon executing the ILLEGAL opcode.</td>
+			<td>$C00414</td>
+		</tr>
+		<tr>
+			<td>$14</td>
+			<td>Divide by 0</td>
+			<td>Computers can't divide by zero.</td>
+			<td>(your choice)</td>
+		</tr>
+		<tr>
+			<td>$18</td>
+			<td>CHK Instruction</td>
+			<td>Run upon executing the CHK opcode.</td>
+			<td>(your choice)</td>
+		</tr>
+		<tr>
+			<td>$1C</td>
+			<td>TRAPV Instruction</td>
+			<td>Run upon executing the TRAPV opcode.</td>
+			<td>(your choice)</td>
+		</tr>
+		<tr>
+			<td>$20</td>
+			<td>Privilege Violation</td>
+			<td>Occurs when using privileged instructions (e.g. those meant for supervisor mode) in user mode.</td>
+			<td>$C0041A</td>
+		</tr>
+		<tr>
+			<td>$24</td>
+			<td>Trace</td>
+			<td>(Runs when the T bit of the stack register is set. ??)</td>
+			<td>$C00420</td>
+		</tr>
+		<tr>
+			<td>$28</td>
+			<td>Line 1010 Emulator</td>
+			<td>Allows you to trap opcodes that start wth the bit pattern %1010.</td>
+			<td>(your choice)</td>
+		</tr>
+		<tr>
+			<td>$2C</td>
+			<td>Line 1111 Emulator</td>
+			<td>Allows you to trap opcodes that start wth the bit pattern %1111.</td>
+			<td>(your choice)</td>
+		</tr>
+		<tr>
+			<td>$30-$3B</td>
+			<td>Reserved</td>
+			<td>(not used for any specific purpose)</td>
+			<td>$C00426</td>
+		</tr>
+		<tr>
+			<td>$3C</td>
+			<td>Uninitialized Interrupt Vector</td>
+			<td></td>
+			<td>$C0042C</td>
+		</tr>
+		<tr>
+			<td>$40-$5F</td>
+			<td>Reserved</td>
+			<td>(not used for any specific purpose)</td>
+			<td>$C00426</td>
+		</tr>
+		<tr>
+			<td>$60</td>
+			<td>Spurious Interrupt</td>
+			<td></td>
+			<td>$C00432</td>
+		</tr>
+		<tr>
+			<td>$64</td>
+			<td>Level 1 Interrupt</td>
+			<td>VBlank IRQ</td>
+			<td>(your choice)</td>
+		</tr>
+		<tr>
+			<td>$68</td>
+			<td>Level 2 Interrupt</td>
+			<td>HBlank IRQ</td>
+			<td>(your choice)</td>
+		</tr>
+		<tr>
+			<td>$6C</td>
+			<td>Level 3 Interrupt</td>
+			<td>Typically unused</td>
+			<td>(your choice)</td>
+		</tr>
+		<tr>
+			<td>$70</td>
+			<td>Level 4 Interrupt</td>
+			<td>Typically unused</td>
+			<td>(your choice)</td>
+		</tr>
+		<tr>
+			<td>$74</td>
+			<td>Level 5 Interrupt</td>
+			<td>Typically unused</td>
+			<td>(your choice)</td>
+		</tr>
+		<tr>
+			<td>$78</td>
+			<td>Level 6 Interrupt</td>
+			<td>Typically unused</td>
+			<td>(your choice)</td>
+		</tr>
+		<tr>
+			<td>$7C</td>
+			<td>Level 7 Interrupt</td>
+			<td>Typically unused</td>
+			<td>(your choice)</td>
+		</tr>
+		<tr>
+			<td>$80-$BC</td>
+			<td>Traps</td>
+			<td>Typically unused. Puzzle Bobble seems to use some of them.</td>
+			<td>(your choice)</td>
+		</tr>
+		<tr>
+			<td>$C0-$FF</td>
+			<td>Reserved</td>
+			<td>(not used for any specific purpose)</td>
+			<td>(your choice)</td>
+		</tr>
+	</tbody>
+</table>
+
+<h4>CD Systems</h4>
+<table>
+	<thead>
+		<tr>
+			<th>Address</th>
+			<th>Name</th>
+			<th>Description</th>
+			<th>Suggested Default</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>$00</td>
+			<td>Initial Supervisor Stack Pointer</td>
+			<td>Starting location of the supervisor stack.</td>
+			<td>$10F300</td>
+		</tr>
+		<tr>
+			<td>$04</td>
+			<td>Initial Program Counter</td>
+			<td>The first address the program runs on boot.</td>
+			<td>$C00402</td>
+		</tr>
+		<tr>
+			<td>$08</td>
+			<td>Bus Error</td>
+			<td>Used by the development BIOS to launch the built-in monitor.</td>
+			<td>$C00408</td>
+		</tr>
+		<tr>
+			<td>$0C</td>
+			<td>Address Error</td>
+			<td></td>
+			<td>$C0040E</td>
+		</tr>
+		<tr>
+			<td>$10</td>
+			<td>Illegal Instruction</td>
+			<td>Run upon executing the ILLEGAL opcode.</td>
+			<td>$C00414</td>
+		</tr>
+		<tr>
+			<td>$14</td>
+			<td>Divide by 0</td>
+			<td>Computers can't divide by zero.</td>
+			<td>(your choice)</td>
+		</tr>
+		<tr>
+			<td>$18</td>
+			<td>CHK Instruction</td>
+			<td>Run upon executing the CHK opcode.</td>
+			<td>(your choice)</td>
+		</tr>
+		<tr>
+			<td>$1C</td>
+			<td>TRAPV Instruction</td>
+			<td>Run upon executing the TRAPV opcode.</td>
+			<td>(your choice)</td>
+		</tr>
+		<tr>
+			<td>$20</td>
+			<td>Privilege Violation</td>
+			<td>Occurs when using privileged instructions (e.g. those meant for supervisor mode) in user mode.</td>
+			<td>$C0041A</td>
+		</tr>
+		<tr>
+			<td>$24</td>
+			<td>Trace</td>
+			<td>(Runs when the T bit of the stack register is set. ??)</td>
+			<td>$C00420</td>
+		</tr>
+		<tr>
+			<td>$28</td>
+			<td>Line 1010 Emulator</td>
+			<td>Allows you to trap opcodes that start wth the bit pattern %1010.</td>
+			<td>(your choice)</td>
+		</tr>
+		<tr>
+			<td>$2C</td>
+			<td>Line 1111 Emulator</td>
+			<td>Allows you to trap opcodes that start wth the bit pattern %1111.</td>
+			<td>(your choice)</td>
+		</tr>
+		<tr>
+			<td>$30-$3B</td>
+			<td>Reserved</td>
+			<td>(not used for any specific purpose)</td>
+			<td>$C00426</td>
+		</tr>
+		<tr>
+			<td>$3C</td>
+			<td>Uninitialized Interrupt Vector</td>
+			<td></td>
+			<td>$C0042C</td>
+		</tr>
+		<tr>
+			<td>$40</td>
+			<td>(CD-specific call?)</td>
+			<td>&nbsp;</td>
+			<td>$C00522</td>
+		</tr>
+		<tr>
+			<td>$44</td>
+			<td>(CD-specific call?)</td>
+			<td>&nbsp;</td>
+			<td>$C00528</td>
+		</tr>
+		<tr>
+			<td>$48</td>
+			<td>(CD-specific call?)</td>
+			<td>&nbsp;</td>
+			<td>$C0052E</td>
+		</tr>
+		<tr>
+			<td>$4C</td>
+			<td>(CD-specific call?)</td>
+			<td>&nbsp;</td>
+			<td>$C00534</td>
+		</tr>
+		<tr>
+			<td>$50</td>
+			<td>(CD-specific call?)</td>
+			<td>&nbsp;</td>
+			<td>$C0053A</td>
+		</tr>
+		<tr>
+			<td>$54</td>
+			<td>(CD-specific call?)</td>
+			<td>&nbsp;</td>
+			<td>$C004F2</td>
+		</tr>
+		<tr>
+			<td>$58</td>
+			<td>(CD-specific call?)</td>
+			<td>&nbsp;</td>
+			<td>$C004EC</td>
+		</tr>
+		<tr>
+			<td>$5C</td>
+			<td>(CD-specific call?)</td>
+			<td>&nbsp;</td>
+			<td>$C004E6</td>
+		</tr>
+		<tr>
+			<td>$60</td>
+			<td>Spurious Interrupt</td>
+			<td></td>
+			<td>$C004E0</td>
+		</tr>
+		<tr>
+			<td>$64</td>
+			<td>Level 1 Interrupt</td>
+			<td>HBlank IRQ</td>
+			<td>(your choice)</td>
+		</tr>
+		<tr>
+			<td>$68</td>
+			<td>Level 2 Interrupt</td>
+			<td>VBlank IRQ</td>
+			<td>(your choice)</td>
+		</tr>
+		<tr>
+			<td>$6C</td>
+			<td>Level 3 Interrupt</td>
+			<td>Used on CD systems for ???.</td>
+			<td>(your choice)</td>
+		</tr>
+		<tr>
+			<td>$70</td>
+			<td>Level 4 Interrupt</td>
+			<td>Typically unused</td>
+			<td>(your choice)</td>
+		</tr>
+		<tr>
+			<td>$74</td>
+			<td>Level 5 Interrupt</td>
+			<td>Typically unused</td>
+			<td>(your choice)</td>
+		</tr>
+		<tr>
+			<td>$78</td>
+			<td>Level 6 Interrupt</td>
+			<td>Typically unused</td>
+			<td>(your choice)</td>
+		</tr>
+		<tr>
+			<td>$7C</td>
+			<td>Level 7 Interrupt</td>
+			<td>Typically unused</td>
+			<td>(your choice)</td>
+		</tr>
+		<tr>
+			<td>$80-$BC</td>
+			<td>Traps</td>
+			<td>Typically unused. Puzzle Bobble seems to use some of them.</td>
+			<td>(your choice)</td>
+		</tr>
+		<tr>
+			<td>$C0-$FF</td>
+			<td>Reserved</td>
+			<td>(not used for any specific purpose)</td>
+			<td>(your choice)</td>
+		</tr>
+	</tbody>
+</table>
+
+<hr class="midsection" />
+
+<h3><a name="structure_ngheader">Neo-Geo Header</a></h3>
+<p>After the vectors, there's a set of values that identify the binary as 
+Neo-Geo compatible.</p>
+
+<table>
+	<thead>
+		<tr>
+			<th>Address</th>
+			<th>Name</th>
+			<th>Length</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>$0100</td>
+			<td>"NEO-GEO" string</td>
+			<td>7 bytes</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>$0107</td>
+			<td>System Version</td>
+			<td>1 byte</td>
+			<td>0 on cart systems... 1 or 2 on Neo-Geo CD?</td>
+		</tr>
+		<tr>
+			<td>$0108</td>
+			<td>NGM/NGH Number</td>
+			<td>2 bytes</td>
+			<td>The game's identifying number, used for memory card saves and MVS bookkeeping.</td>
+		</tr>
+		<tr>
+			<td>$10A</td>
+			<td>Program Size</td>
+			<td>4 bytes</td>
+			<td>The size of the program (in bytes).</td>
+		</tr>
+		<tr>
+			<td>$10E</td>
+			<td>Backup RAM Pointer</td>
+			<td>4 bytes</td>
+			<td>Points to a location in user RAM, used on MVS for saving backup data. (The first two bytes are used for debug dipswitches.)</td>
+		</tr>
+		<tr>
+			<td>$112</td>
+			<td>Game Save Size</td>
+			<td>2 bytes</td>
+			<td>Size of the game's save size (in bytes).</td>
+		</tr>
+		<tr>
+			<td>$114</td>
+			<td>Eyecatch Flag</td>
+			<td>1 byte</td>
+			<td>Determines how/if the BIOS plays the eyecatcher sequence. (0=handled by BIOS; 1=handled by game; 2=don't show)</td>
+		</tr>
+		<tr>
+			<td>$115</td>
+			<td>Eyecatch Sprite Bank</td>
+			<td>1 byte</td>
+			<td>Defines the upper 8 bits of the tile number for the eyecatcher, if handled by the BIOS.</td>
+		</tr>
+		<tr>
+			<td>$116</td>
+			<td>Japanese Soft Dip address</td>
+			<td>4 bytes</td>
+			<td>Pointer to the Japanese Soft Dips.</td>
+		</tr>
+		<tr>
+			<td>$11A</td>
+			<td>USA Soft Dip address</td>
+			<td>4 bytes</td>
+			<td>Pointer to the USA Soft Dips.</td>
+		</tr>
+		<tr>
+			<td>$11E</td>
+			<td>European Soft Dip address</td>
+			<td>4 bytes</td>
+			<td>Pointer to the European Soft Dips.</td>
+		</tr>
+		<tr>
+			<td>$122</td>
+			<td>Jump to USER routine</td>
+			<td>6 bytes</td>
+			<td><code>jmp USER</code></td>
+		</tr>
+		<tr>
+			<td>$128</td>
+			<td>Jump to PLAYER_START routine</td>
+			<td>6 bytes</td>
+			<td><code>jmp PLAYER_START</code></td>
+		</tr>
+		<tr>
+			<td>$12E</td>
+			<td>Jump to DEMO_END routine</td>
+			<td>6 bytes</td>
+			<td><code>jmp DEMO_END</code></td>
+		</tr>
+		<tr>
+			<td>$134</td>
+			<td>Jump to COIN_SOUND routine</td>
+			<td>6 bytes</td>
+			<td><code>jmp COIN_SOUND</code></td>
+		</tr>
+		<tr>
+			<td>$13A-$181</td>
+			<td>(Typically unused?)</td>
+			<td>XX bytes</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>$182</td>
+			<td><a href="#structure_security">Security code</a> location</td>
+			<td>4 bytes</td>
+			<td>Pointer to security code data</td>
+		</tr>
+	</tbody>
+</table>
+
+<hr class="midsection" />
+
+<h3><a name="structure_softdips">Software Dips</a></h3>
+<p>The software dipswitches are accessed via the operator's menu of the MVS.
+(They can also be accessed with the development BIOS; more on that later.)</p>
+
+<table>
+	<thead>
+		<tr>
+			<th>Offset</th>
+			<th>Name</th>
+			<th>Size</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>$00</td>
+			<td>Game Name</td>
+			<td>16 bytes</td>
+			<td>The game's name.</td>
+		</tr>
+		<tr>
+			<td>$10</td>
+			<td>Timed Option 1</td>
+			<td>2 bytes</td>
+			<td>Timed option, BCD values. Maximum is $2959 (29 minutes, 59 seconds). Use $FFFF to disable.</td>
+		</tr>
+		<tr>
+			<td>$12</td>
+			<td>Timed Option 2</td>
+			<td>2 bytes</td>
+			<td>Timed option, BCD values. Maximum is $2959 (29 minutes, 59 seconds). Use $FFFF to disable.</td>
+		</tr>
+		<tr>
+			<td>$14</td>
+			<td>Counter Option 1</td>
+			<td>1 byte</td>
+			<td>A value between 00 and 99; $FFFF to disable.</td>
+		</tr>
+		<tr>
+			<td>$15</td>
+			<td>Counter Option 2</td>
+			<td>1 byte</td>
+			<td>A value between 00 and 99, including "WITHOUT" and "INFINITE" options; $FFFF to disable.</td>
+		</tr>
+		<tr>
+			<td>$16</td>
+			<td>Option Mapping</td>
+			<td>10 bytes</td>
+			<td>Map the default value and number of choices for each option. Use $00 for unused slots.</td>
+		</tr>
+		<tr>
+			<td>$20</td>
+			<td>Option Names and Choices</td>
+			<td>(variable)</td>
+			<td>Each string is 12 bytes long.</td>
+		</tr>
+	</tbody>
+<table>
+
+<h4>Example Software Dipswitch Setting</h4>
+<pre class="code68K">softDips_USA:
+	dc.b "Example Softdips" ; Game name (16 bytes)
+	dc.w $FFFF ; Timed option 1 (disabled)
+	dc.w $FFFF ; Timed option 2 (disabled)
+	dc.b $FF   ; Counter Option 1 (disabled)
+	dc.b $FF   ; Counter Option 2 (disabled)
+
+	; --Option Mapping list-- ;
+	dc.b $02 ; Option 1: Default choice = 0, Num. choices = 2
+	; Fill the rest with $00
+	dc.b $00,$00,$00,$00,$00,$00,$00,$00,$00
+
+	; --Option Defines-- ;
+	; [Option 1]: Demo Sound (On/Off)
+	;    "12characters"
+	dc.b "Demo Sound  " ; Option Title
+	dc.b "On          " ; Choice 1
+	dc.b "Off         " ; Choice 2
+	</pre>
+
+<hr class="midsection" />
+
+<h3><a name="structure_security">Security Code</a></h3>
+<p>In addition to the check for the "NEO-GEO" string, the system ROM checks for
+a chunk of code. This code is typically pointed to at location $000182, though
+some games are known to just put the security code at that address.</p>
+
+<p>The data you'll need to include is as follows (sourced from the
+<a href="https://wiki.neogeodev.org/index.php?title=Security_code">Neo-Geo Development Wiki</a>):</p>
+
+<pre class="code68K">	dc.l $76004A6D,$0A146600,$003C206D,$0A043E2D
+	dc.l $0A0813C0,$00300001,$32100C01,$00FF671A
+	dc.l $30280002,$B02D0ACE,$66103028,$0004B02D
+	dc.l $0ACF6606,$B22D0AD0,$67085088,$51CFFFD4
+	dc.l $36074E75,$206D0A04,$3E2D0A08,$3210E049
+	dc.l $0C0100FF,$671A3010,$B02D0ACE,$66123028
+	dc.l $0002E048,$B02D0ACF,$6606B22D,$0AD06708
+	dc.l $588851CF,$FFD83607
+	dc.w $4E75
+</pre>
+
+<hr class="midsection" />
+
+<h3><a name="structure_routines">Required Routines</a></h3>
+<p>The Neo-Geo header requires the definition of four routines in your code.
+The routines are explained further in the example code.</p>
+
+<h4><code>USER</code> Routine</h4>
+<p>Handles the user request value and performs one of four actions.</p>
+
+<ul>
+<li>0 &mdash; MVS Initialization</li>
+<li>1 &mdash; Custom eyecatch</li>
+<li>2 &mdash; Demo Game, Game Mode</li>
+<li>3 &mdash; Title Display</li>
+</ul>
+
+<h4><code>PLAYER_START</code> Routine</h4>
+<p>Called when one of the start buttons is pressed (both), or if time runs out on
+the title screen (MVS).</p>
+
+<h4><code>DEMO_END</code> Routine</h4>
+<p>Called by the system ROM when the Select button is pressed (MVS mode).</p>
+
+<h4><code>COIN_SOUND</code> Routine</h4>
+<p>The simplest of the four required routines. All <code>COIN_SOUND</code> has
+to do is play the coin sound (send the sound value to the Z80).</p>
+
+<hr/>
+
+<h2><a name="regsbios">Neo-Geo Registers and System ROM</a></h2>
+<p>In order to communicate with the Neo-Geo, you'll need to know what addresses
+to read from and write to. This goes for both hardware registers and RAM
+locations used by the system ROM.</p>
+
+<h3><a name="regsbios_regs">Neo-Geo Hardware Registers</a></h3>
+<p>Communication with the Neo-Geo hardware is primarily done in the $300000-$3FFFFF
+range. CD systems have additional registers (starting at $FF0000?). Only a few
+registers will be documented here. If you want to learn more, please see
+the <a href="https://wiki.neogeodev.org/index.php?title=Memory_mapped_registers">Memory mapped registers page on the Neo-Geo Development Wiki</a>.</p>
+
+<p>Note: The graphics registers are in a separate section below.</p>
+
+<table>
+	<thead>
+		<tr>
+			<th>Address</th>
+			<th>Short Name</th>
+			<th>Description</th>
+			<th>Read Value</th>
+			<th>Write Value</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>$300000</td>
+			<td>REG_P1CNT</td>
+			<td>Player 1 Controller Data<br/><small>(active low; e.g. button pressed=0)</small></td>
+			<td class="containsTable">
+				<table>
+					<thead>
+						<tr>
+							<th>7</th>
+							<th>6</th>
+							<th>5</th>
+							<th>4</th>
+							<th>3</th>
+							<th>2</th>
+							<th>1</th>
+							<th>0</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>D</td>
+							<td>C</td>
+							<td>B</td>
+							<td>A</td>
+							<td>Right</td>
+							<td>Left</td>
+							<td>Down</td>
+							<td>Up</td>
+						</tr>
+					</tbody>
+				</table>
+			</td>
+			<td>(unknown)</td>
+		</tr>
+
+		<tr>
+			<td>$320000</td>
+			<td>REG_SOUND</td>
+			<td>Sound Register</td>
+			<td>Read reply from Z80</td>
+			<td>Send command to Z80</td>
+		</tr>
+
+		<tr>
+			<td>$300001</td>
+			<td>REG_DIPSW</td>
+			<td>Dipswitches and watchdog</td>
+			<td class="containsTable">
+				<table>
+					<thead>
+						<tr>
+							<th>7</th>
+							<th>6</th>
+							<th>5</th>
+							<th>4</th>
+							<th>3</th>
+							<th>2</th>
+							<th>1</th>
+							<th>0</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Freeze</td>
+							<td>Free Play</td>
+							<td>Multiplayer Enable</td>
+							<td colspan=2>Multiplayer ID number</td>
+							<td>0: normal controls<br/>1: mahjong panel</td>
+							<td>0: 1 coin chute<br/>1: 2 coin chutes</td>
+							<td>Service Mode</td>
+						</tr>
+					</tbody>
+				</table>
+			</td>
+			<td>Kick Watchdog</td>
+		</tr>
+
+		<tr>
+			<td>$320001</td>
+			<td>REG_STATUS_A</td>
+			<td>Status and Coin</td>
+			<td class="containsTable">
+				<table>
+					<thead>
+						<tr>
+							<th>7</th>
+							<th>6</th>
+							<th>5</th>
+							<th>4</th>
+							<th>3</th>
+							<th>2</th>
+							<th>1</th>
+							<th>0</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>D4990 data bit</td>
+							<td>D4990 time pulse</td>
+							<td>0: 4 slot<br/>1: 6 slot</td>
+							<td>Coin 4</td>
+							<td>Coin 3</td>
+							<td>Service Button</td>
+							<td>Coin 2</td>
+							<td>Coin 1</td>
+						</tr>
+					</tbody>
+				</table>
+			</td>
+			<td>(unknown)</td>
+		</tr>
+
+		<tr>
+			<td>$340000</td>
+			<td>REG_P2CNT</td>
+			<td>Player 2 Controller Data<br/><small>(active low; e.g. button pressed=0)</small></td>
+			<td class="containsTable">
+				<table>
+					<thead>
+						<tr>
+							<th>7</th>
+							<th>6</th>
+							<th>5</th>
+							<th>4</th>
+							<th>3</th>
+							<th>2</th>
+							<th>1</th>
+							<th>0</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>D</td>
+							<td>C</td>
+							<td>B</td>
+							<td>A</td>
+							<td>Right</td>
+							<td>Left</td>
+							<td>Down</td>
+							<td>Up</td>
+						</tr>
+					</tbody>
+				</table>
+			</td>
+			<td>(unknown)</td>
+		</tr>
+
+		<tr>
+			<td>$380000</td>
+			<td>REG_STATUS_B</td>
+			<td>Start/Select buttons, etc.<br/><small>(active low; e.g. button pressed=0)</small></td>
+			<td class="containsTable">
+				<table>
+					<thead>
+						<tr>
+							<th>7</th>
+							<th>6</th>
+							<th>5</th>
+							<th>4</th>
+							<th>3</th>
+							<th>2</th>
+							<th>1</th>
+							<th>0</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>0:&nbsp;Home<br/>1: MVS</td>
+							<td>Memory card<br/>write protect</td>
+							<td colspan=2>00: Memory card inserted</td>
+							<td>Select P2</td>
+							<td>Start P2</td>
+							<td>Select P1</td>
+							<td>Start P1</td>
+						</tr>
+					</tbody>
+				</table>
+			</td>
+			<td>(unknown)</td>
+		</tr>
+
+		<tr>
+			<td>$3A0001</td>
+			<td>REG_NOSHADOW</td>
+			<td>Normal video output.</td>
+			<td>(invalid?)</td>
+			<td>byte</td>
+		</tr>
+		<tr>
+			<td>$3A0011</td>
+			<td>REG_SHADOW</td>
+			<td>Darken video output.</td>
+			<td>(invalid?)</td>
+			<td>byte</td>
+		</tr>
+		<tr>
+			<td>$3A0003</td>
+			<td>REG_SWAPBIOS</td>
+			<td>Use System ROM vector table.</td>
+			<td>(invalid?)</td>
+			<td>byte</td>
+		</tr>
+		<tr>
+			<td>$3A0013</td>
+			<td>REG_SWAPROM</td>
+			<td>Use game's vector table.</td>
+			<td>(invalid?)</td>
+			<td>byte</td>
+		</tr>
+		<tr>
+			<td>$3A0005</td>
+			<td>REG_CARDUNLOCK1</td>
+			<td>Card unlock 1/2.</td>
+			<td>(invalid?)</td>
+			<td>byte</td>
+		</tr>
+		<tr>
+			<td>$3A0017</td>
+			<td>REG_CARDUNLOCK2</td>
+			<td>Card unlock 2/2.</td>
+			<td>(invalid?)</td>
+			<td>byte</td>
+		</tr>
+		<tr>
+			<td>$3A0015</td>
+			<td>REG_CARDLOCK1</td>
+			<td>Card lock 1/2.</td>
+			<td>(invalid?)</td>
+			<td>byte</td>
+		</tr>
+		<tr>
+			<td>$3A0007</td>
+			<td>REG_CARDLOCK2</td>
+			<td>Card lock 2/2.</td>
+			<td>(invalid?)</td>
+			<td>byte</td>
+		</tr>
+		<tr>
+			<td>$3A0009</td>
+			<td>REG_CARD_REGSEL</td>
+			<td>Enables memory card register select mode.</td>
+			<td>(invalid?)</td>
+			<td>byte</td>
+		</tr>
+		<tr>
+			<td>$3A0019</td>
+			<td>REG_CARD_NORMAL</td>
+			<td>Disables memory card register select mode.</td>
+			<td>(invalid?)</td>
+			<td>byte</td>
+		</tr>
+		<tr>
+			<td>$3A000B</td>
+			<td>REG_BIOSFIX</td>
+			<td>Use System ROM SFIX tiles and SM1/sound driver.</td>
+			<td>(invalid?)</td>
+			<td>byte</td>
+		</tr>
+		<tr>
+			<td>$3A001B</td>
+			<td>REG_GAMEFIX</td>
+			<td>Use game's Fix tiles and M1/sound driver.</td>
+			<td>(invalid?)</td>
+			<td>byte</td>
+		</tr>
+		<tr>
+			<td>$3A000D</td>
+			<td>REG_SRAMLOCK</td>
+			<td>Write-protect MVS backup RAM.</td>
+			<td>(invalid?)</td>
+			<td>byte</td>
+		</tr>
+		<tr>
+			<td>$3A001D</td>
+			<td>REG_SRAMUNLOCK</td>
+			<td>Un-protect MVS backup RAM.</td>
+			<td>(invalid?)</td>
+			<td>byte</td>
+		</tr>
+		<tr>
+			<td>$3A000F</td>
+			<td>REG_PALBANK1</td>
+			<td>Use palette bank 1.</td>
+			<td>(invalid?)</td>
+			<td>byte</td>
+		</tr>
+		<tr>
+			<td>$3A001F</td>
+			<td>REG_PALBANK0</td>
+			<td>Use palette bank 0.</td>
+			<td>(invalid?)</td>
+			<td>byte</td>
+		</tr>
+	</tbody>
+</table>
+
+<h4>The Watchdog</h4>
+<p>Special attention needs to be given to the watchdog. If it is not written to
+every ~0.13 seconds, the system will reset. In order to kick the watchdog, write
+any byte to the range $300000-$31FFFF. Typically, <code>REG_DIPSW</code> is the
+address written to.</p>
+
+<h3><a name="regsbios_bios">The System ROM</a></h3>
+<p>The system ROM on the Neo-Geo uses a number of addresses in RAM. Some are
+for internal use only, while others are meant to be used by the programmer.
+The system ROM reserves the region from $10F300 to $10FFFF for its own
+purposes. CD systems use some RAM locations differently from cart systems.</p>
+
+<p>These addresses are only meant for use with the official SNK System ROM;
+third party system ROM replacements may or may not use these addresses.
+Also, this is not a comprehensive list. The Neo-Geo Development Wiki has
+<a href="https://wiki.neogeodev.org/index.php?title=BIOS_RAM_locations">a page with various BIOS RAM locations</a>
+if you wish to know more.</p>
+
+<h4>System Calls</h4>
+<p>The system calls are outlined on <a href="https://wiki.neogeodev.org/index.php?title=BIOS_calls">the Neo-Geo Development Wiki</a>. Not all system calls are included here.</p>
+
+<table>
+	<thead>
+		<tr>
+			<th>Address</th>
+			<th>Name</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>$C00438</td>
+			<td>SYSTEM_INT1</td>
+			<td>System ROM VBlank routine.</td>
+		</tr>
+		<tr>
+			<td>$C0043E</td>
+			<td>SYSTEM_INT2</td>
+			<td>Cart system VBlank routine. CD just <code>rts</code>es.</td>
+		</tr>
+		<tr>
+			<td>$C00444</td>
+			<td>SYSTEM_RETURN</td>
+			<td>Gives control back to the system ROM. <code>jmp</code>'ed to at the end of the <code>USER</code> subroutine.</td>
+		</tr>
+		<tr>
+			<td>$C0044A</td>
+			<td>SYSTEM_IO</td>
+			<td>Handles system input/output. Updates the system ROM's RAM values, among other things.</td>
+		</tr>
+		<tr>
+			<td>$C004C2</td>
+			<td>FIX_CLEAR</td>
+			<td>Clears the fix layer using tile $FF and draws a column of $20 tiles on each side of the screen.</td>
+		</tr>
+		<tr>
+			<td>$C004C8</td>
+			<td>LSP_1st</td>
+			<td>Initialize sprite hardware.</td>
+		</tr>
+		<!--
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		-->
+	</tbody>
+</table>
+
+<h4>RAM Locations</h4>
+<p>The system ROM uses a lot of RAM locations. This list is nowhere near complete,
+as a complete understanding of the RAM isn't required at the beginning.</p>
+<p>(todo: there are quite a few more locations to add here; determine which ones are ok)</p>
+<table>
+	<thead>
+		<tr>
+			<th>Address</th>
+			<th>Short Name</th>
+			<th>Length</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>$10FD80</td>
+			<td>BIOS_SYSTEM_MODE</td>
+			<td>1 byte</td>
+			<td>Determines which VBlank routine should run. $00=system ROM; $80=game</td>
+		</tr>
+		<tr>
+			<td>$10FD82</td>
+			<td>BIOS_MVS_FLAG</td>
+			<td>1 byte</td>
+			<td>Software-defined identifier. $00=home system, $01=MVS.</td>
+		</tr>
+		<tr>
+			<td>$10FD83</td>
+			<td>BIOS_COUNTRY_CODE</td>
+			<td>1 byte</td>
+			<td>Software-defined system region. $00=Japan, $01=USA, $02=Europe/Export</td>
+		</tr>
+		<tr>
+			<td>$10FD96</td>
+			<td>BIOS_P1CURRENT</td>
+			<td>1 byte</td>
+			<td>Player 1's inputs from current frame. (0=not pressed, 1=pressed)</td>
+		</tr>
+		<tr>
+			<td>$10FD97</td>
+			<td>BIOS_P1CHANGE</td>
+			<td>1 byte</td>
+			<td>Player 1 active-edge input. (0=not pressed, 1=pressed)</td>
+		</tr>
+		<tr>
+			<td>$10FD98</td>
+			<td>BIOS_P1REPEAT</td>
+			<td>1 byte</td>
+			<td>Auto-repeat flags.</td>
+		</tr>
+		<tr>
+			<td>$10FD9A</td>
+			<td>BIOS_P2CURRENT</td>
+			<td>1 byte</td>
+			<td>Player 2's inputs from current frame. (0=not pressed, 1=pressed)</td>
+		</tr>
+		<tr>
+			<td>$10FD9B</td>
+			<td>BIOS_P2CHANGE</td>
+			<td>1 byte</td>
+			<td>Player 2 active-edge input. (0=not pressed, 1=pressed)</td>
+		</tr>
+		<tr>
+			<td>$10FD9C</td>
+			<td>BIOS_P2REPEAT</td>
+			<td>1 byte</td>
+			<td>Auto-repeat flags.</td>
+		</tr>
+		<tr>
+			<td>$10FDAC</td>
+			<td>BIOS_STATCURNT</td>
+			<td>1 byte</td>
+			<td>Start and Select inputs for current frame. (Select bits are 0 on MVS)</td>
+		</tr>
+		<tr>
+			<td>$10FDAD</td>
+			<td>BIOS_STATCHANGE</td>
+			<td>1 byte</td>
+			<td>Start and Select active-edge inputs. (Select bits are 0 on MVS)</td>
+		</tr>
+		<tr>
+			<td>$10FDAE</td>
+			<td>BIOS_USER_REQUEST</td>
+			<td>1 byte</td>
+			<td>Command for <code>USER</code>.</td>
+		</tr>
+		<tr>
+			<td>$10FDAF</td>
+			<td>BIOS_USER_MODE</td>
+			<td>1 byte</td>
+			<td>Current game status. (0:init/boot, 1:title/demo, 2:game)</td>
+		</tr>
+		<tr>
+			<td>$10FDB0</td>
+			<td>BIOS_CREDIT1_DEC</td>
+			<td>1 byte (each)</td>
+			<td>Set the number of credits to decrement here, before calling <code>CREDIT_CHECK</code> and <code>CREDIT_DOWN</code>. $10FDB0-$10FDB3 for Credits 1-4.</td>
+		</tr>
+		<tr>
+			<td>$10FDB4</td>
+			<td>BIOS_START_FLAG</td>
+			<td>1 byte</td>
+			<td>Player(s) starting the game on a <code>PLAYER_START</code> call.</td>
+		</tr>
+		<tr>
+			<td>$10FDB6</td>
+			<td>BIOS_PLAYER1_MODE</td>
+			<td>1 byte (each)</td>
+			<td>Status Values: 0=No play, 1=Playing, 2=Continue display, 3=Game Over. $10FD86-$10FD89 for Players 1-4.</td>
+		</tr>
+		<tr>
+			<td>$10FE80</td>
+			<td>BIOS_DEVMODE</td>
+			<td>1 byte</td>
+			<td>Determines if the system is in developer mode or not.</td>
+		</tr>
+	</tbody>
+</table>
+
+<hr/>
+
+<h2><a name="graphics">Graphics System Details</a></h2>
+<p>In order to learn how to get graphics on the screen, you're going to need to
+know a little bit about the internals of the graphics system.</p>
+
+<h3><a name="graphics_registers">Registers</a></h3>
+<p>All access to the graphics hardware is done through memory-mapped registers.
+These registers lie in the $3C000x section. Most writes to the registers are
+meant to be words, though the IRQ acknowledgement register is an exception.</p>
+
+<table>
+	<thead>
+		<tr>
+			<th>Address</th>
+			<th>Name</th>
+			<th>Description</th>
+			<th>Read</th>
+			<th>Write</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>$3C0000</td>
+			<td>LSPC_ADDR</td>
+			<td>Used for setting the VRAM address to write to.</td>
+			<td>Read VRAM data (address unchanged)</td>
+			<td>Set VRAM address</td>
+		</tr>
+		<tr>
+			<td>$3C0002</td>
+			<td>LSPC_DATA</td>
+			<td>Used to write data to VRAM.</td>
+			<td>Read VRAM data (address unchanged)</td>
+			<td>Write VRAM data</td>
+		</tr>
+		<tr>
+			<td>$3C0004</td>
+			<td>LSPC_INCR</td>
+			<td>Controls how many bytes should be added to the VRAM address after a write.</td>
+			<td>Read current value</td>
+			<td>Set new value (signed)</td>
+		</tr>
+		<tr>
+			<td>$3C0006</td>
+			<td>LSPC_MODE</td>
+			<td>LSPC status.</td>
+			<td class="containsTable">
+				<table>
+					<thead>
+						<tr>
+							<th>15</th>
+							<th>14</th>
+							<th>13</th>
+							<th>12</th>
+							<th>11</th>
+							<th>10</th>
+							<th>9</th>
+							<th>8</th>
+							<th>7</th>
+							<th>6</th>
+							<th>5</th>
+							<th>4</th>
+							<th>3</th>
+							<th>2</th>
+							<th>1</th>
+							<th>0</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td colspan=9>Raster line counter</td>
+							<td colspan=3>(unused?)</td>
+							<td>0=60Hz, 1=50Hz (LSPC2 only)</td>
+							<td colspan=3>Auto-animation counter</td>
+						</tr>
+					</tbody>
+				</table>
+			</td>
+			<td class="containsTable">
+				<table>
+					<thead>
+						<tr>
+							<th>15</th>
+							<th>14</th>
+							<th>13</th>
+							<th>12</th>
+							<th>11</th>
+							<th>10</th>
+							<th>9</th>
+							<th>8</th>
+							<th>7</th>
+							<th>6</th>
+							<th>5</th>
+							<th>4</th>
+							<th>3</th>
+							<th>2</th>
+							<th>1</th>
+							<th>0</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td colspan=8>Auto-animation speed (frames)</td>
+							<td colspan=3>Timer interrupt mode</td>
+							<td>Timer interrupt enable</td>
+							<td>Disable auto-animation</td>
+							<td colspan=3>(unknown)</td>
+						</tr>
+					</tbody>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>$3C0008</td>
+			<td>LSPC_TIMER_HI</td>
+			<td>Timer control 1/2</td>
+			<td>(Invalid)</td>
+			<td>Timer value, most significant bits</td>
+		</tr>
+		<tr>
+			<td>$3C000A</td>
+			<td>LSPC_TIMER_LO</td>
+			<td>Timer control 2/2</td>
+			<td>(Invalid)</td>
+			<td>Timer value, least significant bits</td>
+		</tr>
+		<tr>
+			<td>$3C000C</td>
+			<td>LSPC_IRQ_ACK</td>
+			<td>IRQ acknowledgement register. Uses a byte instead of a word.</td>
+			<td>(Invalid)</td>
+			<td class="containsTable">
+				<table>
+					<thead>
+						<tr>
+							<th>7</th>
+							<th>6</th>
+							<th>5</th>
+							<th>4</th>
+							<th>3</th>
+							<th>2</th>
+							<th>1</th>
+							<th>0</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td colspan=5>(Unknown)</td>
+							<td>Ack. VBlank</td>
+							<td>Ack. HBlank</td>
+							<td>Ack. IRQ3</td>
+						</tr>
+					</tbody>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>$3C000E</td>
+			<td>LSPC_TIMER_STOP</td>
+			<td>NTSC/PAL timer behavior</td>
+			<td>(Invalid)</td>
+			<td>If bit 0 is 1, timer counter is stopped for 32 raster lines in PAL mode.</td>
+		</tr>
+	</tbody>
+</table>
+
+<h3><a name="graphics_vram">VRAM</a></h3>
+<p>The VRAM in the Neo-Geo contains a map for the Fix data, and sections for
+sprite control. Not all VRAM addresses are mentioned here, as they are out
+of scope for a beginner's tutorial.</p>
+
+<p>All values in VRAM are word length (two bytes), despite the addresses only
+incrementing by 1.</p>
+
+<table>
+	<thead>
+		<tr>
+			<th>Address Range</th>
+			<th>Name</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>$0000-$6FFF</td>
+			<td>Sprite Control Block 1</td>
+			<td>Contains the tilemap, palette, auto-animation values, and flip values.</td>
+		</tr>
+		<tr>
+			<td>$7000-$74FF</td>
+			<td>Fix Layer Map</td>
+			<td>Data contained on the Fix layer.</td>
+		</tr>
+		<tr>
+			<td>$8000-$81FF</td>
+			<td>Sprite Control Block 2</td>
+			<td>Handles horizontal and vertical shrinking values.</td>
+		</tr>
+		<tr>
+			<td>$8200-$83FF</td>
+			<td>Sprite Control Block 3</td>
+			<td>Controls the Y position, sprite size, and if this sprite is attached to the previous one.</td>
+		</tr>
+		<tr>
+			<td>$8400-$85FF</td>
+			<td>Sprite Control Block 4</td>
+			<td>X position</td>
+		</tr>
+	</tbody>
+</table>
+
+<hr class="midsection" />
+
+<h3><a name="graphics_fix">Fix Layer</a></h3>
+<p>The Fix Layer is a tile-based map that appears over all sprites. Therefore,
+it's typically useful for HUDs (and not much else). Tiles are mapped from top to
+bottom, left to right.</p>
+
+<p>Data in the Fix Layer is mapped as follows:</p>
+
+<table class="datadisplay">
+	<thead>
+		<tr>
+			<th colspan=4>Palette</th>
+			<th colspan=12>Tile Index</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+		</tr>
+	</tbody>
+</table>
+
+<hr class="midsection" />
+
+<h3><a name="graphics_sprites">Sprites</a></h3>
+<p>Sprites are used for everything else that needs to be displayed. A full
+sprite definition is split into four parts, making up the "Sprite Control Block".</p>
+
+<h4>SCB1: Tilemap</h4>
+<p>SCB1 defines the tilemap for each sprite. Each sprite's entry in the SCB1 block
+takes up 2 words &times; 32 tiles.</p>
+
+<h5>Even Words</h5>
+<table class="datadisplay">
+	<thead>
+		<tr>
+			<th colspan=16>Tile Index ($0xxxx)</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+		</tr>
+	</tbody>
+</table>
+
+<h5>Odd Words</h5>
+<table class="datadisplay">
+	<thead>
+		<tr>
+			<th colspan=8>Palette</th>
+			<th colspan=4>Tile Index ($x0000)</th>
+			<th>Auto-Anim (3)</th>
+			<th>Auto-Anim (2)</th>
+			<th>Vertical Flip</th>
+			<th>Horizontal Flip</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+		</tr>
+	</tbody>
+</table>
+
+<h4>SCB2: Shrinking</h4>
+<p>Contrary to popular belief, the Neo-Geo cannot zoom sprites. However, it can
+shrink them.</p>
+
+<table class="datadisplay">
+	<thead>
+		<tr>
+			<th colspan=4>N/A</th>
+			<th colspan=4>Horizontal</th>
+			<th colspan=8>Vertical</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+		</tr>
+	</tbody>
+</table>
+
+<h4>SCB3: Y Position and More</h4>
+<p>The most complex of the sprite values, SCB3 controls the sprite's Y position,
+size, and if it's attached to the previous sprite (when "sticky bit" = 1). The
+Sprite Size value ranges from 0-33; a value of 33 makes the sprite 32 tiles high
+with looped borders (when shrinking).</p>
+
+<table class="datadisplay">
+	<thead>
+		<tr>
+			<th colspan=9>Y Position (436-Y)</th>
+			<th>"Sticky Bit"</th>
+			<th colspan=6>Sprite Size</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+
+			<td>0</td>
+
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+		</tr>
+	</tbody>
+</table>
+
+<h4>SCB4: X Position</h4>
+<p>SCB4 controls the X position. Unlike the Y position, it is mapped properly
+(e.g. a value of 0 will put the sprite at the leftmost part of the screen).</p>
+
+<table class="datadisplay">
+	<thead>
+		<tr>
+			<th colspan=9>X Position</th>
+			<th colspan=7>N/A</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+		</tr>
+	</tbody>
+</table>
+
+<hr/>
+
+<h2><a name="helloworld">Creating a simple "Hello World" program</a></h2>
+<p>With all of this out of the way, we can finally start work on the Hello World
+program itself. Since it's easier to create the cart version, that will be the
+first target.</p>
+
+<p>At this time, you should download <a href="./media/helloworld_tutorial.zip">the Hello World project</a>
+so you can follow along.</p>
+
+<hr class="midsection" />
+
+<h3><a name="helloworld_contents">Example Project Contents</a></h3>
+<p>The contents of the Hello World project are laid out as follows:</p>
+<ul>
+	<li>
+		<strong>_cart/</strong> &mdash; Output folder for cart ROMs.
+		<ul>
+			<li><strong>hello-m1.m1</strong> &mdash; Pre-compiled Z80 driver/M1 ROM.</li>
+		</ul>
+	</li>
+
+	<li>
+		<strong>_cd/</strong> &mdash; Intermediate folder for NGCD.
+		<ul>
+			<li><strong>ABS.TXT</strong> &mdash; Abstract (do not edit).</li>
+			<li><strong>BIB.TXT</strong> &mdash; Bibliography (do not edit).</li>
+			<li><strong>CPY.TXT</strong> &mdash; Copyright (do not edit).</li>
+			<li><strong>HELLO.Z80</strong> &mdash; Pre-compiled Z80 driver.</li>
+			<li><strong>IPL.TXT</strong> &mdash; NGCD Initial Program Load.</li>
+		</ul>
+	</li>
+
+	<li>
+		<strong>hash/</strong> &mdash; Hash data for use in MAME.
+		<ul>
+			<li>hello_cart.xml &mdash; &nbsp; Hash data for cart systems (neogeo.xml)</li>
+			<li>hello_cd.xml &mdash; &nbsp; Hash data for CD systems (neocd.xml)</li>
+		</ul>
+	</li>
+
+	<li><strong>spr/</strong> &mdash; Sprite data.</li>
+
+	<li>
+		<strong>src_68k/</strong> &mdash; Source code for 68K/main program.
+		<ul>
+			<li><strong>inc/neogeo.inc</strong> &mdash; Neo-Geo hardware register defines.</li>
+			<li><strong>inc/ram_bios.inc</strong> &mdash; Neo-Geo System ROM (RAM locations)</li>
+			<li><strong>header_68k.inc</strong> &mdash; 68000 vectors.</li>
+			<li><strong>header_cart.inc</strong> &mdash; Neo-Geo cart program header.</li>
+			<li><strong>header_cd.inc</strong> &mdash; Neo-Geo CD program header.</li>
+			<li><strong>main.asm</strong> &mdash; The main program code.</li>
+			<li><strong>ram_user.inc</strong> &mdash; User RAM defines.</li>
+			<li><strong>security.inc</strong> &mdash; Security code.</li>
+			<li><strong>softdips.inc</strong> &mdash; Soft Dip settings.</li>
+		</ul>
+	</li>
+
+	<li><strong>src_z80/</strong> &mdash; Source code for Z80/sound driver.
+		<ul>
+			<li><strong>simple.asm</strong> &mdash; Main Z80/sound driver code.</li>
+			<li><strong>z80ram.inc</strong> &mdash; RAM defines for the sound driver.</li>
+		</ul>
+	</li>
+
+	<li><strong>hello.fix</strong> &mdash; Fix format tiles.</li>
+
+	<li><strong>Makefile</strong> &mdash; GNU makefile, used for building the project.</li>
+</ul>
+
+<hr class="midsection" />
+
+<h3><a name="helloworld_vector">The Vectors and Neo-Geo Header</a></h3>
+<p>The first two things that need to be in the program ROM are the 68K vectors
+and the Neo-Geo header, <a href="#structure">both mentioned above</a>.</p>
+
+<hr class="midsection" />
+
+<h3><a name="helloworld_required">Required Routines</a></h3>
+<p>Four routines were mentioned above in the Neo-Geo header section. In order to
+ensure proper system operation, these routines need to perform some tasks.</p>
+
+<h4><code>USER</code></h4>
+<p>The <code>USER</code> routine needs to respond to a command sent by the system
+ROM (stored in <code>BIOS_USER_REQUEST</code>). USER is also the first port of
+call for any Neo-Geo program, so a few things are initialized as well.</p>
+
+<pre class="code68K">USER:
+	move.b d0,REG_DIPSW ; kick watchdog
+	lea $10F300,sp ; set stack pointer to $10F300 (BIOS_WORKRAM)
+	move.w #0,LSPC_MODE ; Disable auto-animation and timer interrupts, set auto-anim speed to 0 frames
+	move.w #7,LSPC_IRQ_ACK ; acknowledge all IRQs
+
+	move.w #$2000,sr ; Enable VBlank interrupt, go Supervisor
+
+	; Handle user request
+	moveq #0,d0 ; clear all bits of d0
+	move.b BIOS_USER_REQUEST,d0 ; put user request value into d0
+	lsl.b #2,d0 ; shift value left twice to get offset into tbl_UserRequestCommands
+	lea tbl_UserRequestCommands,a0 ; load address of user commands
+	movea.l (a0,d0),a0 ; get address from table and offset
+	jsr (a0) ; jump to subroutine (typically ends with a jmp SYSTEM_RETURN)
+	jmp SYSTEM_RETURN ; this is here just in case it doesn't...?
+
+;------------------------------------------------------------------------------;
+; tbl_UserRequestCommands
+; Table that contains the addresses for each BIOS_USER_REQUEST command.
+
+tbl_UserRequestCommands:
+	dc.l User_Initialize ; Command 0 (Initialize)
+	dc.l SYSTEM_RETURN ; Command 1 (Custom Eyecatch, unused)
+	dc.l User_Main ; Command 2 (Demo Game/Game)
+	dc.l User_Main ; Command 3 (Title Display)</pre>
+
+<h5>Initialize</h5>
+<p>This routine is meant to initialize the backup RAM area (defined at $10E).
+This command is only called once on the MVS, when booting the game for the first
+time. (Other details are still todo...)</p>
+
+<pre class="code68K">User_Initialize:
+	; this would be the place to initialize high scores and other such data in
+	; the backup RAM area (see cart/cd header, "pointer to backup RAM block").
+
+	; in this demo we don't do anything, so just jump to SYSTEM_RETURN.
+	jmp SYSTEM_RETURN</pre>
+
+<h5>Custom Eyecatch</h5>
+<p>The "custom eyecatch" request allows you to change the standard Neo-Geo
+boot screen, but only on the AES. The value of $114/Eyecatch Flag must be 1 for
+this routine to be run. For now, it just jumps back to <code>SYSTEM_RETURN</code>.</p>
+
+<h5>Demo Game, Game</h5>
+<p>Games typically use this as their shared startup code. A lot of Neo-Geo
+System ROM variables will need to be juggled here in a normal game. For this
+demo, we're going to keep things simple and not worry about them. This command
+is described in more detail in the <a href="#helloworld_structure">Code Structure</a>
+section.</p>
+
+<h5>Title Display</h5>
+<p>This is only called when forced start is enabled on MVS. The game's title
+screen is displayed. If the select timer is enabled, you should print out the
+number of seconds ($10FDDA/<code>SELECT_TIMER</code>, in BCD) on the screen.</p>
+<p>When time runs out, the game is started. There's no need to end with
+<code>SYSTEM_RETURN</code>. Everything else is the same as in command 2, so
+we just point command 3 to the same routine as command 2.</p>
+
+<h4><code>PLAYER_START</code></h4>
+<p>When a player presses start or the compulsion timer expires on the title
+screen, <code>PLAYER_START</code> is called. We don't bother handling it in
+this example...</p>
+
+<pre class="code68K">PLAYER_START:
+	; In this demo, we don't handle the Start button, or coins, for that matter.
+	rts</pre>
+
+<h4><code>DEMO_END</code></h4>
+<p><code>DEMO_END</code> doesn't need to do much (it mainly saves MVS backup RAM
+values), but it should end with an <code>rts</code> instruction.</p>
+
+<pre class="code68K">DEMO_END:
+	rts ; we're not doing anything in this routine, so just exit.</pre>
+
+<h4><code>COIN_SOUND</code></h4>
+<p>The only thing <code>COIN_SOUND</code> needs to do is send a Z80 command to play
+a coin noise. In this example, we don't even do that; we just exit.</p>
+
+<pre class="code68K">COIN_SOUND:
+	rts ; we're not doing anything in this routine, so just exit.</pre>
+
+<hr class="midsection" />
+
+<h3><a name="helloworld_interrupts">Interrupts</a></h3>
+<p>Every Neo-Geo game is expected to handle the horizontal and vertical blanking
+interrupts.</p>
+
+<h4>Horizontal Blank (HBLANK)</h4>
+<p>The horizontal blank will not be used in this demo, but we will need to answer
+its interrupt in case it's run. This is done by writing 2 (%00000010; acknowledge HBlank)
+to <code>LSPC_IRQ_ACK</code>. Also, kick the watchdog, because defensive programming
+is a good idea with a device that will reset the system.</p>
+
+<pre class="code68K">IRQ2:
+	move.w #2,LSPC_IRQ_ACK ; acknowledge interrupt #2 (HBlank)
+	move.b d0,REG_DIPSW    ; kick watchdog (prevent reset)
+	rte</pre>
+
+<h4>Vertical Blank (VBLANK)</h4>
+<p>The VBlank, on the other hand, is one of the most important parts of any
+Neo-Geo program, as it's run once per frame. A few things are expected to happen
+in the VBlank.</p>
+
+<ol>
+<li>First, the game needs to give control back to the system ROM if it's requested.
+This is done by checking the topmost bit of <code>BIOS_SYSTEM_MODE</code>. If the topmost bit
+is not set, the game should jump to the system ROM's VBlank handler, <code>SYSTEM_INT1</code>.</li>
+<li>If the topmost bit is set, we can run the game's vblank. The first thing to do
+here is to save the status of all the registers. This is because the VBlank
+interrupt can happen at any time, interrupting any code.</li>
+<li>Next, the value 4 (%0000100; acknowledge VBlank) is written to <code>LSPC_IRQ_ACK</code>.</li>
+<li>For precautionary measures, you should kick the watchdog to prevent the system
+from resetting itself. Write any byte to <code>REG_DIPSW</code> to kick the watchdog.</li>
+<li>At this point, you can run whatever code you need in your VBlank.</li>
+<li>Once your code is done, you should call <code>SYSTEM_IO</code>.</li>
+<li>If you use a flag to determine when you're in VBlank, you should clear it here.</li>
+<li>Finally, restore the registers and return (via <code>rte</code>).</li>
+</ol>
+
+<pre class="code68K">VBlank:
+	btst #7,BIOS_SYSTEM_MODE ; check if the System ROM wants to run its VBlank routine.
+	bne.s .VBlank_game ; if not, run our VBlank.
+	jmp SYSTEM_INT1 ; jump to system ROM's VBlank routine
+
+.VBlank_game:
+	movem.l d0-d7/a0-a6,-(sp) ; save registers to the stack
+	move.w #4,LSPC_IRQ_ACK ; acknowledge the VBlank interrupt
+	move.b d0,REG_DIPSW ; kick the watchdog
+
+	; [Things to perform in VBlank]
+	; VBlank is where you should be doing sprite data updates (SCB writes) and
+	; palette RAM updates. However, this demo doesn't use either...yet.
+
+	; SNK also wants you to call SYSTEM_IO every 1/60th of a second. (probably 1/50th on PAL)
+	; This is pretty important, otherwise the RAM locations for input variables
+	; don't get updated (unless you do it yourself), among other things.
+	jsr SYSTEM_IO
+	; Note: Other libraries may call this for you, so be aware when using them.
+
+.VBlank_end:
+	move.b #0,flag_VBlank ; clear vblank flag so WaitVBlank knows to stop
+	movem.l (sp)+,d0-d7/a0-a6 ; restore registers from the stack
+	rte</pre>
+
+<p>A common routine to find in Neo-Geo games is a loop that waits for the VBlank
+interrupt to run. The <code>flag_VBlank</code> variable is an example of that.
+It gets set to a nonzero value in a routine called <code>WaitVBlank</code>,
+which looks something like this:</p>
+
+<pre class="code68K">WaitVBlank:
+	move.b #1,flag_VBlank ; set vblank flag to 1.
+.WaitVBlank_loop:
+	tst.b flag_VBlank ; check if vblank flag is 0.
+	bne.s .WaitVBlank_loop ; if not zero, loop until it is.
+	rts</pre>
+
+<h4>IRQ3</h4>
+<p>IRQ 3 is only handled on CD systems. I'm not fully sure what it does yet,
+but like HBlank, we'll need to acknowledge the interrupt.</p>
+
+<pre class="code68K">IRQ3:
+	move.w #1,LSPC_IRQ_ACK ; acknowledge interrupt 3
+	move.b d0,REG_DIPSW ; kick watchdog
+	rte</pre>
+
+<hr class="midsection" />
+
+<h3><a name="helloworld_structure">Code Structure</a></h3>
+<p>With the required routines out of the way, we can begin to worry about
+structuring our code. The end goal is to display "Hello World" on the screen,
+and the easiest way to do that is with the Fix Layer. Before we jump into
+writing the text, however, there are a few things we need to take care of.</p>
+
+<h4>Palette Setup</h4>
+<p>In order for anything to display properly, you're going to need to set up
+the palette RAM. The palette RAM spans the address range $400000-$401FFF, and
+can be bankswitched (see <a href="#regsbios_regs">Neo-Geo Hardware Registers</a>).
+Each entry in the palette is a word (two bytes), and has a special 6BPP format
+that can be a pain to work with. For this tutorial, just pretend that the
+values are <code>$0RGB</code>, where R is red, G is green, and B is blue.
+Each component ranges from $0 to $F.</p>
+
+<p>Two positions in the palette RAM are important: the Reference Color, and
+the Background Color. The Reference Color is at <code>$400000</code>, and must
+be set to <code>$8000</code> for proper display. The Background Color is at
+<code>$401FFE</code>, and can be set to whatever value you'd like.</p>
+
+<p>For this demo, there's only one other palette location that matters:
+<code>$400002</code>. This is the entry that defines the color of the text
+displayed on the screen. By default, it's set to $0FFF, but you can change it
+to see how it works.</p>
+
+<h4>Fix Layer and Sprite Setup</h4>
+<p>The system ROM provides routines to set up the Fix layer and the Sprites.
+<code>FIX_CLEAR</code> clears the screen (aside from the left and right borders),
+while <code>LSP_1st</code> sets up the sprites.</p>
+
+<h4>Example Code</h4>
+<pre class="code68K">User_Main:
+	; In a real Neo-Geo program, this would be handled differently, but this is
+	; a demo, so it's going to be simpler than expected.
+
+	; --perform initialization, part 1--
+	; (Palette)
+	; The reference color (address $400000) must be set to the darkest possible
+	; color, which is $8000. (Black with the 'dark bit' set.)
+	move.w #$8000,PALETTE_REFERENCE
+
+	; Set the background color ($401FFE) to a regular black ($0000).
+	move.w #0,PALETTE_BACKDROP
+
+	; Finally, we need to set a color for the text to display. Set the first
+	; palette entry in the first palette row ($40xxxx) to white ($0FFF).
+	move.w #$0FFF,PALETTES+2
+
+	; (Fix Layer)
+	; The System ROM provides a command to set up the Fix layer, and it should
+	; typically be called at boot.
+	jsr FIX_CLEAR ; jump to the FIX_CLEAR subroutine
+
+	; (Sprites)
+	; Sprites will need to be initialized as well. The System ROM provides a
+	; routine for this purpose as well.
+	jsr LSP_1st ; jump to the LSP_1st subroutine
+
+	; --perform initialization, part 2--
+	jsr DrawHello_Manual  ; draw "Hello World" string manually
+	jsr DrawHello_Routine ; draw "Hello World" string with a routine
+
+;------------------------------------------------------------------------------;
+MainLoop:
+	; this demo doesn't need to do anything, so infinite loop here.
+	jmp MainLoop</pre>
+
+<hr class="midsection" />
+
+<h3><a name="helloworld_fixdisplay">Displaying Items on the Fix Layer</a></h3>
+<p>Writing to the Fix Layer is relatively straightforward. First, you'll want
+to set the increment to 32 ($20), so the text displays horizontally. Next,
+you'll want to write the target address to the LSPC address register. Finally,
+write the combined palette and tile index to the VRAM.</p>
+
+<p>The following code writes tile $041 (typically an "A" in the default Fix ROM)
+with palette 0 to $7026:</p>
+<pre class="code68K">FixDraw_Example:
+	move.w #$20,LSPC_INCR ; set LSPC increment to +1 horizontal
+	move.w #$7026,LSPC_ADDR ; set LSPC address to $7026
+	move.w #$0041,LSPC_DATA ; write "A" from page 0 with palette 0</pre>
+
+<hr class="midsection" />
+
+<h3><a name="helloworld_manual">The "Hello World" String (Manual)</a></h3>
+<p>In order to introduce the basics of handling the VRAM, we'll manually write
+the "Hello World" string to the Fix layer. This involves sending multiple words
+to the LSPC data register.</p>
+
+<pre class="code68K">DrawHello_Manual:
+	move.w #$20,LSPC_INCR ; set LSPC increment to +1 horizontal
+	move.w #$7066,LSPC_ADDR ; set LSPC address to $7066
+	move.w #$0348,LSPC_DATA ; write "H" from page 3 with palette 0
+	move.w #$0365,LSPC_DATA ; write "e" from page 3 with palette 0
+	move.w #$036C,LSPC_DATA ; write "l" from page 3 with palette 0
+	move.w #$036C,LSPC_DATA ; write "l" from page 3 with palette 0
+	move.w #$036F,LSPC_DATA ; write "o" from page 3 with palette 0
+	move.w #$0320,LSPC_DATA ; write " " from page 3 with palette 0
+	move.w #$0357,LSPC_DATA ; write "W" from page 3 with palette 0
+	move.w #$036F,LSPC_DATA ; write "o" from page 3 with palette 0
+	move.w #$0372,LSPC_DATA ; write "r" from page 3 with palette 0
+	move.w #$036C,LSPC_DATA ; write "l" from page 3 with palette 0
+	move.w #$0364,LSPC_DATA ; write "d" from page 3 with palette 0
+	rts</pre>
+
+<hr class="midsection" />
+
+<h3><a name="helloworld_routine">The "Hello World" String (Routine)</a></h3>
+<p>Manually writing the values to the Fix layer's VRAM is alright for small
+changes, but it gets old if you want to print multiple strings. By setting a
+few ground rules, we can print string data to the Fix layer using a subroutine.</p>
+
+<ul>
+	<li>Strings should only contain bytes.</li>
+	<li>Strings must end with <code>$FF</code>.</li>
+	<li>Use ASCII encoding to make our lives easier.</li>
+</ul>
+
+<p>Much discussion could be had about these rules, but now is not the time. You're
+free to not follow them in your own productions, but for the sake of this example,
+using it will be easier than not.</p>
+
+<pre class="code68K">;-----------------;
+; str_HelloWorld
+; $FF-terminated hello world string.
+
+str_HelloWorld: dc.b "Hello World",$FF
+
+;-----------------;
+; fix_PrintString
+; Prints a string on the Fix layer.
+
+; (Params)
+; d0 - [word] Fix layer address
+; d1 - [byte] Palette number and page number
+; a0 - [long] Pointer to string to write
+
+fix_PrintString:
+	move.w #$20,LSPC_INCR ; set LSPC increment to $20/32 (horizontal writing)
+	move.w d0,LSPC_ADDR ; set up LSPC address from param in d0
+	moveq #0,d0 ; clear d0 so we can use it in the loop without issue.
+	asl.w #8,d1 ; move byte from param in d1 to upper half of word
+
+.fix_PrintString_Loop:
+	move.b (a0)+,d0 ; get character from string and increment pointer position
+	cmpi.b #$FF,d0 ; check if this character is $FF (the terminator)
+	beq.s .fix_PrintString_End ; if so, we're done with the string; exit the routine.
+
+	; normal execution:
+	or.w d1,d0 ; OR with the palette and page number
+	move.w d0,LSPC_DATA ; write tile to fix layer
+	bra.s .fix_PrintString_Loop ; loop back for another character
+
+.fix_PrintString_End:
+	rts ; exit routine
+
+;-----------------;
+; example usage:
+
+DrawHello_Routine:
+	move.w #$708D,d0 ; fix layer address $708D
+	moveq #$03,d1 ; Palette 0, Page 3
+	; (moveq is used to clear out any garbage from the top bits, since it will be shifted later.)
+	lea str_HelloWorld,a0 ; load pointer to string into a0
+	jsr fix_PrintString ; jump to the print string subroutine
+	rts</pre>
+
+<hr class="midsection" />
+
+<h3><a name="helloworld_build">Build Process</a></h3>
+<p>The project is set up to be built using a Makefile with multiple targets.
+Required tools include vasm (targeting 68000 w/Motorola syntax) and GNU Make.
+vasm (targeting Z80 w/oldstyle syntax) is required to build the sound ROM.</p>
+
+<p>(todo)</p>
+
+<h4><code>prg</code> Target</h4>
+<p>The <code>prg</code> target builds the program ROM (<code>hello-p1.p1</code>) for cart systems.</p>
+
+<h4><code>cdprg</code> Target</h4>
+<p>The <code>prg</code> target builds the program ROM (<code>HELLO.PRG</code>) for CD systems.</p>
+
+<h4><code>cart</code> Target</h4>
+<p>The <code>cart</code> target builds the entire program for cart systems.</p>
+
+<h4><code>cd</code> Target</h4>
+<p>The <code>cd</code> target produces a Neo-Geo CD version of the program, including an .ISO image.</p>
+
+<h4><code>chd</code> Target</h4>
+<p>The <code>chd</code> target produces a .chd file for use with MAME. It implies
+making the <code>cd</code> target.</p>
+
+<hr class="midsection" />
+
+<h3><a name="helloworld_mame">Running the Demo in MAME</a></h3>
+<p>Thanks to somewhat recent developments, it's now possible to test Neo-Geo
+homebrew without requiring a recompile of MAME. After building the proper target
+(either <code>cart</code> or <code>chd</code>), you'll need to let MAME know
+a little bit about the ROMs/CD image. This involves editing files in the <code>hash</code>
+directory.</p>
+
+<p>Example hashes for the cart and CHD targets are included in the "hash" directory
+of the project distribution, so all you need to do is copy the data over to the proper
+xml file.</p>
+
+<h4>Running the Cart Version</h4>
+<p>In order to test the cart versions (MVS/arcade, AES/home), you'll need to copy
+the files in the <code>_cart</code> directory to a new directory called <code>hellotut</code>
+in your MAME ROMs directory. From there, you can run one of the two commands below,
+assuming you're using the 64-bit versoin of MAME:</p>
+
+<ul>
+<li>MVS/arcade: <code>mame64 neogeo hellotut</code></li>
+<li>AES/home: <code>mame64 aes hellotut</code></li>
+</ul>
+
+<h4>Running the CD Version</h4>
+<p>After creating the CHD target, copying the CHD file to the <code>roms</code>
+directory, and editing the <code>neocd.xml</code> to include the new entry,
+you can test the tutorial with this command:</p>
+
+<p><code>mame64 neocdz HelloTut</code></p>
+
+<p>A note about the Neo-Geo CD hashes: The CHD itself stores the proper hash values
+inside of the file (as opposed to being a hash of the entire file). In order to
+get the proper values for the xml, you're going to need to run the program once
+with the wrong hashes. MAME will tell you the proper values; edit those into
+<code>neocd.xml</code> and you'll be good to go.</p>
+
+<hr/>
+
+<h2><a name="reading">Further Reading</a></h2>
+<p>This tutorial has only scratched the surface of developing for the Neo-Geo
+with the 68K. There's a lot of material out there worth reading for when you
+want to go further.</p>
+
+<ul>
+<li><a href="http://www.nxp.com/files/archives/doc/ref_manual/M68000PRM.pdf">Motorola M68000 Family Programmer's Reference Manual (PDF)</a></li>
+<li><a href="https://wiki.neogeodev.org/">The Neo-Geo Development Wiki</a> contains
+a lot of Neo-Geo specific information, and was my source for a lot of this guide.</li>
+</ul>
+
+<hr/>
+
+</body>
+</html>

@@ -1,0 +1,166 @@
+<HTML>
+<HEAD>
+<TITLE>Taito F2 information</TITLE>
+</HEAD>
+<BODY TEXT="#000000" BACKGROUND="bkg.gif" FONT="#EDEDED" LINK="#FF0000" VLINK="#AF0000" ALINK="#FF0000">
+<CENTER>
+<!--#config timefmt="%I%M%S"-->
+<center>
+<TABLE BORDER="0" CELLPADDING="5" CELLSPACING="0" WIDTH="468" BGCOLOR="#000000">
+<TR>
+<TD ALIGN="left">
+<iframe src="http://www.vintagegaming.com/sponsors.shtml" width=468 height=60 marginwidth=0 marginheight=0 hspace=0 vspace=0 frameborder=0 scrolling=no bordercolor="#000000"></iframe>
+</TD>
+</TR>
+</TABLE>
+<A HREF="http://ad.doubleclick.net/jump/vintagegaming.com/;abr=!ie4;abr=!ie5;sz=468x60";ord=42916870?">
+<IMG BORDER=0 SRC="http://ad.doubleclick.net/ad/vintagegaming.com/;abr=!ie4;abr=!ie5a;sz=468x60";ord=42916870?"></a>
+</center>
+
+
+<H2>Taito F2</H2>
+</CENTER>
+<H4>
+<PRE>
+System Information:
+The Taito F2 system is a fairly flexible hardware platform. It supports 4
+separate layers of graphics - one 64x64 tiled scrolling background plane
+of 8x8 tiles, a similar foreground plane, a sprite plane capable of handling
+all the video chores by itself (used in e.g. Super Space Invaders) and a text
+plane which may or may not scroll. The text plane has 8x8 characters which
+are generated in RAM. Information is based on the Liquid KidsBrom.
+
+Sound is handled by a Z80 with a YM2610 connected to it.
+
+CPU 1 : 68000, uses irqs 5 & 6.
+
+Main CPU Memory Map:
+$000000 - $0FFFFF : ROM (not all used)
+$100000 - $10FFFF : 64k of RAM
+$200000 - $201FFF : palette RAM, 4096 total colors
+$300000 - $30000f : input ports and dipswitches (writes may be IRQ acknowledge)
+$300000 - $300001 : irq ack? liquidk (Write)
+$320000 - $320003 : communication with sound CPU
+$800000 - $803FFF : 64x64 background layer
+$804000 - $805FFF : 64x64 text layer
+$806000 - $807FFF : 256 (512?) character generator RAM
+$808000 - $80BFFF : 64x64 foreground layer
+$80C000 - $80FFFF : unused?
+$820000 - $820005 : x scroll for 3 layers (3rd is unknown)
+$820006 - $82000B : y scroll for 3 layers (3rd is unknown)
+$82000C - $82000F : unknown (leds?)
+$900000 - $90FFFF : 64k of sprite ram
+$B00002 - $B00002 : watchdog?
+
+Input:
+    $300000 Dip Switch A     
+    $300002 Dip Switch A     
+    $300004 Player Input 0
+        $01 Up
+        $02 Down
+        $04 Right
+        $08 Left
+        $10 Button 1
+        $20 Button 2
+        $40 ?
+        $80 Start
+    $300006 Player Input 1
+        Same as player 1
+    $300008 Player Input 2
+        Same as player 1
+
+PaletteFormat:
+    $RGBx (2 Bytes)	
+
+    There are 256 palettes of 16 colors each.
+
+Sprite format:
+    $0000: 000xxxxxxxxxxxxx : tile code ($0000 - $1fff)
+    $0002: unused?
+    $0004: 0000xxxxxxxxxxxx : x-coordinate absolute (-$1ff to $01ff)
+           0x00000000000000 : don't compensate for scrolling ??
+    $0006: 0000xxxxxxxxxxxx : y-coordinate absolute (-$1ff to $01ff)
+    $0008: 00000000xxxxxxxx : color ($00 - $ff)
+           000000xx00000000 : flipx & flipy
+           00000x0000000000 : if clear, latch x & y coordinates, tile & color ?
+           0000x00000000000 : if set, next sprite entry is part of sequence
+           000x000000000000 : if clear, use latched y coordinate, else use current y
+           00x0000000000000 : if set, y += 16
+           0x00000000000000 : if clear, use latched x coordinate, else use current x
+           x000000000000000 : if set, x += 16
+    $000A - $000F           : unused?
+
+    Additionally, the first 3 sprite entries are configuration info instead of actual 
+    sprites:
+        offset $24: sprite x offset
+        offset $26: sprite y offset
+
+Background/Foreground/Text Layer:
+    Format of a Foreground/Background Tilemap:
+    $AABBCCCC (4 Bytes)
+        AA     Flip.
+	        $80 is Vertical	
+	        $40 is Horizontal
+	BB     Palette (0 to $FF)
+	CCCC   Tile Number. 
+
+    Format of a Text tilemap:
+    $ABCC     (2 Bytes)
+	A	Flip.
+	        $8 is Vertical	
+	        $4 is Horizontal
+	B	Palette (0 - 15)
+	CC	Tilenumber (0 - 255)
+
+    The screen is flipped horizontally and vertically. 
+    There are -256 bytes between vertical positions, and -4 bytes between horizontal 
+    positions.
+
+    The font graphics are stored starting at $806000, and are 4096 bytes long. 
+
+Scroll Registers:
+    $820000 - $820001   Background layer X Scroll     
+    $820002 - $820003   Foreground layer X Scroll     
+    $820004 - $820005   ? layer X Scroll     
+    $820006 - $820007   Background layer Y Scroll     
+    $820008 - $820009   Foreground layer Y Scroll     
+    $82000A - $82000B   ? layer X Scroll     
+        
+Graphics Format:
+width = 16
+height = 16
+total = 8192
+planes = 4
+planeoffsets = 0 1 2 3
+xoffsets = 4 0 12 8 20 16 28 24 36 32 44 40 52 48 60 56
+yoffsets = 0 64 128 192 256 320 384 448 512 576 640 704 768 832 896 960
+charincrement = 1024
+
+width = 8
+height = 8
+total = 32768
+planes = 4
+planeoffsets = 0 1 2 3
+xoffsets = 8 12 0 4 24 28 16 20
+yoffsets = 0 32 64 96 128 170 192 224
+charincrement = 256
+
+width = 8
+height = 8
+total = 256
+planes = 2
+planeoffsets = 0 8
+xoffsets = 0 1 2 3 4 5 6 7
+yoffsets = 0 16 32 48 64 80 96 112
+charincrement = 128
+</PRE>
+</H4>
+<HR>
+<CENTER>
+<A HREF="http:\\www.vintagegaming.com">
+<IMG SRC="pacman_anim.gif" WIDTH=468 HEIGHT=60 BORDER=0><BR>
+</A>
+<FONT COLOR="#FF0000"><B>Hosted by the Vintage Gaming Network</B></FONT>
+</CENTER>
+</BODY>
+</HTML>

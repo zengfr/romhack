@@ -1,0 +1,11 @@
+收集整理:zengfr
+资料备份1:https://github.com/zengfr/romhack
+资料备份2:https://gitee.com/zengfr/romhack
+========
+VRAM MAP
+========
+OBJ: 900000
+SCROLL 1: 908000
+SCROLL 2: 90C000
+SCROLL 3: 910000
+Palettes: 914000

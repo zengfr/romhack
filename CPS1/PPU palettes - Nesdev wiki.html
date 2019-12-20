@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="client-nojs">
+<head>
+<meta charset="UTF-8" />
+<title>PPU palettes - Nesdev wiki</title>
+<meta name="generator" content="MediaWiki 1.24.1" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="search" type="application/opensearchdescription+xml" href="/w/opensearch_desc.php" title="Nesdev wiki (en)" />
+<link rel="EditURI" type="application/rsd+xml" href="http://wiki.nesdev.com/w/api.php?action=rsd" />
+<link rel="alternate" hreflang="x-default" href="/w/index.php/PPU_palettes" />
+<link rel="alternate" type="application/atom+xml" title="Nesdev wiki Atom feed" href="/w/index.php?title=Special:RecentChanges&amp;feed=atom" />
+<link rel="stylesheet" href="http://wiki.nesdev.com/w/load.php?debug=false&amp;lang=en&amp;modules=mediawiki.legacy.commonPrint%2Cshared%7Cmediawiki.skinning.content.externallinks%7Cmediawiki.skinning.interface%7Cmediawiki.ui.button%7Cskins.monobook.styles&amp;only=styles&amp;skin=monobook&amp;*" />
+<!--[if IE 6]><link rel="stylesheet" href="/w/skins/MonoBook/IE60Fixes.css?303" media="screen" /><![endif]-->
+<!--[if IE 7]><link rel="stylesheet" href="/w/skins/MonoBook/IE70Fixes.css?303" media="screen" /><![endif]--><meta name="ResourceLoaderDynamicStyles" content="" />
+<link rel="stylesheet" href="http://wiki.nesdev.com/w/load.php?debug=false&amp;lang=en&amp;modules=site&amp;only=styles&amp;skin=monobook&amp;*" />
+<style>a:lang(ar),a:lang(kk-arab),a:lang(mzn),a:lang(ps),a:lang(ur){text-decoration:none}
+/* cache key: nesdev_wiki-mw1_:resourceloader:filter:minify-css:7:ba03c1c8aa3cba8f8e9fa81c9cae44f5 */</style>
+<script src="http://wiki.nesdev.com/w/load.php?debug=false&amp;lang=en&amp;modules=startup&amp;only=scripts&amp;skin=monobook&amp;*"></script>
+<script>if(window.mw){
+mw.config.set({"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"PPU_palettes","wgTitle":"PPU palettes","wgCurRevisionId":16897,"wgRevisionId":16897,"wgArticleId":24,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":[],"wgBreakFrames":false,"wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgMonthNamesShort":["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"wgRelevantPageName":"PPU_palettes","wgIsProbablyEditable":false,"wgRestrictionEdit":[],"wgRestrictionMove":[]});
+}</script><script>if(window.mw){
+mw.loader.implement("user.options",function($,jQuery){mw.user.options.set({"ccmeonemails":0,"cols":80,"date":"default","diffonly":0,"disablemail":0,"editfont":"default","editondblclick":0,"editsectiononrightclick":0,"enotifminoredits":0,"enotifrevealaddr":0,"enotifusertalkpages":1,"enotifwatchlistpages":1,"extendwatchlist":0,"fancysig":0,"forceeditsummary":0,"gender":"unknown","hideminor":0,"hidepatrolled":0,"imagesize":2,"math":1,"minordefault":0,"newpageshidepatrolled":0,"nickname":"","norollbackdiff":0,"numberheadings":0,"previewonfirst":0,"previewontop":1,"rcdays":7,"rclimit":50,"rows":25,"showhiddencats":0,"shownumberswatching":1,"showtoolbar":1,"skin":"monobook","stubthreshold":0,"thumbsize":5,"underline":2,"uselivepreview":0,"usenewrc":0,"watchcreations":1,"watchdefault":1,"watchdeletion":0,"watchlistdays":3,"watchlisthideanons":0,"watchlisthidebots":0,"watchlisthideliu":0,"watchlisthideminor":0,"watchlisthideown":0,"watchlisthidepatrolled":0,"watchmoves":0,"watchrollback":0,
+"wllimit":250,"useeditwarning":1,"prefershttps":1,"language":"en","variant-gan":"gan","variant-iu":"iu","variant-kk":"kk","variant-ku":"ku","variant-shi":"shi","variant-sr":"sr","variant-tg":"tg","variant-uz":"uz","variant-zh":"zh","searchNs0":true,"searchNs1":false,"searchNs2":false,"searchNs3":false,"searchNs4":false,"searchNs5":false,"searchNs6":false,"searchNs7":false,"searchNs8":false,"searchNs9":false,"searchNs10":false,"searchNs11":false,"searchNs12":false,"searchNs13":false,"searchNs14":false,"searchNs15":false,"variant":"en"});},{},{});mw.loader.implement("user.tokens",function($,jQuery){mw.user.tokens.set({"editToken":"+\\","patrolToken":"+\\","watchToken":"+\\"});},{},{});
+/* cache key: nesdev_wiki-mw1_:resourceloader:filter:minify-js:7:ab52f6eb1652fbc58fa39bdfdc3926f5 */
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.legacy.ajax"]);
+}</script>
+</head>
+<body class="mediawiki ltr sitedir-ltr ns-0 ns-subject page-PPU_palettes skin-monobook action-view">
+<div id="globalWrapper">
+		<div id="column-content">
+			<div id="content" class="mw-body" role="main">
+				<a id="top"></a>
+				
+				<h1 id="firstHeading" class="firstHeading" lang="en"><span dir="auto">PPU palettes</span></h1>
+
+				<div id="bodyContent" class="mw-body-content">
+					<div id="siteSub">From Nesdev wiki</div>
+					<div id="contentSub"></div>
+										<div id="jump-to-nav" class="mw-jump">Jump to: <a href="#column-one">navigation</a>, <a href="#searchInput">search</a></div>
+
+					<!-- start content -->
+					<div id="mw-content-text" lang="en" dir="ltr" class="mw-content-ltr"><p>The NES has a limited selection of color outputs. A 6-bit value in the palette memory area corresponds to one of 64 outputs. The <a href="/w/index.php/Colour_emphasis" title="Colour emphasis">emphasis</a> bits of the <a href="/w/index.php/PPUMASK" title="PPUMASK" class="mw-redirect">PPUMASK</a> register ($2001) provide an additional color modifier.
+</p><p>For more information on how the colors are generated on an NTSC NES, see: <a href="/w/index.php/NTSC_video" title="NTSC video">NTSC video</a>
+</p>
+<div id="toc" class="toc"><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#Memory_Map"><span class="tocnumber">1</span> <span class="toctext">Memory Map</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="#Palettes"><span class="tocnumber">2</span> <span class="toctext">Palettes</span></a>
+<ul>
+<li class="toclevel-2 tocsection-3"><a href="#2C02"><span class="tocnumber">2.1</span> <span class="toctext">2C02</span></a></li>
+<li class="toclevel-2 tocsection-4"><a href="#2C03_and_2C05"><span class="tocnumber">2.2</span> <span class="toctext">2C03 and 2C05</span></a></li>
+<li class="toclevel-2 tocsection-5"><a href="#RC2C03B"><span class="tocnumber">2.3</span> <span class="toctext">RC2C03B</span></a></li>
+<li class="toclevel-2 tocsection-6"><a href="#2C04"><span class="tocnumber">2.4</span> <span class="toctext">2C04</span></a>
+<ul>
+<li class="toclevel-3 tocsection-7"><a href="#RP2C04-0001"><span class="tocnumber">2.4.1</span> <span class="toctext">RP2C04-0001</span></a></li>
+<li class="toclevel-3 tocsection-8"><a href="#RP2C04-0002"><span class="tocnumber">2.4.2</span> <span class="toctext">RP2C04-0002</span></a></li>
+<li class="toclevel-3 tocsection-9"><a href="#RP2C04-0003"><span class="tocnumber">2.4.3</span> <span class="toctext">RP2C04-0003</span></a></li>
+<li class="toclevel-3 tocsection-10"><a href="#RP2C04-0004"><span class="tocnumber">2.4.4</span> <span class="toctext">RP2C04-0004</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-11"><a href="#Backdrop_color_.28palette_index_0.29_uses"><span class="tocnumber">3</span> <span class="toctext">Backdrop color (palette index 0) uses</span></a></li>
+<li class="toclevel-1 tocsection-12"><a href="#The_background_palette_hack"><span class="tocnumber">4</span> <span class="toctext">The background palette hack</span></a></li>
+<li class="toclevel-1 tocsection-13"><a href="#Color_names"><span class="tocnumber">5</span> <span class="toctext">Color names</span></a>
+<ul>
+<li class="toclevel-2 tocsection-14"><a href="#Luma"><span class="tocnumber">5.1</span> <span class="toctext">Luma</span></a></li>
+<li class="toclevel-2 tocsection-15"><a href="#Chroma"><span class="tocnumber">5.2</span> <span class="toctext">Chroma</span></a></li>
+<li class="toclevel-2 tocsection-16"><a href="#RGBI"><span class="tocnumber">5.3</span> <span class="toctext">RGBI</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-17"><a href="#See_also"><span class="tocnumber">6</span> <span class="toctext">See also</span></a></li>
+</ul>
+</div>
+
+<h2><span class="mw-headline" id="Memory_Map">Memory Map</span></h2>
+<p>The palette for the background runs from VRAM $3F00 to $3F0F; the palette for the sprites runs from $3F10 to $3F1F. Each color takes up one byte.
+</p>
+<table class="wikitable">
+<tr>
+<th> Address </th>
+<th> Purpose
+</th></tr>
+<tr>
+<td> $3F00 </td>
+<td> Universal background color
+</td></tr>
+<tr>
+<td> $3F01-$3F03 </td>
+<td> Background palette 0
+</td></tr>
+<tr>
+<td> $3F05-$3F07 </td>
+<td> Background palette 1
+</td></tr>
+<tr>
+<td> $3F09-$3F0B </td>
+<td> Background palette 2
+</td></tr>
+<tr>
+<td> $3F0D-$3F0F </td>
+<td> Background palette 3
+</td></tr>
+<tr>
+<td> $3F11-$3F13 </td>
+<td> Sprite palette 0
+</td></tr>
+<tr>
+<td> $3F15-$3F17 </td>
+<td> Sprite palette 1
+</td></tr>
+<tr>
+<td> $3F19-$3F1B </td>
+<td> Sprite palette 2
+</td></tr>
+<tr>
+<td> $3F1D-$3F1F </td>
+<td> Sprite palette 3
+</td></tr></table>
+<p>Each palette has three colors.
+Each 16x16 pixel area of the background can use the backdrop color and the three colors from one of the four background palettes.
+The choice of palette for each 16x16 pixel area is controlled by bits in the attribute table at the end of each <a href="/w/index.php/PPU_nametables" title="PPU nametables">nametable</a>.
+Each sprite can use the three colors from one of the sprite palettes.
+The choice of palette is in attribute 2 of each sprite (see <a href="/w/index.php/PPU_OAM" title="PPU OAM">PPU OAM</a>).
+</p><p>Addresses $3F04/$3F08/$3F0C can contain unique data, though these values are not used by the PPU when normally rendering (since the pattern values that would otherwise select those cells select the backdrop color instead). They can still be shown using the background palette hack, explained below.
+</p><p>Addresses $3F10/$3F14/$3F18/$3F1C are mirrors of $3F00/$3F04/$3F08/$3F0C. Note that this goes for writing as well as reading.
+A symptom of not having implemented this correctly in an emulator is the sky being black in <i>Super Mario Bros.</i>, which writes the backdrop color through $3F10.
+</p><p>Thus, indices into the palette are formed as follows:
+</p>
+<pre>43210
+|||||
+|||++- Pixel value from tile data
+|++--- Palette number from attribute table or OAM
++----- Background/Sprite select
+</pre>
+<p>As in some second-generation game consoles, values in the NES palette are based on <a href="https://en.wikipedia.org/wiki/HSL_and_HSV" class="extiw" title="wikipedia:HSL and HSV">hue and brightness</a>:
+</p>
+<pre>76543210
+||||||||
+||||++++- Hue (phase, determines NTSC/PAL chroma)
+||++----- Value (voltage, determines NTSC/PAL luma)
+++------- Unimplemented, reads back as 0
+</pre>
+<p>Hue $0 is light gray, $1-$C are blue to red to green to cyan, $D is dark gray, and $E-$F are mirrors of $1D (black).
+The canonical code for "black" is $0F or $1D.
+$0D should not be used; it results in a "blacker than black" signal that may cause problems for some TVs.
+It works this way because of the way colors are represented in an NTSC or PAL signal, with the phase of a color subcarrier controlling the hue. For details, see <a href="/w/index.php/NTSC_video" title="NTSC video">NTSC video</a>, or for a list see <a href="/w/index.php/Color_$0D_games" title="Color $0D games">Color $0D games</a>.
+</p><p>The 2C03 RGB PPU used in the PlayChoice-10 and Famicom Titler renders hue $D as black, not dark gray.
+The 2C04 PPUs used in many <a href="/w/index.php/Vs._System" title="Vs. System">Vs. System</a> arcade games have completely different palettes as a copy protection measure.
+</p>
+<h2><span class="mw-headline" id="Palettes">Palettes</span></h2>
+<h3><span class="mw-headline" id="2C02">2C02</span></h3>
+<div class="thumb tright"><div class="thumbinner" style="width:386px;"><a href="/w/index.php/File:Savtool-swatches.png" class="image"><img alt="" src="/w/images/5/59/Savtool-swatches.png" width="384" height="120" class="thumbimage" /></a>  <div class="thumbcaption">NES palette generated with Bisqwit's tool</div></div></div>
+<p>The RF Famicom, AV Famicom, NES (both front- and top-loading), and the North American version of the Sharp Nintendo TV use the 2C02 PPU.
+Unlike some other consoles' video circuits, the 2C02 does not generate RGB video and then encode that to composite.
+Instead it generates <a href="/w/index.php/NTSC_video" title="NTSC video">NTSC video</a> directly in the composite domain.
+The TV decodes this into RGB to drive its picture tube, and most TVs' decoders intentionally deviate somewhat from the NTSC standard.
+</p><p>Some emulators decode the NTSC signal in real time.
+Others use a predefined palette, such as one commonly stored in <a rel="nofollow" class="external text" href="http://www.shikadi.net/moddingwiki/VGA_Palette">Classic VGA Palette format</a> (<a href="/w/index.php/.pal" title=".pal">.pal</a>), in which each triplet represents the sRGB color that results from decoding a large flat area with a given palette value.
+Using such a table directly will result in overly "clean" video that looks somewhat more like a PlayChoice (see 2C03 below), and some games will look graphically sterile if quirks of the NES's video output are not emulated.
+However, sometimes people want something functional before they bother with actually generating a composite signal and decoding it, or they're making an emulator for a low-end device that cannot decode NTSC video in real time.
+</p><p>The following table was generated using <a rel="nofollow" class="external text" href="http://forums.nesdev.com/viewtopic.php?f=2&amp;t=6484">blargg's Full Palette demo</a> on <a href="/w/index.php/Emulators" title="Emulators">Nestopia</a>:
+</p>
+<pre style="font-size: 70%">
+ 84  84  84    0  30 116    8  16 144   48   0 136   68   0 100   92   0  48   84   4   0   60  24   0   32  42   0    8  58   0    0  64   0    0  60   0    0  50  60    0   0   0
+152 150 152    8  76 196   48  50 236   92  30 228  136  20 176  160  20 100  152  34  32  120  60   0   84  90   0   40 114   0    8 124   0    0 118  40    0 102 120    0   0   0
+236 238 236   76 154 236  120 124 236  176  98 236  228  84 236  236  88 180  236 106 100  212 136  32  160 170   0  116 196   0   76 208  32   56 204 108   56 180 204   60  60  60
+236 238 236  168 204 236  188 188 236  212 178 236  236 174 236  236 174 212  236 180 176  228 196 144  204 210 120  180 222 120  168 226 144  152 226 180  160 214 228  160 162 160
+</pre>
+<p>Other tools for generating a palette include <a rel="nofollow" class="external text" href="http://bisqwit.iki.fi/utils/nespalette.php">one by Bisqwit</a> and <a rel="nofollow" class="external text" href="http://drag.wootest.net/misc/palgen.html">one by Drag</a>.
+These simulate generating a large area of one flat color and then decoding that with the adjustment knobs set to various settings.
+</p><p>The 2C03, 2C04, and 2C05, on the other hand, all output analog red, green, blue, and sync (RGBS) signals.
+The sync signal contains horizontal and vertical sync pulses in the same format as an all-black composite signal.
+Each of the three video channels uses a 3-bit DAC driven by a look-up table in a 64x9-bit ROM inside the PPU.
+The look-up tables (one digit for each of red, green, and blue, in order) are given below:
+</p>
+<h3><span class="mw-headline" id="2C03_and_2C05">2C03 and 2C05</span></h3>
+<p>This palette is intentionally similar to the NES's standard palette, but notably is missing the greys in entries $2D and $3D.
+The 2C03 is used in <i>Vs. Duck Hunt</i>, <i>Vs. Tennis</i>, all PlayChoice games, the Famicom Titler, and the Famicom TV.
+The 2C05 is used in some later Vs. games as a copy protection measure.
+Both have been used in RGB mods for the NES, as a circuit implementing <code>A0' = A0 xor (A1 nor A2)</code> can swap PPUCTRL and PPUMASK to make a 2C05 behave as a 2C03.
+</p>
+<pre>333,014,006,326,403,503,510,420,320,120,031,040,022,000,000,000
+555,036,027,407,507,704,700,630,430,140,040,053,044,000,000,000
+777,357,447,637,707,737,740,750,660,360,070,276,077,000,000,000
+777,567,657,757,747,755,764,772,773,572,473,276,467,000,000,000
+</pre>
+<table class="wikitable">
+
+<tr>
+<td style="border:0px;background-color:#6D6D6D;width:32px;height:32px;color:#fff;text-align:center">0x00
+</td>
+<td style="border:0px;background-color:#002491;width:32px;height:32px;color:#fff;text-align:center">0x01
+</td>
+<td style="border:0px;background-color:#0000DA;width:32px;height:32px;color:#fff;text-align:center">0x02
+</td>
+<td style="border:0px;background-color:#6D48DA;width:32px;height:32px;color:#fff;text-align:center">0x03
+</td>
+<td style="border:0px;background-color:#91006D;width:32px;height:32px;color:#fff;text-align:center">0x04
+</td>
+<td style="border:0px;background-color:#B6006D;width:32px;height:32px;color:#fff;text-align:center">0x05
+</td>
+<td style="border:0px;background-color:#B62400;width:32px;height:32px;color:#fff;text-align:center">0x06
+</td>
+<td style="border:0px;background-color:#914800;width:32px;height:32px;color:#fff;text-align:center">0x07
+</td>
+<td style="border:0px;background-color:#6D4800;width:32px;height:32px;color:#fff;text-align:center">0x08
+</td>
+<td style="border:0px;background-color:#244800;width:32px;height:32px;color:#fff;text-align:center">0x09
+</td>
+<td style="border:0px;background-color:#006D24;width:32px;height:32px;color:#fff;text-align:center">0x0A
+</td>
+<td style="border:0px;background-color:#009100;width:32px;height:32px;color:#fff;text-align:center">0x0B
+</td>
+<td style="border:0px;background-color:#004848;width:32px;height:32px;color:#fff;text-align:center">0x0C
+</td>
+<td style="border:0px;background-color:#000000;width:32px;height:32px;color:#fff;text-align:center">0x0D
+</td>
+<td style="border:0px;background-color:#000000;width:32px;height:32px;color:#fff;text-align:center">0x0E
+</td>
+<td style="border:0px;background-color:#000000;width:32px;height:32px;color:#fff;text-align:center">0x0F
+</td></tr>
+<tr>
+<td style="border:0px;background-color:#B6B6B6;width:32px;height:32px;color:#fff;text-align:center">0x10
+</td>
+<td style="border:0px;background-color:#006DDA;width:32px;height:32px;color:#fff;text-align:center">0x11
+</td>
+<td style="border:0px;background-color:#0048FF;width:32px;height:32px;color:#fff;text-align:center">0x12
+</td>
+<td style="border:0px;background-color:#9100FF;width:32px;height:32px;color:#fff;text-align:center">0x13
+</td>
+<td style="border:0px;background-color:#B600FF;width:32px;height:32px;color:#fff;text-align:center">0x14
+</td>
+<td style="border:0px;background-color:#FF0091;width:32px;height:32px;color:#fff;text-align:center">0x15
+</td>
+<td style="border:0px;background-color:#FF0000;width:32px;height:32px;color:#fff;text-align:center">0x16
+</td>
+<td style="border:0px;background-color:#DA6D00;width:32px;height:32px;color:#fff;text-align:center">0x17
+</td>
+<td style="border:0px;background-color:#916D00;width:32px;height:32px;color:#fff;text-align:center">0x18
+</td>
+<td style="border:0px;background-color:#249100;width:32px;height:32px;color:#fff;text-align:center">0x19
+</td>
+<td style="border:0px;background-color:#009100;width:32px;height:32px;color:#fff;text-align:center">0x1A
+</td>
+<td style="border:0px;background-color:#00B66D;width:32px;height:32px;color:#fff;text-align:center">0x1B
+</td>
+<td style="border:0px;background-color:#009191;width:32px;height:32px;color:#fff;text-align:center">0x1C
+</td>
+<td style="border:0px;background-color:#000000;width:32px;height:32px;color:#fff;text-align:center">0x1D
+</td>
+<td style="border:0px;background-color:#000000;width:32px;height:32px;color:#fff;text-align:center">0x1E
+</td>
+<td style="border:0px;background-color:#000000;width:32px;height:32px;color:#fff;text-align:center">0x1F
+</td></tr>
+<tr>
+<td style="border:0px;background-color:#FFFFFF;width:32px;height:32px;color:#000;text-align:center">0x20
+</td>
+<td style="border:0px;background-color:#6DB6FF;width:32px;height:32px;color:#000;text-align:center">0x21
+</td>
+<td style="border:0px;background-color:#9191FF;width:32px;height:32px;color:#000;text-align:center">0x22
+</td>
+<td style="border:0px;background-color:#DA6DFF;width:32px;height:32px;color:#000;text-align:center">0x23
+</td>
+<td style="border:0px;background-color:#FF00FF;width:32px;height:32px;color:#000;text-align:center">0x24
+</td>
+<td style="border:0px;background-color:#FF6DFF;width:32px;height:32px;color:#000;text-align:center">0x25
+</td>
+<td style="border:0px;background-color:#FF9100;width:32px;height:32px;color:#000;text-align:center">0x26
+</td>
+<td style="border:0px;background-color:#FFB600;width:32px;height:32px;color:#000;text-align:center">0x27
+</td>
+<td style="border:0px;background-color:#DADA00;width:32px;height:32px;color:#000;text-align:center">0x28
+</td>
+<td style="border:0px;background-color:#6DDA00;width:32px;height:32px;color:#000;text-align:center">0x29
+</td>
+<td style="border:0px;background-color:#00FF00;width:32px;height:32px;color:#000;text-align:center">0x2A
+</td>
+<td style="border:0px;background-color:#48FFDA;width:32px;height:32px;color:#000;text-align:center">0x2B
+</td>
+<td style="border:0px;background-color:#00FFFF;width:32px;height:32px;color:#000;text-align:center">0x2C
+</td>
+<td style="border:0px;background-color:#000000;width:32px;height:32px;color:#f00;text-align:center">0x2D
+</td>
+<td style="border:0px;background-color:#000000;width:32px;height:32px;color:#fff;text-align:center">0x2E
+</td>
+<td style="border:0px;background-color:#000000;width:32px;height:32px;color:#fff;text-align:center">0x2F
+</td></tr>
+<tr>
+<td style="border:0px;background-color:#FFFFFF;width:32px;height:32px;color:#000;text-align:center">0x30
+</td>
+<td style="border:0px;background-color:#B6DAFF;width:32px;height:32px;color:#000;text-align:center">0x31
+</td>
+<td style="border:0px;background-color:#DAB6FF;width:32px;height:32px;color:#000;text-align:center">0x32
+</td>
+<td style="border:0px;background-color:#FFB6FF;width:32px;height:32px;color:#000;text-align:center">0x33
+</td>
+<td style="border:0px;background-color:#FF91FF;width:32px;height:32px;color:#000;text-align:center">0x34
+</td>
+<td style="border:0px;background-color:#FFB6B6;width:32px;height:32px;color:#000;text-align:center">0x35
+</td>
+<td style="border:0px;background-color:#FFDA91;width:32px;height:32px;color:#000;text-align:center">0x36
+</td>
+<td style="border:0px;background-color:#FFFF48;width:32px;height:32px;color:#000;text-align:center">0x37
+</td>
+<td style="border:0px;background-color:#FFFF6D;width:32px;height:32px;color:#000;text-align:center">0x38
+</td>
+<td style="border:0px;background-color:#B6FF48;width:32px;height:32px;color:#000;text-align:center">0x39
+</td>
+<td style="border:0px;background-color:#91FF6D;width:32px;height:32px;color:#000;text-align:center">0x3A
+</td>
+<td style="border:0px;background-color:#48FFDA;width:32px;height:32px;color:#000;text-align:center">0x3B
+</td>
+<td style="border:0px;background-color:#91DAFF;width:32px;height:32px;color:#000;text-align:center">0x3C
+</td>
+<td style="border:0px;background-color:#000000;width:32px;height:32px;color:#f00;text-align:center">0x3D
+</td>
+<td style="border:0px;background-color:#000000;width:32px;height:32px;color:#fff;text-align:center">0x3E
+</td>
+<td style="border:0px;background-color:#000000;width:32px;height:32px;color:#fff;text-align:center">0x3F
+</td></tr></table>
+<p>Kevtris's dumped palettes imply that the monochrome bit has unique function on the 2C03 and 2C05: instead of just using the leftmost column of the palette (and forcing the lower four bits to zero), instead the top two bits index into a palette with colors: 000, 333, 777, 777. Given that the 2C04 does <b>not</b> do this, this exception feels weird, and corroboration would be appreciated.
+</p>
+<h3><span class="mw-headline" id="RC2C03B">RC2C03B</span></h3>
+<p>For no particularly discernible reason, the palette for this specific PPU varies in six colors:
+</p>
+<pre>333,014,006,326,403,503,510,420,320,100,031,040,022,000,000,000
+555,016,027,407,507,704,700,630,430,140,040,053,044,000,000,000
+777,357,447,637,707,717,740,750,660,340,070,276,077,000,000,000
+777,547,657,757,747,755,764,772,773,552,473,276,467,000,000,000
+</pre>
+<table class="wikitable">
+
+<tr>
+<td style="border:0px;background-color:#6d6d6d;width:32px;height:32px;color:#fff;text-align:center">0x00
+</td>
+<td style="border:0px;background-color:#002491;width:32px;height:32px;color:#fff;text-align:center">0x01
+</td>
+<td style="border:0px;background-color:#0000da;width:32px;height:32px;color:#fff;text-align:center">0x02
+</td>
+<td style="border:0px;background-color:#6d48da;width:32px;height:32px;color:#fff;text-align:center">0x03
+</td>
+<td style="border:0px;background-color:#91006d;width:32px;height:32px;color:#fff;text-align:center">0x04
+</td>
+<td style="border:0px;background-color:#b6006d;width:32px;height:32px;color:#fff;text-align:center">0x05
+</td>
+<td style="border:0px;background-color:#b62400;width:32px;height:32px;color:#fff;text-align:center">0x06
+</td>
+<td style="border:0px;background-color:#914800;width:32px;height:32px;color:#fff;text-align:center">0x07
+</td>
+<td style="border:0px;background-color:#6d4800;width:32px;height:32px;color:#fff;text-align:center">0x08
+</td>
+<td style="border:0px;background-color:#240000;width:32px;height:32px;color:#fff;border:1px solid #fff;text-align:center">0x09
+</td>
+<td style="border:0px;background-color:#006d24;width:32px;height:32px;color:#fff;text-align:center">0x0a
+</td>
+<td style="border:0px;background-color:#009100;width:32px;height:32px;color:#fff;text-align:center">0x0b
+</td>
+<td style="border:0px;background-color:#004848;width:32px;height:32px;color:#fff;text-align:center">0x0c
+</td>
+<td style="border:0px;background-color:#000000;width:32px;height:32px;color:#fff;text-align:center">0x0d
+</td>
+<td style="border:0px;background-color:#000000;width:32px;height:32px;color:#fff;text-align:center">0x0e
+</td>
+<td style="border:0px;background-color:#000000;width:32px;height:32px;color:#fff;text-align:center">0x0f
+</td></tr>
+<tr>
+<td style="border:0px;background-color:#b6b6b6;width:32px;height:32px;color:#fff;text-align:center">0x10
+</td>
+<td style="border:0px;background-color:#0024da;width:32px;height:32px;color:#fff;border:1px solid #fff;text-align:center">0x11
+</td>
+<td style="border:0px;background-color:#0048ff;width:32px;height:32px;color:#fff;text-align:center">0x12
+</td>
+<td style="border:0px;background-color:#9100ff;width:32px;height:32px;color:#fff;text-align:center">0x13
+</td>
+<td style="border:0px;background-color:#b600ff;width:32px;height:32px;color:#fff;text-align:center">0x14
+</td>
+<td style="border:0px;background-color:#ff0091;width:32px;height:32px;color:#fff;text-align:center">0x15
+</td>
+<td style="border:0px;background-color:#ff0000;width:32px;height:32px;color:#fff;text-align:center">0x16
+</td>
+<td style="border:0px;background-color:#da6d00;width:32px;height:32px;color:#fff;text-align:center">0x17
+</td>
+<td style="border:0px;background-color:#916d00;width:32px;height:32px;color:#fff;text-align:center">0x18
+</td>
+<td style="border:0px;background-color:#249100;width:32px;height:32px;color:#fff;text-align:center">0x19
+</td>
+<td style="border:0px;background-color:#009100;width:32px;height:32px;color:#fff;text-align:center">0x1a
+</td>
+<td style="border:0px;background-color:#00b66d;width:32px;height:32px;color:#fff;text-align:center">0x1b
+</td>
+<td style="border:0px;background-color:#009191;width:32px;height:32px;color:#fff;text-align:center">0x1c
+</td>
+<td style="border:0px;background-color:#000000;width:32px;height:32px;color:#fff;text-align:center">0x1d
+</td>
+<td style="border:0px;background-color:#000000;width:32px;height:32px;color:#fff;text-align:center">0x1e
+</td>
+<td style="border:0px;background-color:#000000;width:32px;height:32px;color:#fff;text-align:center">0x1f
+</td></tr>
+<tr>
+<td style="border:0px;background-color:#ffffff;width:32px;height:32px;color:#000;text-align:center">0x20
+</td>
+<td style="border:0px;background-color:#6db6ff;width:32px;height:32px;color:#000;text-align:center">0x21
+</td>
+<td style="border:0px;background-color:#9191ff;width:32px;height:32px;color:#000;text-align:center">0x22
+</td>
+<td style="border:0px;background-color:#da6dff;width:32px;height:32px;color:#000;text-align:center">0x23
+</td>
+<td style="border:0px;background-color:#ff00ff;width:32px;height:32px;color:#000;text-align:center">0x24
+</td>
+<td style="border:0px;background-color:#ff24ff;width:32px;height:32px;color:#000;border:1px solid #000;text-align:center">0x25
+</td>
+<td style="border:0px;background-color:#ff9100;width:32px;height:32px;color:#000;text-align:center">0x26
+</td>
+<td style="border:0px;background-color:#ffb600;width:32px;height:32px;color:#000;text-align:center">0x27
+</td>
+<td style="border:0px;background-color:#dada00;width:32px;height:32px;color:#000;text-align:center">0x28
+</td>
+<td style="border:0px;background-color:#6d9100;width:32px;height:32px;color:#000;border:1px solid #000;text-align:center">0x29
+</td>
+<td style="border:0px;background-color:#00ff00;width:32px;height:32px;color:#000;text-align:center">0x2a
+</td>
+<td style="border:0px;background-color:#48ffda;width:32px;height:32px;color:#000;text-align:center">0x2b
+</td>
+<td style="border:0px;background-color:#00ffff;width:32px;height:32px;color:#000;text-align:center">0x2c
+</td>
+<td style="border:0px;background-color:#000000;width:32px;height:32px;color:#fff;text-align:center">0x2d
+</td>
+<td style="border:0px;background-color:#000000;width:32px;height:32px;color:#fff;text-align:center">0x2e
+</td>
+<td style="border:0px;background-color:#000000;width:32px;height:32px;color:#fff;text-align:center">0x2f
+</td></tr>
+<tr>
+<td style="border:0px;background-color:#ffffff;width:32px;height:32px;color:#000;text-align:center">0x30
+</td>
+<td style="border:0px;background-color:#b691ff;width:32px;height:32px;color:#000;border:1px solid #000;text-align:center">0x31
+</td>
+<td style="border:0px;background-color:#dab6ff;width:32px;height:32px;color:#000;text-align:center">0x32
+</td>
+<td style="border:0px;background-color:#ffb6ff;width:32px;height:32px;color:#000;text-align:center">0x33
+</td>
+<td style="border:0px;background-color:#ff91ff;width:32px;height:32px;color:#000;text-align:center">0x34
+</td>
+<td style="border:0px;background-color:#ffb6b6;width:32px;height:32px;color:#000;text-align:center">0x35
+</td>
+<td style="border:0px;background-color:#ffda91;width:32px;height:32px;color:#000;text-align:center">0x36
+</td>
+<td style="border:0px;background-color:#ffff48;width:32px;height:32px;color:#000;text-align:center">0x37
+</td>
+<td style="border:0px;background-color:#ffff6d;width:32px;height:32px;color:#000;text-align:center">0x38
+</td>
+<td style="border:0px;background-color:#b6b648;width:32px;height:32px;color:#000;border:1px solid #000;text-align:center">0x39
+</td>
+<td style="border:0px;background-color:#91ff6d;width:32px;height:32px;color:#000;text-align:center">0x3a
+</td>
+<td style="border:0px;background-color:#48ffda;width:32px;height:32px;color:#000;text-align:center">0x3b
+</td>
+<td style="border:0px;background-color:#91daff;width:32px;height:32px;color:#000;text-align:center">0x3c
+</td>
+<td style="border:0px;background-color:#000000;width:32px;height:32px;color:#fff;text-align:center">0x3d
+</td>
+<td style="border:0px;background-color:#000000;width:32px;height:32px;color:#fff;text-align:center">0x3e
+</td>
+<td style="border:0px;background-color:#000000;width:32px;height:32px;color:#fff;text-align:center">0x3f
+</td></tr></table>
+<p>The pattern compared to the normal 2C03 is that where color bits 0-1 are 01, green is ANDed with 5 (bit 1 is 0). No games are known to be designed for this palette. Given the pattern, it was probably a mistake in the mask.
+</p>
+<h3><span class="mw-headline" id="2C04">2C04</span></h3>
+<p>All four 2C04 PPUs contain the same master palette, but in different permutations. It's almost a superset of the 2C03/5 palette, adding four greys, six other colors, and making the bright yellow more pure.
+</p><p><b>No version of the 2C04 was ever made with the below ordering</b>, but it shows the similarity to the 2C03:
+</p>
+<table class="wikitable">
+
+<tr>
+<td style="border:0px;background-color:#6D6D6D;width:32px;height:32px;color:#fff;text-align:center">333
+</td>
+<td style="border:0px;background-color:#002491;width:32px;height:32px;color:#fff;text-align:center">014
+</td>
+<td style="border:0px;background-color:#0000DA;width:32px;height:32px;color:#fff;text-align:center">006
+</td>
+<td style="border:0px;background-color:#6D48DA;width:32px;height:32px;color:#fff;text-align:center">326
+</td>
+<td style="border:0px;background-color:#91006D;width:32px;height:32px;color:#fff;text-align:center">403
+</td>
+<td style="border:0px;background-color:#B6006D;width:32px;height:32px;color:#fff;text-align:center">503
+</td>
+<td style="border:0px;background-color:#B62400;width:32px;height:32px;color:#fff;text-align:center">510
+</td>
+<td style="border:0px;background-color:#914800;width:32px;height:32px;color:#fff;text-align:center">420
+</td>
+<td style="border:0px;background-color:#6D4800;width:32px;height:32px;color:#fff;text-align:center">320
+</td>
+<td style="border:0px;background-color:#244800;width:32px;height:32px;color:#fff;text-align:center">120
+</td>
+<td style="border:0px;background-color:#006D24;width:32px;height:32px;color:#fff;text-align:center">031
+</td>
+<td style="border:0px;background-color:#000000;width:32px;height:32px;color:#f00;text-align:center;font-size:50%;line-height:normal;">dup of ↙
+</td>
+<td style="border:0px;background-color:#004848;width:32px;height:32px;color:#fff;text-align:center">022
+</td>
+<td style="border:0px;background-color:#242424;width:32px;height:32px;color:#fff;text-align:center">111
+</td>
+<td style="border:0px;background-color:#00006d;width:32px;height:32px;color:#fff;text-align:center">003
+</td>
+<td style="border:0px;background-color:#004800;width:32px;height:32px;color:#fff;text-align:center">020
+</td></tr>
+<tr>
+<td style="border:0px;background-color:#B6B6B6;width:32px;height:32px;color:#fff;text-align:center">555
+</td>
+<td style="border:0px;background-color:#006DDA;width:32px;height:32px;color:#fff;text-align:center">036
+</td>
+<td style="border:0px;background-color:#0048FF;width:32px;height:32px;color:#fff;text-align:center">027
+</td>
+<td style="border:0px;background-color:#9100FF;width:32px;height:32px;color:#fff;text-align:center">407
+</td>
+<td style="border:0px;background-color:#B600FF;width:32px;height:32px;color:#fff;text-align:center">507
+</td>
+<td style="border:0px;background-color:#FF0091;width:32px;height:32px;color:#fff;text-align:center">704
+</td>
+<td style="border:0px;background-color:#FF0000;width:32px;height:32px;color:#fff;text-align:center">700
+</td>
+<td style="border:0px;background-color:#DA6D00;width:32px;height:32px;color:#fff;text-align:center">630
+</td>
+<td style="border:0px;background-color:#916D00;width:32px;height:32px;color:#fff;text-align:center">430
+</td>
+<td style="border:0px;background-color:#249100;width:32px;height:32px;color:#fff;text-align:center">140
+</td>
+<td style="border:0px;background-color:#009100;width:32px;height:32px;color:#fff;text-align:center">040
+</td>
+<td style="border:0px;background-color:#00B66D;width:32px;height:32px;color:#fff;text-align:center">053
+</td>
+<td style="border:0px;background-color:#009191;width:32px;height:32px;color:#fff;text-align:center">044
+</td>
+<td style="border:0px;background-color:#484848;width:32px;height:32px;color:#fff;text-align:center">222
+</td>
+<td style="border:0px;background-color:#480000;width:32px;height:32px;color:#fff;text-align:center">200
+</td>
+<td style="border:0px;background-color:#6d2400;width:32px;height:32px;color:#fff;text-align:center">310
+</td></tr>
+<tr>
+<td style="border:0px;background-color:#FFFFFF;width:32px;height:32px;color:#000;text-align:center">777
+</td>
+<td style="border:0px;background-color:#6DB6FF;width:32px;height:32px;color:#000;text-align:center">357
+</td>
+<td style="border:0px;background-color:#9191FF;width:32px;height:32px;color:#000;text-align:center">447
+</td>
+<td style="border:0px;background-color:#DA6DFF;width:32px;height:32px;color:#000;text-align:center">637
+</td>
+<td style="border:0px;background-color:#FF00FF;width:32px;height:32px;color:#000;text-align:center">707
+</td>
+<td style="border:0px;background-color:#FF6DFF;width:32px;height:32px;color:#000;text-align:center">737
+</td>
+<td style="border:0px;background-color:#FF9100;width:32px;height:32px;color:#000;text-align:center">740
+</td>
+<td style="border:0px;background-color:#FFB600;width:32px;height:32px;color:#000;text-align:center">750
+</td>
+<td style="border:0px;background-color:#DADA00;width:32px;height:32px;color:#000;text-align:center">660
+</td>
+<td style="border:0px;background-color:#6DDA00;width:32px;height:32px;color:#000;text-align:center">360
+</td>
+<td style="border:0px;background-color:#00FF00;width:32px;height:32px;color:#000;text-align:center">070
+</td>
+<td style="border:0px;background-color:#000000;width:32px;height:32px;color:#f00;text-align:center;font-size:50%;line-height:normal;">dup of ↓
+</td>
+<td style="border:0px;background-color:#00FFFF;width:32px;height:32px;color:#000;text-align:center">077
+</td>
+<td style="border:0px;background-color:#919191;width:32px;height:32px;color:#000;text-align:center">444
+</td>
+<td style="border:0px;background-color:#000000;width:32px;height:32px;color:#fff;text-align:center">000
+</td>
+<td style="border:0px;background-color:#000000;width:32px;height:32px;color:#fff;text-align:center">000
+</td></tr>
+<tr>
+<td style="border:0px;background-color:#FFFFFF;width:32px;height:32px;color:#000;text-align:center">777
+</td>
+<td style="border:0px;background-color:#B6DAFF;width:32px;height:32px;color:#000;text-align:center">567
+</td>
+<td style="border:0px;background-color:#DAB6FF;width:32px;height:32px;color:#000;text-align:center">657
+</td>
+<td style="border:0px;background-color:#FFB6FF;width:32px;height:32px;color:#000;text-align:center">757
+</td>
+<td style="border:0px;background-color:#FF91FF;width:32px;height:32px;color:#000;text-align:center">747
+</td>
+<td style="border:0px;background-color:#FFB6B6;width:32px;height:32px;color:#000;text-align:center">755
+</td>
+<td style="border:0px;background-color:#FFDA91;width:32px;height:32px;color:#000;text-align:center">764
+</td>
+<td style="border:0px;background-color:#FFFF00;width:32px;height:32px;color:#000;text-align:center">770
+</td>
+<td style="border:0px;background-color:#FFFF6D;width:32px;height:32px;color:#000;text-align:center">773
+</td>
+<td style="border:0px;background-color:#B6FF48;width:32px;height:32px;color:#000;text-align:center">572
+</td>
+<td style="border:0px;background-color:#91FF6D;width:32px;height:32px;color:#000;text-align:center">473
+</td>
+<td style="border:0px;background-color:#48FFDA;width:32px;height:32px;color:#000;text-align:center">276
+</td>
+<td style="border:0px;background-color:#91DAFF;width:32px;height:32px;color:#000;text-align:center">467
+</td>
+<td style="border:0px;background-color:#dadada;width:32px;height:32px;color:#000;text-align:center">666
+</td>
+<td style="border:0px;background-color:#dab66d;width:32px;height:32px;color:#000;text-align:center">653
+</td>
+<td style="border:0px;background-color:#ffda00;width:32px;height:32px;color:#000;text-align:center">760
+</td></tr></table>
+<p>The <a href="/w/index.php/PPUMASK" title="PPUMASK" class="mw-redirect">PPUMASK</a> monochrome bit has the same implementation as on the 2C02, and so it has an unintuitive effect on the 2C04 CPUs. Rather than forcing colors to grayscale, it instead forces them to the first column.
+</p>
+<h4><span class="mw-headline" id="RP2C04-0001">RP2C04-0001</span></h4>
+<p>MAME's source claims that <i>Baseball</i>, <i>Freedom Force</i>, <i>Gradius</i>, <i>Hogan's Alley</i>, <i>Mach Rider</i>, <i>Pinball</i>, and <i>Platoon</i> require this palette.
+</p>
+<pre>755,637,700,447,044,120,222,704,777,333,750,503,403,660,320,777
+357,653,310,360,467,657,764,027,760,276,000,200,666,444,707,014
+003,567,757,070,077,022,053,507,000,420,747,510,407,006,740,000
+000,140,555,031,572,326,770,630,020,036,040,111,773,737,430,473
+</pre>
+<h4><span class="mw-headline" id="RP2C04-0002">RP2C04-0002</span></h4>
+<p>MAME's source claims that <i>Castlevania</i>, <i>Mach Rider (Endurance Course)</i>, <i>Raid on Bungeling Bay</i>, <i>Slalom</i>, <i>Soccer</i>, <i>Stroke &amp; Match Golf</i> (both versions), and <i>Wrecking Crew</i> require this palette.
+</p>
+<pre>000,750,430,572,473,737,044,567,700,407,773,747,777,637,467,040
+020,357,510,666,053,360,200,447,222,707,003,276,657,320,000,326
+403,764,740,757,036,310,555,006,507,760,333,120,027,000,660,777
+653,111,070,630,022,014,704,140,000,077,420,770,755,503,031,444
+</pre>
+<h4><span class="mw-headline" id="RP2C04-0003">RP2C04-0003</span></h4>
+<p>MAME's source claims that <i>Balloon Fight</i>, <i>Dr. Mario</i>, <i>Excitebike</i> (US), <i>Goonies</i>, and <i>Soccer</i> require this palette.
+</p>
+<pre>507,737,473,555,040,777,567,120,014,000,764,320,704,666,653,467
+447,044,503,027,140,430,630,053,333,326,000,006,700,510,747,755
+637,020,003,770,111,750,740,777,360,403,357,707,036,444,000,310
+077,200,572,757,420,070,660,222,031,000,657,773,407,276,760,022
+</pre>
+<h4><span class="mw-headline" id="RP2C04-0004">RP2C04-0004</span></h4>
+<p>MAME's source claims that <i>Clu Clu Land</i>, <i>Excitebike</i> (Japan), <i>Ice Climber</i> (both versions), and <i>Super Mario Bros.</i> require this palette.
+</p>
+<pre>430,326,044,660,000,755,014,630,555,310,070,003,764,770,040,572
+737,200,027,747,000,222,510,740,653,053,447,140,403,000,473,357
+503,031,420,006,407,507,333,704,022,666,036,020,111,773,444,707
+757,777,320,700,760,276,777,467,000,750,637,567,360,657,077,120
+</pre>
+<h2><span class="mw-headline" id="Backdrop_color_.28palette_index_0.29_uses">Backdrop color (palette index 0) uses</span></h2>
+<p>During forced blanking, when neither background nor sprites are enabled in <a href="/w/index.php/PPU_registers" title="PPU registers">PPUMASK ($2001)</a>, the picture will show the backdrop color.
+If only the background or sprites are disabled, or if the left 8 pixels are clipped off, the PPU continues its <a href="/w/index.php/PPU_rendering" title="PPU rendering">normal video memory access pattern</a> but uses the backdrop color for anything disabled.
+</p>
+<h2><span class="mw-headline" id="The_background_palette_hack">The background palette hack</span></h2>
+<p>If the current VRAM address points in the range $3F00-$3FFF during forced blanking, the color indicated by this palette location will be shown on screen instead of the backdrop color.
+(Looking at the relevant circuitry in <a href="/w/index.php/Visual_2C02" title="Visual 2C02">Visual 2C02</a>, this is an intentional feature of the PPU and not merely a side effect of how rendering works.)
+This can be used to display colors from the normally unused $3F04/$3F08/$3F0C palette locations.
+A loop that fills the palette will cause each color in turn to be shown on the screen, so to avoid horizontal rainbow bar glitches while loading the palette, wait for a real vertical blank first using an <a href="/w/index.php/NMI" title="NMI">NMI</a> technique.
+</p>
+<h2><span class="mw-headline" id="Color_names">Color names</span></h2>
+<p>When programmers and artists are communicating, it's often useful to have human-readable names for colors.
+Many graphic designers who have done web or game work will be familiar with <a href="https://en.wikipedia.org/wiki/Web_colors#HTML_color_names" class="extiw" title="wikipedia:Web colors">HTML color names</a>.
+</p>
+<h3><span class="mw-headline" id="Luma">Luma</span></h3>
+<ul><li> $0F: Black</li>
+<li> $00: Dark gray</li>
+<li> $10: Light gray or silver</li>
+<li> $20: White</li>
+<li> $01-$0C: Dark colors, medium mixed with black</li>
+<li> $11-$1C: Medium colors, similar brightness to dark gray</li>
+<li> $21-$2C: Light colors, similar brightness to light gray</li>
+<li> $31-$3C: Pale colors, light mixed with white</li></ul>
+<h3><span class="mw-headline" id="Chroma">Chroma</span></h3>
+<p>Names for hues:
+</p>
+<ul><li> $x0: Gray</li>
+<li> $x2: Blue</li>
+<li> $x4: Magenta</li>
+<li> $x6: Red</li>
+<li> $x7: Orange</li>
+<li> $x8: Yellow or olive</li>
+<li> $xA: Green</li>
+<li> $xC: Cyan</li></ul>
+<h3><span class="mw-headline" id="RGBI">RGBI</span></h3>
+<p>These NES colors approximate colors in 16-color RGBI palettes, such as the CGA, EGA, or classic Windows palette, though the NES doesn't really have a good yellow:
+</p>
+<ul><li> $02: Navy</li>
+<li> $06: Maroon</li>
+<li> $12: Blue</li>
+<li> $14: Purple</li>
+<li> $16: Red</li>
+<li> $17: Brown</li>
+<li> $18: Olive</li>
+<li> $1A: Green</li>
+<li> $1C: Aqua</li>
+<li> $24: Fuchsia/Magenta</li>
+<li> $2A: Lime</li>
+<li> $2C: Teal</li></ul>
+<h2><span class="mw-headline" id="See_also">See also</span></h2>
+<ul><li> <a href="/w/index.php/NTSC_video" title="NTSC video">NTSC video</a> - details of the NTSC signal generation and how it produces the palette</li>
+<li> <a href="/w/index.php/PAL_video" title="PAL video">PAL video</a></li>
+<li> <a href="/w/index.php/PPU_palettes/zh" title="PPU palettes/zh">PPU_palettes/zh</a> - this page in Chinese</li></ul>
+
+<!-- 
+NewPP limit report
+CPU time usage: 0.052 seconds
+Real time usage: 0.053 seconds
+Preprocessor visited node count: 78/1000000
+Preprocessor generated node count: 96/1000000
+Post‐expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key nesdev_wiki-mw1_:pcache:idhash:24-0!*!0!!en!5!* and timestamp 20191227190933 and revision id 16897
+ -->
+</div><div class="printfooter">
+Retrieved from "<a dir="ltr" href="http://wiki.nesdev.com/w/index.php?title=PPU_palettes&amp;oldid=16897">http://wiki.nesdev.com/w/index.php?title=PPU_palettes&amp;oldid=16897</a>"</div>
+					<div id='catlinks' class='catlinks catlinks-allhidden'></div>					<!-- end content -->
+										<div class="visualClear"></div>
+				</div>
+			</div>
+		</div>
+		<div id="column-one">
+			<h2>Navigation menu</h2>
+					<div id="p-cactions" class="portlet" role="navigation">
+			<h3>Views</h3>
+
+			<div class="pBody">
+				<ul>
+				<li id="ca-nstab-main" class="selected"><a href="/w/index.php/PPU_palettes" title="View the content page [c]" accesskey="c">Page</a></li>
+				<li id="ca-talk"><a href="/w/index.php/Talk:PPU_palettes" title="Discussion about the content page [t]" accesskey="t">Discussion</a></li>
+				<li id="ca-viewsource"><a href="/w/index.php?title=PPU_palettes&amp;action=edit" title="This page is protected.&#10;You can view its source [e]" accesskey="e">View source</a></li>
+				<li id="ca-history"><a href="/w/index.php?title=PPU_palettes&amp;action=history" rel="archives" title="Past revisions of this page [h]" accesskey="h">History</a></li>
+				</ul>
+							</div>
+		</div>
+				<div class="portlet" id="p-personal" role="navigation">
+				<h3>Personal tools</h3>
+
+				<div class="pBody">
+					<ul>
+													<li id="pt-createaccount"><a href="/w/index.php?title=Special:UserLogin&amp;returnto=PPU+palettes&amp;type=signup">Create account</a></li>
+													<li id="pt-login"><a href="/w/index.php?title=Special:UserLogin&amp;returnto=PPU+palettes" title="You are encouraged to log in; however, it is not mandatory [o]" accesskey="o">Log in</a></li>
+											</ul>
+				</div>
+			</div>
+			<div class="portlet" id="p-logo" role="banner">
+				<a href="/w/index.php/Nesdev_Wiki" style="background-image: url(/w/resources/assets/NESdevWikiLogo7.png);" title="Visit the main page"></a>
+			</div>
+				<div class="generated-sidebar portlet" id="p-navigation" role="navigation">
+		<h3>Navigation</h3>
+		<div class='pBody'>
+							<ul>
+											<li id="n-Nesdev-main-page"><a href="/w/index.php/Nesdev">Nesdev main page</a></li>
+											<li id="n-Wiki-main-page"><a href="/w/index.php/Nesdev_Wiki">Wiki main page</a></li>
+											<li id="n-NES-reference-guide"><a href="/w/index.php/NES_reference_guide">NES reference guide</a></li>
+											<li id="n-Programming-guide"><a href="/w/index.php/Programming_guide">Programming guide</a></li>
+											<li id="n-Projects"><a href="/w/index.php/Projects">Projects</a></li>
+											<li id="n-Offline-HTML-version"><a href="http://wiki.nesdev.com/w/nesdevwiki_2016-08-28.zip" rel="nofollow">Offline HTML version</a></li>
+											<li id="n-NESdev-BBS"><a href="http://forums.nesdev.com/" rel="nofollow">NESdev BBS</a></li>
+											<li id="n-.23NESdev"><a href="/w/index.php/NESdev_IRC_channel">#NESdev</a></li>
+											<li id="n-recentchanges"><a href="/w/index.php/Special:RecentChanges" title="A list of recent changes in the wiki [r]" accesskey="r">Recent changes</a></li>
+									</ul>
+					</div>
+		</div>
+			<div id="p-search" class="portlet" role="search">
+			<h3><label for="searchInput">Search</label></h3>
+
+			<div id="searchBody" class="pBody">
+				<form action="/w/index.php" id="searchform">
+					<input type='hidden' name="title" value="Special:Search"/>
+					<input type="search" name="search" placeholder="Search" title="Search Nesdev wiki [f]" accesskey="f" id="searchInput" />
+					<input type="submit" name="go" value="Go" title="Go to a page with this exact name if exists" id="searchGoButton" class="searchButton" />&#160;
+						<input type="submit" name="fulltext" value="Search" title="Search the pages for this text" id="mw-searchButton" class="searchButton" />
+				</form>
+
+							</div>
+		</div>
+			<div class="portlet" id="p-tb" role="navigation">
+			<h3>Tools</h3>
+
+			<div class="pBody">
+				<ul>
+											<li id="t-whatlinkshere"><a href="/w/index.php/Special:WhatLinksHere/PPU_palettes" title="A list of all wiki pages that link here [j]" accesskey="j">What links here</a></li>
+											<li id="t-recentchangeslinked"><a href="/w/index.php/Special:RecentChangesLinked/PPU_palettes" title="Recent changes in pages linked from this page [k]" accesskey="k">Related changes</a></li>
+											<li id="t-specialpages"><a href="/w/index.php/Special:SpecialPages" title="A list of all special pages [q]" accesskey="q">Special pages</a></li>
+											<li id="t-print"><a href="/w/index.php?title=PPU_palettes&amp;printable=yes" rel="alternate" title="Printable version of this page [p]" accesskey="p">Printable version</a></li>
+											<li id="t-permalink"><a href="/w/index.php?title=PPU_palettes&amp;oldid=16897" title="Permanent link to this revision of the page">Permanent link</a></li>
+											<li id="t-info"><a href="/w/index.php?title=PPU_palettes&amp;action=info">Page information</a></li>
+									</ul>
+							</div>
+		</div>
+			</div><!-- end of the left (by default at least) column -->
+		<div class="visualClear"></div>
+					<div id="footer" role="contentinfo">
+						<div id="f-poweredbyico">
+									<a href="//www.mediawiki.org/"><img src="/w/resources/assets/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" width="88" height="31" /></a>
+							</div>
+					<ul id="f-list">
+									<li id="lastmod"> This page was last modified on 16 August 2019, at 23:08.</li>
+									<li id="viewcount">This page has been accessed 141,230 times.</li>
+									<li id="privacy"><a href="/w/index.php/Nesdev_wiki:Privacy_policy" title="Nesdev wiki:Privacy policy">Privacy policy</a></li>
+									<li id="about"><a href="/w/index.php/Nesdev_wiki:About" title="Nesdev wiki:About">About Nesdev wiki</a></li>
+									<li id="disclaimer"><a href="/w/index.php/Nesdev_wiki:General_disclaimer" title="Nesdev wiki:General disclaimer">Disclaimers</a></li>
+							</ul>
+		</div>
+		</div>
+		<script>/*<![CDATA[*/window.jQuery && jQuery.ready();/*]]>*/</script><script>if(window.mw){
+mw.loader.state({"site":"loading","user":"ready","user.groups":"ready"});
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.toc","mediawiki.action.view.postEdit","mediawiki.user","mediawiki.hidpi","mediawiki.page.ready","mediawiki.searchSuggest"],null,true);
+}</script>
+<script>if(window.mw){
+document.write("\u003Cscript src=\"http://wiki.nesdev.com/w/load.php?debug=false\u0026amp;lang=en\u0026amp;modules=site\u0026amp;only=scripts\u0026amp;skin=monobook\u0026amp;*\"\u003E\u003C/script\u003E");
+}</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-61452025-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<script type="text/javascript" src="https://analytics.example.com/tracking.js"></script>
+<script>if(window.mw){
+mw.config.set({"wgBackendResponseTime":35});
+}</script></body></html>

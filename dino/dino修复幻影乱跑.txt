@@ -1,0 +1,38 @@
+﻿https://github.com/zengfr/romhack 
+	
+	*~~~~~~~~~~~~~修复幻影乱跑~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  
+		org		$5cca0
+		jmp		$182400		
+		org		$182400	
+		
+        cmpi.b  #6,$FF84D9                           ;检测是否7关
+		bne     _7BBxfyd
+		jsr		$1862
+		jmp		$5cca6
+
+_7BBxfyd
+		jmp		$5cc9a
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

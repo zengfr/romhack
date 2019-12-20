@@ -1,0 +1,184 @@
+
+<!-- saved from url=(0035)http://www.hal9k.com/cug/CUG430.HTM -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>CUG CD-ROM Vol. 430: m68kdis</title>
+</head>
+<body bgcolor="#FFFFFF">
+<h1>CUG #430: M68KDIS Motorola 68000 family disassembler</h1>
+<hr>
+
+<p>Christopher G. Phillips (University of Texas at Austin) submits his
+"m68kdis" disassembler for the <a href="http://mot-sps.com/sps/General/chips-nav.html">
+Motorola 68000 family</a> of CPU
+chips.  Disassemblers are system software that accepts a binary
+executable as input and produces assembly language source as output.
+Specifically, m68kdis supports the full instruction sets of the 68000,
+68008, 68010, 68020, and 68030 CPU chips.  Additionally, m68kdis decodes
+instructions for the 68851 Paged Memory Unit and the 68881/68882
+Floating-Point Coprocessors.  The Motorola 68000 family chips power
+millions of computers including the Macintosh, Atari, Amiga, and many
+embedded CPU industrial applications.  The CUG Library edition of
+m68kdis includes full source in C (no executables are provided).  The
+m68kdis disassembler is immediately available as CUG volume #441.</p>
+
+<p>Since m68kdis is portable, it is actually a cross-disassembler.  For
+example, you can disassemble 68000 programs on a variety of host CPUs
+from PCs to Unix machines.  Phillips provides a very clean Makefile
+without any OS specific flags or options.  Additionally, he takes care
+to avoid common pitfalls such as dependencies on the size of the int
+data type.</p>
+
+<h2><a name="detail">Using m68kdis</a></h2>
+
+<p>In its basic operation, m68kdis reads in a single binary file (.o) and
+produces an ASCII file containing an assembly language output (.s).
+Ideally, the ".s" file could be run through your assembler and would
+produce an ".o" file identical to the original.  Strictly speaking, a
+disassembler is just a subset of functionality found in a debugger.  The
+output of m68kdisk is divided into five distinct columns:  program
+counter, file contents, label, instruction, and operands (see Fig. 1).</p>
+
+<p>Programmers often use disassemblers in two specific modes of operation.
+First, a disassembler may be used as a one-time operation to check the
+operation of a compiler, the validity of an executable, the executable
+startup code, or similar examination.  Second, the programmer may use a
+sophisticated disassembler such as m68kdis in several successive
+iterations.  In this cycle, the programmer uses his own judgement to
+help separate blocks of instructions from blocks of data.  Then he
+applies his knowledge or guesswork so that the next iteration provides
+clearer output.  With persistence, a usable source file can result.</p>
+
+<p>m68kdis supports this iterative method of use by providing options (see
+Fig. 2) for the import of separate files containing external knowledge
+of the input file.  For example, the "-i file" option accepts an input
+ASCII file containing unsigned long integers that represent addresses
+at which instructions are known to start.  Similarly, you can create
+files of addresses where data is known to reside.  A small improvement
+to m68kdis would allow ranges of addresses instead of just singleton
+addresses in the file.</p>
+
+<h2>Macintosh Support</h2>
+
+<p>Although m68kdis works equally well against any target 68000 executable,
+the author includes special additional support for Macintosh
+executables. m68kdis understands enough of the executable to follow the
+resource fork and dump it in a readable fashion.  This insures more
+reliable output because determining the difference between instructions
+and data is the prime job of a disassembler.</p>
+
+<p>m68kdis supplies files containing Macintosh A-line instructions and
+their OS equivalent entry point names.  More than 800 A-line
+instructions can be decoded in this manner.  These entry points are
+somewhat analogous to BIOS interrupt (INT) instructions used on
+Intel-based MS-DOS PCs.</p>
+
+<p>There is also a series of PERL scripts that perform post-processing on
+the output of the disassembler.  PERL is not included in the CUG Library
+distribution, but is widely available on the Internet.</p>
+
+<h2>Documentation, Licensing, and Support</h2>
+
+<p>Documentation for m68kdis consists primarily of a 5-page summary that
+appears in Unix "man" page format.  As such, it primarily details
+command line options and usage.  For insights into disassembly
+algorithms, you'll need to follow the comments in the code.  For
+details on the 68000 family instructions sets, please see the
+section named "Further Reading" below.</p>
+
+<p>Phillips includes an extremely generous license that extends the
+permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee.  The only restriction is
+that his supplied copyright notice appear must in all copies of software
+and that both the copyright notice and the permission notice appear in
+supporting documentation.</p>
+
+<p>Since m68kdis is freeware, there are no formal support options
+available.  Support is thus neccessarily limited to email correspondence
+regarding bugs and enhancement requests.</p>
+
+<h2>For Further Reading</h2>
+
+<p>For those interested in how 68000 family instructions are encoded,
+Prentice-Hall (Englewood Cliffs, NJ) publishes a complete line of
+databooks.  Here are some of the titles that Phillips cites:</p>
+Motorola. <cite>M68000 8/16/32 Bit Microprocessors:  Programmer's Reference
+Manual, 5th ed</cite>.<p></p>
+Motorola. <cite>M68030:  Enhanced 32-Bit Microprocessor User's Manual, 2nd ed</cite><p></p>
+Motorola. <cite>M68851:  Paged Memory Management Unit User's Manual, 2nd ed.</cite><p></p>
+Motorola. <cite>M68881/MC68882:  Floating-Point Coprocessor User's Manual, 2nd
+ed.</cite><p></p>
+
+------------   Sample Output of m68kdis options (FIG. 2) ----------
+<pre>  PC              File  Contents      Label  Instruction + Operands
+=========  ========================== ====== ======================
+00000000   206f0004                          MOVEA.L (4,SP),A0
+00000004   43fa0030                          LEA     L5,A1
+00000008   322f0008                          MOVE.W  (8,SP),D1
+0000000c   7000                              MOVEQ   #0,D0
+0000000e   600a                              BRA     L2
+00000010   b308                         L1   CMPM.B  (A0)+,(A1)+
+00000012   6620                              BNE     L4
+00000014   4a28ffff                          TST.B   (-1,A0)
+00000018   6604                              BNE     L3
+0000001a   51c9fff4                     L2   DBRA    D1,L1
+0000001e   f23a4800001c                 L3   FMOVE.X L6,FP0
+00000024   f2000004                          FSQRT.X FP0
+00000028   f22f5438000a                      FCMP.D  (10,SP),FP0
+0000002e   f29c0004                          FBNGE   L4
+00000032   7001                              MOVEQ   #1,D0
+00000034   4e75                         L4   RTS
+00000036   6d36386b646973               L5   DC.B    'm68kdis'
+0000003d   00                                DC.B    #0
+0000003e   40000000c90fdaa22168c000     L6   DC.X    #3.14159265358979
+</pre>
+<hr>
+------------      Quick Summary of m68kdis options (FIG. 2) ----------
+<pre>OPTION      WHAT IT DOES
+
+ -ddd      Specify the chip and coprocessors (e.g. 020)
+ -a file   Load file containing A-line opcodes
+ -all[c]   Force single pass operation
+ -b file   Load file of data addresses to force newlines
+ -bad      Echo invalid instructions to stderr
+ -f file   Load file containing F-line opcodes
+ -f# #     Floating-point constant mantissa
+ -i file   Load file of known instruction addresses
+ -j file   Load file of A-line and F-Line jumps
+ -l        Force output to lower case
+ -lft      Affects fall-through instructions to LINK
+ -n file   Load file of known data addresses
+ -ns file  Load file of known addresses not starting instrs.
+ -o file   Names output file
+ -odd      Allow instructions to start on odd offset
+ -pc #     Set program counter to this value on start
+ -s #      Minimum length to consider data as string
+ -slenp #  Maximum length of a string on output line
+ -sp       Output A7 as SP except in MOVEM instructions
+</pre>
+<hr>
+<h2>Other 68000 Family Tools from CUG Library</h2>
+
+CUG Library has assemblers, cross-assemblers, C compilers, and other
+tools for use with the 68000 family of CPUs.  Each of these volumes is
+available for only $4 per diskette.  Alternately, all of these titles
+are included on the CUG Librayr CD-ROM.  Order using the form provided
+in the center leaf of this issue or send mail to cujsub@rdpub.com for
+more information.<p></p>
+
+<pre>CUG #      Title
+------     ---------------
+CUG190     Steve Passe's 68K Assembler
+CUG204     68000 C Compiler
+CUG261     68K Cross Assembler, MSDOS
+CUG303     MC68K Disassembler*
+CUG338     68000 C Compiler and Assembler (2 disks)
+CUG363     68020 Cross Assembler (2 disks)
+</pre>
+
+<p>   * The CUG303 MC68K Disassembler is considerably less advanced than
+M68KDIS.  For example, it does not include instruction-level support for
+68010, 68020, 68851, or 68881/68882 chips.  Also MC68K omits Macintosh
+support and the ability to declare regions of the file as data or code.</p>
+<hr>
+
+</body></html>
