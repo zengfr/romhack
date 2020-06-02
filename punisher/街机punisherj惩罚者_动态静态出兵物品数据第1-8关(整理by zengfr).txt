@@ -1,5 +1,7 @@
 ﻿街机punisherj惩罚者_动态静态出兵物品数据第1-8关(整理by zengfr)
-更多资料下载:https://gitee.com/zengfr/romhack
+更多资料下载:
+https://github.com/zengfr/romhack
+https://gitee.com/zengfr/romhack
 s 0  0   17601E|       C|dc.w $0300,$0000,$0000,$0000,$0000,$00FF
 s 0  0   176030|       C|dc.w $0F00,$0000,$0000,$0000,$0000,$00FF
 s 0  0   176042|       4|dc.w $0402,$0000,$0340,$FFFC,$025F,$1100

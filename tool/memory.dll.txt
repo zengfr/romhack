@@ -1,4 +1,5 @@
 https://github.com/zengfr/romhack
+https://gitee.com/zengfr/romhack
 Administrative Privileges
 erfg12 edited this page on 22 Mar 2018 ¡¤ 7 revisions
 When creating a new trainer project with the memory.dll you need to have the program run with raised privileges. In order to make Windows ask for admin privileges when the application is opened, you need to do the follow changes to your project:

@@ -1,3 +1,5 @@
+https://github.com/zengfr/romhack
+https://gitee.com/zengfr/romhack
 the punisher romdata
 
 ROM_REGION( CODE_SIZE, "maincpu", 0 )      /* 68000 code */

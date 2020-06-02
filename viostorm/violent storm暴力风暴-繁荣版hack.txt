@@ -1,4 +1,6 @@
-copy压缩包roms文件夹的zip格式rom文件viostorm.zip,到你安装的模拟器的roms文件夹中,重启模拟器即可。
+﻿copy压缩包roms文件夹的zip格式rom文件viostorm.zip,到你安装的模拟器的roms文件夹中,重启模拟器即可。
+下载地址2:https://gitee.com/zengfr/romhack/tree/master/hackrom
+下载地址3:https://github.com/zengfr/romhack/tree/master/hackrom
 游戏介绍:(hacked by zengfr)
 viostorm暴力风暴繁荣版加强(hack)
 1、我方多层彩色血条，3倍血量，3倍敌兵1V3

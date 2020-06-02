@@ -1,3 +1,5 @@
+﻿https://github.com/zengfr/romhack
+https://gitee.com/zengfr/romhack
 User avatarGnawtor
 Posts: 13
 Joined: Fri Feb 14, 2020 2:51 pm

@@ -3,6 +3,7 @@
 copy from 
 https://wiki.neogeodev.org/index.php?title=68k_ASM_defines
 https://github.com/zengfr/romhack
+https://gitee.com/zengfr/romhack
 
 68k ASM defines
 Here are assembly defines/aliases for memory locations and constants. For detailed descriptions, see Memory mapped registers.

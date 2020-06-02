@@ -1,0 +1,232 @@
+https://github.com/zengfr/romhack
+https://gitee.com/zengfr/romhack
+
+Street Fighter II Research (*Hitbox Viewer Hack!*)
+
+I'm surprised that there hasn't seemed to have been much interest in Street Fighter II in the ROM hacking community, considering that it's one of the classic big hits of the early 90's. There's a lot of potential for fun hacking in SF2, IMO. At any rate, I've done a bit of research on my own, which I will publish here. I'm a complete novice at this, and have no real knowledge of programming or hacking. Thus I might not know proper terminology for things (any corrections would be appreciated), and I could simply be mistaken on some of my statements. I hope that this will spur some interest in SF2 among ROM hackers and lead to further investigation of the game and its possibilities.
+
+NOTE: All data is in reference to the arcade version of the game. Specifically the Japanese region Street Fighter II' Turbo (romset sf2tj) is currently being used for reference. The various arcade versions of SF2 run on the CPS1 and CPS2 systems, which share a lot in common hardware-wise, and from what comparisons I've done, much of the system data-wise is the same or similar across all incarnations. All values given are as displayed in FBARR's RAM viewer and MAME's memory window. This means they are byte-swapped compared to the raw ROM data.
+
+
+*Object Test*
+
+
+
+This was an invaluable tool in my research, and I have to thank T. Akiba and Kung Fu Man for helping make it available to me. It lets you view all of a character's animation frames and associated parameters. It was originally accessed via dipswitches, but these are hard to manage, and include side effects that make navigating through the test menu difficult. The easiest and most useful way to access the test is by forcing RAM address 0xFF08CE to value $B3 via the cheat function and pressing the Test/Service button.
+
+(Although this test menu is only known to exist in the CPS1 versions of SF2, I have found text for similar menus within the ROM data of the CPS2 versions, as well as in other CPS2 games. Might they be accessible through some hacking?...)
+
+There are 4 modes in the Object Test, NORMAL, EDIT, CATCH, and an unlabeled mode I'll refer to as "CATCH2".
+NORMAL offers the basic animation viewer as well as tile data for each animation frame.
+EDIT displays hitboxes and their associated data.
+CATCH displays 2 characters standing on the same spot, for some reason.
+"CATCH2" displays an opponent character with a specific sprite and position offset as determined by the value of the primary character's CATCH parameter. This allows you to review how an opponent who is grabbed with a throw technique will be displayed.
+
+Here are the known controls. For the descriptions, "P1" refers to the character present in all 4 modes, "P2" refers to the secondary character that appears in the CATCH and "CATCH2" modes.
+;https://gitee.com/zengfr/romhack
+;https://github.com/zengfr/romhack
+P1 Start: Increment Stage(?)
+P1 Up/Down: Increment "P1" animation.
+P1 Left/Right: Toggle "P1" direction (NORMAL and CATCH modes only).
+P1 LP: Decreases "P1" Chr Ctr value by 1 every frame while held down, thus playing back the current animation in realtime.
+P1 MP: Reset "P1" current animation to its start.
+P1 HP: Toggle priority of "P1" and "P2" sprites (CATCH mode only).
+P1 HP + Up/Down: Increment "P1" character.
+P1 LK: Toggle tile display (NORMAL mode only).
+P1 MK: Disables character axis display while held.
+P1 HK: Increments "P1" animation frame (EDIT and CATCH modes only).
+P2 Start: Increment mode.
+P2 Up/Down: Increment "P2" animation (CATCH mode only). / Increment DX value of currently displayed hitbox (EDIT mode only).
+P2 Left/Right: Toggle "P2" direction (CATCH mode only). / Increment DY value of currently displayed hitbox (EDIT mode only).
+P2 LP: Decreases "P2" Chr Ctr value by 1 every frame while held down, thus playing back the current animation in realtime (CATCH mode only).
+P2 LP + Up/Down: Increment SX value of currently displayed hitbox (EDIT mode only).
+P2 LP + Left/Right: Increment SY value of currently displayed hitbox (EDIT mode only).
+P2 MP: Resets "P2" current animation to its start (CATCH mode only).
+P2 HP: Nothing?
+P2 HP + Up/Down: Increment "P2" character.
+P2 LK: Increment hitbox type selection (EDIT mode only).
+P2 MK: Nothing?
+P2 HK: Increments "P2" animation frame (CATCH mode only). / Displays/resets currently selected hitbox type of current animation frame (EDIT mode only). (The display does not update until P2 HK is pressed again, even if you move to another animation frame or hitbox type.)
+
+*Character Data Order*
+
+For most data that is indexed by character, the order seems to be as follows:
+
+00: Ryu
+01: Honda
+02: Blanka
+03: Guile
+04: Ken
+05: Chun Li
+06: Zangief
+07: Dhalsim
+08: Vega (aka M. Bison, final boss)
+09: Sagat
+0A: Bison (aka Balrog, boxer)
+0B: Balrog (aka Vega, claw & mask)
+
+*Hitbox Data*
+
+Starting at address 0x067384 are 12 long words, each of which defines the starting address of a character's hitbox data list.
+
+0x067384-87: Ryu hitbox list address
+0x067388-8B: Honda hitbox list address
+0x06738C-8F: Blanka hitbox list address
+0x067390-93: Guile hitbox list address
+0x067394-97: Ken hitbox list address
+0x067398-9B: Chun Li hitbox list address
+0x06739C-9F: Zangief hitbox list address
+0x0673A0-A3: Dhalsim hitbox list address
+0x0673A4-A7: Vega hitbox list address
+0x0673A8-AB: Sagat hitbox list address
+0x0673AC-AF: Bison hitbox list address
+0x0673B0-B3: Balrog hitbox list address
+
+Each of these individual lists starts with 6 words, each of which defines the start of a specific hitbox group as an offset from the start of the list. As labeled in the Object Test, these are:
+
+Bytes 00-01: Head list offset
+Bytes 02-03: Body list offset
+Bytes 04-05: Foot list offset
+Bytes 06-07: Weak list offset
+Bytes 08-09: Atck list offset
+Bytes 0A-0B: Body1 list offset
+
+The first hitbox in each group is always a null or non-existant box. This is used for animation frames that lack a hitbox of that type.
+Head, Body, and Foot are vulnerability boxes that determine where a character can be hit.
+Weak seems to determine a weak point on a character that can have certain effects when hit. However, outside of Blanka's rolling attack in SF2WW, it does not seem to be used.
+Atck is the offensive hitbox which determines what part of the character can deal damage with an attack.
+Body1 determines the "solid" part of the character which causes them to push against the opponent.
+
+Each individual hitbox is defined by 4 bytes, as labeled by the Object Test:
+
+Byte 00: DX
+Byte 01: DY
+Byte 02: SX
+Byte 03: SY
+
+This defines a rectangle of width 2(SX) pixels and height 2(SY) pixels, centered around a 2x2 pixel axis which is offset a horizontal distance of DX pixels and a vertical distance of DY pixels from the character's own 2x2 pixel axis. For horizontal offset, Negative is in the direction the character is facing, Positive is the opposite. For vertical offset, Positive is up, Negative is down.
+
+Atck box definitions append an additional 8 bytes to this for a total of 12 bytes per box. These determine attack characteristics. The additional 8 bytes are, as labeled by the Object Test:
+
+Byte 04: Atck Dno Points to a range of $20 values that can form the base damage of the attack. The exact value chosen from this range is determined by the character's power index variable.
+Byte 05: Hit Type Seems to figure into consecutive frames of an animation that each cause individual hits.
+Byte 06: SD Code Determines sound to play on non-blocked hit.
+Byte 07: Atck EX Attack classification. $00 = standard normal, $01 = normal sweep, $02 = jumping normal, $03 = special move (causes chip damage when blocked), $04 = normal with special property (knockdown, etc.)
+Byte 08: Level Attack strength. $00 = light, $01 = medium, $02 = hard.
+Byte 09: Adjust 1 Points to a range of $20 values that can be added to the attack's base damage. The exact value is chosen from this range at random.
+Byte 0A: Adjust 2 Same as above, but used when health is lower than $3C.
+Byte 0B: EX Code Determines opponent's reaction upon hit when Atck EX = $03 or $04.
+
+*Animation Data*
+
+Each frame of character animation is defined by a 24-byte string of data. A list, labeled as displayed in the Object Test follows:
+
+Bytes 00-01: Chr Ctr Determines number of frames of gametime that the animation frame is to be displayed before advancing to the next frame.
+Bytes 02-03: Chr Type For the last frame in an animation sequence, the high byte usually seems to be 80. Other functions currently unknown.
+Bytes 04-07: Tilemap Pointer
+Byte 08: Head Head hitbox for this animation frame.
+Byte 09: Body Body hitbox for this animation frame.
+Byte 0A: Foot Foot hitbox for this animation frame.
+Byte 0B: Weak Weak hitbox for this animation frame.
+Byte 0C: Atck Atck hitbox for this animation frame.
+Byte 0D: Body1 Body1 hitbox for this animation frame.
+Byte 0E: Kage Ground shadow sprite for this animation frame.
+Byte 0F: Prio Sprite priority for this animation frame.(?)
+Byte 10: Catch Determines opponent sprite and position offset for when they are grabbed by a throw technique. Seems to be tailored on a character by character basis, for example every character has their own sprite selection and position offset for reacting to a Ryu frame with a Catch value of $01, etc.
+Byte 11: Block Determines whether this animation frame is considered to be blocking. $00 = no block, $01 = standing block, $02 = crouching block.
+Byte 12: Weak No Would seem to determine effect on character when their weak box is hit.
+Byte 13: Sit Determines whether this animation frame is considered to be standing or crouching. $00 = standing, $01 = crouching.
+Bytes 14-15: ???
+Byte 16: Yoke2 Not certain of function. Haven't even been able to get MAME's debugger to break when setting a watchpoint on it. However, I have noticed a pattern in the Object Test. For most attack animations, this parameter has a value of $00 during the startup and active frames of the attack, and a value of $01 during the recovery frames.
+Byte 17: Yoke Again, unsure of function, but have noticed some patterns. Value of $17 for neutral jumps (including attacks), $06 for forward and backward jumps (again, including attacks), and $FF for standing and walking.
+
+An extra 4 bytes are appended at the end of an animation sequence. This is a "loop frame pointer"; it points to the animation frame to go to when the sequence ends.
+
+*Character Jump Velocities*
+
+Starting at address 0x015F98 are the definitions for character's jump velocities. Each individual jump has an 8 byte definition as follows:
+
+Byte 0: Initial X Velocity Integer
+Byte 1: Initial X Velocity Fraction
+Byte 2: X Acceleration Integer
+Byte 3: X Acceleration Fraction
+Byte 4: Initial Y Velocity Integer
+Byte 5: Initial Y Velocity Fraction
+Byte 6: Y Acceleration Integer
+Byte 7: Y Acceleration Fraction
+
+The X velocities are defined in terms of a character facing left.
+
+Each character has 4 jump definitions, ordered as follows:
+
+00: Forward Jump
+01: Backward Jump
+02: Neutral Jump
+03: Neutral Jump
+
+Each character seems to be two copies of the neutral jump, for whatever reason.
+
+Some notes on SF2 velocities in general: Velocity and acceleration integer values are all signed. For X velocities, negative is left, positive is right. For Y velocities, negative is down, positive is up. For accelerations, it's the opposite: For X accelerations, negative is right, positive is left. For Y accelerations negative is up, positive is down. For all velocities and accelerations, the fraction values represent an effective positive value of x/256 that is added to the base integer value.
+
+*RAM Map*
+
+0xFF8086-88: Dip Switch Settings
+0xFF8BC4-C5: Camera X Position
+0xFF8BC8-C9: Camera Y Position
+0xFF8BEE-EF: Camera X Velocity
+0xFF8BF0-F1: Camera Y Velocity
+
+Player 1 RAM Base: 0xFF83BE Player 2 RAM Base: 0xFF86BE
+
+Player 1 Values (For player 2 values, add an offset of $0300)
+
+0xFF83C4-C5: X Position
+0xFF83C8-C9: Y Position
+0xFF83D2-D3: Chr Type
+0xFF83D6-D7: Chr Ctr
+0xFF83D8-DB: Animation Frame Data Pointer
+0xFF83F2-F5: Hitbox List Pointer
+0xFF83F6-F9: Defense Table Pointer Points to a range of $20 values than can form the character's defense factor. The exact value chosen from this range is determined by their power index variable.
+0xFF83FA: X Velocity Integer
+0xFF83FB: X Velocity Fraction
+0xFF83FC: Y Velocity Integer
+0xFF83FD: Y Velocity Fraction
+0xFF83FE: X Acceleration Integer
+0xFF83FF: X Acceleration Fraction
+0xFF8400: Y Acceleration Integer
+0xFF8401: Y Acceleration Fraction
+0xFF8405: Hitstop Time
+0xFF8416-17: Power Index Figures into character's offense and defense. Seems to be $10 by default, and to be affected by things such as losing rounds.
+0xFF841A-1B: "Dizzy Meter" Clear Time Added to when character is attacked, decreases by 1 every frame of gametime. Upon reaching 0, the "Dizzy Meter" Value is reset to 0.
+0xFF841C-1D: "Dizzy Meter" Value Added to when character is attacked, upon reaching a certain value character is put into dizzy state.
+0xFF841E-1F: Dizzy Time Set to a specific value when a character is put into dizzy state, decreases by 1 every frame of gametime. Upon reaching 0, character recovers from dizzy state.
+0xFF84AE-AF: Alt. X Velocity Integer
+0xFF84B0-B1: Alt. X Velocity Fraction
+0xFF84B2-B3: Alt. X Acceleration Integer
+0xFF84B4-B5: Alt. X Acceleration Fraction
+0xFF84B6-B7: Alt. Y Velocity Integer
+0xFF84B8-B9: Alt. Y Velocity Fraction
+0xFF84BA-BB: Alt. Y Acceleration Integer
+0xFF84BC-BD: Alt. Y Acceleration Fraction These alternate velocity registers seem to be used for things such special moves. The velocities are of a different format than the previously-mentioned ones.
+0xFF84D8-DB: Pushback Pointer Points to amount to be pushed backward during standing and crouching hitstun.
+0xFF853F: Midair Flag
+0xFF8540-1: X Distance From Opponent As judged by Body1 box, i.e., if the two players are pushing against each other, this value is 0.
+0xFF8542-3: Y Distance From Opponent As judged by axis?
+
+Projectile Slot 1 (There are multiple projectile slots (total of 8?), each is offset from the last by a value of -$C0)
+
+0xFF98BC-BD: X Position
+0xFF98C0-C1: Y Position
+0xFF98C7: Direction (Movement) $00 = right, $01 = left.
+0xFF98C8: Direction (Graphic) $00 = left, $01 = right.
+0xFF98C9: Palette Stage (Bank)
+0xFF98CA-CB: Chr Type
+0xFF98CD: Palette
+0xFF98CE-CF: Chr Ctr
+0xFF98D0-D3: Animation Frame Data Pointer
+0xFF98D6-D7: ID? For high byte, $00 = Hadouken, $01 = Yoga Fire, $02 = Yoga Flame, $03 = Sonic Boom, $04 = Tiger Shot. For low byte, $00 = light, $02 = medium, $04 = hard.
+0xFF98E6-E9: Movement Data Pointer
+0xFF98EA-ED: Hitbox List Pointer
+0xFF98EE-F1: ??? Pointer
+
+More to come later!

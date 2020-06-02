@@ -1,0 +1,4 @@
+emulib4.dll+A42650
+
+https://github.com/zengfr/romhack
+https://gitee.com/zengfr/romhack

@@ -26,4 +26,8 @@ https://my.oschina.net/zengfr/blog/3144668
 https://my.oschina.net/zengfr/blog/3145223
 
 github:https://github.com/zengfr/romhack
+
+gitee:https://gitee.com/zengfr/romhack
+
+video:https://space.bilibili.com/492484080/video
 ~~~

@@ -1,0 +1,955 @@
+WOF ALL CHARACTER PROJECT 
+
+/////////////////////////////////////
+OBJ RAM BASE: 9000  (/256)
+
+SCROLL1 RAM BASE:  9080
+SCROLL2 RAM BASE:  90C0
+SCROLL3 RAM BASE:  9100
+
+OTHER RAM BASE:    9100
+
+PAL RAM BASE:      9140  (4 BANKS OF PAL)  32byte per 16 color pal
+
+9140:    Sprite Palette  0 to 31 (16 colors per Palette)   
+9144:    Scroll1 Palette 32 to 63 (16 colors per Palette)
+9148:    Scroll2 Palette 64 to 95 (16 colors per Palette)
+914c:    Scroll3 Palette 96 to 127 (16 colors per Palette)
+
+
+
+
+
+
+
+///////////////////////////////////////
+
+
+/////////////////////////////////////////////////
+人物ID数据:
+
+内存地址:
+
+我方内存:
+ffbe3d:1P
+ffbf1d:2P
+ffbffd:3P
+
+
+敌方内存:
+
+
+//位置不对
+FFCA7D:敌兵1
+FFCB5D:敌兵2
+FFCC3D:敌兵3
+FFCD1D:敌兵4
+FFCDFD:敌兵5
+FFCEDD:敌兵6
+FFCFBD:敌兵7
+FFD09D:敌兵8                          FFD0FF:李典HP
+FFD17D:敌兵9        //位置不对
+
+
+
+每个结构大小为0xE0(224)BYTE
+
+以1P为例:  A0=FFBE1C
+
+ADDRESS               OFFSET         SIZE           OTHER
+
+FFBE1C：FLAG            0        2 
+FFBE1E：          
+FFBE20:X POS            4        4
+FFBE24:Y POS            8        4  
+FFBE28:Z POS            C        4  
+
+FFBE2E: 动作图象指针    12       4
+   
+FFBE3D:ID                        2                  WITHOUT ID 5
+                        3c       1
+FFBE40:OFFSET1          24       2                 
+FFBE48: 另外的图象指针  2C       4         
+FFBE70:指针                      4
+FFBE7A:小头像ID         5E       
+FFBE7F:和马有关                 
+FFBE80:动作附加效果指针          4 
+FFBE96:动作效果属性OFFSET        2
+FFBE9F:HP                        2                 NORMAL VALUE 0x68
+FFBE97:动作属性指针              2
+FFBEA1:HPMAX                     2
+
+/////////////////////////////////
+我方ID:
+
+00000000:关羽
+00000001:张飞
+00000002:赵云
+00000003:黄忠
+00000004:魏延
+
+敌方ID:
+
+00000006:李典
+00000007:长匕首兵
+00000008:许褚
+00000009:小兵
+0000000C:美铃
+0000000D:夏侯惇
+0000000E:张辽
+0000000F:曹仁
+00000010:赵氏
+00000011:曹操
+00000012:忍A
+00000013:美讶
+00000014:肥肥
+00000015:徐晃
+00000016:晏明
+00000017:针
+00000018:忍B
+0000001B:淳于导
+0000001C:夏侯桀
+0000001D:吕布
+0000001E:弓箭兵
+0000001F:美美
+0000002C:夏侯恩
+			<item value="0x06">李典</item>
+			<item value="0x07">长匕首兵</item>
+			<item value="0x08">许褚</item>
+			<item value="0x09">小兵</item>
+			<item value="0x0C">美铃</item>
+			<item value="0x0D">夏侯惇</item>
+			<item value="0x0E">张辽</item>
+			<item value="0x0F">曹仁</item>
+			<item value="0x10">赵氏</item>
+			<item value="0x11">曹操</item>
+			<item value="0x12">忍A</item>
+			<item value="0x13">美讶</item>
+			<item value="0x14">肥肥</item>
+			<item value="0x15">徐晃</item>
+			<item value="0x16">晏明</item>
+			<item value="0x17">针</item>
+			<item value="0x18">忍B</item>
+			<item value="0x1B">淳于导</item>
+			<item value="0x1C">夏侯桀</item>
+			<item value="0x1D">吕布</item>
+			<item value="0x1E">弓箭兵</item>
+			<item value="0x1F">美美</item>
+			<item value="0x2C">夏侯恩</item>
+
+/////////////////////////////////////////////////////
+
+//////////////////////////////////////
+
+小头像ID表:  ($5E,A0)   FFBE7A
+00
+02
+04
+06
+08
+0A:杨
+0c:张辽
+0e:徐晃
+10:许
+12:夏侯惇
+14:李
+16:曹仁
+18:曹操
+1A:李典
+1C:美伢
+1E:虎
+20:许褚
+22:肥肥
+24:美美
+26:陈
+28:美铃
+2A:尚
+2C:林
+2E:朱(drop)
+30:龙
+32:孟
+34:淳于导
+36:夏侯桀
+38:晏明
+3A:吕布
+
+
+///////////////////////////////////////////////
+
+人物动作图象指针
+
+BOSS： 
+
+李典:  ($12,A0) FFCDEE(不固定)   每个结构大小为0x46
+ROM ADDR：94CEC
+
+94CAE:
+94E8E:前进
+94EC4:
+9534C:坐着1
+95392:坐着2
+953D8:坐着3
+
+95444:起身
+95486:杯子落地
+
+954D6:杯子落地2
+
+95512:下蹲
+
+10CDEE:李典的图象指针数据（还有一个指向此数据的指针才是需要的）
+95724：受创从空中落下
+9575A： 背部着地
+957C6:  躺平
+
+94F68:走
+
+94E8E:直走
+94EC4:直走
+
+
+
+
+
+/////////////////////////////////////
+
+[敌人A]
+李典=D17C,06
+夏侯惇=D17C,0D
+许褚=D17C,08
+美铃=D17C,0C
+美讶=D17C,13
+美美=D17C,1F
+曹仁=D17C,0F
+淳于导=D17C,1B
+夏侯桀=D17C,1C
+晏明=D17C,16
+张辽=D17C,0E
+徐晃=D17C,15
+吕布=D17C,1D
+曹操=D17C,11
+夏侯恩=D17C,2C
+赵氏=D17C,10
+忍A=D17C,12
+忍B=D17C,18
+肥肥=D17C,14
+针=D17C,17
+
+[敌人B]
+李典=D09C,06
+夏侯惇=D09C,0D
+许褚=D09C,08
+美铃=D09C,0C
+美讶=D09C,13
+美美=D09C,1F
+曹仁=D09C,0F
+淳于导=D09C,1B
+夏侯桀=D09C,1C
+晏明=D09C,16
+张辽=D09C,0E
+徐晃=D09C,15
+吕布=D09C,1D
+曹操=D09C,11
+夏侯恩=D09C,2C
+赵氏=D09C,10
+忍A=D09C,12
+忍B=D09C,18
+肥肥=D09C,14
+针=D09C,17
+
+[敌人C]
+李典=CFBC,06
+夏侯惇=CFBC,0D
+许褚=CFBC,08
+美铃=CFBC,0C
+美讶=CFBC,13
+美美=CFBC,1F
+曹仁=CFBC,0F
+淳于导=CFBC,1B
+夏侯桀=CFBC,1C
+晏明=CFBC,16
+张辽=CFBC,0E
+徐晃=CFBC,15
+吕布=CFBC,1D
+曹操=CFBC,11
+夏侯恩=CFBC,2C
+赵氏=CFBC,10
+忍A=CFBC,12
+忍B=CFBC,18
+肥肥=CFBC,14
+针=CFBC,17
+
+[敌人D]
+李典=CEDC,06
+夏侯惇=CEDC,0D
+许褚=CEDC,08
+美铃=CEDC,0C
+美讶=CEDC,13
+美美=CEDC,1F
+曹仁=CEDC,0F
+淳于导=CEDC,1B
+夏侯桀=CEDC,1C
+晏明=CEDC,16
+张辽=CEDC,0E
+徐晃=CEDC,15
+吕布=CEDC,1D
+曹操=CEDC,11
+夏侯恩=CEDC,2C
+赵氏=CEDC,10
+忍A=CEDC,12
+忍B=CEDC,18
+肥肥=CEDC,14
+针=CEDC,17
+
+[敌人E]
+李典=CDFC,06
+夏侯惇=CDFC,0D
+许褚=CDFC,08
+美铃=CDFC,0C
+美讶=CDFC,13
+美美=CDFC,1F
+曹仁=CDFC,0F
+淳于导=CDFC,1B
+夏侯桀=CDFC,1C
+晏明=CDFC,16
+张辽=CDFC,0E
+徐晃=CDFC,15
+吕布=CDFC,1D
+曹操=CDFC,11
+夏侯恩=CDFC,2C
+赵氏=CDFC,10
+忍A=CDFC,12
+忍B=CDFC,18
+肥肥=CDFC,14
+针=CDFC,17
+
+[敌人F]
+李典=CD1C,06
+夏侯惇=CD1C,0D
+许褚=CD1C,08
+美铃=CD1C,0C
+美讶=CD1C,13
+美美=CD1C,1F
+曹仁=CD1C,0F
+淳于导=CD1C,1B
+夏侯桀=CD1C,1C
+晏明=CD1C,16
+张辽=CD1C,0E
+徐晃=CD1C,15
+吕布=CD1C,1D
+曹操=CD1C,11
+夏侯恩=CD1C,2C
+赵氏=CD1C,10
+忍A=CD1C,12
+忍B=CD1C,18
+肥肥=CD1C,14
+针=CD1C,17
+
+[敌人G]
+李典=CC3C,06
+夏侯惇=CC3C,0D
+许褚=CC3C,08
+美铃=CC3C,0C
+美讶=CC3C,13
+美美=CC3C,1F
+曹仁=CC3C,0F
+淳于导=CC3C,1B
+夏侯桀=CC3C,1C
+晏明=CC3C,16
+张辽=CC3C,0E
+徐晃=CC3C,15
+吕布=CC3C,1D
+曹操=CC3C,11
+夏侯恩=CC3C,2C
+赵氏=CC3C,10
+忍A=CC3C,12
+忍B=CC3C,18
+肥肥=CC3C,14
+针=CC3C,17
+
+[敌人H]
+李典=CB5C,06
+夏侯惇=CB5C,0D
+许褚=CB5C,08
+美铃=CB5C,0C
+美讶=CB5C,13
+美美=CB5C,1F
+曹仁=CB5C,0F
+淳于导=CB5C,1B
+夏侯桀=CB5C,1C
+晏明=CB5C,16
+张辽=CB5C,0E
+徐晃=CB5C,15
+吕布=CB5C,1D
+曹操=CB5C,11
+夏侯恩=CB5C,2C
+赵氏=CB5C,10
+忍A=CB5C,12
+忍B=CB5C,18
+肥肥=CB5C,14
+针=CB5C,17
+
+[敌人I]
+李典=CA7C,06
+夏侯惇=CA7C,0D
+许褚=CA7C,08
+美铃=CA7C,0C
+美讶=CA7C,13
+美美=CA7C,1F
+曹仁=CA7C,0F
+淳于导=CA7C,1B
+夏侯桀=CA7C,1C
+晏明=CA7C,16
+张辽=CA7C,0E
+徐晃=CA7C,15
+吕布=CA7C,1D
+曹操=CA7C,11
+夏侯恩=CA7C,2C
+赵氏=CA7C,10
+忍A=CA7C,12
+忍B=CA7C,18
+肥肥=CA7C,14
+针=CA7C,17
+
+
+//////////////////////////////////////////////////
+
+选人画面人物坐标：
+
+内存: 
+
+关羽
+FFC0C1:47   
+FFC0C9:18
+张飞
+FFC1A1:84
+FFC1A9:18
+赵云
+FFC281:X POS    C1
+FFC289:Y POS    18
+
+黄忠
+FFC361: 102      
+FFC369: 18
+
+魏延
+FFC441:13f
+FFC449:18
+
+
+每个OBJ结构相差0xE0
+
+
+
+//////////////////////////////////////////////////////////////////////
+
+                     GFX   DATA   
+
+//////////////////////////////////////////////////////////////////////
+
+名字等是8*8 TILE
+大头像，人物图是16*16 TILE
+
+Sprites:
+    Sprites are represented by a number of 8 byte values
+    xx xx yy yy nn nn aa aa
+    where xxxx  = x position
+    yyyy        = y position
+    nnnn        = tile number
+    aaaa        = attribute word
+        $0001  colour
+        $0002  colour
+        $0004  colour
+        $0008  colour
+        $0010  colour
+        $0020  X Flip
+        $0040  Y Flip
+        $0080  unknown
+        $0100  X block size (in sprites)
+        $0200  X block size
+        $0400  X block size
+        $0800  X block size
+        $1000  Y block size (in sprites)
+        $2000  Y block size
+        $4000  Y block size
+        $8000  Y block size
+
+    The end of the table (may) be marked by an attribute value of $FF00.
+    To use block sprites, the sprites must be layed out in 16 tile
+    (256 pixel) wide blocks.
+
+////////
+
+OUTPUT PORTS (Base address $800000):
+    $00-$01     OBJ RAM base (/256)
+    $02-$03     Scroll1 RAM base (/256)
+    $04-$05     Scroll2 RAM base (/256)
+    $06-$07     Scroll3 RAM base (/256)
+    $08-$09     "Other" RAM - Scroll distortion (/256)
+    $0a-$0b     Palette base (/256)
+    $0c-$0d     Scroll 1 X
+    $0e-$0f     Scroll 1 Y
+    $10-$11     Scroll 2 X
+    $12-$13     Scroll 2 Y
+    $14-$15     Scroll 3 X
+    $16-$17     Scroll 3 Y
+    $18-$19     Related to X pos (xored with $1e0 then $20 added when flip)
+    $1a-$1b     Related to Y pos (xored with $100 when screen flip on)
+    $1c-$1d     Related to X pos (xored with $1e0 then $20 added when flip)
+    $1e-$1f     Related to Y pos (xored with $100 when screen flip on)
+    $20-$21     start offset for the rowscroll matrix
+    $22-$23     unknown but widely used - usually $0e. bit 0 enables rowscroll
+                  on layer 2. bit 15 is flip screen.
+
+////////////////////////////////
+
+$800000 $800003 Player input ports
+
+
+Input:
+    Player 1 input is $800000 (WORD)
+        $01 Right
+        $02 Left
+        $04 Up
+        $08 Down
+        $10 Button 1
+        $20 Button 2
+        $40 Button 3(?) Not used in Final Fight.
+        $80 Button 4(?)
+
+
+/////////////////////////////////////////////////////////////
+WK中BOSS的图象指针地址
+李典:
+CB4E
+//////////////////////////////////////////////////////////////
+
+序幕画面PAL相关:
+
+刘备：1C
+孔明：12
+孔明头像:1A
+
+关羽: 1
+张飞: 2
+赵云: 3
+黄忠: 4
+魏延: 5
+
+椅子:11
+传令兵:15
+卫兵: 15
+
+///////////////////////////////////////////////////
+
+三国志Ⅱ赤壁之战HACK心得
+
+发布作者：qiu.yq / 资料来源：emu-zone
+
+
+--------------------------------------------------------------------------------
+
+让大家分享下请用UltraEdit打开wofj 里面 Tk2j23c
+所有箱子的修改,比如:第一关第一个箱0006AB62: 0A 0006AB63: 01 在这地址里
+oa(战斧)是物品代码 01是物品种类代码 物品种类代码基本只有两种:00是武器，
+01是物品 
+
+* ROUND 1 *
+0006AB62: 0A ??
+0006AB63: 01 xx
+0006ABAA: 00 ??
+0006ABAB: 01 xx
+0006ABBA: 01 ??
+0006ABBB: 01 xx
+0006ABCA: 01 ??
+0006ABCB: 01 xx
+0006ACD4: 04 ??
+0006ACD5: 01 xx
+0006ACE4: 00 ??
+0006ACE5: 01 xx
+0006ACF8: 0B ??
+0006ACF9: 01 xx
+* ROUND 2 *
+0006ADDC: 02 ??
+0006ADDD: 01 xx
+0006ADEC: 02 ??
+0006ADED: 01 xx
+0006ADFC: 00 ??
+0006ADFD: 00 xx
+0006AE50: 04 ??
+0006AE51: 01 xx
+0006AF4C: 0A ??
+0006AF4D: 00 xx
+* ROUND 3 *
+0006AFB0: 0E ??
+0006AFB1: 00 xx
+0006B01C: FF 00
+0006B01D: FF 00
+0006B01E: 00 ??
+0006B01F: 00 xx
+0006B02E: 0C ??
+0006B02F: 01 xx
+0006B042: 02 ??
+0006B043: 01 xx
+0006B052: 0A ??
+0006B053: 01 xx
+0006B062: 02 ??
+0006B063: 01 xx
+0006B080: 02 ??
+0006B081: 01 xx
+0006B090: 02 ??
+0006B091: 01 xx
+0006B0A0: 0D ??
+0006B0A1: 01 xx
+* ROUND 4 *
+0006B220: 0D ??
+0006B221: 01 xx
+0006B230: 14 ??
+0006B231: 00 xx
+0006B240: 12 ??
+0006B241: 00 xx
+0006B250: 0B ??
+0006B251: 01 xx
+0006B298: 02 ??
+0006B299: 01 xx
+0006B2A8: 04 ??
+0006B2A9: 01 xx
+0006B36A: 04 ??
+0006B36B: 01 xx
+0006B37A: 0F ??
+0006B37B: 00 xx
+* ROUND 5 *
+0006B3E0: 09 ??
+0006B3E1: 00 xx
+0006B3F0: 0C ??
+0006B3F1: 01 xx
+0006B400: 0A ??
+0006B401: 01 xx
+0006B482: 0D ??
+0006B483: 01 xx
+* ROUND 6 *
+0006B574: 00 ??
+0006B575: 00 xx
+0006B5B2: 02 ??
+0006B5B3: 01 xx
+0006B660: 0D ??
+0006B661: 01 xx
+0006B670: 05 ??
+0006B671: 01 xx
+0006B680: 02 ??
+0006B681: 01 xx
+* ROUND 7 *
+0006D0B0: 01 ??
+0006D0B1: 01 xx
+0006D0C0: 0D ??
+0006D0C1: 00 xx
+0006D140: 00 ??
+0006D141: 00 xx
+0006D1E0: 02 ??
+0006D1E1: 01 xx
+0006D210: 00 ??
+0006D211: 01 xx
+0006D220: 01 ??
+0006D221: 01 xx
+0006D230: 00 ??
+0006D231: 01 xx
+0006D248: FF 00
+0006D249: FF 00
+0006D24A: 01 ??
+0006D24B: 00 xx
+0006D25A: 03 ??
+0006D25B: 01 xx
+0006D26A: 09 ??
+0006D26B: 01 xx
+0006D290: 02 ??
+0006D291: 01 xx
+* ROUND 8 *
+0006D3C0: 08 ??
+0006D3C1: 00 xx
+0006D3D0: 02 ??
+0006D3D1: 01 xx
+0006D3E0: 0B ??
+0006D3E1: 00 xx
+0006D616: 0C ??
+0006D617: 00 xx
+0006D626: 02 ??
+0006D627: 01 xx
+0006D636: 02 ??
+0006D637: 01 xx
+0006D646: 02 ??
+0006D647: 01 xx
+0006D660: 0D ??
+0006D661: 01 xx
+* ROUND 9 *
+0006D73E: 00 ??
+0006D73F: 01 xx
+0006D74E: 00 ??
+0006D74F: 01 xx
+0006D924: 01 ??
+0006D925: 01 xx
+
+--------------------------------------------------------------------------
+类=00 时是武器
+xx值
+00=劍
+01=村正
+02=正宗
+03=村雨
+04=虎徹
+05=菊一文字
+06=飛竜
+07=正国
+08=青竜
+09=偃月
+0A=战斧
+0B=斧
+0C=木槌
+0D=金槌
+0E=钉锤
+0F=大钉锤
+10=圆锤
+11=三叉
+12=匕首
+13=娘刀
+14=小刀
+08,15,16,17=青竜
+19=聖劍
+1A=草薙
+1B=青红
+1E=火
+30=猪
+====================
+类=01时是物品
+xx值
+00=烤猪
+01=烤鸭
+02=龙虾
+03=鱼
+04=大肉包
+05=大财宝+15000
+06=小财宝+10000
+07=金币+5000
+08=书
+09=卷轴
+0A=马&大财宝
+0B=小肉包
+0C=鸡腿
+0D=烤肉
+0E=金质奖章+100
+
+昨天研究出来一些让大家分享下请用UltraEdit打开wofj 里面 Tk2j23c
+以张飞为例
+张飞旋风大坐修改:编辑tkj23c把1c29c处的AC换成92就可以了  变成BMI 1BD2E
+出大绝带剑气:在1BE60处00,00,6c,61改为冰箭(02,00,32,0B) 火箭(02,00,24,0B)
+剑 气可改为 04 18 成排剑气
+
+1BE60: 75 4e 7c 21 02 00 32 0b 64 00 f8 4e 68 5e 00 60
+这是冰箭的代码  剑 气
+
+1bf20: 7c 28 07 00 dc 5d  7c 31 10 02 7a   00 b8 4e 02 17
+跳踢的效果 
+1bf30：68 d3 7c 31 xx xx 两个要同时改
+跳踢的效果
+1c0a0: b8 4e 02 17
+增加攻击效果（改为9c 19 挥拳能带木箭效果）
+
+
+--------------------------------------------------------------------------------
+
+攻擊屬性資料
+
+作者：阿標/ 资料来源：emu-zone
+
+我方攻擊屬性資料
+
+從6db44開始
+格式如下
+0 1 2 3 4 5 6 7 8 9 A B C D E F
+?? ?? ?? ?? AT AT ?X 效 聲 ?? ?? ??
+死 附 ?? 呆
+
+??表示目前我不知道的…有些會影嚮連技的流暢性…
+AT->攻擊力大小的數值…(0~32767)(00,00~FF,7F)
+?X->由?與X組成，?我就不知道了…X則是將敵方擊退的距離
+效->如07為噴血、1F為暈昡…還有很多數值未測試效果
+聲->擊中敵方所發出的聲音…如56為木箭射中敵人的聲音
+死->打死效果(06燒死)(08兩段)(0C全碎)(0e上身碎)
+附->擊中後的效果(02擊倒)(04擊飛)(06火燒)(0a擊退)
+呆->擊中敵人後的呆滯時間(此時敵我皆為無敵狀態)
+
+用EC查看BE96的位置來取得每個招式的攻擊屬性編號
+例如：趙雲的肩撞(下+B)為(10,04)
+其實(10,04)是內存的方式，實際上是410的內存表示法
+所以將6db44+410=6df54(趙雲肩撞的攻擊屬性資料位址)
+而6DF58就是肩撞的攻擊力大小…其他數值亦可依此類推…
+
+附註：這項修改資料目前僅適用於我方武將、武器…但不適用於敵方！
+
+/////////////////
+按键内存
+FF6380:         FF7FC0     
+FF6384:         FF7FBE 
+FF6388:         FF7FBC      1P
+
+
+
+////////////////////////////////////////////
+
+d400开始是大写字母:  （8*8*4） 
+
+/////////////////////////////////////////////////
+
+d500开始  人物小头像（8*8*4） 共24个
+
+D14C还有一个MM的小头像
+//////////////////////////////////////////////////
+
+d180开始是数字
+///////////////////////////////////////////////////
+JOIN  IN
+
+ d422   d440   d420 d42a       //     d420 d42a
+
+
+INSERT COIN
+
+
+d420 d42a d442  d408    d440 D444  // d400  d440   d420 d42a
+
+////////////////////////////////////////////////////
+
+选人画面人名数据:
+
+D6A2                            ;关羽
+D6A4                       
+
+D6A6                            ;张飞
+DA08 
+              
+D6CE                            ;赵云
+DA48                       
+
+DA4A                             ;黄忠
+D6E0                     
+
+D6E2                              ;魏延
+D6E4                      
+
+D7C4
+D7C6                               ;李典
+
+d6a6
+d6a8                               ;张辽
+
+d6ac
+d6ae                               ;徐晃
+
+d6ca
+D6CC                               ;吕布
+
+d6e6
+d6e8
+d6ea                               ;猪头三
+
+d6ec
+d6ee                               ;猪头四
+
+
+d724
+d726                                ;许大锤
+
+
+d760
+d762                                ;阿斗
+
+d78c                                 ;曹操
+d768
+
+d786                                ;刘备不小样
+d788
+d78a
+
+d7ec
+d7ee                                 ;夏侯
+
+DA0A                                 ;敦
+d0a8                                 ;恩 
+d90c                                 ;杰
+
+d88e                                 ;淳
+d7e4                                  干
+d92e                                  导
+
+
+
+d906                                  ;晏
+d6ee                                  ;明
+
+d0e8                                  ;林
+
+
+dae0                                   董
+
+dae2                                   卓
+
+d900                                   美
+d904                                   铃
+d4ae                                   牙
+
+d0a0                                     鲁
+doa2                                     肃
+
+
+
+
+d78c                                     曹
+DA46:                                    仁
+
+
+d68c                                    王
+
+
+//////////////////////////////////////////////////
+BASE :693FC
+
+
+069602: D42C D420                  add.b   (-$2be0,A4), D2
+069606: D42A FFFF                  add.b   (-$1,A2), D2
+06960A: 0001 001F                  ori.b   #$1f, D1
+06960E: 0006 D422                  ori.b   #$22, D6
+069612: D42C D420                  add.b   (-$2be0,A4), D2
+069616: D42A D020                  add.b   (-$2fe0,A2), D2
+06961A: D420                       add.b   -(A0), D2
+06961C: D42A FFFF                  add.b   (-$1,A2), D2
+069620: 1001                       move.b  D1, D0
+069622: 001F 0006                  ori.b   #$6, (A7)+
+069626: D422                       add.b   -(A2), D2
+069628: D42C D420                  add.b   (-$2be0,A4), D2
+06962C: D42A 
+        D020                                                      ;I
+069630: D420                       add.b   -(A0), D2
+069632: D42A FFFF                  add.b   (-$1,A2), D2
+069636: 2001                       move.l  D1, D0
+069638: 001F 0006                  ori.b   #$6, (A7)+
+06963C: D422                       add.b   -(A2), D2              ;J
+06963E: D42C D420                  add.b   (-$2be0,A4), D2        ;N
+069642: D42A D020                  add.b   (-$2fe0,A2), D2        ;L
+069646: D420                       add.b   -(A0), D2
+069648: D42A FFFF                  add.b   (-$1,A2), D2
+06964C: 0000 0001                  ori.b   #$1, D0
+069650: 0007 D42E                  ori.b   #$2e, D7
+069654: D448                       add.w   A0, D2
+069656: D444                       add.w   D4, D2
+069658: D40E                       dc.w $d40e; ILLEGAL
+06965A: D020                       add.b   -(A0), D0
+06965C: D020                       add.b   -(A0), D0
+06965E: D020                       add.b   -(A0), D0
+069660: D020                       add.b   -(A0), D0
+069662: 0102                       btst    D0, D2
+069664: 0001 0006                  ori.b   #$6, D1
+069668: D020                       add.b   -(A0), D0       
+06966A: D020                       add.b   -(A0), D0
+06966C: D444                       add.w   D4, D2
+06966E: D446                       add.w   D6, D2
+069670: D400                       add.b   D0, D2
+069672: D442                       add.w   D2, D2

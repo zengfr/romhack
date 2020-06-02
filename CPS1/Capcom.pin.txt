@@ -1,4 +1,5 @@
 https://github.com/zengfr/romhack
+https://gitee.com/zengfr/romhack
 Capcom pinouts from ant@palm.cray.com (Tony Jones)
 
 Capcom pcb (56pin), not Jamma

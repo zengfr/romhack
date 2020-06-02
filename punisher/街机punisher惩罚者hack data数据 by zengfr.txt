@@ -1,0 +1,75 @@
+﻿街机punisher惩罚者hack data数据 by zengfr
+更多资料下载:https://gitee.com/zengfr/romhack
+
+惩罚者
+@FF18AB=BF Infinite Time 
+@FF5D96=01 Always have Gun drawn
+@01ADEE=60 Sticky Weapons
+@FF5FA1=FF Finish this Level Now
+@FF5BB9=0x06 Select Starting Stage  (-2447,a5)
+Hit Anywhere:@0905C2=4E71@09135C=4E71@092FC4=4E71@0939AE=4E71
+One Hit Kills:@096B4E=6000@02C1D0=6002@05C158=6000@0913FE=446C@095FF2=446C@093A24=446C
+	     
+@FF5BA4=03 P1 Infinite Lives
+@FF5BCA=09 P1 Infinite Bombs
+@FF8E9F=88 P1 Infinite Energy
+@FF8EB5=F0 P1 Invincibility
+@FF8ECE)+FF0037)=FE P1 Infinite Weapon on Pickup
+
+@FF5BA5=03 P2 Infinite Lives
+@FF5BCB=09 P2 Infinite Bombs
+@FF8F9F=88 P2 Infinite Energy
+@FF8FB5=F0 P2 Invincibility
+@FF8FCE)+FF0037)=FE P2 Infinite Weapon on Pickup
+
+ff8e68 1P基址    内存0x100大小
+ffb3a8 第1个敌兵 内存0x0c0大小
+bp 9042a 角色减血
+bp 2966  敌兵血初始化
+bp 963b8 第1敌兵+物品加载填充 a2=17610d,17611f  fff8a8 fffae8 ffbfa8 ffbee8 ffbe28 b2e8
+bp 9678a 出兵表COPY to ff0868 
+bp 96886 第3敌兵内存加载填充 a2=ff0868 
+bp 963fc 写场景出兵指针+12 ff7666
+bp 9646a 写场景出兵指针+04 ff7666
+bp 9647c 写场景出兵指针+04 ff7666
+bp 964ea 写场景出兵指针+04 ff7666
+bp 965be 写场景出兵指针+06 ff7666
+bp 965f0 写场景出兵指针+06 ff7666
+bp 96260 写场景出兵指针 第一次 17600c 
+bp 9623e 关卡场景加载d0->a0->ff7666
+ff5f96 场景
+ff6012 场景
+
+ff07c6 卷轴
+ff07c8 卷轴
+ff7376 卷轴比较
+ff737a 卷轴
+ff7396 卷轴
+ff7398 卷轴
+ff765f 场景加载指针函数索引 a6=7656=(-9aa,a5)
+ff7660 场景加载指针类型 +4 +6或 +12 
+ff7666 场景加载指针  a6=7656
+ff7696 
+ff5b20 按键输入
+ff5bb2 按键输入
+
+ff5b3d 场景加载比较 -$24C3(a5)
+ff5bd7 场景加载比较 -$2429(a5)
+
+ff5b38 场景加载比较 -$24C8(a5)
+ff5b40 场景加载比较 -$24c0(a5)
+
+a4+02  ID
+a4+03  ?
+a4+04  ?
+a4+05  ?
+a4+99  ?
+a4+9b  ?
+a4+24  坐标Y
+a4+20  坐标X来源ff085e
+a4+28  坐标Z来源ff0860
+a4+36  血量
+a4+34  减血量
+bp 963b8,1,{printf "%8x %8x %8x %8x %8x %8x %8x %8x",frame,pc,a2,a0,maincpu.mw@(a2+0x0),maincpu.md@(a2+0x2),maincpu.md@(a2+0x6),maincpu.md@(a2+0xA);g}
+
+bp 96886,1,{printf "%8x %8x %8x %8x %8x %8x %8x %8x",frame,pc,a2,a0,maincpu.pw@(a2+0x0),maincpu.pd@(a2+0x2),maincpu.pd@(a2+0x6),maincpu.pd@(a2+0xA);g}

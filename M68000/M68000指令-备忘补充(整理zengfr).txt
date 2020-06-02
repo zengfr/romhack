@@ -1,6 +1,8 @@
-M68000指令-备忘补充(整理zengfr).txt
+﻿M68000指令-备忘补充(整理zengfr).txt
 
-资料收集:https://github.com/zengfr/romhack
+资料收集:
+https://github.com/zengfr/romhack
+https://gitee.com/zengfr/romhack
 ----------------------------------------------------------------------------------------------
 M68000
 
