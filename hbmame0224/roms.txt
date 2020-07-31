@@ -1,0 +1,29 @@
+﻿hbmame 0.224:
+http://hbmame.1emulation.com/
+
+hbmame 0.224 roms:
+
+https://github.com/zengfr/romhack/tree/master/hbmame0224
+https://gitee.com/zengfr/romhack/tree/master/hbmame0224
+
+mame 0.224 roms:
+https://gitee.com/zengfr/romhack/tree/master/hackrom
+https://gitee.com/zengfr/romhack/blob/master/dino/
+https://gitee.com/zengfr/romhack/tree/master/punisher
+
+video:https://space.bilibili.com/492484080
+
+[dinos260]            Cadillacs and Dinosaurs (Triassic Edition 2020-06-07)三叠纪
+[dinos263]            Cadillacs and Dinosaurs (Demon God Dance 2020-06-09) 魔神 群魔乱舞
+[dinos268]            Cadillacs and Dinosaurs (Tianjiang Edition 2020-06-29) 天将
+[dinos269]            Cadillacs and Dinosaurs (Uranus Edition Update 2020-06-29)天王
+[dinos270]            Cadillacs and Dinosaurs (Ares Edition 2020-07-05) 战神 斗神
+[dinos274]            Cadillacs and Dinosaurs (Multi-Mode Enhanced Edition 2020-08-11) 框架版2020多模式加强hack
+[dinos254]            Cadillacs and Dinosaurs (Multi-Mode Enhanced Edition 2020-05-23) 框架版2020多模式加强hack
+[dinos246]            Cadillacs and Dinosaurs (Prosperity Enhanced Edition 2020-05-02) 框架版2020多模式加强hack
+[punishers09]         The Punisher (Multi-Mode Enhancement 2020-06-14)框架版2020多模式加强hack 
+[punishers10]         The Punisher (Multi-Mode Enhancement 2020-06-07)框架版2020多模式加强hack
+[punisherjs18]        The Punisher (Blaze 2018-08-13) 烈焰
+[viostorms05]         Violent Storm (Enhanced Edition 2020-03-25) 繁荣
+
+

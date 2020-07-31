@@ -1,8 +1,8 @@
-﻿Cadillacs and Dinosaurs (Framework 2020 Multi-Mode Edition 2020-05-20)(hacked by zengfr)
+﻿Cadillacs and Dinosaurs (Framework 2020 Multi-Mode Edition 2020-08-09)(hacked by zengfr)
 
 copy压缩包roms文件夹的zip格式rom文件dino.zip,到你安装的模拟器的roms文件夹中,重启模拟器即可。（有些模拟器需忽略文件crc校验才能正常加载）
 试玩下载地址:https://zengfr.gitee.io/home/emu/dinofr.html
-下载地址2:https://gitee.com/zengfr/romhack/tree/master/hackrom
+2:https://gitee.com/zengfr/romhack/tree/master/hackrom
 下载地址3:https://github.com/zengfr/romhack/tree/master/hackrom
 游戏介绍:(hacked by zengfr)
 dino恐龙快打框架版多模式加强(hack)
