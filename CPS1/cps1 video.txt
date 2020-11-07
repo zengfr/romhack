@@ -1,0 +1,217 @@
+https://github.com/zengfr/romhack
+https://gitee.com/zengfr/romhack
+CPS-A Registers
+---------------
+0x00-0x01     OBJ RAM base (/256)
+0x02-0x03     Scroll1 (8x8) RAM base (/256)
+0x04-0x05     Scroll2 (16x16) RAM base (/256)
+0x06-0x07     Scroll3 (32x32) RAM base (/256)
+0x08-0x09     rowscroll RAM base (/256)
+0x0a-0x0b     Palette base (/256) after this register is written to, the palette
+              is copied from gfxram to the dedicated ram. The palette control
+              register (see below) determines how the copy should happen.
+              Tests on a msword pcb show that the minimum alignment for the palette
+              is 0x400 bytes. The hardware seems to ignore bit 1, while when bit 0
+              is set the palette doesn't seem to be copied. However, some games set
+              bit 0 during boot (ghouls, strider, 1941) so it still isn't clear
+              what bit 0 should actually do.
+0x0c-0x0d     Scroll 1 X
+0x0e-0x0f     Scroll 1 Y
+0x10-0x11     Scroll 2 X
+0x12-0x13     Scroll 2 Y
+0x14-0x15     Scroll 3 X
+0x16-0x17     Scroll 3 Y
+0x18-0x19     Starfield 1 X
+0x1a-0x1b     Starfield 1 Y
+0x1c-0x1d     Starfield 2 X
+0x1e-0x1f     Starfield 2 Y
+0x20-0x21     start offset for the rowscroll matrix
+0x22-0x23     video control. Usually 0x0e.
+              bit 0 enables rowscroll on layer 2.
+              bit 15 is flip screen.
+              ghouls sets bit 14. Purpose unknown.
+              1941 uses bits 1-3 by setting them to 0 on screen transitions,
+              however it also uses the normal layer control register so there
+              doesn't seem to be an obvious effect.
+              Games known to use rowscroll:
+              SF2
+              Mega Twins (underwater, cave)
+              Carrier Air Wing (hazy background at beginning of mission 8, put 07 at ff8501 to jump there)
+              Magic Sword (fire on floor 3; screen distort after continue)
+              Varth (title screen, end of stage 4)
+              Captain Commando (end game sequence)
+              Tests done on msword at the beginning of gameplay (many thanks to Corrado Tomaselli for these):
+              3e  is the default value set by the game (not 0e like most games)
+              3c  the last two rows of scroll1 are repeated on the whole screen
+              3a  scroll2 is disabled
+              36  scroll3 is disabled
+              2e  no visible differences
+              1e  no visible differences
+              one might suspect that bits 4&5 should disable the star layers, but
+              Strider sets this register to 0x0e so that's not possible.
+              TODO:
+              the scroll2/scroll3 disable bits are supported by the emulation,
+              while the scroll1 weird effect is not (it doesn't seem to make a
+              difference in any game).
+CPS-B Registers
+---------------
+Unlike CPS-A registers, which are at fixed addresses, CPS-B registers move from game to game.
+Following example strider
+0x66-0x67   Layer control register
+            bits 14-15 seem to be unused
+                ghouls sets bits 15 in service mode when you press button 2 in
+                the input test, with no apparent effect on the pcb.
+                qtono2j sets them both at the game over screen.
+            bits 6-13 (4 groups of 2 bits) select layer draw order
+            bits 1-5 enable the three tilemap layers and the two starfield
+                layers (the bit order changes from game to game).
+                Only Forgotten Worlds and Strider use the starfield.
+            bit 0 could be rowscroll related. It is set by captain commando,
+                varth, mtwins, mssword, cawing while rowscroll is active. However
+                kodj and sf2 do NOT set this bit while they are using rowscroll.
+                Tests on the msword pcb show that even if this bit is not set,
+                rowscroll still works. Therefore, the purpose of this bit is unclear.
+0x68-0x69   Priority mask \   Tiles in the layer just below sprites can have
+0x6a-0x6b   Priority mask |   four priority levels, each one associated with one
+0x6c-0x6d   Priority mask |   of these masks. The masks indicate pens in the tile
+0x6e-0x6f   Priority mask /   that have priority over sprites.
+0x70-0x71   Palette control register. This indicates which palette
+            pages to copy when the palette base register is written to.
+            There is one CPS2 game (Slammasters II) setting this to 0x2f; all the other
+            games normally set it to 0x3f, though in some cases different values are
+            used during boot:
+            ghouls  0x02 (and palette base is set to 9105; palette base is 9100 normally)
+            strider 0x02 (and palette base is set to 9145; palette base is 9140 normally)
+            1941    0x02 (and palette base is set to 9145; palette base is 9140 normally)
+            unsquad 0x0f
+            kod     0x0f
+            mtwins  0x0f
+            bit 0: copy page 0 (sprites)
+            bit 1: copy page 1 (scroll1)
+            bit 2: copy page 2 (scroll2)
+            bit 3: copy page 3 (scroll3)
+            bit 4: copy page 4 (stars1)
+            bit 5: copy page 5 (stars2)
+            An important quirk is that if the first bits are not set, page 0 in
+            gfxram is not skipped but instead is copied to the first enabled page.
+            For the other pages, if the bit is not set the gfxram page is skipped.
+            Example: 0x0a
+            bit 0 is not set so palette page 0 (sprites) is not updated
+            bit 1 is set so palette page 1 (scroll1) is updated; since bit 0 was
+            not set, it is taken from gfxram page 0
+            bit 2 is not set so palette page 2 (scroll2) is not updated; gfxram
+            page 1 is skipped
+            bit 3 is set so palette page 3 (scroll3) is updated; it is taken from
+            gfxram page 2
+            bits 0-3 have been verified on a msword pcb, while bits 4-5 are only
+            supposed.
+A special note has to be made about tile/sprite codes. Even if all graphics are
+stored together in the same ROMs, the hardware knows which part of the ROM space
+is 8x8 tiles, 16x16 tiles, 16x16 spites, 32x32 tiles, and all games tested only
+draw tiles if their code falls in the valid range. If a tile is out of range, it
+is replaced by transparent pixels.
+Ideally, this shouldn't be important as far as the emulation is concerned, since
+games should only request tiles from valid ranges. In practice, many games contain
+bugs which make them try to display out of range tiles. The masking applied by
+the hardware therefore needs to be emulated properly, otherwise glitches appear.
+There are various versions of the ROM board (B-board), so the implementation
+details may vary, but in general the tile ranges are controlled by a PAL found
+on the B-board (see the table at the top of this file).
+The A-board passes 23 bits of address to the B-board when requesting gfx ROM data.
+The B-board selects 64 bits of data, that is 16 4bpp pixels, and returns half of
+them depending on a signal from the C board.
+The 23 address bits are laid out this way (note that the top 3 bits select the
+tile type; the purpose of the top bit is unknown):
+sprite  000ccccccccccccccccyyyy
+scroll1 001?ccccccccccccccccyyy
+scroll2 010ccccccccccccccccyyyy
+scroll3 011ccccccccccccccyyyyyx
+stars   100000000sxxxxxyyyyyyyy (to be verified)
+where
+c is the tile code
+y is the y position in the tile
+x is the x position in the tile (only applicable to 32x32 tiles)
+E.g. on the 89624B-3 board, used by cawing and others, the top 13 bits of the
+address are passed to the 16L8B PAL @1A, which outputs the /OE signal for roms
+1,3,5,7 (together), 2,4,6,8 (together), 10,12,14,16,20,22,24,26 (together) or
+11,13,15,17,21,23,25,27 (together).
+Note that in cawing only sockets 1,3,5,7 are populated, so effectively there is
+only one bank.
+The above would mean that
+1) 8x8 and 16x16 tiles have a 16-bit tile code, while
+   32x32 tiles have a 14-bit tile code
+2) which ROM bank to use is determined by
+   bits 15-7 of a 8x8 tile code,
+   bits 15-6 of a 16x16 tile code,
+   bits 13-4 of a 32x32 tile code
+If the PAL decides that the tile code is out of range and doesn't output any /OE
+signal, no ROM is read and pullup resistors force the result to all 1 (which
+means a transparent tile).
+Note that there are several known cases (nemo, cawing, 3wonders, varth, etc.) where
+16x16 tiles are used for BOTH sprites and scroll2.
+Ideally, the PALs should be dumped and loaded like the ROMs, and the mapping should
+be derived from the loaded PALs at run time.
+In practice, this is unlikely to happen, so we'll have to tolerate using hardcoded
+maps for every game.
+
+---------------------------------------------------------------------------------------------------
+
+OUTPUT PORTS
+0x00-0x01     OBJ RAM base (/256)
+0x02-0x03     Scroll1 (8x8) RAM base (/256)
+0x04-0x05     Scroll2 (16x16) RAM base (/256)
+0x06-0x07     Scroll3 (32x32) RAM base (/256)
+0x08-0x09     rowscroll RAM base (/256)
+0x0a-0x0b     Palette base (/256)
+0x0c-0x0d     Scroll 1 X
+0x0e-0x0f     Scroll 1 Y
+0x10-0x11     Scroll 2 X
+0x12-0x13     Scroll 2 Y
+0x14-0x15     Scroll 3 X
+0x16-0x17     Scroll 3 Y
+0x18-0x19     Starfield 1 X
+0x1a-0x1b     Starfield 1 Y
+0x1c-0x1d     Starfield 2 X
+0x1e-0x1f     Starfield 2 Y
+0x20-0x21     start offset for the rowscroll matrix
+0x22-0x23     unknown but widely used - usually 0x0e. bit 0 enables rowscroll
+              on layer 2. bit 15 is flip screen.
+Some registers move from game to game.. following example strider
+0x66-0x67   Layer control register
+            bits 14-15 seem to be unused
+                ghouls sets bits 15 in service mode when you press button 2 in
+                the input test
+            bits 6-13 (4 groups of 2 bits) select layer draw order
+            bits 1-5 enable the three tilemap layers and the two starfield
+                layers (the bit order changes from game to game).
+                Only Forgotten Worlds and Strider use the starfield.
+            bit 0 could be rowscroll related. It is set by captain commando,
+                varth, mtwins, mssword, cawing while rowscroll is active. However
+                kodj and sf2 do NOT set this bit while they are using rowscroll.
+                Games known to use row scrolling:
+                SF2
+                Mega Twins (underwater, cave)
+                Carrier Air Wing (hazy background at beginning of mission 8, put 07 at ff8501 to jump there)
+                Magic Sword (fire on floor 3; screen distort after continue)
+                Varth (title screen)
+                Captain Commando (end game sequence)
+0x68-0x69   Priority mask \   Tiles in the layer just below sprites can have
+0x6a-0x6b   Priority mask |   four priority levels, each one associated with one
+0x6c-0x6d   Priority mask |   of these masks. The masks indicate pens in the tile
+0x6e-0x6f   Priority mask /   that have priority over sprites.
+0x70-0x71   Control register (usually 0x003f). The details of how this register
+            works are unknown, but it definitely affects the palette; experiments
+            on the real board show that values different from 0x3f in the low 6
+            bits cause wrong colors. The other bits seem to be unused.
+            There is one CPS2 game (Slammasters II) setting this to 0x2f: the
+            purpose is unknown.
+            The only other places where this register seems to be set to a value
+            different from 0x3f is during startup tests. Examples:
+            ghouls  0x02
+            strider 0x02
+            unsquad 0x0f
+            kod     0x0f
+            mtwins  0x0f
+Fixed registers
+0x80-0x81     Sound command
+0x88-0x89     Sound fade

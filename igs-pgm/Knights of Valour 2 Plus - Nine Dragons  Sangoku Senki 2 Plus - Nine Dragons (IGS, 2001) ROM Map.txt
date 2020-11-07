@@ -1,0 +1,47 @@
+https://github.com/zengfr/romhack
+ROM Map for this game
+ 
+This is the ROM map for the game.  This should tell you what address the ROM is at, how big it is, what it's used for.   
+Memory Area:ics
+Address Range	Length	Label/Location	Description
+0x800000-0xFFFFFF	8388608	m1200.rom	CRC(b0d88720) (Fluke: 56FF)
+0x800000-0xFFFFFF	8388608	m1200.rom	CRC(b0d88720) (Fluke: 56FF)
+0x800000-0xFFFFFF	8388608	m1200.rom	CRC(b0d88720) (Fluke: 56FF)
+Memory Area:prot
+Address Range	Length	Label/Location	Description
+0x0000-0x3FFF	16384	kov2p_igs027a_china.bin	CRC(19a0bd95)
+0x0000-0x3FFF	16384	kov2p_igs027a_china.bin	CRC(19a0bd95)
+0x0000-0x3FFF	16384	kov2p_igs027a_china.bin	CRC(19a0bd95)
+0x0000-0x1FFFFF	2097152	v200-16.rom	CRC(16a0c11f) (Fluke: A1AB)
+0x0000-0x1FFFFF	2097152	v200-16.rom	CRC(16a0c11f) (Fluke: A1AB)
+0x0000-0x1FFFFF	2097152	v200-16.rom	CRC(16a0c11f) (Fluke: A1AB)
+Memory Area:sprcol
+Address Range	Length	Label/Location	Description
+0x0000-0x7FFFFF	8388608	a1200.rom	CRC(ceeb81d8) (Fluke: 1B22)
+0x0000-0x7FFFFF	8388608	a1200.rom	CRC(ceeb81d8) (Fluke: 1B22)
+0x0000-0x7FFFFF	8388608	a1200.rom	CRC(ceeb81d8) (Fluke: 1B22)
+0x800000-0xFFFFFF	8388608	a1201.rom	CRC(21063ca7) (Fluke: 2139)
+0x800000-0xFFFFFF	8388608	a1201.rom	CRC(21063ca7) (Fluke: 2139)
+0x800000-0xFFFFFF	8388608	a1201.rom	CRC(21063ca7) (Fluke: 2139)
+0x1000000-0x17FFFFF	8388608	a1202.rom	CRC(4bb92fae) (Fluke: 2B2F)
+0x1000000-0x17FFFFF	8388608	a1202.rom	CRC(4bb92fae) (Fluke: 2B2F)
+0x1000000-0x17FFFFF	8388608	a1202.rom	CRC(4bb92fae) (Fluke: 2B2F)
+0x1800000-0x1FFFFFF	8388608	a1203.rom	CRC(e73cb627) (Fluke: 3639)
+0x1800000-0x1FFFFFF	8388608	a1203.rom	CRC(e73cb627) (Fluke: 3639)
+0x1800000-0x1FFFFFF	8388608	a1203.rom	CRC(e73cb627) (Fluke: 3639)
+0x2000000-0x21FFFFF	2097152	a1204.rom	CRC(14b4b5bb) (Fluke: 63CF)
+0x2000000-0x21FFFFF	2097152	a1204.rom	CRC(14b4b5bb) (Fluke: 63CF)
+0x2000000-0x21FFFFF	2097152	a1204.rom	CRC(14b4b5bb) (Fluke: 63CF)
+Memory Area:sprmask
+Address Range	Length	Label/Location	Description
+0x0000-0x7FFFFF	8388608	b1200.rom	CRC(bed7d994) (Fluke: 5655)
+0x0000-0x7FFFFF	8388608	b1200.rom	CRC(bed7d994) (Fluke: 5655)
+0x0000-0x7FFFFF	8388608	b1200.rom	CRC(bed7d994) (Fluke: 5655)
+0x800000-0xFFFFFF	8388608	b1201.rom	CRC(f251eb57) (Fluke: 23D8)
+0x800000-0xFFFFFF	8388608	b1201.rom	CRC(f251eb57) (Fluke: 23D8)
+0x800000-0xFFFFFF	8388608	b1201.rom	CRC(f251eb57) (Fluke: 23D8)
+Memory Area:tiles
+Address Range	Length	Label/Location	Description
+0x180000-0x97FFFF	8388608	t1200.rom	CRC(d7e26609) (Fluke: B9D5)
+0x180000-0x97FFFF	8388608	t1200.rom	CRC(d7e26609) (Fluke: B9D5)
+0x180000-0x97FFFF	8388608	t1200.rom	CRC(d7e26609) (Fluke: B9D5)

@@ -1,0 +1,13 @@
+[*] arg[0]: E:/javaproject/hack/romhack/M68000/IDA-run.py
+[*] arg[1]: 1
+[*] arg[2]: 2
+[*] arg[3]: 3
+[*] filename from IDB: dinos42.bin
+range:0x0-0x180000
+    119C movem.l d1-d2,-(sp); 12          12
+    11A0 move.w  $14(a5),d0; 34           34
+    11A4 bne.w   loc_11AC; 56             56
+    11A8 move.w  #$1C3,d0; 78             78
+[*] process_all:0 1572864 393216
+range:0x0-0x180000
+[*] done, exiting.

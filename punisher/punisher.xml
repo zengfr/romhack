@@ -1,0 +1,162 @@
+<mamecheat version="1">
+
+  <cheat desc="Infinite Time">
+    <script state="run">
+      <action>maincpu.pb@FF18AB=BF</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Always have Gun drawn">
+    <script state="run">
+      <action>maincpu.pb@FF5D96=01</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Sticky Weapons"> <comment>When the enemies punch you won't drop any weapons you are holding (The only exception is when you die, launch, or when the level ends!)</comment>
+    <script state="on">
+      <action>temp0 =maincpu.mb@01ADEE</action>
+    </script>
+    <script state="run">
+      <action>maincpu.mb@01ADEE=60</action>
+    </script>
+    <script state="off">
+      <action>maincpu.mb@01ADEE=temp0 </action>
+    </script>
+  </cheat>
+
+  <cheat desc="Finish this Level Now!"> <comment>Simply walk to the end, though on the First Level you will need the 'Always have Gun drawn' cheat to kill the Boss</comment>
+    <script state="on">
+      <action>maincpu.pb@FF5FA1=FF</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Select Starting Stage">
+    <parameter>
+      <item value="0x00">Stage 1</item>
+      <item value="0x01">Stage 2</item>
+      <item value="0x02">Stage 3</item>
+      <item value="0x07">Bonus Stage</item>
+      <item value="0x03">Stage 4</item>
+      <item value="0x04">Stage 5</item>
+      <item value="0x05">Last Stage</item>
+      <item value="0x06">Hidden Bonus Stage</item>
+    </parameter>
+    <script state="run">
+      <action condition="(maincpu.pb@FF5BB9==00)">maincpu.pb@FF5BB9=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Hit Anywhere">
+    <script state="on">
+      <action>temp0 =maincpu.mw@0905C2</action>
+      <action>temp1 =maincpu.mw@09135C</action>
+      <action>temp2 =maincpu.mw@092FC4</action>
+      <action>temp3 =maincpu.mw@0939AE</action>
+    </script>
+    <script state="run">
+      <action>maincpu.mw@0905C2=4E71</action> <!-- This ROM cheat was made by nolberto82 -->
+      <action>maincpu.mw@09135C=4E71</action>
+      <action>maincpu.mw@092FC4=4E71</action>
+      <action>maincpu.mw@0939AE=4E71</action>
+    </script>
+    <script state="off">
+      <action>maincpu.mw@0905C2=temp0 </action>
+      <action>maincpu.mw@09135C=temp1 </action>
+      <action>maincpu.mw@092FC4=temp2 </action>
+      <action>maincpu.mw@0939AE=temp3 </action>
+    </script>
+  </cheat>
+
+  <cheat desc="One Hit Kills">
+    <script state="on">
+      <action>temp0 =maincpu.mw@096B4E</action>
+      <action>temp1 =maincpu.mw@02C1D0</action>
+      <action>temp2 =maincpu.mw@05C158</action>
+      <action>temp3 =maincpu.mw@0913FE</action>
+      <action>temp4 =maincpu.mw@095FF2</action>
+      <action>temp5 =maincpu.mw@093A24</action>
+    </script>
+    <script state="run">
+      <action>maincpu.mw@096B4E=6000</action> <!-- This ROM cheat was made by nolberto82 -->
+      <action>maincpu.mw@02C1D0=6002</action>
+      <action>maincpu.mw@05C158=6000</action>
+      <action>maincpu.mw@0913FE=446C</action>
+      <action>maincpu.mw@095FF2=446C</action>
+      <action>maincpu.mw@093A24=446C</action>
+    </script>
+    <script state="off">
+      <action>maincpu.mw@096B4E=temp0 </action>
+      <action>maincpu.mw@02C1D0=temp1 </action>
+      <action>maincpu.mw@05C158=temp2 </action>
+      <action>maincpu.mw@0913FE=temp3 </action>
+      <action>maincpu.mw@095FF2=temp4 </action>
+      <action>maincpu.mw@093A24=temp5 </action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="P1 Infinite Lives">
+    <script state="run">
+      <action>maincpu.pb@FF5BA4=03</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Infinite Energy">
+    <script state="run">
+      <action>maincpu.pb@FF8E9F=88</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Infinite Bombs">
+    <script state="run">
+      <action>maincpu.pb@FF5BCA=09</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Invincibility">
+    <script state="run">
+      <action>maincpu.pb@FF8EB5=F0</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Infinite Weapon on Pickup"> <comment>If you pick up the objects, they will become almost indestructable.</comment>
+    <script state="run">
+      <action>maincpu.pb@((maincpu.pw@FF8ECE)+FF0037)=FE</action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="P2 Infinite Energy">
+    <script state="run">
+      <action>maincpu.pb@FF8F9F=88</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Infinite Bombs">
+    <script state="run">
+      <action>maincpu.pb@FF5BCB=09</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Infinite Lives">
+    <script state="run">
+      <action>maincpu.pb@FF5BA5=03</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Invincibility">
+    <script state="run">
+      <action>maincpu.pb@FF8FB5=F0</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Infinite Weapon on Pickup"> <comment>If you pick up the objects, they will become almost indestructable.</comment>
+    <script state="run">
+      <action>maincpu.pb@((maincpu.pw@FF8FCE)+FF0037)=FE</action>
+    </script>
+  </cheat>
+
+</mamecheat>
+<!-- Cheat file downloaded from http://www.mamecheat.co.uk, see cheat.txt for list of contributors. -->

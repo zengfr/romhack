@@ -1,0 +1,147 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>The BIOS &mdash; Neo-Geo Programming Guide</title>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="./media/neoprogguide.css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="content">
+<!-- header and navigation -->
+
+<h1>The BIOS &ndash; Neo-Geo Programming Guide</h1>
+
+<div id="navbar">
+<a href="./"><span class="navitem">Front Page</span></a><a href="./?p=1"><span class="navitem">Hardware</span></a><a href="./?p=2"><span class="navitem">Tools</span></a><a href="./?p=3"><span class="navitem">System</span></a><span class="navitem"><strong>BIOS</strong></span><a href="./?p=5"><span class="navitem">Program Setup</span></a><a href="./?p=6"><span class="navitem">Environment Setup</span></a><a href="./?p=7"><span class="navitem">Examples</span></a><a href="./?p=8"><span class="navitem">Intermediate</span></a><a href="./?p=9"><span class="navitem">Advanced</span></a><a href="./?p=10"><span class="navitem">Resources</span></a></div>
+<hr/>
+<h2>The Neo-Geo BIOS</h2>
+<p>The Neo-Geo has a BIOS ROM that contains both user functions and system code. It
+only expects a few things of your program, and it gives you a number of functions
+in return. This section will only cover the "retail" BIOS (as opposed to the Debug
+BIOS or the Universe BIOS).</p>
+
+<h2>BIOS Calls</h2>
+<p>The BIOS exposes a few functions that games can call, knowing that every BIOS
+will have these calls in the same location.</p>
+
+<table>
+	<thead>
+		<tr>
+			<th>Address</th>
+			<th>Name</th>
+			<th>Description</th>
+			<th>Notes</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td><code>$C00402</code></td>
+			<td><code>SYSTEM_RESET</code></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>$C00438</code></td>
+			<td><code>SYSTEM_INT1</code></td>
+			<td>The BIOS's VBlank routine.</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>$C00444</code></td>
+			<td><code>SYSTEM_RETURN</code></td>
+			<td>Returns from the game to the BIOS.</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>$C0044A</code></td>
+			<td><code>SYSTEM_IO</code></td>
+			<td>Reads the hardware registers and updates relevant BIOS RAM locations.</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>$C00450</code></td>
+			<td><code>CREDIT_CHECK</code></td>
+			<td>Check a player's number of credits.</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>$C00456</code></td>
+			<td><code>CREDIT_DOWN</code></td>
+			<td>Deduct credits.</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>$C0045C</code></td>
+			<td><code>READ_CALENDAR</code></td>
+			<td>Read values from uPD4990 chip.</td>
+			<td>MVS-only</td>
+		</tr>
+		<tr>
+			<td><code>$C00462</code></td>
+			<td><code>SETUP_CALENDAR</code></td>
+			<td>Sets up uPD4990 chip.</td>
+			<td>MVS-only</td>
+		</tr>
+		<tr>
+			<td><code>$C00468</code></td>
+			<td><code>SYS_CARD</code></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>$C0046E</code></td>
+			<td><code>SYS_CARD_ERROR</code></td>
+			<td>Handles card errors and displays the correct message.</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>$C004C2</code></td>
+			<td><code>FIX_CLEAR</code></td>
+			<td>Clears the Fix Layer.</td>
+			<td>First and last columns filled with tile <code>0x20</code>.</td>
+		</tr>
+		<tr>
+			<td><code>$C004C8</code></td>
+			<td><code>LSP_1st</code></td>
+			<td>&nbsp;</td>
+			<td>Clear SCB2-4, first SCB1 tilemap.</td>
+		</tr>
+		<tr>
+			<td><code>$C004CE</code></td>
+			<td><code>MESS_OUT</code></td>
+			<td>Fix layer message output.</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>$C004D4</code></td>
+			<td><code>CONTROLLER_SETUP</code></td>
+			<td>Initializes controllers.</td>
+			<td>&nbsp;</td>
+		</tr>
+	</tbody>
+</table>
+
+<h2>BIOS RAM</h2>
+<p>A chunk of RAM (the <code>$10F300</code>-<code>$10FFFF</code> area) is reserved
+for use by the BIOS. You probably shouldn't be writing to it, but every game probably
+reads from it at one point or another. (I'm too lazy to decompile every single game,
+though.)</p>
+
+<p>(todo: create a table of BIOS RAM locations)</p>
+</div>
+
+<div id="bottom">
+This guide written by AJ/freem, 2014-2015.<br/>
+"NEOGEO" is a registered trademark of SNK Playmore Corp. All other company and
+product names used are trademarks or registered trademarks of their respective owners.<br/>
+This guide is not authorized or licensed by SNK Playmore.
+</div>
+
+</div>
+</body>
+</html>

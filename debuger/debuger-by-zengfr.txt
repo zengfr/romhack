@@ -1,0 +1,16 @@
+
+（1） QIRA：QEMU交互式运行时分析器
+
+（2）Microsoft TTD：针对Windows的时域追踪调试（Time Travel Debugging）
+
+（3）RR//Pernosce：针对Linux的时间无关调试（Timeless Debugging）
+
+（4）PANDA：基于QEMU的全系统追踪（Full Systen Tracing)
+
+（5）REVEN：基于PANDA或VirtualBox的全系统追踪
+
+（6）UndoDB：针对Linux和Android的可逆调试（Reversible Debugging）
+
+（7）DejaVM     :^)
+
+  https://github.com/zengfr/romhack

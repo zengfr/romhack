@@ -1,0 +1,687 @@
+﻿https://github.com/zengfr/romhack
+https://gitee.com/zengfr/romhack
+https://github.com/bombzj/arcade-sprite-viewer/blob/master/cps/dino_addr.txt
+var paletteAddress = 0xB7A52;		// per level * scen = 8 * 4
+var paletteAddressIndex1 = 0x8E8E;	// for sprite, per level * scene = 8 * 10?
+var paletteAddressIndex2 = 0xBBA52;	// for scroll layer 1, seems fixed for HUD
+var paletteAddressIndex3 = 0x8AE0;	// for scroll layer 2
+var paletteAddressIndex4 = 0x8C52;
+
+var playerCB = [	// collision boxes groups for 4 players
+	0x100000,0x100C00,0x101800,0x102400
+];
+
+var animAddressIndex = 0x0B7472;
+var animAddress = [0x34892, 0x34B90, 0x34E7C, 0x56C38, 0x5708C, 0x57C20, 0x57D84, 0x577D2, 0x3906A, 0x3DAF8,
+		0x3DD50, 0x4200E, 0x42386, 0x42516, 0x45706, 0x47244, 0x47A52, 0x718EE, 0x4837C, 0x49574, 0x4C90E,
+		0x4DBA0, 0x4F4E4, 0x4FC22, 0x50DFA, 0x5727A, 0x6F8A6, 0x57682,
+		0x9E41C, 0x9EDFE, 0x9F094, 0x9F252, 0x9EACC];
+var bgAddress = [	// real map
+	0x138FC8,0x139AC8,0x13BAC8,0x13BDC8,0x13DDC8,0x13FDC8,0x141DC8,0x143DC8
+]
+var mapTileAddress = [	// map tiles set for real map to index, by 2x2 unit
+	0x162068,
+	0x164198,
+	0x166758,
+	0x166C98,
+	0x1683E8,
+	0x16B3D8,
+	0x16E188,
+	0x172158,
+//	0x108000,0x123A28,0x147DC8	???
+];
+var bg2Address = 0x177288;	// layer 2 background		
+var map2Data = [
+	0x2313E,	0x2315C,	0x2317A,	0x23184,	0x231A2,	0x231B6,	0x231D4,	0x231FC
+];
+var playerSpriteAddress = [0x163E, 0x164E, 0x165E, 0x166E, 0x168E];
+--------------------------------------------------------------------------------------------------  
+5637 563a 5657 565a 5676 567a
+
+sprites 0D6B28 - 0F0028 
+sprites position  0F0028 - 0FFFD0
+
+maybe boss1 more info 00091570 34xx
+
+
+index array of sprites 0D0CF4 - 0D43D7
+index array of sprites position 0D43D8 - 0D6B27
+
+
+[obj animation set]
+ROM:00057650                 move.l  #enimy_sprite_57682,$40(a6)
+start with a list of offset.w end by 0, each offset is based
+ on address of enimy_sprite_57682 and points to an animation.
+ths structure is : animation set -> animation -> frame x 2 -> sprite -> tile(nx x ny)
+											  -> collision box
+
+
+[obj animation] sprite original data from
+5715E:	(move by 0xA length, by ROM:0000122A    lea     $A(a0),a0 )
+25 08 80 00 00 00 00 0A 00 00  
+25 04 80 00 00 00 00 0A 00 00
+25 00 80 00 00 00 00 8A 00 00
+1D B4 80 00 00 00 00 8A E0 00
+21 9C 80 00 00 00 00 87 00 00
+spr1  spr2? index       ?? = maybe colission index
+ROM:00001236                 move.l  a0,$28(a6)
+ROM:0000123A                 move.w  (a0)+,d0        ; spr1
+ROM:0000123C                 move.w  (a0)+,d1		; spr2
+ROM:0000123E                 move.l  (a0)+,d2
+ROM:00001240                 move.w  (a0)+,$48(a6)
+
+[player animation]
+17 30 80 00 00 00 08 8F 00 00 53 00
+spr1  spr2  index       ??    ??
+						00 00 = collission index
+17 2C 80 00 00 00 08 8F 00 00 52 00
+spr1  spr2 if not 80
+ROM:0000143E                 move.l  a0,$28(a6)      ; a0=tiles, a6=sprite
+ROM:00001442                 move.w  (a0)+,d0
+ROM:00001444                 move.w  (a0)+,d1
+ROM:00001446                 move.l  (a0)+,d2
+ROM:00001448                 move.w  (a0)+,$48(a6)
+ROM:0000144C                 move.w  (a0)+,$60(a6)
+
+9EB28 = leg + ? - 9eb28???
+
+
+
+loadsprites=00014294
+loadspritesInfo=000144AE
+
+
+very common mode to function pointer:
+ROM:00097C62                 jsr     word_97C88(pc,d0.w) // d0 = index, jump word_97C88 offset (word_97C88,d0), an offset list start from word_97C88
+jump to 097D84
+
+
+sprites format
+(boss n)
+0020 0008 80 1F 04 A5 
+433C 02 1F 
+433F 00 1F
+431E 11 1F
+4376 02 1F
+4346 23 1F
+4333 00 1F
+4341...
+
+0020 = total tile number
+0008 = tile data count
+80 = 
+1F = palette
+04A5 = position index, 
+433C = tile start
+02 = 1 x 3 = 3 tiles
+1F = palette
+
+(player1 blue)
+000F 0003 80 00 00 00
+08 10 22 00
+08 40 02 00  
+08 50 02 00 
+
+d0=000F total tiles
+d6=0003 count of chunk
+d3 = 8000 = ? + palette
+d2 = 00 00 = index of positions
+
+
+:0001450A
+movem.w d0-d3,(a4) // save d0 - d3 while
+d0= data in positions
+d1= calculated value (calculated address)
+d2 = 08 10 // tile
+d3 =  22 00  // size and palette
+
+
+
+obj animation index : 0B7472 - 0B7A51
+00 09 E4 1C 00 00 00 00
+00 09 ED FE 00 00 00 00
+00 09 F0 94 00 00 00 00
+
+00 03 12 10 00 04 00 04
+00 04 DA 2A 00 04 00 00
+00 04 DB A0 00 04 00 00
+player: 
+00 05 0D FA 00 04 00 04
+obj
+00 04 FC 22 00 04 00 00
+
+
+[obj ram] FFFFC8F4 - FFFFDD14 (ROM:00023420)
+$40(a6).l	animation pointer		(ROM:0000120E)
+$28(a6).l	current animation frame pointer		(ROM:00001236)
+$30(a6).l	extra animation frame pointer		(ROM:00014178)
+$20(a6).w	object main update function pointer offset  	(ROM:000	) main type
+$26(a6).w	object type2, 			(ROM:00056F74)
+$30(a6).w	animation pointer2. some objects have 2 parts of animation like running with gun
+$44(a6).l collision box start address
+$49(a2).b box index  for attack
+$48(a3).b box index for body
+$24(a2).b facing left or right?		// ROM:00012954                 tst.b   $24(a2)
+$8.w	x position
+$10.w	y position
+$C.w	z position
+5(a6).b		object type? ROM:00089B6A, value range 0 - 2
+6(a6).b		object status, cause different sub update function 	(ROM:000190B8) also cause different animation loaded
+7(a6).b		??? (ROM:000190E8)
+4(a6).b 	object status, 0 = init, 3 = clear ��ROM:00056A70��value range 0 - 3
+0(a6).b		object type? 0 = null object
+ROM:00057CB0                 move.b  #2,0(a6)
+ROM:0000172E                 move.b  #1,1(a6)
+
+ROM:0000FC2E obj_create_data:                        ; new object in each level and each scene(sub list)
+ROM:0000FC2E                 dc.l off_ACD8E
+ROM:0000FC32                 dc.l off_ACF0A
+ROM:0000FC36                 dc.l off_AD032
+ROM:0000FC3A                 dc.l off_AD106
+ROM:0000FC3E                 dc.l off_AD24A
+ROM:0000FC42                 dc.l off_AD40C
+ROM:0000FC46                 dc.l off_AD57A
+ROM:0000FC4A                 dc.l off_AD758
+ROM:0000FC4E off_FC4E:       dc.l off_ADBF2
+ROM:0000FC52                 dc.l off_AE032
+ROM:0000FC56                 dc.l off_AE5E4
+ROM:0000FC5A                 dc.l off_AEE80
+ROM:0000FC5E                 dc.l off_AF6D4
+ROM:0000FC62                 dc.l off_B0116
+ROM:0000FC66                 dc.l off_B0852
+ROM:0000FC6A                 dc.l off_B1702
+
+
+00 00 00 01 01 14 00 00 00 00 00 00 00 00 
+			type  x     y           z
+00 00 00 01 00 7C 00 00 00 00 00 00 00 00 
+00 00 00 01 00 50 00 00 00 00 00 00 00 00  
+00 40 00 01 01 08 00 00 00 00 00 09 00 00 
+01 00 00 01 01 24 00 00 00 00 00 00 00 00 
+01 C0 00 01 01 28 00 00 00 00 00 00 00 00 
+02 A0 00 01 01 08  00 00 00 00 00 49 00 00
+ROM:0000FCCC                 move.b  #1,0(a0)
+ROM:0000FCD2                 move.w  4(a2),$20(a0)
+ROM:0000FCD8                 move.w  6(a2),8(a0)
+ROM:0000FCDE                 move.w  $C(a2),$C(a0)		// z pos
+ROM:0000FCE4                 move.w  8(a2),$10(a0)
+ROM:0000FCEA                 move.w  $A(a2),$26(a0)
+
+type = object function offset
+ 
+scene object create:	
+00 00 00 00 00 C4  00 80 01 80 00 00 00 00 00 00 
+		    type   x     y     type2
+00 40 00 00 00 C4  01 A0 01 80 00 00 00 00 00 00 
+00 40 00 00 00 C8  00 80 01 80 00 0A 00 00 00 00 
+01 00 00 00 00 C8  00 80 01 80 00 0C 00 00 00 00 
+02 60 00 00 00 C4  03 E0 01 80 00 02 00 00 00 00 
+03 88 00 00 00 08  05 20 01 40 00 00 00 00 00 00 
+03 88 00 40 00 08  05 40 01 50 00 02 00 00 FF 00 
+03 88 00 60 00 08  05 40 01 40 02 02 00 00 00 00 
+ROM:0000FE30                 move.b  #1,0(a0)        ; create an object #1
+ROM:0000FE36                 move.w  4(a2),$20(a0)
+ROM:0000FE3C                 move.w  6(a2),8(a0)
+ROM:0000FE42                 move.w  8(a2),$10(a0)
+ROM:0000FE48                 move.w  $A(a2),$26(a0)
+ROM:0000FE4E                 move.w  $C(a2),$5C(a0)
+ROM:0000FE54                 move.b  $E(a2),$5B(a0)
+ROM:0000FE5A                 move.b  $F(a2),$96(a0)
+
+[obj collision]
+addres: $100000, per 0xc
+0000 0000 0000    0000 0000 0000
+xxxx nx   yyyy height  zzzz zheight  
+$44(a6) collision box start address
+$49(a2) box index  for attack
+$48(a3) box index for body
+
+ROM:00018CC4 player_collision_group:dc.l unk_100000  ; DATA XREF: sub_18C88+4��r
+ROM:00018CC8                 dc.l unk_100C00
+ROM:00018CCC                 dc.l unk_101800
+ROM:00018CD0                 dc.l unk_102400
+
+[global ram]
+$4D9(a5).b = level ( 0 - 7)
+$786(a5).b = $4A(a6) = scene
+$744(a5) = x position
+ROM:0000FD20                 move.w  $744(a5),d1
+ROM:0000FD24                 cmp.w   d1,d0           ; if d1>d2 new enimy	
+$ffff873c(a6):
+$ffffE9B6 = $69B6(a5) = map move x
+$ffffE9B8 = $69B8(a5) = map move y
+ROM:0001426E                 sub.w   $69B6(a5),d4
+ROM:00014272                 sub.w   $69B8(a5),d5
+ffff8744 = $8(a6) map real x
+ffff8746 = $a(a6) map real y
+$46(a6) = ffff8782 = map draw x, 0 is left (align to 0x20, draw position)
+$48(a6) = ffff8784 = map draw y, 0 is bottom (level 1 scene1 = 100,scene2 = 300, level 2 start = 40, level 5 ? = 200)
+$42(a6) = map data control address
+$6C(a6).b = small scene?
+ROM:000207EE                 move.b  0(a0),$40(a6)
+ROM:000207F4                 move.b  1(a0),$41(a6)		use which map?
+ROM:000207FA                 move.l  2(a0),$42(a6)   ; map dataaddress
+ROM:00020800                 move.w  6(a0),$46(a6)   ; set start x
+ROM:00020806                 move.w  8(a0),$48(a6)   ; set start y
+
+ROM:00021580 level_map_data:
+07 02 00 02 16 A6 00 00 01 00	// level 1
+07 = column count
+   02 = row count
+   	  00 02 16 46 = link to actual big tiles(8 x 8 x 32x32)
+   	  			 00 00 = start x
+   	  			 		01 00 = start y
+04 01 00 02 16 C2 00 00 00 00
+04 04 00 02 16 CA 00 00 03 00
+0F 02 00 02 16 EA 00 00 00 40
+04 04 00 02 16 CA 00 00 03 00	// level 2
+0F 02 00 02 16 EA 00 00 00 40
+
+[level data]
+00 00 01 00 00 00 00 00 00 00 00 11 00 00 00 00
+								 11 = scene update function index
+03 80 01 00 00 00 00 80 00 20 00 00 00 00 00 00
+03 80 = start pos
+04 08 00 D0 00 00 00 00 00 00 00 0B 00 00 00 00
+04 60 00 D0 00 00 00 00 00 00 00 00 00 00 00 00
+04 D0 00 D0 01 28 00 00 00 00 00 04 00 01 00 00
+05 80 00 00 01 28 00 80 00 20 00 01 01 01 00 00
+00 00 00 00 00 00 00 00 00 00 01 04 00 00 00 00
+ROM:000209C0 loc_209C0:                              ; CODE XREF: level_initial:loc_2090C��p
+ROM:000209C0                 move.w  0(a4),$4C(a6)
+ROM:000209C6                 move.w  2(a4),$4E(a6)
+ROM:000209CC                 move.w  4(a4),$50(a6)
+ROM:000209D2                 move.w  6(a4),$52(a6)
+ROM:000209D8                 move.w  8(a4),$54(a6)
+ROM:000209DE                 move.b  $A(a4),$4A(a6)  ; scene number
+ROM:000209E4                 move.b  $B(a4),5(a6)
+ROM:000209EA                 clr.w   6(a6)
+ROM:000209EE                 move.b  $C(a4),$4B(a6)
+ROM:000209F4                 move.b  $D(a4),$70(a6)
+ROM:000209FA                 move.b  $F(a4),$79(a6)
+ROM:00020A00                 move.w  0(a4),$5A(a6)
+ROM:00020A06                 move.b  $E(a4),$7B(a6)
+ROM:00020A0C                 move.w  $C(a6),$5C(a6)
+ROM:00020A12                 addq.b  #1,$6C(a6)
+
+00 00 00 40 00 00 00 00 00 00 00 00 00 00 00 00
+05 68 00 40 00 00 00 00 00 00 00 08 00 00 00 00
+06 20 00 00 00 00 00 00 00 00 01 0C 00 00 00 00
+07 C0 00 00 00 00 00 00 00 00 01 00 00 00 00 00
+08 60 00 00 00 00 00 00 00 00 01 04 00 00 00 00
+0A 00 00 10 00 00 00 00 00 00 01 0D 00 00 00 00
+0A 20 00 10 00 00 00 00 00 00 01 00 00 00  00 00 0B 80 00 00 00 00
+00 00 00 00 01 01 00 00  00 00 00 00 00 00 01 00
+
+ROM:000209C0                 move.w  0(a4),$4C(a6)
+ROM:000209C6                 move.w  2(a4),$4E(a6)
+ROM:000209CC                 move.w  4(a4),$50(a6)
+ROM:000209D2                 move.w  6(a4),$52(a6)
+ROM:000209D8                 move.w  8(a4),$54(a6)
+ROM:000209DE                 move.b  $A(a4),$4A(a6)
+ROM:000209E4                 move.b  $B(a4),5(a6)
+ROM:000209EA                 clr.w   6(a6)
+ROM:000209EE                 move.b  $C(a4),$4B(a6)
+ROM:000209F4                 move.b  $D(a4),$70(a6)
+ROM:000209FA                 move.b  $F(a4),$79(a6)
+ROM:00020A00                 move.w  0(a4),$5A(a6)
+ROM:00020A06                 move.b  $E(a4),$7B(a6)
+ROM:00020A0C                 move.w  $C(a6),$5C(a6)
+ROM:00020A12                 addq.b  #1,$6C(a6)
+
+[dynamic map] like water or fire
+
+
+[background layer2]
+ROM:0002311E bg2_map_data:   dc.l unk_2313E          ; DATA XREF: ROM:00022CCC��o
+ROM:00023122                 dc.l unk_2315C
+ROM:00023126                 dc.l unk_2317A
+ROM:0002312A                 dc.l unk_23184
+
+
+[random drop]
+ROM:00024B60                 adda.w  d0,a1
+ROM:00024B62                 jsr     (random_d0).l
+ROM:00024B68                 andi.w  #$1F,d0
+ROM:00024B6C                 moveq   #0,d1
+ROM:00024B6E                 move.b  (a1,d0.w),d1    ; d1 = drop what
+
+[map boundry]
+
+
+[A5 A6 A0 A1 register] usually
+A5 = FFFF8000	//	global data
+A6 = FFFFE9A8	// current object
+A2 = 000ADC82		// 
+A4 = FFFF866C	// create object data?
+ROM:0000FC1C                 move.l  (a0,d0.w),8(a4)	// per $E
+ROM:0000FC22                 move.l  (a1,d0.w),$C(a4)	// $C(a4) = next obj need to create, per $10
+ROM:0000FC28                 addq.b  #2,4(a4)
+
+gfx ram
+$900000 in sprites per 8bytes
+/***************************************************************************
+                                Sprites
+                                =======
+  Sprites are represented by a number of 8 byte values
+  xx xx yy yy nn nn aa aa
+  where xxxx = x position
+        yyyy = y position
+        nnnn = tile number
+        aaaa = attribute word
+                    0x0001  colour
+                    0x0002  colour
+                    0x0004  colour
+                    0x0008  colour
+                    0x0010  colour
+                    0x0020  X Flip
+                    0x0040  Y Flip
+                    0x0080  X & Y offset toggle (used in Marvel vs. Capcom.)
+                    0x0100  X block size (in sprites)
+                    0x0200  X block size
+                    0x0400  X block size
+                    0x0800  X block size
+                    0x1000  Y block size (in sprites)
+                    0x2000  Y block size
+                    0x4000  Y block size
+                    0x8000  Y block size
+  The end of the table (may) be marked by an attribute value of 0xff00.
+***************************************************************************/
+
+$900000 - sprites
+$904000 - sprites
+$90A000 - text		// 0BFA: move.w  d0,(a1)+
+$908000 - HUD scroll layer 1
+$914000 - $914FFF // palette
+$918000 -
+
+background
+0x910000 = back background, scroll layer 3
+90C000 = background, scroll layer 2  // maybe different layers , 90D 90E 90F
+blank if 5800 0000
+code : 21446:    move.l  (a3)+,(a0)+
+real data from 162070-?
+
+[tile data]
+tttt aaaa
+tile
+        aaaa = attribute word
+                    0x0001  colour
+                    0x0002  colour
+                    0x0004  colour
+                    0x0008  colour
+                    0x0010  colour
+                    0x0020  X Flip
+                    0x0040  Y Flip
+                    0x0080  use mask to go foreground
+                    0x0100  color index between back and foreground
+                    0x0200 
+                    0x0400 
+                    0x0800 
+                    0x1000  small than color index is foreground or not?
+                    0x2000
+                    0x4000 
+                    0x8000
+
+
+background layer use colors to seperate layers again:
+0x800140, 0x80017f = b registers, 0x68 - 0x6F = priority mask
+ROM:0000A874                 move.w  #$49DF,($80016E).l ; write B registers of priority mark
+ROM:0000A87C                 move.w  #$BC52,($800160).l
+seems only one layer with one palette with 4 colors are in foreground, from cps1.cpp:416
+ctrl     priority masks   palctrl layer enable masks  */
+0x0a,{0x0c,0x0e,0x00,0x02},0x04, {0x16,0x16,0x16,0x00,0x00}
+
+data seem like:
+108000 - 11D21F = 15220
+123A28 - 138C47 = 15220
+147DC8 - 15CFE7 = 15220
+162068 - 177287 = 15220
+
+tile set?
+ROM:00021454 off_21454:      dc.l unk_162068         ; DATA XREF: sub_2142A+8��r
+ROM:00021458                 dc.l unk_164198
+ROM:0002145C                 dc.l unk_166758
+ROM:00021460                 dc.l unk_166C98
+ROM:00021464                 dc.l unk_1683E8
+ROM:00021468                 dc.l unk_16B3D8
+ROM:0002146C                 dc.l off_16E188
+ROM:00021470                 dc.l unk_172158
+
+???
+24A9A :                 movea.l #off_122230,a1
+ROM:00122230 off_122230:     dc.l unk_122240         ; DATA XREF: readbackground��o
+ROM:00122234                 dc.l unk_1223A8
+ROM:00122238                 dc.l unk_1224E8
+
+
+
+
+
+
+
+A0 = FFFFDC34   +$28
+A3 = 00071F88 = code 34D4=index of frames
+
+
+120E A6 + $40 -> A0 = index of frames
+
+
+init
+gameloop
+{
+gameloop1 // real game
+gameloop2 // select char
+gameloop3 // between
+}
+
+A3 = 9E46A (code) = 800000.w
+
+143E                 move.l  a0,$28(a6)  // (a0)=9e45e
+
+main place to get sprite idx
+1423E                 move.w  (a3)+,d0	// a3 = 9e460 for player1 where idx=0, cause d0=1280000.w -> 0
+00014244                 movea.l (off_FFFF4).l,a1		// 
+
+a3 = 474b8 maybe player1 too
+
+143E :                move.l  a0,$28(a6)	// place to write ram of spriteidx
+originally from 165E, when hit??
+13DA  :               movea.l (a0,d1.w),a0
+
+
+13A0                 lea     off_163E,a0	// data from 163E - 168E, per int data
+
+163e + 0-3(player) -> 9f094 -> index
+
+
+another char :
+56A8A :                move.l  #off_56C38,$40(a6)	// hard code offset 56C38
+
+
+with gun:
+9EB28 -> 0150 / 4 = 54 -> down part
+with code 1429A:    move.w  (a3),d0
+9EB26 -> 0164 / 4 = 59 -> up part
+with code 1423E:    move.w  (a3)+,d0
+
+food
+28BFE -> 2990 / 4 = A64
+with code 1423E
+
+gold
+2A22C -> 29C0 / 4 = A70
+with code 1423E
+
+all food from 2A198 like (it is in an animation from 	)
+29 E8 80 00 00 00 00 50 00 BD 
+29 EC 80 00 00 00 00 0A 00 BD 
+29 F0 80 00 00 00 00 0A 00 BD 
+29 F4 80 00 00 00 00 0A 00 BD
+29 F8 80 00 00 00 00 8A 00 BD FF CE
+
+gun
+26FA4 -> 1A04 /4 = 681
+move pos 26F7E +26 =  26FA4 (from FFFF99B4) -> 1A04 /4 = 681
+with code 1423E
+
+
+2BC00 -> 8000 ? exit loop
+
+
+draw tile: 
+4 tiles together with 2 x 2, (A3)+->(A0)+
+D6 = which tile set, read from ffff84d9
+A1 = which tile	(138FDA->), A1 * 4*4
+A0=90F4D0,90F490, 90D568 , 90D578, 90E540, 
+A3 = x, 162068, 162070
+tiles from code:
+ROM:0002155E:      	        dc.l unk_138FC8         ; 
+ROM:00021562                 dc.l unk_139AC8
+ROM:00021566                 dc.l unk_13BAC8
+ROM:0002156A                 dc.l unk_13BDC8
+ROM:0002156E                 dc.l unk_13DDC8
+ROM:00021572                 dc.l unk_13FDC8
+ROM:00021576                 dc.l unk_141DC8
+ROM:0002157A                 dc.l unk_143DC8
+
+D0 is position to draw from
+D5=0 or 16  for level 2, 31 or 30 for level1 maybe draw (layer) D5 << 8 + 0x177288 = data location
+
+level1: (31 30), (63 32  42, 63 33 42, 16? 17 00 16)
+000230FE    move.w  d5,d2
+
+
+
+
+
+palette idapro_name=palette_entry
+D0=4E0 A0=9028
+ROM:00008E70   move.w  (a0)+,d0
+
+
+when start:
+A0=90CE
+
+when level2
+A0=9010
+
+
+
+
+
+
+[RAM]
+FFFF84d9 byte: level   = 1
+FFFF8786 byte: scene   = 3
+when start, palette entry = scene * 4 + (level << 4) + 0x8E8E = 90CE
+1,3(start game) -> 0,0 -> 0,3 -> 0,2(scene3) -> 0,0(start level)
+level2: 1,0
+level3: 2,0
+level4: 3,0 -> 3,1 -> 3,2
+level5: 4,0
+
+FFFF885C .w scroll1 x ?
+FFFF8864 .w scroll2 x ?
+FFFF886C .w scroll3 x ?
+FFFF8860 .w scroll1 y ?
+FFFF8868 .w scroll2 y ?
+FFFF8870 .w scroll3 y ?
+
+
+
+[object] probably animation
+34892 : 00 24 00 3A 00 78  00 E8 01 08 01 32 01 52 01 FC 02 1C 02 46 02 52  02 5E 02 6A 02 76 02 A0
+       (00 24 + 34892) = sprite
+when initial, 34892 is put in $40(A6), copy to $28(A6) and updated every 10 frames in  $28(A6), code 0000121E
+
+
+
+[register setting]
+ROM:00000564                 move.w  d0,($800100).l  ; set sprite/object base ram, 9000
+ROM:0000056A                 move.w  $2A(a5),($800102).l ; set scroll 123 base ram, 9080 90c0 9100
+ROM:00000572                 move.w  $2C(a5),($800104).l
+ROM:0000057A                 move.w  $2E(a5),($800106).l
+
+ROM:00000472                 move.w  #$9000,($800100).l
+ROM:0000047A                 move.w  #$9080,($800102).l
+ROM:00000482                 move.w  #$90C0,($800104).l
+ROM:0000048A                 move.w  #$9100,($800106).l
+ROM:00000492                 move.w  #$9158,($800108).l
+
+
+
+
+
+board A registers are from 0x800100 - 0x80013F
+
+
+CPS-A Registers
+---------------
+0x00-0x01     OBJ RAM base (/256)
+0x02-0x03     Scroll1 (8x8) RAM base (/256)
+0x04-0x05     Scroll2 (16x16) RAM base (/256)
+0x06-0x07     Scroll3 (32x32) RAM base (/256)
+0x08-0x09     rowscroll RAM base (/256)
+0x0a-0x0b     Palette base (/256) after this register is written to, the palette
+              is copied from gfxram to the dedicated ram. The palette control
+              register (see below) determines how the copy should happen.
+              Tests on a msword pcb show that the minimum alignment for the palette
+              is 0x400 bytes. The hardware seems to ignore bit 1, while when bit 0
+              is set the palette doesn't seem to be copied. However, some games set
+              bit 0 during boot (ghouls, strider, 1941) so it still isn't clear
+              what bit 0 should actually do.
+0x0c-0x0d     Scroll 1 X
+0x0e-0x0f     Scroll 1 Y
+0x10-0x11     Scroll 2 X
+0x12-0x13     Scroll 2 Y
+0x14-0x15     Scroll 3 X
+0x16-0x17     Scroll 3 Y
+0x18-0x19     Starfield 1 X
+0x1a-0x1b     Starfield 1 Y
+0x1c-0x1d     Starfield 2 X
+0x1e-0x1f     Starfield 2 Y
+0x20-0x21     start offset for the rowscroll matrix
+0x22-0x23     video control. Usually 0x0e.
+
+
+CPS-B Registers
+---------------
+Unlike CPS-A registers, which are at fixed addresses, CPS-B registers move from game to game.
+Following example strider
+0x66-0x67   Layer control register
+            bits 14-15 seem to be unused
+                ghouls sets bits 15 in service mode when you press button 2 in
+                the input test, with no apparent effect on the pcb.
+                qtono2j sets them both at the game over screen.
+            bits 6-13 (4 groups of 2 bits) select layer draw order
+            bits 1-5 enable the three tilemap layers and the two starfield
+                layers (the bit order changes from game to game).
+                Only Forgotten Worlds and Strider use the starfield.
+            bit 0 could be rowscroll related. It is set by captain commando,
+                varth, mtwins, mssword, cawing while rowscroll is active. However
+                kodj and sf2 do NOT set this bit while they are using rowscroll.
+                Tests on the msword pcb show that even if this bit is not set,
+                rowscroll still works. Therefore, the purpose of this bit is unclear.
+0x68-0x69   Priority mask \   Tiles in the layer just below sprites can have
+0x6a-0x6b   Priority mask |   four priority levels, each one associated with one
+0x6c-0x6d   Priority mask |   of these masks. The masks indicate pens in the tile
+0x6e-0x6f   Priority mask /   that have priority over sprites.
+0x70-0x71   Palette control register. This indicates which palette
+
+	map(0x000000, 0x3fffff).rom();
+	map(0x800000, 0x800007).portr("IN1");            /* Player input ports */
+	/* forgottn, willow, cawing, nemo, varth read from 800010. Probably debug input leftover from development */
+	map(0x800018, 0x80001f).r(FUNC(cps_state::cps1_dsw_r));            /* System input ports / Dip Switches */
+	map(0x800020, 0x800021).nopr();                     /* ? Used by Rockman ? not mapped according to PAL */
+	map(0x800030, 0x800037).w(FUNC(cps_state::cps1_coinctrl_w));
+	/* Forgotten Worlds has dial controls on B-board mapped at 800040-80005f. See below */
+	map(0x800100, 0x80013f).w(FUNC(cps_state::cps1_cps_a_w)).share("cps_a_regs");  /* CPS-A custom */
+	/* CPS-B custom is mapped by the PAL IOB2 on the B-board. SF2 revision "E" World and USA 910228 has it at a different
+	   address, see DRIVER_INIT */
+	map(0x800140, 0x80017f).rw(FUNC(cps_state::cps1_cps_b_r), FUNC(cps_state::cps1_cps_b_w)).share("cps_b_regs");
+	map(0x800180, 0x800187).w(FUNC(cps_state::cps1_soundlatch_w));    /* Sound command */
+	map(0x800188, 0x80018f).w(FUNC(cps_state::cps1_soundlatch2_w));   /* Sound timer fade */
+	map(0x900000, 0x92ffff).ram().w(FUNC(cps_state::cps1_gfxram_w)).share("gfxram"); /* SF2CE executes code from here */
+	map(0xff0000, 0xffffff).ram().share("mainram");
+

@@ -1,0 +1,54 @@
+https://github.com/zengfr/romhack
+https://gitee.com/zengfr/romhack
+
+Sprites
+There is dedicated ram at 0x708000. The problem is each frame it switches banks. Sprites are 16x16.
+
+Binary View
+PPPPYYYYYYYYYYYY 
+BBBNXXXXXXXXXXXX 
+LLLLLLLLLLLLLLLL
+xxxxyyyyNVHPPPPP
+
+P = Priority
+Y = Y coordinate
+B = Bank (B*8000 add to location)
+X = X coordinate
+L = tile Location
+x = Add number of tiles on the X
+y = Add number of tiles on the Y
+N = Null
+V = Vertical Flip
+H = Horizontal Flip
+P = Palette which of the 32 palettes to use
+
+Backgrounds
+This one is tricky as there is no dedicated spot for a background in the graphic ram(Start 0x900000). To find look for 9### around 0xFF8000, edit one at a time till you change the layer and then take that original address and add 00 to the end of it for the location. There is no X,Y cordinate in the format instead it's going top the bottom then left the right in the 4:3 horiontal format. 
+
+Format Binary
+LLLLLLLLLLLLLLLL NNNNNNNNNVHPPPPP
+
+L = Tile Location
+N = Null
+V = Vertical Flip
+H = Horizontal Flip
+P = Palette which of the 32 palettes to use
+
+You'll notice that the graphics roms addresses is higher than 16 bits but as a left over from cps1 hardware there is Gal chip that stores the start location on the graphics roms
+
+Palette Memory
+To find look for 9### around 0xFF8000, edit one at a time till you change the colors.
+32 palettes 16 colors each for each bg layer and the sprites.
+
+Palette format Binary
+bbbb RRRR GGGG BBBB
+brightness
+Red
+Green
+Blue
+
+Bank Order
+Sprites
+ 8x 8 Layer
+16x16 Layer
+32x32 Layer

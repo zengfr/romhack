@@ -1,0 +1,46 @@
+copyright	zengfr	site:http://github.com/zengfr/romhack
+	
+000A8E:movea.l (A1,D6.w), A1	
+000A92:jsr     (A1)	
+000BEA:movea.l (A7)+, A1	
+000BEC:rts	
+001B06:tst.b   $20005a.l	
+001B0C:beq     $1b20	
+001B10:btst    #$0, $200082.l	
+001B18:bne     $1b90	
+001B1C:bra     $1b32	
+00245E:tst.b   ($c,A0)	
+002462:beq     $24d2	
+002466:btst    #$1, $200083.l	
+00246E:bne     $2488	
+002472:move.w  ($6,A0), D2	
+002476:movea.l ($14,A0), A6	
+00247A:move.w  #$700, D7	
+00247E:jsr     $bc0.l	
+002484:bra     $249a	
+002488:move.w  #$fe, D2	
+00248C:movea.l ($14,A0), A6	
+002490:move.w  #$700, D7	
+002494:jsr     $bc0.l	
+00249A:move.b  ($d,A0), D0	
+00249E:beq     $24d2	
+0024A2:subq.b  #1, D0	
+0024A4:move.b  D0, ($d,A0)	
+0024A8:bne     $24d2	
+0024AC:move.w  #$501, D7	
+0024B0:move.w  ($2,A0), D0	
+0024B4:move.w  ($4,A0), D1	
+0024B8:move.w  ($6,A0), D2	
+0024BC:movea.l ($10,A0), A5	
+0024C0:movea.l ($14,A0), A6	
+0024C4:jsr     $bc0.l	
+0024CA:move.b  #$0, ($0,A0)	
+0024D0:rts	
+01630E:addq.b  #1, $20004b.l	
+016314:rts	
+017A6E:lea     (A6), A4	
+017A70:bsr     $17a76	
+017A74:rts	
+017A9A:move.l  D6, (A6)	
+017A9C:rts	
+copyright	zengfr	site:http://github.com/zengfr/romhack

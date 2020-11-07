@@ -1,0 +1,3611 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="client-nojs">
+<head>
+<meta charset="UTF-8" />
+<title>Z80 Instruction Set - WikiTI</title>
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+<meta name="generator" content="MediaWiki 1.23.5" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="search" type="application/opensearchdescription+xml" href="/opensearch_desc.php" title="WikiTI (en)" />
+<link rel="EditURI" type="application/rsd+xml" href="https://wikiti.brandonw.net/api.php?action=rsd" />
+<link rel="alternate" type="application/atom+xml" title="WikiTI Atom feed" href="/index.php?title=Special:RecentChanges&amp;feed=atom" />
+<link rel="stylesheet" href="https://wikiti.brandonw.net/load.php?debug=false&amp;lang=en&amp;modules=mediawiki.legacy.commonPrint%2Cshared%7Cmediawiki.skinning.interface%7Cmediawiki.ui.button%7Cskins.monobook.styles&amp;only=styles&amp;skin=monobook&amp;*" />
+<!--[if IE 6]><link rel="stylesheet" href="/skins/monobook/IE60Fixes.css?303" media="screen" /><![endif]-->
+<!--[if IE 7]><link rel="stylesheet" href="/skins/monobook/IE70Fixes.css?303" media="screen" /><![endif]--><meta name="ResourceLoaderDynamicStyles" content="" />
+<style>a:lang(ar),a:lang(kk-arab),a:lang(mzn),a:lang(ps),a:lang(ur){text-decoration:none}
+/* cache key: wikitiorg-ti:resourceloader:filter:minify-css:7:c0ca92d1124411372ae0b56a4f141e36 */</style>
+<script src="https://wikiti.brandonw.net/load.php?debug=false&amp;lang=en&amp;modules=startup&amp;only=scripts&amp;skin=monobook&amp;*"></script>
+<script>if(window.mw){
+mw.config.set({"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"Z80_Instruction_Set","wgTitle":"Z80 Instruction Set","wgCurRevisionId":6156,"wgRevisionId":6156,"wgArticleId":1684,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":[],"wgBreakFrames":false,"wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgMonthNamesShort":["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"wgRelevantPageName":"Z80_Instruction_Set","wgIsProbablyEditable":false,"wgRestrictionEdit":[],"wgRestrictionMove":[]});
+}</script><script>if(window.mw){
+mw.loader.implement("user.options",function($,jQuery){mw.user.options.set({"ccmeonemails":0,"cols":80,"date":"default","diffonly":0,"disablemail":0,"editfont":"default","editondblclick":0,"editsectiononrightclick":0,"enotifminoredits":0,"enotifrevealaddr":0,"enotifusertalkpages":1,"enotifwatchlistpages":1,"extendwatchlist":0,"fancysig":0,"forceeditsummary":0,"gender":"unknown","hideminor":0,"hidepatrolled":0,"imagesize":2,"math":1,"minordefault":0,"newpageshidepatrolled":0,"nickname":"","norollbackdiff":0,"numberheadings":0,"previewonfirst":0,"previewontop":1,"rcdays":7,"rclimit":50,"rows":25,"showhiddencats":0,"shownumberswatching":1,"showtoolbar":1,"skin":"monobook","stubthreshold":0,"thumbsize":2,"underline":2,"uselivepreview":0,"usenewrc":0,"watchcreations":1,"watchdefault":1,"watchdeletion":0,"watchlistdays":3,"watchlisthideanons":0,"watchlisthidebots":0,"watchlisthideliu":0,"watchlisthideminor":0,"watchlisthideown":0,"watchlisthidepatrolled":0,"watchmoves":0,"wllimit":250,
+"useeditwarning":1,"prefershttps":1,"language":"en","variant-gan":"gan","variant-iu":"iu","variant-kk":"kk","variant-ku":"ku","variant-shi":"shi","variant-sr":"sr","variant-tg":"tg","variant-uz":"uz","variant-zh":"zh","searchNs0":true,"searchNs1":false,"searchNs2":false,"searchNs3":false,"searchNs4":false,"searchNs5":false,"searchNs6":false,"searchNs7":false,"searchNs8":false,"searchNs9":false,"searchNs10":false,"searchNs11":false,"searchNs12":false,"searchNs13":false,"searchNs14":false,"searchNs15":false,"variant":"en"});},{},{});mw.loader.implement("user.tokens",function($,jQuery){mw.user.tokens.set({"editToken":"+\\","patrolToken":false,"watchToken":false});},{},{});
+/* cache key: wikitiorg-ti:resourceloader:filter:minify-js:7:9f426b327d5b26fdba4b6c7f571e2def */
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.legacy.ajax"]);
+}</script>
+</head>
+<body class="mediawiki ltr sitedir-ltr ns-0 ns-subject page-Z80_Instruction_Set skin-monobook action-view">
+<div id="globalWrapper">
+<div id="column-content"><div id="content" class="mw-body-primary" role="main">
+	<a id="top"></a>
+	
+	<h1 id="firstHeading" class="firstHeading" lang="en"><span dir="auto">Z80 Instruction Set</span></h1>
+	<div id="bodyContent" class="mw-body">
+		<div id="siteSub">From WikiTI</div>
+		<div id="contentSub"></div>
+		<div id="jump-to-nav" class="mw-jump">Jump to: <a href="#column-one">navigation</a>, <a href="#searchInput">search</a></div>
+
+		<!-- start content -->
+<div id="mw-content-text" lang="en" dir="ltr" class="mw-content-ltr"><div id="toc" class="toc"><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#Legend"><span class="tocnumber">1</span> <span class="toctext">Legend</span></a>
+<ul>
+<li class="toclevel-2 tocsection-2"><a href="#Flags"><span class="tocnumber">1.1</span> <span class="toctext">Flags</span></a></li>
+<li class="toclevel-2 tocsection-3"><a href="#Miscellaneous"><span class="tocnumber">1.2</span> <span class="toctext">Miscellaneous</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-4"><a href="#Reference"><span class="tocnumber">2</span> <span class="toctext">Reference</span></a></li>
+<li class="toclevel-1 tocsection-5"><a href="#English_Language_Explanations"><span class="tocnumber">3</span> <span class="toctext">English Language Explanations</span></a>
+<ul>
+<li class="toclevel-2 tocsection-6"><a href="#Data_Movement"><span class="tocnumber">3.1</span> <span class="toctext">Data Movement</span></a></li>
+<li class="toclevel-2 tocsection-7"><a href="#Control"><span class="tocnumber">3.2</span> <span class="toctext">Control</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-8"><a href="#Care_of"><span class="tocnumber">4</span> <span class="toctext">Care of</span></a></li>
+</ul>
+</div>
+
+<h2><span class="mw-headline" id="Legend">Legend</span></h2>
+<table border="1" cellspacing="0" cellpadding="2">
+<tr>
+<th> Notation </th>
+<th> Meaning </th>
+<th> Respective opcode bits
+</th></tr>
+<tr>
+<td> A </td>
+<td> 16-bit address or immediate </td>
+<td> alalalal ahahahah
+</td></tr>
+<tr>
+<td> B </td>
+<td> Bit number: 0..7 </td>
+<td> bbb = 000..111
+</td></tr>
+<tr>
+<td> C </td>
+<td> Condition: nz, z, nc, c, po, pe, p, m </td>
+<td> ccc = 000, 001, 010, 011, 100, 101, 110, 111
+</td></tr>
+<tr>
+<td> D </td>
+<td> 8-bit signed relative offset </td>
+<td> dddddddd
+</td></tr>
+<tr>
+<td> E </td>
+<td> 16-bit relative address </td>
+<td> dddddddd (E minus address of next instruction)
+</td></tr>
+<tr>
+<td> I </td>
+<td> Index register: ix, iy </td>
+<td> i = 0, 1
+</td></tr>
+<tr>
+<td> J </td>
+<td> Half index register: ixh, ixl, iyh, iyl </td>
+<td> (i, b) = (0, 0), (0, 1), (1, 0), (1, 1)
+</td></tr>
+<tr>
+<td> N </td>
+<td> 8-bit immediate </td>
+<td> nnnnnnnn
+</td></tr>
+<tr>
+<td> P </td>
+<td> 16-bit register pair: bc, de, hl, af </td>
+<td> pp = 00, 01, 10, 11
+</td></tr>
+<tr>
+<td> Q </td>
+<td> 16-bit register: bc, de, hl/ix/iy, sp </td>
+<td> qq = 00, 01, 10, 11
+</td></tr>
+<tr>
+<td> R </td>
+<td> 8-bit general purpose register: a, b, c, d, e, h, l </td>
+<td> rrr (or sss) = 111, 000, 001, 010, 011, 100, 101
+</td></tr>
+<tr>
+<td> S </td>
+<td> Restart address: 0x00, 0x08,..., 0x38 </td>
+<td> sss = 000, 001,..., 111
+</td></tr></table>
+<h3><span class="mw-headline" id="Flags">Flags</span></h3>
+<ul>
+<li> - = no change
+</li>
+<li> + = change by definition (if noted, by the operation marked with '=&gt; flags', otherwise by the only non-single-bit operation):
+<ul>
+<li> S = sign, bit 7 of the result byte (accumulator or high byte for 16-bit operations)
+</li>
+<li> Z = zero, set if the result is zero (8 or 16-bit value)
+</li>
+<li> X = undocumented, bit 5 of the result byte
+</li>
+<li> H = half-carry, the carry (theoretical bit 4) of the low nibble of the result byte
+</li>
+<li> Y = undocumented, bit 3 of the result byte
+</li>
+<li> P = parity (set if the result byte has an even number of bits set) or overflow (set when crossing the boundary of the signed range); always specified
+</li>
+<li> N = negative, set if the previous operation was a subtraction; always specified
+</li>
+<li> C = carry, the theoretical bit 8 of the result byte
+</li>
+</ul>
+</li>
+<li> 0 = always reset
+</li>
+<li> 1 = always set
+</li>
+<li> X = change described under Effect
+</li>
+<li> P = parity (only for the parity flag)
+</li>
+<li> V = overflow (only for the parity flag)
+</li>
+<li> A = OR with the respective bit of the accumulator
+</li>
+<li> C = set if the counter (bc) is nonzero after decrementing
+</li>
+</ul>
+<h3><span class="mw-headline" id="Miscellaneous">Miscellaneous</span></h3>
+<ul>
+<li> () = indirection
+</li>
+<li> (()) = I/O port
+</li>
+<li> [] = operator precedence (to avoid confusion with indirection)
+</li>
+<li> E.B = the Bth bit of the value of expression E
+</li>
+<li> &#42; = any bit value (0 or 1)
+</li>
+<li> memptr = an internal 16-bit register connected to 16-bit operations
+</li>
+<li> tmp, tmp2 = temporary storage whose value is thrown away after each instruction
+</li>
+</ul>
+<p><br />
+</p>
+<h2><span class="mw-headline" id="Reference">Reference</span></h2>
+<table border="1" cellspacing="0" cellpadding="2">
+<tr>
+<th> Instruction:<i>A</i> </th>
+<th> Opcode </th>
+<th> Time </th>
+<th> S </th>
+<th> Z </th>
+<th> X </th>
+<th> H </th>
+<th> Y </th>
+<th> P </th>
+<th> N </th>
+<th> C </th>
+<th> Effect
+</th></tr>
+<tr>
+<td> adc a,R </td>
+<td> <tt>10001rrr</tt> </td>
+<td> 4 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> V </td>
+<td> 0 </td>
+<td> + </td>
+<td> a += R + cf
+</td></tr>
+<tr>
+<td> adc a,J </td>
+<td> <tt>11i11101 1000110b</tt> </td>
+<td> 8 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> V </td>
+<td> 0 </td>
+<td> + </td>
+<td> a += J + cf
+</td></tr>
+<tr>
+<td> adc a,N </td>
+<td> <tt>11001110 nnnnnnnn</tt> </td>
+<td> 7 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> V </td>
+<td> 0 </td>
+<td> + </td>
+<td> a += N + cf
+</td></tr>
+<tr>
+<td> adc a,(hl) </td>
+<td> <tt>10001110</tt> </td>
+<td> 7 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> V </td>
+<td> 0 </td>
+<td> + </td>
+<td> a += (hl) + cf
+</td></tr>
+<tr>
+<td> adc a,(I+D) </td>
+<td> <tt>11i11101 10001110 dddddddd</tt> </td>
+<td> 19 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> V </td>
+<td> 0 </td>
+<td> + </td>
+<td> a += (I+D) + cf
+</td></tr>
+<tr>
+<td> adc hl,Q </td>
+<td> <tt>11101101 01qq1010</tt> </td>
+<td> 15 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> V </td>
+<td> 0 </td>
+<td> + </td>
+<td> hl += Q + cf
+</td></tr>
+<tr>
+<td> add a,R </td>
+<td> <tt>10000rrr</tt> </td>
+<td> 4 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> V </td>
+<td> 0 </td>
+<td> + </td>
+<td> a += R
+</td></tr>
+<tr>
+<td> add a,J </td>
+<td> <tt>11i11101 1000010b</tt> </td>
+<td> 8 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> V </td>
+<td> 0 </td>
+<td> + </td>
+<td> a += J
+</td></tr>
+<tr>
+<td> add a,N </td>
+<td> <tt>11000110 nnnnnnnn</tt> </td>
+<td> 7 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> V </td>
+<td> 0 </td>
+<td> + </td>
+<td> a += N
+</td></tr>
+<tr>
+<td> add a,(hl) </td>
+<td> <tt>10000110</tt> </td>
+<td> 7 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> V </td>
+<td> 0 </td>
+<td> + </td>
+<td> a += (hl)
+</td></tr>
+<tr>
+<td> add a,(I+D) </td>
+<td> <tt>11i11101 10000110 dddddddd</tt> </td>
+<td> 19 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> V </td>
+<td> 0 </td>
+<td> + </td>
+<td> a += (I+D)
+</td></tr>
+<tr>
+<td> add hl,Q </td>
+<td> <tt>00qq1001</tt> </td>
+<td> 11 </td>
+<td> - </td>
+<td> - </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> - </td>
+<td> 0 </td>
+<td> + </td>
+<td> hl += Q
+</td></tr>
+<tr>
+<td> add I,Q </td>
+<td> <tt>11i11101 00qq1001</tt> </td>
+<td> 15 </td>
+<td> - </td>
+<td> - </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> - </td>
+<td> 0 </td>
+<td> + </td>
+<td> I += Q
+</td></tr>
+<tr>
+<td> and R </td>
+<td> <tt>10100rrr</tt> </td>
+<td> 4 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 1 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> 0 </td>
+<td> a&#160;:= a AND R
+</td></tr>
+<tr>
+<td> and J </td>
+<td> <tt>11i11101 1010010b</tt> </td>
+<td> 8 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 1 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> 0 </td>
+<td> a&#160;:= a AND J
+</td></tr>
+<tr>
+<td> and N </td>
+<td> <tt>11100110 nnnnnnnn</tt> </td>
+<td> 7 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 1 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> 0 </td>
+<td> a&#160;:= a AND N
+</td></tr>
+<tr>
+<td> and (hl) </td>
+<td> <tt>10100110</tt> </td>
+<td> 7 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 1 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> 0 </td>
+<td> a&#160;:= a AND (hl)
+</td></tr>
+<tr>
+<td> and (I+D) </td>
+<td> <tt>11i11101 10100110 dddddddd</tt> </td>
+<td> 19 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 1 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> 0 </td>
+<td> a&#160;:= a AND (I+D)
+</td></tr>
+<tr>
+<th> Instruction:<i>B</i> </th>
+<th> Opcode </th>
+<th> Time </th>
+<th> S </th>
+<th> Z </th>
+<th> X </th>
+<th> H </th>
+<th> Y </th>
+<th> P </th>
+<th> N </th>
+<th> C </th>
+<th> Effect
+</th></tr>
+<tr>
+<td> bit B,R </td>
+<td> <tt>11001011 01bbbrrr</tt> </td>
+<td> 8 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 1 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> - </td>
+<td> tmp&#160;:= R AND [1 &lt;&lt; B]
+</td></tr>
+<tr>
+<td> bit B,(hl) </td>
+<td> <tt>11001011 01bbb110</tt> </td>
+<td> 12 </td>
+<td> + </td>
+<td> + </td>
+<td> X </td>
+<td> 1 </td>
+<td> X </td>
+<td> P </td>
+<td> 0 </td>
+<td> - </td>
+<td> tmp&#160;:= (hl) AND [1 &lt;&lt; B],<br />xf&#160;:= memptr.13, yf&#160;:= memptr.11
+</td></tr>
+<tr>
+<td> bit B,(I+D) </td>
+<td> <tt>11i11101 11001011 dddddddd 01bbb***</tt> </td>
+<td> 20 </td>
+<td> + </td>
+<td> + </td>
+<td> X </td>
+<td> 1 </td>
+<td> X </td>
+<td> P </td>
+<td> 0 </td>
+<td> - </td>
+<td> tmp&#160;:= (I+D) AND [1 &lt;&lt; B],<br />xf&#160;:= [I+D].13, yf&#160;:= [I+D].11
+</td></tr>
+<tr>
+<th> Instruction:<i>C</i> </th>
+<th> Opcode </th>
+<th> Time </th>
+<th> S </th>
+<th> Z </th>
+<th> X </th>
+<th> H </th>
+<th> Y </th>
+<th> P </th>
+<th> N </th>
+<th> C </th>
+<th> Effect
+</th></tr>
+<tr>
+<td> call A </td>
+<td> <tt>11001101 alalalal ahahahah</tt> </td>
+<td> 17 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> sp -= 2, (sp)&#160;:= pc, pc&#160;:= A
+</td></tr>
+<tr>
+<td> call C,A </td>
+<td> <tt>11ccc100 alalalal ahahahah</tt> </td>
+<td> 17/10 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> if C then sp -= 2, (sp)&#160;:= pc, pc&#160;:= A
+</td></tr>
+<tr>
+<td> ccf </td>
+<td> <tt>00111111</tt> </td>
+<td> 4 </td>
+<td> - </td>
+<td> - </td>
+<td> A </td>
+<td> X </td>
+<td> A </td>
+<td> - </td>
+<td> 0 </td>
+<td> X </td>
+<td> hf&#160;:= cf, cf&#160;:= ~cf
+</td></tr>
+<tr>
+<td> cp R </td>
+<td> <tt>10111rrr</tt> </td>
+<td> 4 </td>
+<td> + </td>
+<td> + </td>
+<td> X </td>
+<td> + </td>
+<td> X </td>
+<td> V </td>
+<td> 1 </td>
+<td> + </td>
+<td> tmp&#160;:= a - R, xf&#160;:= R.5, yf = R.3
+</td></tr>
+<tr>
+<td> cp J </td>
+<td> <tt>11i11101 1011110b</tt> </td>
+<td> 8 </td>
+<td> + </td>
+<td> + </td>
+<td> X </td>
+<td> + </td>
+<td> X </td>
+<td> V </td>
+<td> 1 </td>
+<td> + </td>
+<td> tmp&#160;:= a - J, xf&#160;:= J.5, yf = J.3
+</td></tr>
+<tr>
+<td> cp N </td>
+<td> <tt>11111110 nnnnnnnn</tt> </td>
+<td> 7 </td>
+<td> + </td>
+<td> + </td>
+<td> X </td>
+<td> + </td>
+<td> X </td>
+<td> V </td>
+<td> 1 </td>
+<td> + </td>
+<td> tmp&#160;:= a - N, xf&#160;:= N.5, yf = N.3
+</td></tr>
+<tr>
+<td> cp (hl) </td>
+<td> <tt>10111110</tt> </td>
+<td> 7 </td>
+<td> + </td>
+<td> + </td>
+<td> X </td>
+<td> + </td>
+<td> X </td>
+<td> V </td>
+<td> 1 </td>
+<td> + </td>
+<td> tmp&#160;:= a - (hl), xf&#160;:= (hl).5, yf = (hl).3
+</td></tr>
+<tr>
+<td> cp (I+D) </td>
+<td> <tt>11i11101 10111110 dddddddd</tt> </td>
+<td> 19 </td>
+<td> + </td>
+<td> + </td>
+<td> X </td>
+<td> + </td>
+<td> X </td>
+<td> V </td>
+<td> 1 </td>
+<td> + </td>
+<td> tmp&#160;:= a - (I+D), xf&#160;:= (I+D).5, yf = (I+D).3
+</td></tr>
+<tr>
+<td> cpd </td>
+<td> <tt>11101101 10101001</tt> </td>
+<td> 16 </td>
+<td> + </td>
+<td> + </td>
+<td> X </td>
+<td> + </td>
+<td> X </td>
+<td> C </td>
+<td> 1 </td>
+<td> - </td>
+<td> tmp&#160;:= a - (hl) =&gt; flags, bc -= 1, hl -= 1,<br />xf&#160;:= [tmp - hf].1, yf = [tmp - hf].3
+</td></tr>
+<tr>
+<td> cpdr </td>
+<td> <tt>11101101 10111001</tt> </td>
+<td> 21/16 </td>
+<td> + </td>
+<td> + </td>
+<td> X </td>
+<td> + </td>
+<td> X </td>
+<td> C </td>
+<td> 1 </td>
+<td> - </td>
+<td> cpd, if bc &lt;&gt; 0 and nz then pc -= 2
+</td></tr>
+<tr>
+<td> cpi </td>
+<td> <tt>11101101 10100001</tt> </td>
+<td> 16 </td>
+<td> + </td>
+<td> + </td>
+<td> X </td>
+<td> + </td>
+<td> X </td>
+<td> C </td>
+<td> 1 </td>
+<td> - </td>
+<td> tmp&#160;:= a - (hl) =&gt; flags, bc -= 1, hl += 1,<br />xf&#160;:= [tmp - hf].1, yf = [tmp - hf].3
+</td></tr>
+<tr>
+<td> cpir </td>
+<td> <tt>11101101 10110001</tt> </td>
+<td> 21/16 </td>
+<td> + </td>
+<td> + </td>
+<td> X </td>
+<td> + </td>
+<td> X </td>
+<td> C </td>
+<td> 1 </td>
+<td> - </td>
+<td> cpi, if bc &lt;&gt; 0 and nz then pc -= 2
+</td></tr>
+<tr>
+<td> cpl </td>
+<td> <tt>00101111</tt> </td>
+<td> 4 </td>
+<td> - </td>
+<td> - </td>
+<td> + </td>
+<td> 1 </td>
+<td> + </td>
+<td> - </td>
+<td> 1 </td>
+<td> - </td>
+<td> a&#160;:= ~a
+</td></tr>
+<tr>
+<th> Instruction:<i>D</i> </th>
+<th> Opcode </th>
+<th> Time </th>
+<th> S </th>
+<th> Z </th>
+<th> X </th>
+<th> H </th>
+<th> Y </th>
+<th> P </th>
+<th> N </th>
+<th> C </th>
+<th> Effect
+</th></tr>
+<tr>
+<td> daa </td>
+<td> <tt>00100111</tt> </td>
+<td> 4 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> X </td>
+<td> + </td>
+<td> P </td>
+<td> - </td>
+<td> X </td>
+<td> tmp&#160;:= a,<br />if nf then<br />&#160;if hf or [a AND 0x0f &gt; 9] then tmp -= 0x06<br />&#160;if cf or [a &gt; 0x99] then tmp -= 0x60<br />else<br />&#160;if hf or [a AND 0x0f &gt; 9] then tmp += 0x06<br />&#160;if cf or [a &gt; 0x99] then tmp += 0x60<br />endif,<br />tmp =&gt; flags, cf&#160;:= cf OR [a &gt; 0x99],<br />hf&#160;:= a.4 XOR tmp.4, a&#160;:= tmp
+</td></tr>
+<tr>
+<td> dec R </td>
+<td> <tt>00rrr101</tt> </td>
+<td> 4 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> V </td>
+<td> 1 </td>
+<td> - </td>
+<td> R -= 1
+</td></tr>
+<tr>
+<td> dec J </td>
+<td> <tt>11i11101 0010b101</tt> </td>
+<td> 8 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> V </td>
+<td> 1 </td>
+<td> - </td>
+<td> J -= 1
+</td></tr>
+<tr>
+<td> dec (hl) </td>
+<td> <tt>00110101</tt> </td>
+<td> 11 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> V </td>
+<td> 1 </td>
+<td> - </td>
+<td> (hl) -= 1
+</td></tr>
+<tr>
+<td> dec (I+D) </td>
+<td> <tt>11i11101 00110101 dddddddd</tt> </td>
+<td> 19 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> V </td>
+<td> 1 </td>
+<td> - </td>
+<td> (I+D) -= 1
+</td></tr>
+<tr>
+<td> dec Q </td>
+<td> <tt>00qq1011</tt> </td>
+<td> 6 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> Q -= 1
+</td></tr>
+<tr>
+<td> dec I </td>
+<td> <tt>11i11101 00101011</tt> </td>
+<td> 10 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> I -= 1
+</td></tr>
+<tr>
+<td> di </td>
+<td> <tt>11110011</tt> </td>
+<td> 4 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> iff1&#160;:= 0, iff2&#160;:= 0
+</td></tr>
+<tr>
+<td> djnz E </td>
+<td> <tt>00010000 dddddddd</tt> </td>
+<td> 13/8 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> b -= 1, if b &lt;&gt; 0 then pc&#160;:= E
+</td></tr>
+<tr>
+<th> Instruction:<i>E</i> </th>
+<th> Opcode </th>
+<th> Time </th>
+<th> S </th>
+<th> Z </th>
+<th> X </th>
+<th> H </th>
+<th> Y </th>
+<th> P </th>
+<th> N </th>
+<th> C </th>
+<th> Effect
+</th></tr>
+<tr>
+<td> ei </td>
+<td> <tt>11111011</tt> </td>
+<td> 4 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> iff1&#160;:= 1, iff2&#160;:= 1 after the next instruction
+</td></tr>
+<tr>
+<td> ex (sp),hl </td>
+<td> <tt>11100011</tt> </td>
+<td> 19 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> (sp) &lt;=&gt; hl
+</td></tr>
+<tr>
+<td> ex (sp),I </td>
+<td> <tt>11i11101 11100011</tt> </td>
+<td> 23 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> (sp) &lt;=&gt; I
+</td></tr>
+<tr>
+<td> ex af,af' </td>
+<td> <tt>00001000</tt> </td>
+<td> 4 </td>
+<td> X </td>
+<td> X </td>
+<td> X </td>
+<td> X </td>
+<td> X </td>
+<td> X </td>
+<td> X </td>
+<td> X </td>
+<td> af &lt;=&gt; af'
+</td></tr>
+<tr>
+<td> ex de,hl </td>
+<td> <tt>11101011</tt> </td>
+<td> 4 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> de &lt;=&gt; hl
+</td></tr>
+<tr>
+<td> exx </td>
+<td> <tt>11011001</tt> </td>
+<td> 4 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> bc, de, hl &lt;=&gt; bc', de', hl'
+</td></tr>
+<tr>
+<th> Instruction:<i>H</i> </th>
+<th> Opcode </th>
+<th> Time </th>
+<th> S </th>
+<th> Z </th>
+<th> X </th>
+<th> H </th>
+<th> Y </th>
+<th> P </th>
+<th> N </th>
+<th> C </th>
+<th> Effect
+</th></tr>
+<tr>
+<td> halt </td>
+<td> <tt>01110110</tt> </td>
+<td> 4 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> wait for interrupt
+</td></tr>
+<tr>
+<th> Instruction:<i>I</i> </th>
+<th> Opcode </th>
+<th> Time </th>
+<th> S </th>
+<th> Z </th>
+<th> X </th>
+<th> H </th>
+<th> Y </th>
+<th> P </th>
+<th> N </th>
+<th> C </th>
+<th> Effect
+</th></tr>
+<tr>
+<td> im 0 </td>
+<td> <tt>11101101 01*0*110</tt> </td>
+<td> 8 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> mode 0: execute instruction on bus
+</td></tr>
+<tr>
+<td> im 1 </td>
+<td> <tt>11101101 01*10110</tt> </td>
+<td> 8 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> mode 1: execute rst $38
+</td></tr>
+<tr>
+<td> im 2 </td>
+<td> <tt>11101101 01*11110</tt> </td>
+<td> 8 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> mode 2: call (i * 256 + byte on bus)
+</td></tr>
+<tr>
+<td> in a,(N) </td>
+<td> <tt>11011011 nnnnnnnn</tt> </td>
+<td> 11 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> a&#160;:= ((N))
+</td></tr>
+<tr>
+<td> in R,(c) </td>
+<td> <tt>11101101 01rrr000</tt> </td>
+<td> 12 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> - </td>
+<td> R&#160;:= ((c))
+</td></tr>
+<tr>
+<td> in f,(c) </td>
+<td> <tt>11101101 01110000</tt> </td>
+<td> 12 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> - </td>
+<td> tmp&#160;:= ((c))
+</td></tr>
+<tr>
+<td> inc R </td>
+<td> <tt>00rrr100</tt> </td>
+<td> 4 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> V </td>
+<td> 0 </td>
+<td> - </td>
+<td> R += 1
+</td></tr>
+<tr>
+<td> inc J </td>
+<td> <tt>11i11101 0010b100</tt> </td>
+<td> 8 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> V </td>
+<td> 0 </td>
+<td> - </td>
+<td> J += 1
+</td></tr>
+<tr>
+<td> inc (hl) </td>
+<td> <tt>00110100</tt> </td>
+<td> 11 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> V </td>
+<td> 0 </td>
+<td> - </td>
+<td> (hl) += 1
+</td></tr>
+<tr>
+<td> inc (I+D) </td>
+<td> <tt>11i11101 00110100 dddddddd</tt> </td>
+<td> 23 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> V </td>
+<td> 0 </td>
+<td> - </td>
+<td> (I+D) += 1
+</td></tr>
+<tr>
+<td> inc Q </td>
+<td> <tt>00qq0011</tt> </td>
+<td> 6 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> Q += 1
+</td></tr>
+<tr>
+<td> inc I </td>
+<td> <tt>11i11101 00100011</tt> </td>
+<td> 10 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> I += 1
+</td></tr>
+<tr>
+<td> ind </td>
+<td> <tt>11101101 10101010</tt> </td>
+<td> 16 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> X </td>
+<td> + </td>
+<td> X </td>
+<td> X </td>
+<td> X </td>
+<td> tmp&#160;:= ((c)), (hl)&#160;:= tmp, hl -= 1,<br />b -= 1 =&gt; flags, nf&#160;:= tmp.7,<br />tmp2 = tmp + [[c - 1] AND 0xff],<br />pf&#160;:= parity of [[tmp2 AND 0x07] XOR b],<br />hf&#160;:= cf&#160;:= tmp2 &gt; 255
+</td></tr>
+<tr>
+<td> indr </td>
+<td> <tt>11101101 10111010</tt> </td>
+<td> 21/16 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> X </td>
+<td> + </td>
+<td> X </td>
+<td> X </td>
+<td> X </td>
+<td> ind, if b &lt;&gt; 0 then pc -= 2
+</td></tr>
+<tr>
+<td> ini </td>
+<td> <tt>11101101 10100010</tt> </td>
+<td> 16 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> X </td>
+<td> + </td>
+<td> X </td>
+<td> X </td>
+<td> X </td>
+<td> tmp&#160;:= ((c)), (hl)&#160;:= tmp, hl += 1,<br />b -= 1 =&gt; flags, nf&#160;:= tmp.7,<br />tmp2&#160;:= tmp + [[c + 1] AND 0xff],<br />pf&#160;:= parity of [[tmp2 AND 0x07] XOR b],<br />hf&#160;:= cf&#160;:= tmp2 &gt; 255
+</td></tr>
+<tr>
+<td> inir </td>
+<td> <tt>11101101 10110010</tt> </td>
+<td> 21/16 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> X </td>
+<td> + </td>
+<td> X </td>
+<td> X </td>
+<td> X </td>
+<td> ini, if b &lt;&gt; 0 then pc -= 2
+</td></tr>
+<tr>
+<th> Instruction:<i>J</i> </th>
+<th> Opcode </th>
+<th> Time </th>
+<th> S </th>
+<th> Z </th>
+<th> X </th>
+<th> H </th>
+<th> Y </th>
+<th> P </th>
+<th> N </th>
+<th> C </th>
+<th> Effect
+</th></tr>
+<tr>
+<td> jp A </td>
+<td> <tt>11000011 alalalal ahahahah</tt> </td>
+<td> 10 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> pc&#160;:= A
+</td></tr>
+<tr>
+<td> jp (hl) </td>
+<td> <tt>11101001</tt> </td>
+<td> 4 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> pc&#160;:= hl
+</td></tr>
+<tr>
+<td> jp (I) </td>
+<td> <tt>11i11101 11101001</tt> </td>
+<td> 8 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> pc&#160;:= I
+</td></tr>
+<tr>
+<td> jp C,A </td>
+<td> <tt>11ccc010 alalalal ahahahah</tt> </td>
+<td> 10 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> if C then pc&#160;:= A
+</td></tr>
+<tr>
+<td> jr E </td>
+<td> <tt>00011000 dddddddd</tt> </td>
+<td> 12 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> pc&#160;:= E
+</td></tr>
+<tr>
+<td> jr nz,E </td>
+<td> <tt>00100000 dddddddd</tt> </td>
+<td> 12/7 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> if nz then pc&#160;:= E
+</td></tr>
+<tr>
+<td> jr z,E </td>
+<td> <tt>00101000 dddddddd</tt> </td>
+<td> 12/7 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> if zf then pc&#160;:= E
+</td></tr>
+<tr>
+<td> jr nc,E </td>
+<td> <tt>00110000 dddddddd</tt> </td>
+<td> 12/7 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> if nc then pc&#160;:= E
+</td></tr>
+<tr>
+<td> jr c,E </td>
+<td> <tt>00111000 dddddddd</tt> </td>
+<td> 12/7 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> if cf then pc&#160;:= E
+</td></tr>
+<tr>
+<th> Instruction:<i>L</i> </th>
+<th> Opcode </th>
+<th> Time </th>
+<th> S </th>
+<th> Z </th>
+<th> X </th>
+<th> H </th>
+<th> Y </th>
+<th> P </th>
+<th> N </th>
+<th> C </th>
+<th> Effect
+</th></tr>
+<tr>
+<td> ld R1,R2 </td>
+<td> <tt>01rrrsss</tt> </td>
+<td> 4 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> R1&#160;:= R2
+</td></tr>
+<tr>
+<td> ld R,J </td>
+<td> <tt>11i11101 01rrr10b</tt> </td>
+<td> 8 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> R&#160;:= J
+</td></tr>
+<tr>
+<td> ld J,R </td>
+<td> <tt>11i11101 0110brrr</tt> </td>
+<td> 8 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> J&#160;:= R
+</td></tr>
+<tr>
+<td> ld ixh,ixl </td>
+<td> <tt>11011101 01100101</tt> </td>
+<td> 8 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> ixh&#160;:= ixl
+</td></tr>
+<tr>
+<td> ld ixl,ixh </td>
+<td> <tt>11011101 01101100</tt> </td>
+<td> 8 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> ixl&#160;:= ixh
+</td></tr>
+<tr>
+<td> ld iyh,iyl </td>
+<td> <tt>11111101 01100101</tt> </td>
+<td> 8 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> iyh&#160;:= iyl
+</td></tr>
+<tr>
+<td> ld iyl,iyh </td>
+<td> <tt>11111101 01101100</tt> </td>
+<td> 8 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> iyl&#160;:= iyh
+</td></tr>
+<tr>
+<td> ld R,N </td>
+<td> <tt>00rrr110 nnnnnnnn</tt> </td>
+<td> 7 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> R&#160;:= N
+</td></tr>
+<tr>
+<td> ld R,(hl) </td>
+<td> <tt>01rrr110</tt> </td>
+<td> 7 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> R&#160;:= (hl)
+</td></tr>
+<tr>
+<td> ld R,(I+D) </td>
+<td> <tt>11i11101 01rrr110 dddddddd</tt> </td>
+<td> 19 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> R&#160;:= (I+D)
+</td></tr>
+<tr>
+<td> ld (hl),R </td>
+<td> <tt>01110rrr</tt> </td>
+<td> 7 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> (hl)&#160;:= R
+</td></tr>
+<tr>
+<td> ld (hl),N </td>
+<td> <tt>00110110 nnnnnnnn</tt> </td>
+<td> 10 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> (hl)&#160;:= N
+</td></tr>
+<tr>
+<td> ld (I+D),R </td>
+<td> <tt>11i11101 01110rrr dddddddd</tt> </td>
+<td> 19 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> (I+D)&#160;:= R
+</td></tr>
+<tr>
+<td> ld (I+D),N </td>
+<td> <tt>11i11101 00110110 dddddddd nnnnnnnn</tt> </td>
+<td> 19 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> (I+D)&#160;:= N
+</td></tr>
+<tr>
+<td> ld a,(bc) </td>
+<td> <tt>00001010</tt> </td>
+<td> 7 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> a&#160;:= (bc)
+</td></tr>
+<tr>
+<td> ld a,(de) </td>
+<td> <tt>00011010</tt> </td>
+<td> 7 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> a&#160;:= (de)
+</td></tr>
+<tr>
+<td> ld a,(A) </td>
+<td> <tt>00111010 alalalal ahahahah</tt> </td>
+<td> 13 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> a&#160;:= (A)
+</td></tr>
+<tr>
+<td> ld (bc),a </td>
+<td> <tt>00000010</tt> </td>
+<td> 7 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> (bc)&#160;:= a
+</td></tr>
+<tr>
+<td> ld (de),a </td>
+<td> <tt>00010010</tt> </td>
+<td> 7 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> (de)&#160;:= a
+</td></tr>
+<tr>
+<td> ld (A),a </td>
+<td> <tt>00110010 alalalal ahahahah</tt> </td>
+<td> 13 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> (A)&#160;:= a
+</td></tr>
+<tr>
+<td> ld i,a </td>
+<td> <tt>11101101 01000111</tt> </td>
+<td> 9 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> i&#160;:= a
+</td></tr>
+<tr>
+<td> ld r,a </td>
+<td> <tt>11101101 01001111</tt> </td>
+<td> 9 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> r&#160;:= a
+</td></tr>
+<tr>
+<td> ld a,i </td>
+<td> <tt>11101101 01010111</tt> </td>
+<td> 9 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> X </td>
+<td> 0 </td>
+<td> - </td>
+<td> a&#160;:= i, pf&#160;:= iff2
+</td></tr>
+<tr>
+<td> ld a,r </td>
+<td> <tt>11101101 01011111</tt> </td>
+<td> 9 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> X </td>
+<td> 0 </td>
+<td> - </td>
+<td> a&#160;:= r, pf&#160;:= iff2
+</td></tr>
+<tr>
+<td> ld Q,A </td>
+<td> <tt>00qq0001 alalalal ahahahah</tt> </td>
+<td> 10 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> Q&#160;:= A
+</td></tr>
+<tr>
+<td> ld I,A </td>
+<td> <tt>11i11101 00100001 alalalal ahahahah</tt> </td>
+<td> 14 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> I&#160;:= A
+</td></tr>
+<tr>
+<td> ld Q,(A) </td>
+<td> <tt>11101101 01qq1011 alalalal ahahahah</tt> </td>
+<td> 20 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> Q&#160;:= (A) [ld hl,(A) has a faster non-prefixed duplicate, see below.]
+</td></tr>
+<tr>
+<td> ld hl,(A) </td>
+<td> <tt>00101010 alalalal ahahahah</tt> </td>
+<td> 16 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> hl&#160;:= (A)
+</td></tr>
+<tr>
+<td> ld I,(A) </td>
+<td> <tt>11i11101 00101010 alalalal ahahahah</tt> </td>
+<td> 20 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> I&#160;:= (A)
+</td></tr>
+<tr>
+<td> ld (A),Q </td>
+<td> <tt>11101101 01qq0011 alalalal ahahahah</tt> </td>
+<td> 20 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> (A)&#160;:= Q [ld (A),hl has a faster non-prefixed duplicate, see below.]
+</td></tr>
+<tr>
+<td> ld (A),hl </td>
+<td> <tt>00100010 alalalal ahahahah</tt> </td>
+<td> 16 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> (A)&#160;:= hl
+</td></tr>
+<tr>
+<td> ld (A),I </td>
+<td> <tt>11i11101 00100010 alalalal ahahahah</tt> </td>
+<td> 20 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> (A)&#160;:= I
+</td></tr>
+<tr>
+<td> ld sp,hl </td>
+<td> <tt>11111001</tt> </td>
+<td> 6 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> sp&#160;:= hl
+</td></tr>
+<tr>
+<td> ld sp,I </td>
+<td> <tt>11i11101 11111001</tt> </td>
+<td> 10 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> sp&#160;:= I
+</td></tr>
+<tr>
+<td> ldd </td>
+<td> <tt>11101101 10101000</tt> </td>
+<td> 16 </td>
+<td> - </td>
+<td> - </td>
+<td> X </td>
+<td> 0 </td>
+<td> X </td>
+<td> C </td>
+<td> 0 </td>
+<td> - </td>
+<td> tmp&#160;:= (hl), (de)&#160;:= tmp, de -= 1, hl -= 1,<br />bc -= 1, xf&#160;:= [tmp + a].1, yf = [tmp + a].3
+</td></tr>
+<tr>
+<td> lddr </td>
+<td> <tt>11101101 10111000</tt> </td>
+<td> 21/16 </td>
+<td> - </td>
+<td> - </td>
+<td> X </td>
+<td> 0 </td>
+<td> X </td>
+<td> C </td>
+<td> 0 </td>
+<td> - </td>
+<td> ldd, if bc &lt;&gt; 0 then pc -= 2
+</td></tr>
+<tr>
+<td> ldi </td>
+<td> <tt>11101101 10100000</tt> </td>
+<td> 16 </td>
+<td> - </td>
+<td> - </td>
+<td> X </td>
+<td> 0 </td>
+<td> X </td>
+<td> C </td>
+<td> 0 </td>
+<td> - </td>
+<td> tmp&#160;:= (hl), (de)&#160;:= tmp, de += 1, hl += 1,<br />bc -= 1, xf&#160;:= [tmp + a].1, yf = [tmp + a].3
+</td></tr>
+<tr>
+<td> ldir </td>
+<td> <tt>11101101 10110000</tt> </td>
+<td> 21/16 </td>
+<td> - </td>
+<td> - </td>
+<td> X </td>
+<td> 0 </td>
+<td> X </td>
+<td> C </td>
+<td> 0 </td>
+<td> - </td>
+<td> ldi, if bc &lt;&gt; 0 then pc -= 2
+</td></tr>
+<tr>
+<th> Instruction:<i>N</i> </th>
+<th> Opcode </th>
+<th> Time </th>
+<th> S </th>
+<th> Z </th>
+<th> X </th>
+<th> H </th>
+<th> Y </th>
+<th> P </th>
+<th> N </th>
+<th> C </th>
+<th> Effect
+</th></tr>
+<tr>
+<td> neg </td>
+<td> <tt>11101101 01***100</tt> </td>
+<td> 8 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> V </td>
+<td> 1 </td>
+<td> + </td>
+<td> a&#160;:= 0 - a
+</td></tr>
+<tr>
+<td> nop </td>
+<td> <tt>00000000</tt> </td>
+<td> 4 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> nothing
+</td></tr>
+<tr>
+<th> Instruction:<i>O</i> </th>
+<th> Opcode </th>
+<th> Time </th>
+<th> S </th>
+<th> Z </th>
+<th> X </th>
+<th> H </th>
+<th> Y </th>
+<th> P </th>
+<th> N </th>
+<th> C </th>
+<th> Effect
+</th></tr>
+<tr>
+<td> or R </td>
+<td> <tt>10110rrr</tt> </td>
+<td> 4 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> 0 </td>
+<td> a&#160;:= a OR R
+</td></tr>
+<tr>
+<td> or J </td>
+<td> <tt>11i11101 1011010b</tt> </td>
+<td> 8 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> 0 </td>
+<td> a&#160;:= a OR J
+</td></tr>
+<tr>
+<td> or N </td>
+<td> <tt>11110110 nnnnnnnn</tt> </td>
+<td> 7 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> 0 </td>
+<td> a&#160;:= a OR N
+</td></tr>
+<tr>
+<td> or (hl) </td>
+<td> <tt>10110110</tt> </td>
+<td> 7 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> 0 </td>
+<td> a&#160;:= a OR (hl)
+</td></tr>
+<tr>
+<td> or (I+D) </td>
+<td> <tt>11i11101 10110110 dddddddd</tt> </td>
+<td> 19 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> 0 </td>
+<td> a&#160;:= a OR (I+D)
+</td></tr>
+<tr>
+<td> out (N),a </td>
+<td> <tt>11010011 nnnnnnnn</tt> </td>
+<td> 11 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> ((N))&#160;:= a
+</td></tr>
+<tr>
+<td> out (c),R </td>
+<td> <tt>11101101 01rrr001</tt> </td>
+<td> 12 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> ((c))&#160;:= R
+</td></tr>
+<tr>
+<td> out (c),0 </td>
+<td> <tt>11101101 01110001</tt> </td>
+<td> 12 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> ((c))&#160;:=&#160;? (seems to vary with CPU)
+</td></tr>
+<tr>
+<td> outd </td>
+<td> <tt>11101101 10101011</tt> </td>
+<td> 16 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> X </td>
+<td> + </td>
+<td> X </td>
+<td> X </td>
+<td> X </td>
+<td> tmp&#160;:= (hl), ((c))&#160;:= tmp, hl -= 1,<br />b -= 1 =&gt; flags, nf&#160;:= tmp.7, tmp2 = tmp + l,<br />pf&#160;:= parity of [[tmp2 AND 0x07] XOR b],<br />hf&#160;:= cf&#160;:= tmp2 &gt; 255
+</td></tr>
+<tr>
+<td> otdr </td>
+<td> <tt>11101101 10111011</tt> </td>
+<td> 21/16 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> X </td>
+<td> + </td>
+<td> X </td>
+<td> X </td>
+<td> X </td>
+<td> outd, if b &lt;&gt; 0 then pc -= 2
+</td></tr>
+<tr>
+<td> outi </td>
+<td> <tt>11101101 10100011</tt> </td>
+<td> 16 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> X </td>
+<td> + </td>
+<td> X </td>
+<td> X </td>
+<td> X </td>
+<td> tmp&#160;:= (hl), ((c))&#160;:= tmp, hl += 1,<br />b -= 1 =&gt; flags, nf&#160;:= tmp.7, tmp2 = tmp + l,<br />pf&#160;:= parity of [[tmp2 AND 0x07] XOR b],<br />hf&#160;:= cf&#160;:= tmp2 &gt; 255
+</td></tr>
+<tr>
+<td> otir </td>
+<td> <tt>11101101 10110011</tt> </td>
+<td> 21/16 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> X </td>
+<td> + </td>
+<td> X </td>
+<td> X </td>
+<td> X </td>
+<td> outi, if b &lt;&gt; 0 then pc -= 2
+</td></tr>
+<tr>
+<th> Instruction:<i>P</i> </th>
+<th> Opcode </th>
+<th> Time </th>
+<th> S </th>
+<th> Z </th>
+<th> X </th>
+<th> H </th>
+<th> Y </th>
+<th> P </th>
+<th> N </th>
+<th> C </th>
+<th> Effect
+</th></tr>
+<tr>
+<td> pop P </td>
+<td> <tt>11pp0001</tt> </td>
+<td> 10 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> P&#160;:= (sp), sp += 2
+</td></tr>
+<tr>
+<td> pop I </td>
+<td> <tt>11i11101 11100001</tt> </td>
+<td> 14 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> I&#160;:= (sp), sp += 2
+</td></tr>
+<tr>
+<td> push P </td>
+<td> <tt>11pp0101</tt> </td>
+<td> 11 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> sp -= 2, (sp)&#160;:= P
+</td></tr>
+<tr>
+<td> push I </td>
+<td> <tt>11i11101 11100101</tt> </td>
+<td> 15 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> sp -= 2, (sp)&#160;:= I
+</td></tr>
+<tr>
+<th> Instruction:<i>R</i> </th>
+<th> Opcode </th>
+<th> Time </th>
+<th> S </th>
+<th> Z </th>
+<th> X </th>
+<th> H </th>
+<th> Y </th>
+<th> P </th>
+<th> N </th>
+<th> C </th>
+<th> Effect
+</th></tr>
+<tr>
+<td> res B,R </td>
+<td> <tt>11001011 10bbbrrr</tt> </td>
+<td> 8 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> R&#160;:= R AND ~[1 &lt;&lt; B]
+</td></tr>
+<tr>
+<td> res B,(hl) </td>
+<td> <tt>11001011 10bbb110</tt> </td>
+<td> 15 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> (hl)&#160;:= (hl) AND ~[1 &lt;&lt; B]
+</td></tr>
+<tr>
+<td> res B,(I+D) </td>
+<td> <tt>11i11101 11001011 dddddddd 10bbb110</tt> </td>
+<td> 23 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> (I+D)&#160;:= (I+D) AND ~[1 &lt;&lt; B]
+</td></tr>
+<tr>
+<td> res B,(I+D)-&gt;R </td>
+<td> <tt>11i11101 11001011 dddddddd 10bbbrrr</tt> </td>
+<td> 23 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> (I+D)&#160;:= R&#160;:= (I+D) AND ~[1 &lt;&lt; B]
+</td></tr>
+<tr>
+<td> ret </td>
+<td> <tt>11001001</tt> </td>
+<td> 10 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> pc&#160;:= (sp), sp += 2
+</td></tr>
+<tr>
+<td> ret C </td>
+<td> <tt>11ccc000</tt> </td>
+<td> 11/5 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> if C then pc&#160;:= (sp), sp += 2
+</td></tr>
+<tr>
+<td> reti </td>
+<td> <tt>11101101 01**1101</tt> </td>
+<td> 14 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> pc&#160;:= (sp), sp += 2, iff1&#160;:= iff2
+</td></tr>
+<tr>
+<td> retn </td>
+<td> <tt>11101101 01**0101</tt> </td>
+<td> 14 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> pc&#160;:= (sp), sp += 2, iff1&#160;:= iff2
+</td></tr>
+<tr>
+<td> rla </td>
+<td> <tt>00010111</tt> </td>
+<td> 4 </td>
+<td> - </td>
+<td> - </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> - </td>
+<td> 0 </td>
+<td> X </td>
+<td> ocf&#160;:= cf, cf&#160;:= a.7, a&#160;:= [a &lt;&lt; 1] + ocf
+</td></tr>
+<tr>
+<td> rl R </td>
+<td> <tt>11001011 00010rrr</tt> </td>
+<td> 8 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> X </td>
+<td> ocf&#160;:= cf, cf&#160;:= R.7, R&#160;:= [R &lt;&lt; 1] + ocf
+</td></tr>
+<tr>
+<td> rl (hl) </td>
+<td> <tt>11001011 00010110</tt> </td>
+<td> 15 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> X </td>
+<td> ocf&#160;:= cf, cf&#160;:= (hl).7, (hl)&#160;:= [(hl) &lt;&lt; 1] + ocf
+</td></tr>
+<tr>
+<td> rl (I+D) </td>
+<td> <tt>11i11101 11001011 dddddddd 00010110</tt> </td>
+<td> 23 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> X </td>
+<td> ocf&#160;:= cf, cf&#160;:= (I+D).7,<br />(I+D)&#160;:= [(I+D) &lt;&lt; 1] + ocf
+</td></tr>
+<tr>
+<td> rl (I+D)-&gt;R </td>
+<td> <tt>11i11101 11001011 dddddddd 00010rrr</tt> </td>
+<td> 23 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> X </td>
+<td> ocf&#160;:= cf, cf&#160;:= (I+D).7,<br />(I+D)&#160;:= R&#160;:= [(I+D) &lt;&lt; 1] + ocf
+</td></tr>
+<tr>
+<td> rlca </td>
+<td> <tt>00000111</tt> </td>
+<td> 4 </td>
+<td> - </td>
+<td> - </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> - </td>
+<td> 0 </td>
+<td> X </td>
+<td> cf&#160;:= a.7, a&#160;:= [a &lt;&lt; 1] + cf
+</td></tr>
+<tr>
+<td> rlc R </td>
+<td> <tt>11001011 00000rrr</tt> </td>
+<td> 8 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> X </td>
+<td> cf&#160;:= R.7, R&#160;:= [R &lt;&lt; 1] + cf
+</td></tr>
+<tr>
+<td> rlc (hl) </td>
+<td> <tt>11001011 00000110</tt> </td>
+<td> 15 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> X </td>
+<td> cf&#160;:= (hl).7, (hl)&#160;:= [(hl) &lt;&lt; 1] + cf
+</td></tr>
+<tr>
+<td> rlc (I+D) </td>
+<td> <tt>11i11101 11001011 dddddddd 00000110</tt> </td>
+<td> 23 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> X </td>
+<td> cf&#160;:= (I+D).7, (I+D)&#160;:= [(I+D) &lt;&lt; 1] + cf
+</td></tr>
+<tr>
+<td> rlc (I+D)-&gt;R </td>
+<td> <tt>11i11101 11001011 dddddddd 00000rrr</tt> </td>
+<td> 23 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> X </td>
+<td> cf&#160;:= (I+D).7, (I+D)&#160;:= R&#160;:= [(I+D) &lt;&lt; 1] + cf
+</td></tr>
+<tr>
+<td> rld </td>
+<td> <tt>11101101 01101111</tt> </td>
+<td> 18 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> - </td>
+<td> tmp&#160;:= [(hl) &lt;&lt; 4] + [a AND 0x0f], (hl)&#160;:= tmp,<br />a&#160;:= [a AND 0xf0] + [tmp &gt;&gt; 8] =&gt; flags
+</td></tr>
+<tr>
+<td> rra </td>
+<td> <tt>00011111</tt> </td>
+<td> 4 </td>
+<td> - </td>
+<td> - </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> - </td>
+<td> 0 </td>
+<td> X </td>
+<td> ocf&#160;:= cf, cf&#160;:= a.0, a&#160;:= [a &gt;&gt; 1] + [ocf &lt;&lt; 7]
+</td></tr>
+<tr>
+<td> rr R </td>
+<td> <tt>11001011 00011rrr</tt> </td>
+<td> 8 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> X </td>
+<td> ocf&#160;:= cf, cf&#160;:= R.0, R&#160;:= [R &gt;&gt; 1] + [ocf &lt;&lt; 7]
+</td></tr>
+<tr>
+<td> rr (hl) </td>
+<td> <tt>11001011 00011110</tt> </td>
+<td> 15 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> X </td>
+<td> ocf&#160;:= cf, cf&#160;:= (hl).0,<br />(hl)&#160;:= [(hl) &gt;&gt; 1] + [ocf &lt;&lt; 7]
+</td></tr>
+<tr>
+<td> rr (I+D) </td>
+<td> <tt>11i11101 11001011 dddddddd 00011110</tt> </td>
+<td> 23 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> X </td>
+<td> ocf&#160;:= cf, cf&#160;:= (I+D).0,<br />(I+D)&#160;:= [(I+D) &gt;&gt; 1] + [ocf &lt;&lt; 7]
+</td></tr>
+<tr>
+<td> rr (I+D)-&gt;R </td>
+<td> <tt>11i11101 11001011 dddddddd 00011rrr</tt> </td>
+<td> 23 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> X </td>
+<td> ocf&#160;:= cf, cf&#160;:= (I+D).0,<br />(I+D)&#160;:= R&#160;:= [(I+D) &gt;&gt; 1] + [ocf &lt;&lt; 7]
+</td></tr>
+<tr>
+<td> rrca </td>
+<td> <tt>00001111</tt> </td>
+<td> 4 </td>
+<td> - </td>
+<td> - </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> - </td>
+<td> 0 </td>
+<td> X </td>
+<td> cf&#160;:= a.0, a&#160;:= [a &gt;&gt; 1] + [cf &lt;&lt; 7]
+</td></tr>
+<tr>
+<td> rrc R </td>
+<td> <tt>11001011 00001rrr</tt> </td>
+<td> 8 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> X </td>
+<td> cf&#160;:= R.0, R&#160;:= [R &gt;&gt; 1] + [cf &lt;&lt; 7]
+</td></tr>
+<tr>
+<td> rrc (hl) </td>
+<td> <tt>11001011 00001110</tt> </td>
+<td> 15 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> X </td>
+<td> cf&#160;:= (hl).0, (hl)&#160;:= [(hl) &gt;&gt; 1] + [cf &lt;&lt; 7]
+</td></tr>
+<tr>
+<td> rrc (I+D) </td>
+<td> <tt>11i11101 11001011 dddddddd 00001110</tt> </td>
+<td> 23 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> X </td>
+<td> cf&#160;:= (I+D).0, (I+D)&#160;:= [(I+D) &gt;&gt; 1] + [cf &lt;&lt; 7]
+</td></tr>
+<tr>
+<td> rrc (I+D)-&gt;R </td>
+<td> <tt>11i11101 11001011 dddddddd 00001rrr</tt> </td>
+<td> 23 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> X </td>
+<td> cf&#160;:= (I+D).0,<br />(I+D)&#160;:= R&#160;:= [(I+D) &gt;&gt; 1] + [cf &lt;&lt; 7]
+</td></tr>
+<tr>
+<td> rrd </td>
+<td> <tt>11101101 01100111</tt> </td>
+<td> 18 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> - </td>
+<td> tmp&#160;:= (hl),<br />(hl)&#160;:= [tmp &gt;&gt; 4] + [[a AND 0x0f] &lt;&lt; 4],<br />a&#160;:= [a AND 0xf0] + [tmp AND 0x0f] =&gt; flags
+</td></tr>
+<tr>
+<td> rst S </td>
+<td> <tt>11sss111</tt> </td>
+<td> 11 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> sp -= 2, (sp)&#160;:= pc, pc&#160;:= S
+</td></tr>
+<tr>
+<th> Instruction:<i>S</i> </th>
+<th> Opcode </th>
+<th> Time </th>
+<th> S </th>
+<th> Z </th>
+<th> X </th>
+<th> H </th>
+<th> Y </th>
+<th> P </th>
+<th> N </th>
+<th> C </th>
+<th> Effect
+</th></tr>
+<tr>
+<td> sbc a,R </td>
+<td> <tt>10011rrr</tt> </td>
+<td> 4 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> V </td>
+<td> 1 </td>
+<td> + </td>
+<td> a -= R + cf
+</td></tr>
+<tr>
+<td> sbc a,J </td>
+<td> <tt>11i11101 1001110b</tt> </td>
+<td> 8 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> V </td>
+<td> 1 </td>
+<td> + </td>
+<td> a -= J + cf
+</td></tr>
+<tr>
+<td> sbc a,N </td>
+<td> <tt>11011110 nnnnnnnn</tt> </td>
+<td> 7 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> V </td>
+<td> 1 </td>
+<td> + </td>
+<td> a -= N + cf
+</td></tr>
+<tr>
+<td> sbc a,(hl) </td>
+<td> <tt>10011110</tt> </td>
+<td> 7 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> V </td>
+<td> 1 </td>
+<td> + </td>
+<td> a -= (hl) + cf
+</td></tr>
+<tr>
+<td> sbc a,(I+D) </td>
+<td> <tt>11i11101 10011110 dddddddd</tt> </td>
+<td> 19 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> V </td>
+<td> 1 </td>
+<td> + </td>
+<td> a -= (I+D) + cf
+</td></tr>
+<tr>
+<td> sbc hl,Q </td>
+<td> <tt>11101101 01qq0010</tt> </td>
+<td> 15 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> V </td>
+<td> 1 </td>
+<td> + </td>
+<td> hl -= Q + cf
+</td></tr>
+<tr>
+<td> scf </td>
+<td> <tt>00110111</tt> </td>
+<td> 4 </td>
+<td> - </td>
+<td> - </td>
+<td> A </td>
+<td> 0 </td>
+<td> A </td>
+<td> - </td>
+<td> 0 </td>
+<td> 1 </td>
+<td> nothing else
+</td></tr>
+<tr>
+<td> set B,R </td>
+<td> <tt>11001011 11bbbrrr</tt> </td>
+<td> 8 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> R&#160;:= R OR [1 &lt;&lt; B]
+</td></tr>
+<tr>
+<td> set B,(hl) </td>
+<td> <tt>11001011 11bbb110</tt> </td>
+<td> 15 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> (hl)&#160;:= (hl) OR [1 &lt;&lt; B]
+</td></tr>
+<tr>
+<td> set B,(I+D) </td>
+<td> <tt>11i11101 11001011 dddddddd 11bbb110</tt> </td>
+<td> 23 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> (I+D)&#160;:= (I+D) OR [1 &lt;&lt; B]
+</td></tr>
+<tr>
+<td> set B,(I+D)-&gt;R </td>
+<td> <tt>11i11101 11001011 dddddddd 11bbbrrr</tt> </td>
+<td> 23 </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> - </td>
+<td> (I+D)&#160;:= R&#160;:= (I+D) OR [1 &lt;&lt; B]
+</td></tr>
+<tr>
+<td> sla R </td>
+<td> <tt>11001011 00100rrr</tt> </td>
+<td> 8 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> X </td>
+<td> cf&#160;:= R.7, R&#160;:= R &lt;&lt; 1
+</td></tr>
+<tr>
+<td> sla (hl) </td>
+<td> <tt>11001011 00100110</tt> </td>
+<td> 15 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> X </td>
+<td> cf&#160;:= (hl).7, (hl)&#160;:= (hl) &lt;&lt; 1
+</td></tr>
+<tr>
+<td> sla (I+D) </td>
+<td> <tt>11i11101 11001011 dddddddd 00100110</tt> </td>
+<td> 23 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> X </td>
+<td> cf&#160;:= (I+D).7, (I+D)&#160;:= (I+D) &lt;&lt; 1
+</td></tr>
+<tr>
+<td> sla (I+D)-&gt;R </td>
+<td> <tt>11i11101 11001011 dddddddd 00100rrr</tt> </td>
+<td> 23 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> X </td>
+<td> cf&#160;:= (I+D).7, (I+D)&#160;:= R&#160;:= (I+D) &lt;&lt; 1
+</td></tr>
+<tr>
+<td> sra R </td>
+<td> <tt>11001011 00101rrr</tt> </td>
+<td> 8 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> X </td>
+<td> cf&#160;:= R.0, R&#160;:= R &gt;&gt; 1, R.7&#160;:= R.6
+</td></tr>
+<tr>
+<td> sra (hl) </td>
+<td> <tt>11001011 00101110</tt> </td>
+<td> 15 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> X </td>
+<td> cf&#160;:= (hl).0, (hl)&#160;:= (hl) &gt;&gt; 1, (hl).7&#160;:= (hl).6
+</td></tr>
+<tr>
+<td> sra (I+D) </td>
+<td> <tt>11i11101 11001011 dddddddd 00101110</tt> </td>
+<td> 23 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> X </td>
+<td> cf&#160;:= (I+D).0,<br />(I+D)&#160;:= (I+D) &gt;&gt; 1, (I+D).7&#160;:= (I+D).6
+</td></tr>
+<tr>
+<td> sra (I+D)-&gt;R </td>
+<td> <tt>11i11101 11001011 dddddddd 00101rrr</tt> </td>
+<td> 23 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> X </td>
+<td> cf&#160;:= (I+D).0,<br />tmp&#160;:= (I+D) &gt;&gt; 1, tmp.7&#160;:= tmp.6<br />(I+D)&#160;:= R&#160;:= tmp
+</td></tr>
+<tr>
+<td> sll R </td>
+<td> <tt>11001011 00110rrr</tt> </td>
+<td> 8 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> X </td>
+<td> cf&#160;:= R.7, R&#160;:= [R &lt;&lt; 1] + 1
+</td></tr>
+<tr>
+<td> sll (hl) </td>
+<td> <tt>11001011 00110110</tt> </td>
+<td> 15 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> X </td>
+<td> cf&#160;:= (hl).7, (hl)&#160;:= [(hl) &lt;&lt; 1] + 1
+</td></tr>
+<tr>
+<td> sll (I+D) </td>
+<td> <tt>11i11101 11001011 dddddddd 00110110</tt> </td>
+<td> 23 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> X </td>
+<td> cf&#160;:= (I+D).7, (I+D)&#160;:= [(I+D) &lt;&lt; 1] + 1
+</td></tr>
+<tr>
+<td> sll (I+D)-&gt;R </td>
+<td> <tt>11i11101 11001011 dddddddd 00110rrr</tt> </td>
+<td> 23 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> X </td>
+<td> cf&#160;:= (I+D).7, (I+D)&#160;:= R&#160;:= [(I+D) &lt;&lt; 1] + 1
+</td></tr>
+<tr>
+<td> srl R </td>
+<td> <tt>11001011 00111rrr</tt> </td>
+<td> 8 </td>
+<td> 0 </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> X </td>
+<td> cf&#160;:= R.0, R&#160;:= R &gt;&gt; 1
+</td></tr>
+<tr>
+<td> srl (hl) </td>
+<td> <tt>11001011 00111110</tt> </td>
+<td> 15 </td>
+<td> 0 </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> X </td>
+<td> cf&#160;:= (hl).0, (hl)&#160;:= (hl) &gt;&gt; 1
+</td></tr>
+<tr>
+<td> srl (I+D) </td>
+<td> <tt>11i11101 11001011 dddddddd 00111110</tt> </td>
+<td> 23 </td>
+<td> 0 </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> X </td>
+<td> cf&#160;:= (I+D).0, (I+D)&#160;:= (I+D) &gt;&gt; 1
+</td></tr>
+<tr>
+<td> srl (I+D)-&gt;R </td>
+<td> <tt>11i11101 11001011 dddddddd 00111rrr</tt> </td>
+<td> 23 </td>
+<td> 0 </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> X </td>
+<td> cf&#160;:= (I+D).0, (I+D)&#160;:= R&#160;:= (I+D) &gt;&gt; 1
+</td></tr>
+<tr>
+<td> sub R </td>
+<td> <tt>10010rrr</tt> </td>
+<td> 4 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> V </td>
+<td> 1 </td>
+<td> + </td>
+<td> a -= R
+</td></tr>
+<tr>
+<td> sub J </td>
+<td> <tt>11i11101 1001010b</tt> </td>
+<td> 8 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> V </td>
+<td> 1 </td>
+<td> + </td>
+<td> a -= J
+</td></tr>
+<tr>
+<td> sub N </td>
+<td> <tt>11010110 nnnnnnnn</tt> </td>
+<td> 7 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> V </td>
+<td> 1 </td>
+<td> + </td>
+<td> a -= N
+</td></tr>
+<tr>
+<td> sub (hl) </td>
+<td> <tt>10010110</tt> </td>
+<td> 7 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> V </td>
+<td> 1 </td>
+<td> + </td>
+<td> a -= (hl)
+</td></tr>
+<tr>
+<td> sub (I+D) </td>
+<td> <tt>11i11101 10010110 dddddddd</tt> </td>
+<td> 19 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> V </td>
+<td> 1 </td>
+<td> + </td>
+<td> a -= (I+D)
+</td></tr>
+<tr>
+<th> Instruction:<i>X</i> </th>
+<th> Opcode </th>
+<th> Time </th>
+<th> S </th>
+<th> Z </th>
+<th> X </th>
+<th> H </th>
+<th> Y </th>
+<th> P </th>
+<th> N </th>
+<th> C </th>
+<th> Effect
+</th></tr>
+<tr>
+<td> xor R </td>
+<td> <tt>10101rrr</tt> </td>
+<td> 4 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> 0 </td>
+<td> a&#160;:= a XOR R
+</td></tr>
+<tr>
+<td> xor J </td>
+<td> <tt>11i11101 1010110b</tt> </td>
+<td> 8 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> 0 </td>
+<td> a&#160;:= a XOR J
+</td></tr>
+<tr>
+<td> xor N </td>
+<td> <tt>11101110 nnnnnnnn</tt> </td>
+<td> 7 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> 0 </td>
+<td> a&#160;:= a XOR N
+</td></tr>
+<tr>
+<td> xor (hl) </td>
+<td> <tt>10101110</tt> </td>
+<td> 7 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> 0 </td>
+<td> a&#160;:= a XOR (hl)
+</td></tr>
+<tr>
+<td> xor (I+D) </td>
+<td> <tt>11i11101 10101110 dddddddd</tt> </td>
+<td> 19 </td>
+<td> + </td>
+<td> + </td>
+<td> + </td>
+<td> 0 </td>
+<td> + </td>
+<td> P </td>
+<td> 0 </td>
+<td> 0 </td>
+<td> a&#160;:= a XOR (I+D)
+</td></tr></table>
+<h2><span class="mw-headline" id="English_Language_Explanations">English Language Explanations</span></h2>
+<h3><span class="mw-headline" id="Data_Movement">Data Movement</span></h3>
+<p><b>EX</b>
+Three possible arguments:
+</p><p><i>EX DE, HL</i>
+Swaps H with D and L with E
+</p><p><i>EX AF, AF'</i>
+Swaps AF with its shadow
+</p><p><i>EX (SP), HL</i>
+Swaps (SP) with L and (SP+1) with H.  Index registers are also valid
+</p><p><br />
+<b>EXX</b>
+Swap BC, DE and HL with their shadows
+</p><p><br />
+<b>LD</b>
+Four main arguments:
+</p><p><i>LD reg, #</i>
+Sets the eight or 16 bit contents of reg to #
+</p><p><i>LD reg2, reg1</i>
+Copies the contents of 8 bit reg1 to reg2
+</p><p><i>LD (imm16), reg</i>
+Copies the value of 8 or 16 bit reg to 16 bit memory address imm16.  Programmers should remember that 16 bit values are stored little-endian.
+</p><p><i>LD reg, (imm16)</i>
+Does the opposite of <i>LD (imm16), reg</i>
+</p><p><br />
+<b>LDIR</b>
+Copies a byte from (HL) to (DE), increments DE and HL, then decrements BC.  The instruction is repeated if BC is not 0.  Interrupts are allowed to trigger while this instruction is running.
+</p><p><br />
+<b>PUSH</b>
+Used as <i>PUSH reg16</i> where reg16 is a register pair or index register.  Decrements SP, copies regMSB to (SP), decrements SP again, then copies regLSB to (SP).
+</p><p><br />
+<b>POP</b>
+Same syntax as PUSH.  Copies (SP) to regLSB, increments SP, copies (SP) to regMSB, then increments SP again.  The word based at the starting value of SP is zeroed.
+</p><p><br />
+</p>
+<h3><span class="mw-headline" id="Control">Control</span></h3>
+<p><b>JP</b>
+<i>JP imm16</i>  Imm16 is copied to PC, causing execution to jump there.  Can also be conditional with Z, NZ, C, NC, PO, PE, P, or M as additional arguments such as <i>JP Z, imm16</i>.  (HL) may be substituted for imm16 to have the current value of HL copied to PC
+</p><p><br />
+<b>JR</b>
+<i>JR imm8</i>  The signed 8 bit value imm8 is added to PC, allowing a jump within 128 bytes of the instruction.  May also be conditional, but only with Z, NZ, C, and NC arguments.
+</p><p><br />
+<b>CALL</b>
+<i>CALL imm16</i>  The current value of PC+3 is PUSHed, then imm16 is loaded into PC.  May be conditional with the same syntax and arguments as JP, although (HL) is not valid.
+</p><p><br />
+<b>RET</b>
+<i>RET</i>  The top stack value is POPed into PC.  It may be conditional with the same arguments and syntax as JP.  This is usually used to return from a CALL instruction.
+</p><p><br />
+<b>RST</b>
+<i>RST imm8</i>  PC+1 is PUSHed and PC is loaded with 00imm8.  This opcode is only 1 byte, so it is an alternative to CALLing routines that are mapped into the beginning of memory.  However, it may only be used for the following values of imm8: 00h, 08h, 18h, 20h, 28h, 30h, and 38h.  Imm8 must also be in -h suffix format.
+</p><p><b>DJNZ</b>
+<i>DJNZ imm8</i>  B is decremented and if is 0, the rest of the instruction is skipped.  Otherwise, the signed 8 bit value imm8 is added to PC.  This instruction is usually used like a <a href="/index.php?title=For(&amp;action=edit&amp;redlink=1" class="new" title="For( (page does not exist)">For(</a> loop in BASIC.
+</p><p><br />
+<b>NOP</b>
+<i>NOP</i>  As the name implies, it is "no operation".  The CPU does nothing for four clock cycles.
+</p><p><br />
+</p>
+<h2><span class="mw-headline" id="Care_of">Care of</span></h2>
+<ul>
+<li> Reference table thanks to <a href="/index.php?title=User:CoBB" title="User:CoBB">CoBB</a>
+</li>
+<li> English language reference thanks to <a href="/index.php?title=User:Taricorp&amp;action=edit&amp;redlink=1" class="new" title="User:Taricorp (page does not exist)">Taricorp</a>
+</li>
+</ul>
+
+<!-- 
+NewPP limit report
+CPU time usage: 0.257 seconds
+Real time usage: 0.261 seconds
+Preprocessor visited node count: 30/1000000
+Preprocessor generated node count: 36/1000000
+Post‐expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key wikitiorg-ti:pcache:idhash:1684-0!*!0!!en!*!* and timestamp 20201204031534 and revision id 6156
+ -->
+</div><div class="printfooter">
+Retrieved from "<a href="https://wikiti.brandonw.net/index.php?title=Z80_Instruction_Set&amp;oldid=6156">https://wikiti.brandonw.net/index.php?title=Z80_Instruction_Set&amp;oldid=6156</a>"</div>
+		<div id='catlinks' class='catlinks catlinks-allhidden'></div>		<!-- end content -->
+				<div class="visualClear"></div>
+	</div>
+</div></div>
+<div id="column-one">
+	<h2>Navigation menu</h2>
+	<div id="p-cactions" class="portlet" role="navigation">
+		<h3>Views</h3>
+		<div class="pBody">
+			<ul>
+				<li id="ca-nstab-main" class="selected"><a href="/index.php?title=Z80_Instruction_Set" title="View the content page [c]" accesskey="c">Page</a></li>
+				<li id="ca-talk"><a href="/index.php?title=Talk:Z80_Instruction_Set" title="Discussion about the content page [t]" accesskey="t">Discussion</a></li>
+				<li id="ca-viewsource"><a href="/index.php?title=Z80_Instruction_Set&amp;action=edit" title="This page is protected.&#10;You can view its source [e]" accesskey="e">View source</a></li>
+				<li id="ca-history"><a href="/index.php?title=Z80_Instruction_Set&amp;action=history" rel="archives" title="Past revisions of this page [h]" accesskey="h">History</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="portlet" id="p-personal" role="navigation">
+		<h3>Personal tools</h3>
+		<div class="pBody">
+			<ul>
+				<li id="pt-login"><a href="/index.php?title=Special:UserLogin&amp;returnto=Z80+Instruction+Set" title="You are encouraged to log in; however, it is not mandatory [o]" accesskey="o">Log in</a></li>
+				<li id="pt-createaccount"><a href="/index.php?title=Special:RequestAccount">Request account</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="portlet" id="p-logo" role="banner">
+<a href="/index.php?title=WikiTI_Home" style="background-image: url(/skins/common/images/wiki.png);" title="Visit the main page"></a>
+	</div>
+	<div class="generated-sidebar portlet" id="p-navigation" role="navigation">
+		<h3>Navigation</h3>
+		<div class='pBody'>
+			<ul>
+				<li id="n-mainpage"><a href="/index.php?title=WikiTI_Home" title="Visit the main page [z]" accesskey="z">WikiTI Home</a></li>
+				<li id="n-Calculator-Documentation"><a href="/index.php?title=Calculator_Documentation">Calculator Documentation</a></li>
+				<li id="n-Contributing"><a href="/index.php?title=Contributing">Contributing</a></li>
+				<li id="n-recentchanges"><a href="/index.php?title=Special:RecentChanges" title="A list of recent changes in the wiki [r]" accesskey="r">Recent Changes</a></li>
+				<li id="n-randompage"><a href="/index.php?title=Special:Random" title="Load a random page [x]" accesskey="x">Random Page</a></li>
+				<li id="n-help"><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/Help:Contents" title="The place to find out">Help</a></li>
+			</ul>
+		</div>
+	</div>
+	<div id="p-search" class="portlet" role="search">
+		<h3><label for="searchInput">Search</label></h3>
+		<div id="searchBody" class="pBody">
+			<form action="/index.php" id="searchform">
+				<input type='hidden' name="title" value="Special:Search"/>
+				<input type="search" name="search" placeholder="Search" title="Search WikiTI [f]" accesskey="f" id="searchInput" />
+				<input type="submit" name="go" value="Go" title="Go to a page with this exact name if exists" id="searchGoButton" class="searchButton" />&#160;
+				<input type="submit" name="fulltext" value="Search" title="Search the pages for this text" id="mw-searchButton" class="searchButton" />
+			</form>
+
+					</div>
+	</div>
+	<div class="portlet" id="p-tb" role="navigation">
+		<h3>Tools</h3>
+		<div class="pBody">
+			<ul>
+				<li id="t-whatlinkshere"><a href="/index.php?title=Special:WhatLinksHere/Z80_Instruction_Set" title="A list of all wiki pages that link here [j]" accesskey="j">What Links Here</a></li>
+				<li id="t-recentchangeslinked"><a href="/index.php?title=Special:RecentChangesLinked/Z80_Instruction_Set" title="Recent changes in pages linked from this page [k]" accesskey="k">Related changes</a></li>
+				<li id="t-specialpages"><a href="/index.php?title=Special:SpecialPages" title="A list of all special pages [q]" accesskey="q">Special Pages</a></li>
+				<li id="t-print"><a href="/index.php?title=Z80_Instruction_Set&amp;printable=yes" rel="alternate" title="Printable version of this page [p]" accesskey="p">Printable version</a></li>
+				<li id="t-permalink"><a href="/index.php?title=Z80_Instruction_Set&amp;oldid=6156" title="Permanent link to this revision of the page">Permanent link</a></li>
+				<li id="t-info"><a href="/index.php?title=Z80_Instruction_Set&amp;action=info">Page information</a></li>
+			</ul>
+		</div>
+	</div>
+</div><!-- end of the left (by default at least) column -->
+<div class="visualClear"></div>
+<div id="footer" role="contentinfo">
+	<div id="f-poweredbyico">
+		<a href="//www.mediawiki.org/"><img src="/skins/common/images/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" width="88" height="31" /></a>
+	</div>
+	<ul id="f-list">
+		<li id="lastmod"> This page was last modified on 7 April 2008, at 12:26.</li>
+		<li id="viewcount">This page has been accessed 65,723 times.</li>
+		<li id="privacy"><a href="/index.php?title=WikiTI:Privacy_policy" title="WikiTI:Privacy policy">Privacy policy</a></li>
+		<li id="about"><a href="/index.php?title=About_WikiTI" title="About WikiTI">About WikiTI</a></li>
+		<li id="disclaimer"><a href="/index.php?title=Disclaimer" title="Disclaimer">Disclaimer</a></li>
+	</ul>
+</div>
+</div>
+<script>/*<![CDATA[*/window.jQuery && jQuery.ready();/*]]>*/</script><script>if(window.mw){
+mw.loader.state({"site":"ready","user":"ready","user.groups":"ready"});
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.action.view.postEdit","mediawiki.user","mediawiki.hidpi","mediawiki.page.ready","mediawiki.searchSuggest"],null,true);
+}</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-61605705-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<script>if(window.mw){
+mw.config.set({"wgBackendResponseTime":101});
+}</script></body></html><!--
+100.00% 0.131304      1 - -total
+ 95.28% 0.125110      1 - MediaWiki::main
+ 70.42% 0.092460      1 - OutputPage::output
+ 69.86% 0.091727      1 - Output-skin
+ 69.81% 0.091661      1 - SkinTemplate::outputPage
+ 47.84% 0.062811      1 - SkinTemplate::prepareQuickTemplate
+ 35.68% 0.046856    165 - MessageCache::get
+ 32.12% 0.042170      1 - SkinTemplate::prepareQuickTemplate-stuff5
+ 30.15% 0.039582     90 - DatabaseBase::query
+ 29.94% 0.039311     54 - LocalisationCache::getSubitem-load
+ 22.17% 0.029104     69 - query: SELECT lc_value FROM `tilNn_cache` WHERE lc_lang = 'X' LIMIT N 
+ 20.52% 0.026949      1 - SkinTemplate::outputPage-execute
+ 19.98% 0.026237      1 - MediaWiki::performRequest
+ 14.22% 0.018673     23 - Linker::titleAttrib
+ 12.09% 0.015878      1 - MediaWiki::performAction
+ 11.98% 0.015735      1 - Article::view
+  7.89% 0.010362    129 - MagicWord::load
+  7.61% 0.009998      1 - MediaWiki::initializeArticle
+  7.54% 0.009901      1 - SkinTemplate::prepareQuickTemplate-stuff3
+  5.98% 0.007854     12 - LocalisationCache::getItem-load
+  5.85% 0.007677      7 - Parser::replaceVariables
+  5.79% 0.007607      1 - SkinTemplate::prepareQuickTemplate-stuff4
+  5.51% 0.007239      6 - Parser::transformMsg
+  5.41% 0.007103      6 - Parser::preprocess
+  5.01% 0.006582     22 - Linker::accesskey
+  4.92% 0.006463     92 - LoadBalancer::getConnection
+  4.49% 0.005899      1 - SkinTemplate::buildContentNavigationUrls
+  4.38% 0.005748     17 - PPFrame_DOM::expand
+  3.34% 0.004387      8 - Parser::braceSubstitution
+  3.32% 0.004358      1 - MessageCache::parse
+  3.28% 0.004304      1 - Parser::parse
+  3.26% 0.004285      1 - Parser::parse-MessageCache::parse
+  3.25% 0.004266     92 - LoadBalancer::openConnection
+  2.98% 0.003916      2 - ResourceLoader::makeModuleResponse
+  2.90% 0.003810      1 - Parser::internalParse
+  2.87% 0.003770      1 - Skin::buildSidebar
+  2.17% 0.002851      1 - SkinTemplate::buildPersonalUrls
+  2.11% 0.002766    191 - hook: MessagesPreLoad
+  1.99% 0.002611      8 - Parser::braceSubstitution-modifiers
+  1.99% 0.002610      1 - SkinTemplate::prepareQuickTemplate-stuff2
+  1.96% 0.002578      2 - DatabaseMysqlBase::open
+  1.96% 0.002570      1 - Parser::firstCallInit
+  1.91% 0.002512      1 - ParserCache::get
+  1.89% 0.002484    165 - hook: MessageCache::get
+  1.77% 0.002320      6 - query: SELECT keyname,value,exptime FROM `tiobjectcache` WHERE keyname = 'X' 
+  1.70% 0.002227      3 - ResourceLoader::filter
+  1.69% 0.002217      1 - MessageCache::load
+  1.66% 0.002181      1 - MessageCache::load-fromcache
+  1.53% 0.002008      8 - Preprocessor_DOM::preprocessToObj
+  1.50% 0.001965      1 - Setup.php
+  1.43% 0.001874      1 - SkinTemplate::buildNavUrls
+  1.41% 0.001845      1 - SkinTemplate::outputPage-init
+  1.38% 0.001812      1 - Skin::initPage
+  1.30% 0.001705      2 - dbconnect-db.brandonw.net
+  1.26% 0.001656      1 - LinkBatch::executeInto
+  1.26% 0.001653      1 - SkinTemplate::buildContentNavigationUrls-live
+  1.18% 0.001553      1 - SkinTemplate::buildContentNavigationUrls-edit
+  1.13% 0.001479      1 - DeferredUpdates::doUpdates
+  1.06% 0.001396      1 - Revision::loadText
+  0.96% 0.001256      2 - ParserOutput::getText
+  0.78% 0.001028      3 - Linker::link
+  0.78% 0.001024      1 - Parser::braceSubstitution-pfunc
+  0.77% 0.001013      1 - query: SELECT old_text,old_flags FROM `titext` WHERE old_id = 'X' LIMIT N 
+  0.75% 0.000985      1 - Parser::callParserFunction
+  0.75% 0.000981      1 - Setup.php-globals
+  0.74% 0.000971     11 - Title::getUserPermissionsErrorsInternal
+  0.74% 0.000969      1 - ResourceLoader::__construct
+  0.73% 0.000963      8 - Preprocessor_DOM::preprocessToXml
+  0.73% 0.000954      1 - Parser::callParserFunction-pfunc-plural
+  0.72% 0.000948      1 - MediaWiki::triggerJobs
+  0.72% 0.000940      1 - hook: PersonalUrls
+  0.69% 0.000911      8 - Title::getLinkURL
+  0.69% 0.000908      1 - ConfirmAccountUIHooks::setRequestLoginLinks
+  0.67% 0.000878      1 - ResourceLoader::makeModuleResponse-user.cssprefs
+  0.62% 0.000819      1 - WebStart.php-conf
+  0.61% 0.000806      2 - query: SELECT page_namespace,page_title,page_touched FROM `tipage` WHERE (page_namespace = 'X') ) 
+  0.61% 0.000797      1 - MessageBlobStore::get
+  0.58% 0.000761      1 - LinkBatch::doQuery
+  0.57% 0.000744      7 - Parser::clearState
+  0.56% 0.000733      1 - -setup
+  0.55% 0.000723      8 - Preprocessor_DOM::preprocessToObj-loadXML
+  0.52% 0.000681      1 - Parser::replaceInternalLinks2
+  0.51% 0.000666      1 - JobQueue::getSiblingQueuesWithJobs
+  0.50% 0.000662      1 - Parser::replaceInternalLinks2-setup
+  0.48% 0.000630      2 - ResourceLoader::register
+  0.41% 0.000541      5 - MediaWiki_I18N::translate
+  0.39% 0.000516      1 - Parser::doDoubleUnderscore
+  0.38% 0.000501      1 - ResourceLoader::makeModuleResponse-user.tokens
+  0.36% 0.000479      1 - query: SELECT rev_id,rev_page,rev_text_id,rev_timestamp,rev_comment,rev_user_text,rev_user,rev_minor_edit,rev_deleted,rev_len,rev_parent_id,rev_shaN,rev_content_format,rev_content_model,page_namespace,page_title,page_id,page_latest,page_is_redirect,page_len,user
+  0.36% 0.000474      3 - Sanitizer::removeHTMLtags
+  0.36% 0.000470      1 - query: SELECT page_id,page_namespace,page_title,page_len,page_is_redirect,page_latest FROM `tipage` WHERE (page_namespace = 'X') 
+  0.36% 0.000468      8 - Parser::braceSubstitution-setup
+  0.34% 0.000451      1 - query: SELECT page_id,page_namespace,page_title,page_restrictions,page_counter,page_is_redirect,page_is_new,page_random,page_touched,page_links_updated,page_latest,page_len,page_content_model FROM `tipage` WHERE page_namespace = 'X' LIMIT N 
+  0.33% 0.000437      1 - SkinTemplate::setupTemplateForOutput
+  0.32% 0.000423      3 - Linker::linkUrl
+  0.32% 0.000418     29 - hook: GetLocalURL::Internal
+  0.31% 0.000407      1 - query: SELECT mr_blob,mr_resource,mr_timestamp FROM `timsg_resource` WHERE mr_resource IN ('X' 
+  0.30% 0.000396     29 - hook: GetLocalURL
+  0.30% 0.000390      1 - SkinTemplate::setupTemplateForOutput-stuff
+  0.29% 0.000382      1 - query: SELECT DISTINCT job_cmd FROM `tijob` WHERE job_cmd IN ('X') 
+  0.29% 0.000376      1 - query: UPDATE `tipage` SET page_counter = page_counter + N WHERE page_id = 'X'
+  0.28% 0.000374      1 - query: SELECT page_namespace,page_title,page_touched FROM `tipage` WHERE (page_namespace = 'X') 
+  0.27% 0.000357      1 - query: SELECT user_ip FROM `tiuser_newtalk` WHERE user_ip = 'X' LIMIT N 
+  0.27% 0.000356      1 - RequestContext::getSkin-createskin
+  0.26% 0.000345      1 - query: SELECT pr_type,pr_expiry,pr_level,pr_cascade FROM `tipage_restrictions` WHERE pr_page = 'X' 
+  0.25% 0.000324      1 - hook: SearchableNamespaces
+  0.25% 0.000324      1 - Skin::getSiteNotice
+  0.25% 0.000322      1 - query: UPDATE `tisite_stats` SET ss_total_views=ss_total_views+N
+  0.24% 0.000311     20 - hook: GetLocalURL::Article
+  0.21% 0.000272      1 - lockdownSearchableNamespaces
+  0.18% 0.000240      1 - StubObject::_unstub-wgParser
+  0.18% 0.000238      3 - hook: getUserPermissionsErrors
+  0.18% 0.000233      3 - Skin::getCachedNotice
+  0.17% 0.000228      1 - query: COMMIT
+  0.17% 0.000227      5 - Title::getPageLanguage
+  0.16% 0.000215      1 - query: BEGIN
+  0.15% 0.000191      1 - User::load
+  0.13% 0.000175      1 - Setup.php-memcached
+  0.12% 0.000157      1 - Setup.php-includes
+  0.12% 0.000152      3 - lockdownUserPermissionsErrors
+  0.12% 0.000151      1 - Setup.php-misc1
+  0.10% 0.000138      1 - ResourceLoader::makeModuleResponse-user.options
+  0.09% 0.000124      1 - Setup.php-defaults
+  0.09% 0.000115      8 - hook: TitleQuickPermissions
+  0.09% 0.000114      1 - Skin::getSkinNames-init
+  0.09% 0.000113      7 - hook: ParserClearState
+  0.08% 0.000109      1 - hook: SkinAfterBottomScripts
+  0.08% 0.000108      7 - hook: ParserGetVariableValueTs
+  0.08% 0.000106      7 - hook: ParserGetVariableValueVarCache
+  0.08% 0.000105      1 - User::loadDefaults
+  0.07% 0.000098      7 - hook: ParserBeforeStrip
+  0.07% 0.000097      1 - Parser::doBlockLevels
+  0.07% 0.000097      1 - Parser::doMagicLinks
+  0.07% 0.000095      7 - hook: ParserAfterStrip
+  0.07% 0.000091      1 - Setup.php-defaults2
+  0.06% 0.000084      1 - SpecialPageFactory::getList
+  0.06% 0.000078      1 - LanguageGetMagic
+  0.06% 0.000075      1 - hook: BeforePageDisplay
+  0.05% 0.000071      1 - User::getEffectiveGroups
+  0.05% 0.000070      2 - ParserOptions::initialiseFromUser
+  0.05% 0.000063      1 - MessageCache::saveToCaches
+  0.05% 0.000062      1 - hook: MediaWikiPerformAction
+  0.05% 0.000061      4 - hook: BaseTemplateAfterPortlet
+  0.05% 0.000061      1 - BaseTemplate::getToolbox
+  0.05% 0.000060      1 - GoogleAnalyticsHooks::onSkinAfterBottomScripts
+  0.04% 0.000058      3 - Linker::linkAttribs
+  0.04% 0.000057      1 - Parser::doBlockLevels-paragraph
+  0.04% 0.000054      1 - hook: UserGetDefaultOptions
+  0.04% 0.000049      1 - Parser::initialiseVariables
+  0.04% 0.000048      3 - Sanitizer::removeHTMLcomments
+  0.04% 0.000047      1 - StubObject::_unstub-wgLang
+  0.04% 0.000047      1 - Setup.php-extensions
+  0.04% 0.000046      3 - hook: PageContentLanguage
+  0.03% 0.000045      3 - hook: userCan
+  0.03% 0.000043      3 - hook: LinkBegin
+  0.03% 0.000043      3 - hook: TitleIsAlwaysKnown
+  0.03% 0.000043      3 - hook: SkinTemplateTabAction
+  0.03% 0.000042      3 - hook: LinkEnd
+  0.03% 0.000038      3 - Linker::link-checkPageExistence
+  0.03% 0.000038      1 - Setup.php-exception
+  0.03% 0.000036      1 - Setup.php-session
+  0.03% 0.000035      2 - hook: ContentHandlerDefaultModelFor
+  0.03% 0.000034      1 - LinkCache::addLinkObj
+  0.02% 0.000032      1 - Parser::doHeadings
+  0.02% 0.000030      2 - hook: getUserPermissionsErrorsExpensive
+  0.02% 0.000029      1 - WebStart.php-ob_start
+  0.02% 0.000029      2 - hook: TitleIsCssOrJsPage
+  0.02% 0.000029      2 - hook: TitleIsWikitextPage
+  0.02% 0.000029      2 - hook: TitleGetRestrictionTypes
+  0.02% 0.000029      1 - hook: AuthPluginSetup
+  0.02% 0.000028      1 - ConfirmAccountUIHooks::confirmAccountsNotice
+  0.02% 0.000027      1 - lockdownMediawikiPerformAction
+  0.02% 0.000027      1 - Parser::doAllQuotes
+  0.02% 0.000026      1 - Revision::getRevisionText
+  0.02% 0.000026      1 - SkinTemplate::buildContentActionUrls
+  0.02% 0.000025      1 - Setup.php-tempDir
+  0.02% 0.000025      1 - Parser::doTableStuff
+  0.02% 0.000024      1 - MediaWiki::checkMaxLag
+  0.02% 0.000023      1 - hook: LanguageGetMagic
+  0.02% 0.000023      1 - hook: ParserSectionCreate
+  0.02% 0.000022      1 - hook: CanonicalNamespaces
+  0.01% 0.000019      1 - SkinTemplate::setupTemplateForOutput-init
+  0.01% 0.000019      1 - hook: ArticlePageDataBefore
+  0.01% 0.000019      1 - hook: LanguageLinks
+  0.01% 0.000019      1 - hook: SetupAfterCache
+  0.01% 0.000018      1 - hook: LanguageGetSpecialPageAliases
+  0.01% 0.000018      1 - Parser::replaceExternalLinks
+  0.01% 0.000018      1 - hook: OutputPageBodyAttributes
+  0.01% 0.000017      1 - hook: MonoBookTemplateToolboxEnd
+  0.01% 0.000017      1 - hook: ArticleViewHeader
+  0.01% 0.000017      1 - User::getAutomaticGroups
+  0.01% 0.000017      1 - hook: ArticlePageDataAfter
+  0.01% 0.000017      1 - hook: SkinAfterContent
+  0.01% 0.000017      1 - LinkHolderArray::replace
+  0.01% 0.000017      1 - hook: GetIP
+  0.01% 0.000017      1 - hook: ArticleFromTitle
+  0.01% 0.000017      1 - hook: UserGetLanguageObject
+  0.01% 0.000017      1 - hook: UserRetrieveNewTalks
+  0.01% 0.000017      1 - hook: UserLoadFromSession
+  0.01% 0.000016      1 - hook: ResourceLoaderRegisterModules
+  0.01% 0.000016      1 - hook: SkinSubPageSubtitle
+  0.01% 0.000016      1 - hook: SkinTemplateOutputPageBeforeExec
+  0.01% 0.000016      1 - hook: SkinBuildSidebar
+  0.01% 0.000016      1 - hook: AjaxAddScript
+  0.01% 0.000016      1 - hook: LanguageGetNamespaces
+  0.01% 0.000016      1 - hook: ParserAfterTidy
+  0.01% 0.000016      1 - hook: SpecialPage_initList
+  0.01% 0.000016      1 - hook: UserGetRights
+  0.01% 0.000016      1 - hook: InitializeArticleMaybeRedirect
+  0.01% 0.000016      1 - hook: BeforeInitialize
+  0.01% 0.000016      1 - hook: ResetPasswordExpiration
+  0.01% 0.000016      1 - hook: OutputPageCheckLastModified
+  0.01% 0.000015      1 - hook: PageRenderingHash
+  0.01% 0.000015      1 - hook: RequestContextCreateSkin
+  0.01% 0.000015      1 - hook: BaseTemplateToolbox
+  0.01% 0.000015      1 - hook: OutputPageBeforeHTML
+  0.01% 0.000015      1 - hook: OutputPageParserOutput
+  0.01% 0.000015      1 - hook: MagicWordwgVariableIDs
+  0.01% 0.000015      1 - hook: GetDoubleUnderscoreIDs
+  0.01% 0.000015      1 - hook: GetCanonicalURL
+  0.01% 0.000015      1 - hook: UserLoadAfterLoadFromSession
+  0.01% 0.000015      1 - hook: UserLoadDefaults
+  0.01% 0.000015      1 - Setup.php-extensions-efLoadConfirmAccount
+  0.01% 0.000015      1 - hook: UserIsEveryoneAllowed
+  0.01% 0.000015      1 - hook: ParserBeforeTidy
+  0.01% 0.000015      1 - hook: ParserAfterParse
+  0.01% 0.000015      1 - hook: UserEffectiveGroups
+  0.01% 0.000015      1 - hook: GetNewMessagesAlert
+  0.01% 0.000015      1 - hook: InternalParseBeforeSanitize
+  0.01% 0.000014      1 - hook: ParserCloned
+  0.01% 0.000014      1 - hook: ParserFirstCallInit
+  0.01% 0.000014      1 - hook: ArticleViewFooter
+  0.01% 0.000014      1 - hook: SiteNoticeAfter
+  0.01% 0.000014      1 - hook: SkinTemplateBuildNavUrlsNav_urlsAfterPermalink
+  0.01% 0.000014      1 - hook: SkinTemplateNavigation
+  0.01% 0.000014      1 - hook: SkinTemplateNavigation::Universal
+  0.01% 0.000014      1 - hook: SkinTemplateToolboxEnd
+  0.01% 0.000014      1 - hook: SkinGetPoweredBy
+  0.01% 0.000014      1 - hook: MakeGlobalVariablesScript
+  0.01% 0.000014      1 - hook: InternalParseBeforeLinks
+  0.01% 0.000014      1 - hook: AfterFinalPageOutput
+  0.01% 0.000014      1 - hook: ParserBeforeInternalParse
+  0.01% 0.000014      1 - hook: SkinTemplatePreventOtherActiveTabs
+  0.01% 0.000014      1 - hook: SiteNoticeBefore
+  0.01% 0.000013      1 - SkinTemplate::prepareQuickTemplate-stuff-head
+
+-->

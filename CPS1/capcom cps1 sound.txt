@@ -1,0 +1,120 @@
+﻿https://github.com/zengfr/romhack
+https://gitee.com/zengfr/romhack
+
+
+
+68000 for game, Z80, YM-2151 and OKIM6295 for sound.
+/***************************************************************************
+  Capcom QSound DL-1425 (HLE)
+  ===========================
+  Driver by superctr with thanks to Valley Bell.
+  Based on disassembled DSP code.
+  Links:
+  https://siliconpr0n.org/map/capcom/dl-1425
+***************************************************************************/
+
+/***************************************************************************
+    Capcom System QSound™
+    Sixteen-channel sample player.  Previous HLE implementation by Paul
+    Leaman and Miguel Angel Horna, with thanks to CAB (author of Amuse).
+    The key components are a DSP16A, a TDA1543 dual 16-bit DAC with I2S
+    input, and a TC9185P electronic volume control.  The TDA1543 is
+    simulated here; no attempt is being made to emulate theTC9185P.
+    Commands work by writing an address/data word pair to be written to
+    DSP's internal RAM.  In theory it's possible to write anywhere in
+    DSP RAM, but the glue logic only allows writing to the first 256
+    words.  The host writes the high and low bytes the data word to
+    offsets 0 and 1, respectively, and the address to offset 2.  Writing
+    the address also asserts the DSP's INT pin.  The host can read back
+    a single bit, which I've assumed reflects the current state of the
+    DSP's INT pin (low when asserted).  The host won't send further
+    commands until this bit goes high.
+    On servicing an external interrupt, the DSP reads pdx0 three times,
+    expecting to get the address and data in that order (the third read
+    is needed because DSP16 has latent PIO reads in active mode).  I've
+    assumed that reading PIO with PSEL low when INT is asserted will
+    return the address and cause INT to be de-asserted, and reading PIO
+    with PSEL low when int is not asserted will return the data word.
+    The DSP program will only respond to one external interrupt per
+    sample interval (i.e. the maximum command rate is the same as the
+    sample rate).
+    The DSP program uses 2 kilowords of internal RAM and reads data from
+    external ROM while executing from internal ROM.  As such, it
+    requires a DSP16A core (the original DSP16 only has 512 words of
+    internal RAM and can't read external ROM with internal ROM enabled).
+    To read external ROM, the DSP writes the desired sample offset to
+    PDX0, then reads external ROM at address (bank | 0x8000), for a
+    theoretical maximum of 2 gigasamples.  The bank applies to the next
+    read, not the current read.  A dummy read is required to set the
+    bank for the very first read.  This latency could just be a quirk of
+    how Capcom hooks the DSP up to the sample ROMs.  In theory, samples
+    are 16-bit signed values, but Capcom only has 8-bit ROMs connected.
+    I'm assuming byte smearing, but it may be zero-padded in the LSBs.
+    The DSP sends out 16-bit samples on its SIO port clocked at 5 MHz.
+    The stereo samples aren't loaded fast enough for consecutive frames
+    so there's an empty frame between them.  Sample pairs are loaded
+    every 1,248 machine cycles, giving a sample rate of 24.03846 kHz
+    (60 MHz / 2 / 1248).  The glue logic seems to generate the WS signal
+    for the DAC from the PSEL line and the SIO control lines, but it
+    isn't clear exactly how this is achieved.
+    The DSP writes values to pdx1 every sample cycle (alternating
+    between zero and non-zero values).  This may be for the volume
+    control chip or something else.
+    The photographs of the DL-1425 die (WEDSP16A-M14) show 12 kilowords
+    of internal ROM compared to 4 kilowords as documented.  It's unknown
+    if/how the additional ROM is mapped in the DSP's internal ROM space.
+    The internal program only uses internal ROM from 0x0000 to 0x0fff
+    and external space from 0x8000 onwards.  The additional ROM could
+    be anywhere in between.
+    Meanings for known command words:
+    (((ch - 1) << 3) & 0x78     sample bank
+    (ch << 3) | 0x01            channel sample offset within bank
+    (ch << 3) | 0x02            channel playback rate
+    (ch << 3) | 0x03            channel sample period counter
+    (ch << 3) | 0x04            channel loop offset (relative to end)
+    (ch << 3) | 0x05            channel end sample offset
+    (ch << 3) | 0x06            channel volume
+    ch | 0x80                   left/right position on sound stage
+    0x93                        delayed reverb volume
+    ch + 0xba                   channel reverb contribution
+    0xd9                        reverb delay (need to add 0x0554)
+    0xde                        left output filtered component delay
+    0xdf                        left output unfiltered component delay
+    0xe0                        right output filtered component delay
+    0xe1                        right output unfiltered component delay
+    0xe2                        write non-zero to set delays
+    0xe4                        left output filtered component volume
+    0xe5                        left output unfiltered component volume
+    0xe6                        right output filtered component volume
+    0xe7                        right output unfiltered component volume
+    The weird way of setting the sample bank is due to the one-read
+    latency described above.  Since the bank applies to the next read,
+    you need to set it on the channel before the desired channel.
+    Links:
+    * https://siliconpr0n.org/map/capcom/dl-1425
+***************************************************************************/
+
+****************************************************************************
+    OKIM 6295 ADPCM chip:
+    Command bytes are sent:
+        1xxx xxxx = start of 2-byte command sequence, xxxxxxx is the sample
+                    number to trigger
+        abcd vvvv = second half of command; one of the abcd bits is set to
+                    indicate which voice the v bits seem to be volumed
+        0abc d000 = stop playing; one or more of the abcd bits is set to
+                    indicate which voice(s)
+    Status is read:
+        ???? abcd = one bit per voice, set to 0 if nothing is playing, or
+                    1 if it is active
+    OKI Semiconductor produced this chip in two package variants. The
+    44-pin QFP version, MSM6295GS, is the original one and by far the more
+    common of the two. The 42-pin DIP version, MSM6295VRS, omits A17 and
+    RD, which limits its ROM addressing to one megabit instead of two.
+***************************************************************************/
+
+
+
+
+
+https://github.com/zengfr/romhack
+https://gitee.com/zengfr/romhack

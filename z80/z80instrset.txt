@@ -1,0 +1,152 @@
+https://github.com/zengfr/romhack
+https://gitee.com/zengfr/romhack
+
+  Z80 Instruction Set Summary
+
+Mnemonic  |Time      |SZHPNC|OP-code    |Description
+----------+----------+------+-----------+--------------------------------------------
+ADC A,r   |4/7/8/19  |+++V0+|88+r       |Adds A to r and carry flag
+ADC A,#   |7         |+++V0+|CE XX      |Adds A to # and carry flag
+ADC HL,rr |15/x      |+++V0+|ED 4A+10rr |Adds HL to rr and carry flag
+ADD A,r   |4/7/8/19  |+++V0+|80+r       |Adds A to r
+ADD A,#   |7         |+++V0+|C6 XX      |Adds A to #
+ADD HL,rr |11/15     |--+-0+|09+10rr    |Adds HL to rr
+AND r     |4/7/8/19  |++1P00|A0+r       |Bitwise ANDs A with r
+AND #     |7         |++1P00|E6 XX      |Bitwise ANDs A with #
+BIT b,r   |8/12/x/20 |++1P0-|CB 40+r+8b |Bitwise ANDs r with 1<<b, discards result
+CALL ##   |17        |------|CD XX XX   |Calls ##
+CALL f,## |17/10     |------|C4+8f      |Calls ## if condition f
+CCF       |4         |--+-0+|3F         |Inverts carry flag
+CP r      |4/7/8/19  |+++V1+|B8+r       |Compares A to r
+CP #      |7         |+++V1+|FE XX      |Compares A to #
+CPD       |16        |++++1-|ED A9      |CP (HL)\DEC HL\DEC BC,PO if BC=0
+CPDR      |21/16     |++++1-|ED B9      |CPD until Z or PO
+CPI       |16        |++++1-|ED A1      |CP (HL)\INC HL\DEC BC,PO if BC=0
+CPIR      |21/16     |++++1-|ED B1      |CPI until Z or PO
+CPL       |4         |--1-1-|2F         |Inverts all bits of A
+DAA       |4         |+++P-+|27         |Adjusts A after doing BCD calculations
+DEC r     |4/11/8/23 |+++V1-|05+8r      |Decreases r
+DEC rr    |6/10      |------|0B+10rr    |Decreases rr
+DI        |4         |------|F3         |Disables interrupts
+DJNZ #    |13/8      |------|10 XX      |Decreases B and jumps if NZ
+EI        |4         |------|FB         |Enables interrupts
+EX (SP),HL|19/23     |------|E3         |Swaps (SP) and HL
+EX AF,AF' |4         |------|08         |Swaps AF and AF'
+EX DE,HL  |4/x       |------|EB         |Swaps DE and HL
+EXX       |4         |------|D9         |Swaps BC,DE,HL and BC',DE',HL'
+HALT      |4+        |------|76         |Stops and waits for interrupt
+IM 0      |8         |------|ED 46      |Sets interrupt mode 0
+IM 1      |8         |------|ED 56      |Sets interrupt mode 1
+IM 2      |8         |------|ED 5E      |Sets interrupt mode 2
+IN A,(#)  |11        |------|DB XX      |Puts input from port # into A
+IN r,(C)  |12/x/x/x  |+++P0-|ED 40+8r   |Puts input from port C into r
+IN (C)*   |12        |+++P0-|ED 70      |Puts input from port C nowhere
+INC r     |4/11/8/23 |+++V0-|04+8r      |Increases r
+INC rr    |6/10      |------|03+10rr    |Increases rr
+IND       |16        |++-P1-|ED AA      |IN (HL),(C)\DEC HL\DEC B
+INDR      |21/16     |01-11-|ED BA      |IND until Z
+INI       |16        |++-P1-|ED A2      |IN (HL),(C)\INC HL\DEC B
+INIR      |21/16     |01-11-|ED B2      |INI until Z
+JP (HL)   |4         |------|E9         |Jumps to HL
+JP ##     |10        |------|C3 XX XX   |Jumps to ##
+JP f,##   |10        |------|C2+8f XX XX|Jumps to ## if condition f
+JR #      |12        |------|18 XX      |Jumps # (signed) bytes 
+JR f,#    |12/7      |------|20+8f      |Jumps # (signed) bytes if f
+LD (BC),A |7         |------|0A         |Loads A into (BC)
+LD (DE),A |7         |------|1A         |Loads A into (DE)
+LD (##),A |13        |------|32 XX XX   |Loads A into (##)
+LD (##),BC|20        |------|ED 43 XX XX|Loads BC into (##)
+LD (##),DE|20        |------|ED 53 XX XX|Loads DE into (##)
+LD (##),HL|16/20     |------|22 XX XX   |Loads HL into (##)
+LD (##),SP|20        |------|ED 73 XX XX|Loads SP into (##)
+LD A,(BC) |7         |------|0A         |Loads (BC) into A
+LD A,(DE) |7         |------|1A         |Loads (DE) into A
+LD A,(##) |13        |------|3A XX XX   |Loads (##) into A
+LD A,I    |9         |++0+0-|ED 57      |Loads I into A
+LD A,R    |9         |++0+0-|ED 5F      |Loads R into A
+LD BC,(##)|20        |------|ED 4B XX XX|Loads (##) into BC
+LD DE,(##)|20        |------|ED 5B XX XX|Loads (##) into DE
+LD HL,(##)|16/20     |------|2A XX XX   |Loads (##) into HL
+LD I,A    |9         |------|ED 47      |Loads A into I
+LD R,A    |9         |------|ED 4F      |Loads A into R
+LD SP,(##)|20        |------|ED 7B XX XX|Loads (##) into SP
+LD SP,HL  |6/10      |------|F9         |Loads HL into SP
+LD r1,r2  |4/7/8/19  |------|40+8r1+r2  |Loads r2 into r1
+LD r,#    |7/10/11/19|------|06+8r      |Loads # into r
+LD rr,##  |10/14     |------|01+10rr    |Loads ## into rr
+LDD       |16        |--0+0-|ED A8      |LD (DE),(HL)\DEC HL\DEC DE\DEC BC,PO if BC=0
+LDDR      |21/16     |--000-|ED B8      |LDD until PO
+LDI       |16        |--0+0-|ED A0      |LD (DE),(HL)\INC HL\INC DE\DEC BC,PO if BC=0
+LDIR      |21/16     |--000-|ED B0      |LDI until PO
+NEG       |8         |+++V1+|ED 44      |Negates A
+NOP       |4         |------|00         |Does nothing
+OR r      |4/7/8/19  |++0P00|B0+r       |Bitwise ORs A with r
+OR #      |7         |++0P00|F6 XX      |Bitwise ORs A with #
+OTDR      |21/16     |01-11-|ED BB      |OUTD until Z
+OTIR      |21/16     |01-11-|ED B3      |OUTI until Z
+OUT (#),A |11        |------|D3 XX      |Outputs A to port #
+OUT (C),r |12/x/x/x  |------|ED 41+8r   |Outputs r to port C
+OUT (C),0*|12        |------|ED 71      |Outputs 0 to port C
+OUTD      |16        |++-P1-|ED AB      |OUT (C),(HL)\DEC HL\DEC B
+OUTI      |16        |++-P1-|ED A3      |OUT (C),(HL)\INC HL\DEC B
+POP rr    |10/14     |------|C1+10rr    |Pops rr off the stack
+PUSH rr   |11/15     |------|C5+10rr    |Pushes rr onto the stack
+RES b,r   |8/15/x/23 |------|CB 80+r+8b |Resets bth bit of r
+RET       |10        |------|C9         |Returns
+RET f     |11/5      |------|C0+8f      |Returns if condition f
+RETI      |14        |------|ED 4D      |Return from interrupt
+RETN      |14        |------|ED 45      |Return from non-maskable interrupt
+RL r      |8/15/x/23 |++0P0+|CB 10+r    |Rotates r left with carry
+RLA       |4         |--0-0+|17         |Rotates A left with carry
+RLC r     |8/15/x/23 |++0P0+|CB 00+r    |Rotates r left with wrap
+RLCA      |4         |--0-0+|07         |Rotates A left with wrap
+RLD       |18        |++0P0-|ED 6F      |RL (HL) with nibbles,LSN of A acts as carry
+RR r      |8/15/x/23 |++0P0+|CB 18+r    |Rotates r right with carry
+RRA       |4         |--0-0+|1F         |Rotates A right with carry
+RRC r     |8/15/x/23 |++0P0+|CB 08+r    |Rotates r right with wrap
+RRCA      |4         |--0-0+|0F         |Rotates A right with wrap
+RRD       |18        |++0P0-|ED 67      |RR (HL) with nibbles,LSN of A acts as carry
+RST 00H   |11        |------|C7         |Calls $0000
+RST 08H   |11        |------|CF         |Calls $0008
+RST 10H   |11        |------|D7         |Calls $0010
+RST 18H   |11        |------|DF         |Calls $0018
+RST 20H   |11        |------|E7         |Calls $0020
+RST 28H   |11        |------|EF         |Calls $0028
+RST 30H   |11        |------|F7         |Calls $0030
+RST 38H   |11        |------|FF         |Calls $0038
+SBC r     |4/7/8/19  |+++V1+|98+r       |Subtracts r with carry from A 
+SBC #     |7         |+++V1+|DE XX      |Subtracts # with carry from A
+SBC HL,rr |15/x      |+++V1+|ED 42+10rr |Subtracts rr with carry from HL
+SCF       |4         |--0-01|37         |Sets carry flag
+SET b,r   |8/15/x/23 |------|CB C0+r+8b |Sets bth bit of r
+SLA r     |8/15/x/23 |++0P0+|CB 20+r    |Shifts r left, bottom bit 0
+SLL r*    |8/15/x/23 |++0P0+|CB 30+r    |Shifts r left, bottom bit 1
+SRA r     |8/15/x/23 |++0V0+|CB 28+r    |Shifts r right, top bit = previous top bit
+SRL r     |8/15/x/23 |++0P0+|CB 38+r    |Shifts r right, top bit 0
+SUB r     |4/7/8/19  |+++V1+|90+r       |Subtracts r from A
+SUB #     |7         |+++V1+|D6 XX      |Subtracts # from A
+XOR r     |4/7/8/19  |++0P00|A8+r       |Bitwise XORs A with r
+XOR #     |7         |++0P00|EE XX      |Bitwise XORs A with #
+----------+----------+------+-----------+--------------------------------------------
+Mnemonic  |Time      |SZHPNC|OP-code    |Description
+*undocumented command
+
+------------------cc time guide------------------
+x means command does not exist
+commands with r: a-b-c-d-e-h-l/(hl)/ixh-ixl-iyh-iyl/(ix+#)-(iy+#)
+commands with rr: bc-de-hl-sp-af/ix-iy
+other commands: time with jump/time without jump
+
+-------------------flag guide--------------------
+S:Sign,Z:Zero,H:Half-carry,P:Parity/oVerflow,N:add/subtract,C:Carry
+1:set,0:reset,+:affected,-:unaffected,P:Parity,V:oVerflow
+
+------------------OP-code guide------------------
+Note: All values in OP-code column are hexadecimal.
+
+r:8-bit register: B=0,C=1,D=2,E=3,H=4,L=5,(HL)=6,A=7
+rr:16-bit register: BC=0,DE=1,HL=2,AF/SP=3
+f:flag: NZ=0,Z=1,NC=2,C=3,PO=4,PE=5,P=6,M=7
+b:bit (0-7)
+#:8-bit immediate value, goes with the XX
+##:16-bit immediate value, goes with the XX XX (little-endian)

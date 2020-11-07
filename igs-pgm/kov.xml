@@ -1,0 +1,140 @@
+<mamecheat version="1">
+
+  <cheat desc="Infinite Time">
+    <script state="run">
+      <action>maincpu.pb@815D70=64</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Unlock Secret Characters"> <comment>Set on title or character selection screen</comment>
+    <script state="on">
+      <action>temp0 =maincpu.mw@134108</action>
+      <action>temp1 =maincpu.mw@134174</action>
+      <action>temp2 =maincpu.mw@13418C</action>
+    </script>
+    <script state="run">
+      <action>maincpu.mw@134108=0002</action>
+      <action>maincpu.mw@134174=0002</action>
+      <action>maincpu.mw@13418C=0002</action>
+    </script>
+    <script state="off">
+      <action>maincpu.mw@134108=temp0 </action>
+      <action>maincpu.mw@134174=temp1 </action>
+      <action>maincpu.mw@13418C=temp2 </action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="P1 Infinite Lives">
+    <script state="run">
+      <action>maincpu.pb@8166D9=0A</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Infinite Energy">
+    <script state="run">
+      <action>maincpu.pb@8160C3=80</action>
+      <action>maincpu.pb@816911=40</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Invincibility">
+    <script state="run">
+      <action>maincpu.pb@8161F9=04|(maincpu.pb@8161F9 BAND ~04)</action>
+      <action>maincpu.pw@81613A=000F</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Rapid Fire">
+    <script state="run">
+      <action>maincpu.pb@803DDF=01</action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="P2 Infinite Lives">
+    <script state="run">
+      <action>maincpu.pb@81699B=0A</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Infinite Energy">
+    <script state="run">
+      <action>maincpu.pb@81625F=80</action>
+      <action>maincpu.pb@816BD3=B0</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Invincibility">
+    <script state="run">
+      <action>maincpu.pb@816395=04|(maincpu.pb@816395 BAND ~04)</action>
+      <action>maincpu.pw@8162D6=000F</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Rapid Fire">
+    <script state="run">
+      <action>maincpu.pb@803E0F=01</action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="P3 Infinite Lives">
+    <script state="run">
+      <action>maincpu.pb@816C5D=0A</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P3 Infinite Energy">
+    <script state="run">
+      <action>maincpu.pb@8163FB=80</action>
+      <action>maincpu.pb@816E95=40</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P3 Invincibility">
+    <script state="run">
+      <action>maincpu.pb@816531=04|(maincpu.pb@816531 BAND ~04)</action>
+      <action>maincpu.pw@816472=000F</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P3 Rapid Fire">
+    <script state="run">
+      <action>maincpu.pb@803E3F=01</action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="P4 Infinite Lives">
+    <script state="run">
+      <action>maincpu.pb@816F1F=0A</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P4 Infinite Energy">
+    <script state="run">
+      <action>maincpu.pb@816597=80</action>
+      <action>maincpu.pb@817157=B0</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P4 Invincibility">
+    <script state="run">
+      <action>maincpu.pb@8166CD=04|(maincpu.pb@8166CD BAND ~04)</action>
+      <action>maincpu.pw@81660E=000F</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P4 Rapid Fire">
+    <script state="run">
+      <action>maincpu.pb@803E6F=01</action>
+    </script>
+  </cheat>
+
+</mamecheat>
+<!-- Cheat file downloaded from http://www.mamecheat.co.uk, see cheat.txt for list of contributors. -->

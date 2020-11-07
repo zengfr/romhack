@@ -1,0 +1,242 @@
+<mamecheat version="1">
+
+  <cheat desc="Infinite Time">
+    <script state="run">
+      <action>maincpu.pb@818344=63</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Unlock Secret Characters">
+    <script state="on">
+      <action>temp0 =maincpu.mw@143820</action>
+      <action>temp1 =maincpu.mw@14387A</action>
+      <action>temp2 =maincpu.mw@143892</action>
+    </script>
+    <script state="run">
+      <action>maincpu.mw@143820=0002</action>
+      <action>maincpu.mw@14387A=0002</action>
+      <action>maincpu.mw@143892=0002</action>
+    </script>
+    <script state="off">
+      <action>maincpu.mw@143820=temp0 </action>
+      <action>maincpu.mw@14387A=temp1 </action>
+      <action>maincpu.mw@143892=temp2 </action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="P1 Invincibility">
+    <script state="run">
+      <action>maincpu.pw@D090D2=0003</action>
+      <action>maincpu.pw@D090F1=D021</action>
+      <action>maincpu.pw@D091E2=0001</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Infinite 1st Item">
+    <script state="run">
+      <action>maincpu.pb@80CC28=05</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Select 1st Item">
+    <parameter>
+      <item value="0x0201">LV1 Attack</item>
+      <item value="0x0202">LV2 Attack</item>
+      <item value="0x0203">LV3 Attack</item>
+      <item value="0x0204">LV4 Attack</item>
+      <item value="0x0205">LV5 Attack</item>
+      <item value="0x0222">Iron Gun</item>
+      <item value="0x0223">Fire Bomb</item>
+      <item value="0x0224">Smoke Bomb</item>
+      <item value="0x0225">Iron Lily</item>
+      <item value="0x024C">Holy Water - Restores Morale</item>
+      <item value="0x024D">Cure Herb</item>
+      <item value="0x024E">Cure Herb 2</item>
+      <item value="0x024F">Detoxify Herb</item>
+      <item value="0x0250">*(Zhuge Liang+Pang Tong)SevenStar</item>
+      <item value="0x0251">*(Zhuge Liang+Pang Tong)Supply Horse</item>
+      <item value="0x0252">*(Zhuge Liang+Pang Tong)Supply Bull</item>
+      <item value="0x0253">Max Morale</item>
+      <item value="0x0243">Blue Dragon - Infinit Morale +25sec</item>
+      <item value="0x0244">WhiteTiger - Confuses opponents +25sec</item>
+      <item value="0x0245">Red Sparrow - Defense Up + Attack Up +25sec</item>
+      <item value="0x0246">BlackBeast - Increases Score Speed +25sec</item>
+      <item value="0x0207">Pikemen Attack</item>
+      <item value="0x0214">Psych.Magic, X</item>
+      <item value="0x0215">Psych.Magic, Runaway</item>
+      <item value="0x0216">Psych.Magic, Scare</item>
+      <item value="0x0209">**Magic, Tempest</item>
+      <item value="0x020D">**Magic, Meteor Rain (?)</item>
+      <item value="0x0213">**Magic, (not working???)</item>
+      <item value="0x0206">*(ZhugeLiang)Magic, Big Stone Circle</item>
+      <item value="0x0208">*(DaoChan)Magic, Dark Night</item>
+      <item value="0x020A">*(ZhugeLiang,PangTong)Magic, Lightning</item>
+      <item value="0x020B">*(DaoChan,PangTong)Magic, IceStorm</item>
+      <item value="0x020C">*(PangTong)Magic, Satanic</item>
+      <item value="0x020E">*(PangTong,MaChao)Magic, Rumble Rocks</item>
+      <item value="0x020F">*(ZhugeLiang)Magic, Levitating Lights</item>
+      <item value="0x0210">*(ZhaoYun,SunQuan)Magic, Lancers' Attack #2</item>
+      <item value="0x0211">*(HuangZhong)Magic, Archers Attack</item>
+      <item value="0x0212">*(GuanYu,MaChao)Magic, Flaming War Machines</item>
+      <item value="0x0217">Command of General Cheng Yu</item>
+      <item value="0x0218">Command of General Xia Hou Yuan</item>
+      <item value="0x0219">Command of General Xia Hou Dun</item>
+      <item value="0x021A">Command of General Xu Huang</item>
+      <item value="0x021B">Command of General Xu Zhu</item>
+      <item value="0x021C">Command of General Zhang He</item>
+      <item value="0x021D">Command of General Niu Jin</item>
+      <item value="0x021E">Command of General Gan Ning</item>
+      <item value="0x021F">Command of General Zhou Tai</item>
+      <item value="0x0220">Command of General Lu Bu</item>
+      <item value="0x0221">Command of General Caocao</item>
+      <item value="0x0226">No weapon</item>
+      <item value="0x0227">*(Guan Yu)BroadSword</item>
+      <item value="0x0228">*(Guan Yu)DragonKnife W+12%</item>
+      <item value="0x0229">*(Guan Yu+ZhangFei+ZhaoYun)Halberd W+45%</item>
+      <item value="0x022A">*(ZhangFei)SnakeLance</item>
+      <item value="0x022B">*(ZhangFei)SuperLance W+12%</item>
+      <item value="0x022C">*(ZhaoYun)Spear</item>
+      <item value="0x022D">*(ZhaoYun)FireArm W+18%</item>
+      <item value="0x022E">*(HuangZhong)Bow</item>
+      <item value="0x022F">*(HuangZhong)PoisonBow W+12%</item>
+      <item value="0x0230">*(HuangZhong)FireBow W+37%</item>
+      <item value="0x0231">*(HuangZhong)GodBow W+100%</item>
+      <item value="0x0232">*(MaChao)LongSword</item>
+      <item value="0x0233">*(MaChao)YiSword W+25%</item>
+      <item value="0x0234">*(MaChao)ChingSword W+50%</item>
+      <item value="0x0235">*(MaChao)IronSword W+10%</item>
+      <item value="0x0236">*(Zhuge)FireFan W+50%</item>
+      <item value="0x0237">*(Zhuge)WaterFan W+28%</item>
+      <item value="0x0238">*(DiaoChan)Dragger</item>
+      <item value="0x0239">*(DiaoChan)RedDragger W+18%</item>
+      <item value="0x023A">*(DiaoChan)FlyClaw W+32%</item>
+      <item value="0x023B">*(PangTong)CurveKnife</item>
+      <item value="0x023C">*(PangTong)HookKnife W+25%</item>
+      <item value="0x023D">*(PangTong)WizardKnife W+20%</item>
+      <item value="0x023E">*(SunQuan)LongLance</item>
+      <item value="0x023F">*(SunQuan)ThreeSection W-18%</item>
+      <item value="0x0240">Unknown? Original???</item>
+      <item value="0x0241">Unknown? Level 1 Weapon</item>
+      <item value="0x0242">Unknown? Level 2 Weapon</item>
+      <item value="0x0247">!!!BUGGY1 (DON'T USE!)</item>
+      <item value="0x0248">!!!BUGGY2 (DON'T USE!)</item>
+      <item value="0x0249">??? 0</item>
+      <item value="0x024A">??? 1</item>
+      <item value="0x024B">??? 2</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pw@80CC26=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="P2 Invincibility">
+    <script state="run">
+      <action>maincpu.pw@D094D2=0003</action>
+      <action>maincpu.pw@D094F1=D021</action>
+      <action>maincpu.pw@D095E2=0001</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Infinite 1st Item">
+    <script state="run">
+      <action>maincpu.pb@8CCD24=05</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Select 1st Item">
+    <parameter>
+      <item value="0x0201">LV1 Attack</item>
+      <item value="0x0202">LV2 Attack</item>
+      <item value="0x0203">LV3 Attack</item>
+      <item value="0x0204">LV4 Attack</item>
+      <item value="0x0205">LV5 Attack</item>
+      <item value="0x0222">Iron Gun</item>
+      <item value="0x0223">Fire Bomb</item>
+      <item value="0x0224">Smoke Bomb</item>
+      <item value="0x0225">Iron Lily</item>
+      <item value="0x024C">Holy Water - Restores Morale</item>
+      <item value="0x024D">Cure Herb</item>
+      <item value="0x024E">Cure Herb 2</item>
+      <item value="0x024F">Detoxify Herb</item>
+      <item value="0x0250">*(Zhuge Liang+Pang Tong)SevenStar</item>
+      <item value="0x0251">*(Zhuge Liang+Pang Tong)Supply Horse</item>
+      <item value="0x0252">*(Zhuge Liang+Pang Tong)Supply Bull</item>
+      <item value="0x0253">Max Morale</item>
+      <item value="0x0243">Blue Dragon - Infinit Morale +25sec</item>
+      <item value="0x0244">WhiteTiger - Confuses opponents +25sec</item>
+      <item value="0x0245">Red Sparrow - Defense Up + Attack Up +25sec</item>
+      <item value="0x0246">BlackBeast - Increases Score Speed +25sec</item>
+      <item value="0x0207">Pikemen Attack</item>
+      <item value="0x0214">Psych.Magic, X</item>
+      <item value="0x0215">Psych.Magic, Runaway</item>
+      <item value="0x0216">Psych.Magic, Scare</item>
+      <item value="0x0209">**Magic, Tempest</item>
+      <item value="0x020D">**Magic, Meteor Rain (?)</item>
+      <item value="0x0213">**Magic, (not working???)</item>
+      <item value="0x0206">*(ZhugeLiang)Magic, Big Stone Circle</item>
+      <item value="0x0208">*(DaoChan)Magic, Dark Night</item>
+      <item value="0x020A">*(ZhugeLiang,PangTong)Magic, Lightning</item>
+      <item value="0x020B">*(DaoChan,PangTong)Magic, IceStorm</item>
+      <item value="0x020C">*(PangTong)Magic, Satanic</item>
+      <item value="0x020E">*(PangTong,MaChao)Magic, Rumble Rocks</item>
+      <item value="0x020F">*(ZhugeLiang)Magic, Levitating Lights</item>
+      <item value="0x0210">*(ZhaoYun,SunQuan)Magic, Lancers' Attack #2</item>
+      <item value="0x0211">*(HuangZhong)Magic, Archers Attack</item>
+      <item value="0x0212">*(GuanYu,MaChao)Magic, Flaming War Machines</item>
+      <item value="0x0217">Command of General Cheng Yu</item>
+      <item value="0x0218">Command of General Xia Hou Yuan</item>
+      <item value="0x0219">Command of General Xia Hou Dun</item>
+      <item value="0x021A">Command of General Xu Huang</item>
+      <item value="0x021B">Command of General Xu Zhu</item>
+      <item value="0x021C">Command of General Zhang He</item>
+      <item value="0x021D">Command of General Niu Jin</item>
+      <item value="0x021E">Command of General Gan Ning</item>
+      <item value="0x021F">Command of General Zhou Tai</item>
+      <item value="0x0220">Command of General Lu Bu</item>
+      <item value="0x0221">Command of General Caocao</item>
+      <item value="0x0226">No weapon</item>
+      <item value="0x0227">*(Guan Yu)BroadSword</item>
+      <item value="0x0228">*(Guan Yu)DragonKnife W+12%</item>
+      <item value="0x0229">*(Guan Yu+ZhangFei+ZhaoYun)Halberd W+45%</item>
+      <item value="0x022A">*(ZhangFei)SnakeLance</item>
+      <item value="0x022B">*(ZhangFei)SuperLance W+12%</item>
+      <item value="0x022C">*(ZhaoYun)Spear</item>
+      <item value="0x022D">*(ZhaoYun)FireArm W+18%</item>
+      <item value="0x022E">*(HuangZhong)Bow</item>
+      <item value="0x022F">*(HuangZhong)PoisonBow W+12%</item>
+      <item value="0x0230">*(HuangZhong)FireBow W+37%</item>
+      <item value="0x0231">*(HuangZhong)GodBow W+100%</item>
+      <item value="0x0232">*(MaChao)LongSword</item>
+      <item value="0x0233">*(MaChao)YiSword W+25%</item>
+      <item value="0x0234">*(MaChao)ChingSword W+50%</item>
+      <item value="0x0235">*(MaChao)IronSword W+10%</item>
+      <item value="0x0236">*(Zhuge)FireFan W+50%</item>
+      <item value="0x0237">*(Zhuge)WaterFan W+28%</item>
+      <item value="0x0238">*(DiaoChan)Dragger</item>
+      <item value="0x0239">*(DiaoChan)RedDragger W+18%</item>
+      <item value="0x023A">*(DiaoChan)FlyClaw W+32%</item>
+      <item value="0x023B">*(PangTong)CurveKnife</item>
+      <item value="0x023C">*(PangTong)HookKnife W+25%</item>
+      <item value="0x023D">*(PangTong)WizardKnife W+20%</item>
+      <item value="0x023E">*(SunQuan)LongLance</item>
+      <item value="0x023F">*(SunQuan)ThreeSection W-18%</item>
+      <item value="0x0240">Unknown? Original???</item>
+      <item value="0x0241">Unknown? Level 1 Weapon</item>
+      <item value="0x0242">Unknown? Level 2 Weapon</item>
+      <item value="0x0247">!!!BUGGY1 (DON'T USE!)</item>
+      <item value="0x0248">!!!BUGGY2 (DON'T USE!)</item>
+      <item value="0x0249">??? 0</item>
+      <item value="0x024A">??? 1</item>
+      <item value="0x024B">??? 2</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pw@80CD22=param</action>
+    </script>
+  </cheat>
+
+</mamecheat>
+<!-- Cheat file downloaded from http://www.mamecheat.co.uk, see cheat.txt for list of contributors. -->

@@ -1,0 +1,658 @@
+<mamecheat version="1">
+
+  <cheat desc="Infinite Time">
+    <script state="run">
+      <action condition="maincpu.pb@FF8CD2==00 AND maincpu.pb@FF8CCE GT 01">maincpu.pw@FF8CCE=9928</action> <!-- round time, prevent hang on bonus stages -->
+      <action>maincpu.pw@FFE0D2=253C</action> <!--char select time-->
+    </script>
+  </cheat>
+
+  <cheat desc="Finish this Round Now!">
+    <script state="on">
+      <action>maincpu.pw@FF8CCE=0101</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Disable projectile impact slowdown">
+    <script state="run">
+      <action condition="maincpu.pb@FF83F8!=FF AND maincpu.pb@FF87F8!=FF">maincpu.pb@FF82F2=00</action> <!-- allow KO slowdown -->
+    </script>
+  </cheat>
+
+  <cheat desc="Always in Turbo Mode"> <comment>Characters move faster</comment>
+    <script state="run">
+      <action>maincpu.pb@FF82ED=01</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Select Starting Stage">
+    <parameter>
+      <item value="0x0000">Stage 1</item>
+      <item value="0x0100">Stage 2</item>
+      <item value="0x0200">Stage 3</item>
+      <item value="0x0300">Bonus stage: car</item>
+      <item value="0x0301">Stage 4</item>
+      <item value="0x0401">Stage 5</item>
+      <item value="0x0501">Stage 6</item>
+      <item value="0x0601">Bonus stage: barrels</item>
+      <item value="0x0602">Stage 7</item>
+      <item value="0x0702">Stage 8</item>
+      <item value="0x0802">Stage 9 (Boxer)</item>
+      <item value="0x0902">Bonus stage: drums</item>
+      <item value="0x0903">Stage 10 (Claw)</item>
+      <item value="0x0A03">Stage 11 (Sagat)</item>
+      <item value="0x0B03">Stage 12 (Dictator)</item>
+    </parameter>
+    <script state="run">
+      <action condition="(maincpu.pw@FF8C01==0000) OR (maincpu.pb@FF8BD1=00) OR (maincpu.pw@FF8C01==param)">maincpu.pb@FF8BD1=param/100, maincpu.pw@FF8C01=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Select Backdrop">
+    <parameter>
+      <item value="0x00">Japan (Castle)</item>
+      <item value="0x01">Japan (Bath House)</item>
+      <item value="0x02">Brazil</item>
+      <item value="0x03">USA (Air Base)</item>
+      <item value="0x04">USA (Pier)</item>
+      <item value="0x05">China</item>
+      <item value="0x06">USSR</item>
+      <item value="0x07">India (Dhalsim)</item>
+      <item value="0x08">USA (Las Vegas)</item>
+      <item value="0x09">Thailand (Statue)</item>
+      <item value="0x0A">Spain</item>
+      <item value="0x0B">Thailand (Temple)</item>
+      <item value="0x0C">England</item>
+      <item value="0x0D">Mexico</item>
+      <item value="0x0E">Hong Kong</item>
+      <item value="0x0F">Jamaica</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@FFE08B=param</action> <!-- E. Honda -->
+    </script>
+  </cheat>
+
+  <cheat desc="Select Ending">
+    <parameter>
+      <item value="0">No Losses</item>
+      <item value="1">No Continues</item>
+      <item value="2">Normal</item>
+    </parameter>
+    <script state="run">
+      <action condition="param LT 2">maincpu.pb@FF831A=00</action>
+      <action condition="param LT 2">maincpu.pb@FF8C21=param</action>
+      <action condition="param == 2">maincpu.pb@FF831A=01</action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="P1 Infinite Energy">
+    <script state="run">
+      <action condition="maincpu.pw@FF83F8 LT 60 AND (maincpu.pb@FF83D1 BAND 10) == 00 AND maincpu.pb@FF8BE4 == 0">maincpu.pw@FF83F8=90, maincpu.pw@FF858A=90</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Dizzy Status">
+    <parameter>
+      <item value="0x00">Never get dizzied</item>
+      <item value="0x40">Always get dizzied</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pw@FF842A=param, maincpu.pw@FF842C=param</action> <!-- timeout and damage -->
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Drain All Energy Now!">
+    <script state="on">
+      <action>maincpu.pb@FF83F9=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Finish round to win match">
+    <script state="run">
+      <action>maincpu.pb@FF875E=02</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Rounds won always set = 0">
+    <script state="run">
+      <action>maincpu.pb@FF875E=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Rounds won set = 0 Now!">
+    <script state="on">
+      <action>maincpu.pb@FF875E=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Invincibility">
+    <script state="run">
+      <action>maincpu.pb@FF858D=01</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Allow special moves during jump">
+    <script state="run">
+      <action>maincpu.pb@FF854F=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Hadou Ken motion Cancel"> <comment>Buggy</comment>
+    <script state="run">
+      <action>maincpu.pb@FF83EC=01</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 No limit next shot"> <comment>Buggy</comment>
+    <script state="run">
+      <action>maincpu.pb@FF85A2=00</action>
+      <action>maincpu.pb@FF85A3=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Set Boxer Turnpunch level">
+    <parameter>
+      <item value="0001">"One"</item>
+      <item value="0121">"Two"</item>
+      <item value="0241">"Three"</item>
+      <item value="0481">"Four"</item>
+      <item value="0961">"Five"</item>
+      <item value="1441">"Six"</item>
+      <item value="1921">"Seven"</item>
+      <item value="2401">"Final"</item>
+    </parameter>
+    <script state="run">
+      <action condition="maincpu.pb@(FF83CE+391) == 0A">maincpu.pw@(FF83CE+B6)=param</action> <!-- Pt 1 Boxer -->
+      <action condition="maincpu.pb@(FF83CE+391) == 0A">maincpu.pw@(FF83CE+B8)=param</action> <!-- Pt 2 P and K versions -->
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Select Character">
+    <parameter>
+      <item value="0x00">Ryu</item>
+      <item value="0x01">Edmund Honda</item>
+      <item value="0x02">Blanka</item>
+      <item value="0x03">Guile</item>
+      <item value="0x04">Ken Masters</item>
+      <item value="0x05">Chun-Li</item>
+      <item value="0x06">Zangief</item>
+      <item value="0x07">Dhalsim</item>
+      <item value="0x08">Balrog</item>
+      <item value="0x09">Sagat</item>
+      <item value="0x0A">Vega</item>
+      <item value="0x0B">M. Bison</item>
+      <item value="0x0C">Cammy</item>
+      <item value="0x0D">Thunder Hawk</item>
+      <item value="0x0E">Fei Long</item>
+      <item value="0x0F">Dee Jay</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@FF875F=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Select Colour">
+    <parameter>
+      <item value="0x00">LP button</item>
+      <item value="0x01">MP button</item>
+      <item value="0x02">HP button</item>
+      <item value="0x03">LK button</item>
+      <item value="0x04">MK button</item>
+      <item value="0x05">HK button</item>
+      <item value="0x06">Start button</item>
+      <item value="0x07">Hold any P/K button</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@FF877F=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Easy charge moves">
+    <script state="run">
+      <action>temp0=maincpu.pb@(FF83CE+391)</action> <!-- character -->
+      <action condition="maincpu.pb@FF83CE == 0">temp0=FF</action> <!-- match inactive -->
+      <action condition="temp0 == 1">maincpu.pb@(FF83CE+81)=01</action> <!-- E.Honda B,F+P -->
+      <action condition="temp0 == 1 AND maincpu.pb@(FF83CE+AA) LE 02">maincpu.pb@(FF83CE+AB)=01</action> <!-- E.Honda D,U+K -->
+      <action condition="temp0 == 2">maincpu.pb@(FF83CE+81)=01</action> <!-- Blanka B,F+P -->
+      <action condition="temp0 == 2">maincpu.pb@(FF83CE+B4)=01</action> <!-- Blanka D,U+K -->
+      <action condition="temp0 == 2">maincpu.pb@(FF83CE+BA)=01</action> <!-- Blanka B,F+K -->
+      <action condition="temp0 == 3">maincpu.pb@(FF83CE+81)=01</action> <!-- Guile B,F+P -->
+      <action condition="temp0 == 3">maincpu.pb@(FF83CE+87)=01</action> <!-- Guile D,U+K -->
+      <action condition="temp0 == 5">maincpu.pb@(FF83CE+81)=01</action> <!-- Chun Li D,U+K -->
+      <action condition="temp0 == 5 AND maincpu.pb@(FF83CE+B0) LE 02">maincpu.pb@(FF83CE+B1)=01</action> <!-- Chun Li  B,F+P -->
+      <action condition="temp0 == 8">maincpu.pb@(FF83CE+81)=01</action> <!-- Dictator B,F+P -->
+      <action condition="temp0 == 8">maincpu.pb@(FF83CE+89)=01</action> <!-- Dictator B,F+K -->
+      <action condition="temp0 == 8">maincpu.pb@(FF83CE+92)=01</action> <!-- Dictator D,U+K -->
+      <action condition="temp0 == 8 AND maincpu.pb@(FF83CE+AC) LE 02">maincpu.pb@(FF83CE+AD)=01</action> <!-- Dictator D,U+P -->
+      <action condition="temp0 == A">maincpu.pb@(FF83CE+81)=01</action> <!-- Boxer B,F+P -->
+      <action condition="temp0 == A">maincpu.pb@(FF83CE+89)=01</action> <!-- Boxer B,F+K -->
+      <action condition="temp0 == A">maincpu.pb@(FF83CE+C1)=01</action> <!-- Boxer D,U+P -->
+      <action condition="temp0 == A">maincpu.pw@(FF83CE+B2)=0101</action> <!-- Boxer TAP -->
+      <action condition="temp0 == B AND maincpu.pb@(FF83CE+88) LE 02">maincpu.pb@(FF83CE+89)=01</action> <!-- Claw B,F+P -->
+      <action condition="temp0 == B AND maincpu.pb@(FF83CE+8C) LE 02">maincpu.pb@(FF83CE+8D)=01</action> <!-- Claw D,U+K -->
+      <action condition="temp0 == B AND maincpu.pb@(FF83CE+90) LE 02">maincpu.pb@(FF83CE+91)=01</action> <!-- Claw D,U+P -->
+      <action condition="temp0 == F AND maincpu.pb@(FF83CE+92) LE 02">maincpu.pb@(FF83CE+93)=01</action> <!-- Dee Jay B,F+K -->
+      <action condition="temp0 == F AND maincpu.pb@(FF83CE+96) LE 02">maincpu.pb@(FF83CE+97)=01</action> <!-- Dee Jay D,U+P -->
+      <action condition="temp0 == F AND maincpu.pb@(FF83CE+A6) LE 02">maincpu.pb@(FF83CE+A7)=01</action> <!-- Dee Jay B,F+P -->
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Easy QCF + QCB moves">
+    <script state="run">
+      <action>temp0=maincpu.pb@(FF83CE+391)</action> <!-- character -->
+      <action condition="maincpu.pb@FF83CE == 0">temp0=FF</action> <!-- match inactive -->
+      <action condition="(temp0 == 0 OR temp0 == 4)">maincpu.pb@(FF83CE+90)=04</action> <!-- Ryu/Ken D,DB,B+K -->
+      <action condition="(temp0 == 0 OR temp0 == 4)">maincpu.pb@(FF83CE+94)=04</action> <!-- Ryu/Ken D,DF,F+P -->
+      <action condition="temp0 == 7">maincpu.pb@(FF83CE+80)=04</action> <!-- Dhalsim D,DF,F+P -->
+      <action condition="temp0 == 9">maincpu.pb@(FF83CE+88)=04</action> <!-- Sagat D,DF,F+P -->
+      <action condition="temp0 == 9">maincpu.pb@(FF83CE+8C)=04</action> <!-- Sagat D,DF,F+K -->
+      <action condition="temp0 == C">maincpu.pb@(FF83CE+96)=04</action> <!-- Cammy D,DF,F+K -->
+      <action condition="temp0 == E">maincpu.pb@(FF83CE+90)=04</action> <!-- Fei Long D,DF,F+P -->
+      <action condition="temp0 == E">maincpu.pb@(FF83CE+A0)=04</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Easy F,D,DF + B,D,DB moves">
+    <script state="run">
+      <action>temp0=maincpu.pb@(FF83CE+391)</action> <!-- character -->
+      <action condition="maincpu.pb@FF83CE == 0">temp0=FF</action> <!-- match inactive -->
+      <action condition="(temp0 == 0 OR temp0 == 4)"> <!-- Ryu/Ken F,D,DF+P -->
+        maincpu.pb@(FF83CE+98)=04
+      </action>
+      <action condition="temp0 == 9"> <!-- Sagat F,D,DF+P -->
+        maincpu.pb@(FF83CE+80)=04
+      </action>
+      <action condition="temp0 == C"> <!-- Cammy F,D,DF+K -->
+        maincpu.pb@(FF83CE+92)=04
+      </action>
+      <action condition="temp0 == D"> <!-- T.Hawk F,D,DF+P -->
+        maincpu.pb@(FF83CE+92)=04
+      </action>
+      <action condition="temp0 == E"> <!-- Fei Long B,D,DB+K -->
+        maincpu.pb@(FF83CE+94)=04
+      </action>
+      <action condition="temp0 == 7 AND (maincpu.pw@(FF83CE+392) BAND 2) GT 0">maincpu.pw@(FF83CE+88)=0608</action> <!-- Dhalsim L,D,DL+PPP/KKK L+PPP/KKK -->
+      <action condition="temp0 == 7 AND (maincpu.pw@(FF83CE+392) BAND 2) GT 0">maincpu.pb@(FF83CE+8D)=05</action>
+      <action condition="temp0 == 7 AND (maincpu.pw@(FF83CE+392) BAND 1) GT 0">maincpu.pw@(FF83CE+88)=0608</action> <!-- Dhalsim R,D,DR+PPP/KKK R+PPP/KKK -->
+      <action condition="temp0 == 7 AND (maincpu.pw@(FF83CE+392) BAND 1) GT 0">maincpu.pb@(FF83CE+8D)=06</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Easy 360, half-circle + tiger-knee moves">
+    <script state="run">
+      <action>temp0=maincpu.pb@(FF83CE+391)</action> <!-- character -->
+      <action condition="maincpu.pb@FF83CE == 0">temp0=FF</action> <!-- match inactive -->
+      <action condition="temp0 == 0"> <!-- Ryu B,DB,D,DF,F+P -->
+        maincpu.pb@(FF83CE+E0)=08
+      </action>
+      <action condition="temp0 == 7"> <!-- Dhalsim B,DB,D,DF,F+P -->
+        maincpu.pb@(FF83CE+84)=08
+      </action>
+      <action condition="temp0 == C"> <!-- Cammy B,DB,F+P -->
+        maincpu.pb@(FF83CE+A2)=04
+      </action>
+      <action condition="temp0 == 6 AND maincpu.pb@(FF83CE+12) != 0">maincpu.pd@(FF83CE+80)=06060800</action> <!-- Zangief 360+P/K L+P from the left -->
+      <action condition="temp0 == 6 AND maincpu.pb@(FF83CE+12) != 0">maincpu.pd@(FF83CE+9B)=06040800</action> <!-- Zangief 360+P/K L+K from the left -->
+      <action condition="temp0 == 6 AND maincpu.pb@(FF83CE+12) == 0">maincpu.pd@(FF83CE+80)=06070800</action> <!-- Zangief 360+P/K R+P from the right -->
+      <action condition="temp0 == 6 AND maincpu.pb@(FF83CE+12) == 0">maincpu.pd@(FF83CE+9B)=06050800</action> <!-- Zangief 360+P/K R+K from the right -->
+      <action condition="temp0 == D AND maincpu.pb@(FF83CE+12) != 0"> <!-- T.Hawk 360+P -->
+        maincpu.pd@(FF83CE+99)=04060800 <!-- L+P from the left -->
+      </action>
+      <action condition="temp0 == D AND maincpu.pb@(FF83CE+12) == 0"> <!-- T.Hawk 360+P -->
+        maincpu.pd@(FF83CE+99)=05060800 <!-- R+P from the right -->
+      </action>
+      <action condition="temp0 == 9"> <!-- Sagat D,F,UF+K -->
+        maincpu.pb@(FF83CE+84)=04
+      </action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Easy button tap moves">
+    <script state="run">
+      <action>temp0=maincpu.pb@(FF83CE+391)</action> <!-- character -->
+      <action condition="maincpu.pb@FF83CE == 0">temp0=FF</action> <!-- match inactive -->
+      <action condition="temp0 == 1 AND maincpu.pb@(FF83CE+9A) LT 2"> <!-- E.Honda mash LP -->
+        maincpu.pb@(FF83CE+9A)=2
+      </action>
+      <action condition="temp0 == 1 AND maincpu.pb@(FF83CE+9C) LT 2"> <!-- E.Honda mash MP -->
+        maincpu.pb@(FF83CE+9C)=2
+      </action>
+      <action condition="temp0 == 1 AND maincpu.pb@(FF83CE+9E) LT 2"> <!-- E.Honda mash HP -->
+        maincpu.pb@(FF83CE+9E)=2
+      </action>
+      <action condition="(temp0 == 2 OR temp0 == 5) AND maincpu.pb@(FF83CE+9A) LT 3"> <!-- Blanka LP/Chun Li LK -->
+        maincpu.pb@(FF83CE+9A)=3
+      </action>
+      <action condition="(temp0 == 2 OR temp0 == 5) AND maincpu.pb@(FF83CE+9C) LT 3"> <!-- Blanka MP/Chun Li MK -->
+        maincpu.pb@(FF83CE+9C)=3
+      </action>
+      <action condition="(temp0 == 2 OR temp0 == 5) AND maincpu.pb@(FF83CE+9E) LT 3"> <!-- Blanka HP/Chun Li HK -->
+        maincpu.pb@(FF83CE+9E)=3
+      </action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="P2 Infinite Energy">
+    <script state="run">
+      <action condition="maincpu.pw@FF87F8 LT 60 AND (maincpu.pb@FF87D1 BAND 10) == 00 AND maincpu.pb@FF8BE4 == 0">maincpu.pw@FF87F8=90, maincpu.pw@FF898A=90</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Dizzy Status">
+    <parameter>
+      <item value="0x00">Never get dizzied</item>
+      <item value="0x40">Always get dizzied</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pw@FF882A=param, maincpu.pw@FF882C=param</action> <!-- timeout and damage -->
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Drain All Energy Now!">
+    <script state="on">
+      <action>maincpu.pb@FF87F9=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Finish round to win match">
+    <script state="run">
+      <action>maincpu.pb@FF8B5E=02</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Rounds won always set = 0">
+    <script state="run">
+      <action>maincpu.pb@FF8B5E=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Rounds won set = 0 Now!">
+    <script state="on">
+      <action>maincpu.pb@FF8B5E=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Invincibility">
+    <script state="run">
+      <action>maincpu.pb@FF898D=01</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Allow special moves during jump">
+    <script state="run">
+      <action>maincpu.pb@FF894F=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Hadou Ken motion Cancel"> <comment>Buggy</comment>
+    <script state="run">
+      <action>maincpu.pb@FF87EC=01</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 No limit next shot"> <comment>Buggy</comment>
+    <script state="run">
+      <action>maincpu.pb@FF89A2=00</action>
+      <action>maincpu.pb@FF89A3=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Set Boxer Turnpunch level">
+    <parameter>
+      <item value="0001">"One"</item>
+      <item value="0121">"Two"</item>
+      <item value="0241">"Three"</item>
+      <item value="0481">"Four"</item>
+      <item value="0961">"Five"</item>
+      <item value="1441">"Six"</item>
+      <item value="1921">"Seven"</item>
+      <item value="2401">"Final"</item>
+    </parameter>
+    <script state="run">
+      <action condition="maincpu.pb@(FF87CE+391) == 0A">maincpu.pw@(FF87CE+B6)=param</action> <!-- Pt 1 Boxer -->
+      <action condition="maincpu.pb@(FF87CE+391) == 0A">maincpu.pw@(FF87CE+B8)=param</action> <!-- Pt 2 P and K versions -->
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Select Character">
+    <parameter>
+      <item value="0x00">Ryu</item>
+      <item value="0x01">Edmund Honda</item>
+      <item value="0x02">Blanka</item>
+      <item value="0x03">Guile</item>
+      <item value="0x04">Ken Masters</item>
+      <item value="0x05">Chun-Li</item>
+      <item value="0x06">Zangief</item>
+      <item value="0x07">Dhalsim</item>
+      <item value="0x08">Balrog</item>
+      <item value="0x09">Sagat</item>
+      <item value="0x0A">Vega</item>
+      <item value="0x0B">M. Bison</item>
+      <item value="0x0C">Cammy</item>
+      <item value="0x0D">Thunder Hawk</item>
+      <item value="0x0E">Fei Long</item>
+      <item value="0x0F">Dee Jay</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@FF8B5F=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Select Colour">
+    <parameter>
+      <item value="0x00">LP button</item>
+      <item value="0x01">MP button</item>
+      <item value="0x02">HP button</item>
+      <item value="0x03">LK button</item>
+      <item value="0x04">MK button</item>
+      <item value="0x05">HK button</item>
+      <item value="0x06">Start button</item>
+      <item value="0x07">Hold any P/K button</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@FF8B7F=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Easy charge moves">
+    <script state="run">
+      <action>temp0=maincpu.pb@(FF87CE+391)</action> <!-- character -->
+      <action condition="maincpu.pb@FF87CE == 0">temp0=FF</action> <!-- match inactive -->
+      <action condition="temp0 == 1">maincpu.pb@(FF87CE+81)=01</action> <!-- E.Honda B,F+P -->
+      <action condition="temp0 == 1 AND maincpu.pb@(FF87CE+AA) LE 02">maincpu.pb@(FF87CE+AB)=01</action> <!-- E.Honda D,U+K -->
+      <action condition="temp0 == 2">maincpu.pb@(FF87CE+81)=01</action> <!-- Blanka B,F+P -->
+      <action condition="temp0 == 2">maincpu.pb@(FF87CE+B4)=01</action> <!-- Blanka D,U+K -->
+      <action condition="temp0 == 2">maincpu.pb@(FF87CE+BA)=01</action> <!-- Blanka B,F+K -->
+      <action condition="temp0 == 3">maincpu.pb@(FF87CE+81)=01</action> <!-- Guile B,F+P -->
+      <action condition="temp0 == 3">maincpu.pb@(FF87CE+87)=01</action> <!-- Guile D,U+K -->
+      <action condition="temp0 == 5">maincpu.pb@(FF87CE+81)=01</action> <!-- Chun Li D,U+K -->
+      <action condition="temp0 == 5 AND maincpu.pb@(FF87CE+B0) LE 02">maincpu.pb@(FF87CE+B1)=01</action> <!-- Chun Li  B,F+P -->
+      <action condition="temp0 == 8">maincpu.pb@(FF87CE+81)=01</action> <!-- Dictator B,F+P -->
+      <action condition="temp0 == 8">maincpu.pb@(FF87CE+89)=01</action> <!-- Dictator B,F+K -->
+      <action condition="temp0 == 8">maincpu.pb@(FF87CE+92)=01</action> <!-- Dictator D,U+K -->
+      <action condition="temp0 == 8 AND maincpu.pb@(FF87CE+AC) LE 02">maincpu.pb@(FF87CE+AD)=01</action> <!-- Dictator D,U+P -->
+      <action condition="temp0 == A">maincpu.pb@(FF87CE+81)=01</action> <!-- Boxer B,F+P -->
+      <action condition="temp0 == A">maincpu.pb@(FF87CE+89)=01</action> <!-- Boxer B,F+K -->
+      <action condition="temp0 == A">maincpu.pb@(FF87CE+C1)=01</action> <!-- Boxer D,U+P -->
+      <action condition="temp0 == A">maincpu.pw@(FF87CE+B2)=0101</action> <!-- Boxer TAP -->
+      <action condition="temp0 == B AND maincpu.pb@(FF87CE+88) LE 02">maincpu.pb@(FF87CE+89)=01</action> <!-- Claw B,F+P -->
+      <action condition="temp0 == B AND maincpu.pb@(FF87CE+8C) LE 02">maincpu.pb@(FF87CE+8D)=01</action> <!-- Claw D,U+K -->
+      <action condition="temp0 == B AND maincpu.pb@(FF87CE+90) LE 02">maincpu.pb@(FF87CE+91)=01</action> <!-- Claw D,U+P -->
+      <action condition="temp0 == F AND maincpu.pb@(FF87CE+92) LE 02">maincpu.pb@(FF87CE+93)=01</action> <!-- Dee Jay B,F+K -->
+      <action condition="temp0 == F AND maincpu.pb@(FF87CE+96) LE 02">maincpu.pb@(FF87CE+97)=01</action> <!-- Dee Jay D,U+P -->
+      <action condition="temp0 == F AND maincpu.pb@(FF87CE+A6) LE 02">maincpu.pb@(FF87CE+A7)=01</action> <!-- Dee Jay B,F+P -->
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Easy QCF + QCB moves">
+    <script state="run">
+      <action>temp0=maincpu.pb@(FF87CE+391)</action> <!-- character -->
+      <action condition="maincpu.pb@FF87CE == 0">temp0=FF</action> <!-- match inactive -->
+      <action condition="(temp0 == 0 OR temp0 == 4)">maincpu.pb@(FF87CE+90)=04</action> <!-- Ryu/Ken D,DB,B+K -->
+      <action condition="(temp0 == 0 OR temp0 == 4)">maincpu.pb@(FF87CE+94)=04</action> <!-- Ryu/Ken D,DF,F+P -->
+      <action condition="temp0 == 7">maincpu.pb@(FF87CE+80)=04</action> <!-- Dhalsim D,DF,F+P -->
+      <action condition="temp0 == 9">maincpu.pb@(FF87CE+88)=04</action> <!-- Sagat D,DF,F+P -->
+      <action condition="temp0 == 9">maincpu.pb@(FF87CE+8C)=04</action> <!-- Sagat D,DF,F+K -->
+      <action condition="temp0 == C">maincpu.pb@(FF87CE+96)=04</action> <!-- Cammy D,DF,F+K -->
+      <action condition="temp0 == E">maincpu.pb@(FF87CE+90)=04</action> <!-- Fei Long D,DF,F+P -->
+      <action condition="temp0 == E">maincpu.pb@(FF87CE+A0)=04</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Easy F,D,DF + B,D,DB moves">
+    <script state="run">
+      <action>temp0=maincpu.pb@(FF87CE+391)</action> <!-- character -->
+      <action condition="maincpu.pb@FF87CE == 0">temp0=FF</action> <!-- match inactive -->
+      <action condition="(temp0 == 0 OR temp0 == 4)"> <!-- Ryu/Ken F,D,DF+P -->
+        maincpu.pb@(FF87CE+98)=04
+      </action>
+      <action condition="temp0 == 9"> <!-- Sagat F,D,DF+P -->
+        maincpu.pb@(FF87CE+80)=04
+      </action>
+      <action condition="temp0 == C"> <!-- Cammy F,D,DF+K -->
+        maincpu.pb@(FF87CE+92)=04
+      </action>
+      <action condition="temp0 == D"> <!-- T.Hawk F,D,DF+P -->
+        maincpu.pb@(FF87CE+92)=04
+      </action>
+      <action condition="temp0 == E"> <!-- Fei Long B,D,DB+K -->
+        maincpu.pb@(FF87CE+94)=04
+      </action>
+      <action condition="temp0 == 7 AND (maincpu.pw@(FF87CE+392) BAND 2) GT 0">maincpu.pw@(FF87CE+88)=0608</action> <!-- Dhalsim L,D,DL+PPP/KKK L+PPP/KKK -->
+      <action condition="temp0 == 7 AND (maincpu.pw@(FF87CE+392) BAND 2) GT 0">maincpu.pb@(FF87CE+8D)=05</action>
+      <action condition="temp0 == 7 AND (maincpu.pw@(FF87CE+392) BAND 1) GT 0">maincpu.pw@(FF87CE+88)=0608</action> <!-- Dhalsim R,D,DR+PPP/KKK R+PPP/KKK -->
+      <action condition="temp0 == 7 AND (maincpu.pw@(FF87CE+392) BAND 1) GT 0">maincpu.pb@(FF87CE+8D)=06</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Easy 360, half-circle + tiger-knee moves">
+    <script state="run">
+      <action>temp0=maincpu.pb@(FF87CE+391)</action> <!-- character -->
+      <action condition="maincpu.pb@FF87CE == 0">temp0=FF</action> <!-- match inactive -->
+      <action condition="temp0 == 0"> <!-- Ryu B,DB,D,DF,F+P -->
+        maincpu.pb@(FF87CE+E0)=08
+      </action>
+      <action condition="temp0 == 7"> <!-- Dhalsim B,DB,D,DF,F+P -->
+        maincpu.pb@(FF87CE+84)=08
+      </action>
+      <action condition="temp0 == C"> <!-- Cammy B,DB,F+P -->
+        maincpu.pb@(FF87CE+A2)=04
+      </action>
+      <action condition="temp0 == 6 AND maincpu.pb@(FF87CE+12) != 0">maincpu.pd@(FF87CE+80)=06060800</action> <!-- Zangief 360+P/K L+P from the left -->
+      <action condition="temp0 == 6 AND maincpu.pb@(FF87CE+12) != 0">maincpu.pd@(FF87CE+9B)=06040800</action> <!-- Zangief 360+P/K L+K from the left -->
+      <action condition="temp0 == 6 AND maincpu.pb@(FF87CE+12) == 0">maincpu.pd@(FF87CE+80)=06070800</action> <!-- Zangief 360+P/K R+P from the right -->
+      <action condition="temp0 == 6 AND maincpu.pb@(FF87CE+12) == 0">maincpu.pd@(FF87CE+9B)=06050800</action> <!-- Zangief 360+P/K R+K from the right -->
+      <action condition="temp0 == D AND maincpu.pb@(FF87CE+12) != 0"> <!-- T.Hawk 360+P -->
+        maincpu.pd@(FF87CE+99)=04060800 <!-- L+P from the left -->
+      </action>
+      <action condition="temp0 == D AND maincpu.pb@(FF87CE+12) == 0"> <!-- T.Hawk 360+P -->
+        maincpu.pd@(FF87CE+99)=05060800 <!-- R+P from the right -->
+      </action>
+      <action condition="temp0 == 9"> <!-- Sagat D,F,UF+K -->
+        maincpu.pb@(FF87CE+84)=04
+      </action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Easy button tap moves">
+    <script state="run">
+      <action>temp0=maincpu.pb@(FF87CE+391)</action> <!-- character -->
+      <action condition="maincpu.pb@FF87CE == 0">temp0=FF</action> <!-- match inactive -->
+      <action condition="temp0 == 1 AND maincpu.pb@(FF87CE+9A) LT 2"> <!-- E.Honda mash LP -->
+        maincpu.pb@(FF87CE+9A)=2
+      </action>
+      <action condition="temp0 == 1 AND maincpu.pb@(FF87CE+9C) LT 2"> <!-- E.Honda mash MP -->
+        maincpu.pb@(FF87CE+9C)=2
+      </action>
+      <action condition="temp0 == 1 AND maincpu.pb@(FF87CE+9E) LT 2"> <!-- E.Honda mash HP -->
+        maincpu.pb@(FF87CE+9E)=2
+      </action>
+      <action condition="(temp0 == 2 OR temp0 == 5) AND maincpu.pb@(FF87CE+9A) LT 3"> <!-- Blanka LP/Chun Li LK -->
+        maincpu.pb@(FF87CE+9A)=3
+      </action>
+      <action condition="(temp0 == 2 OR temp0 == 5) AND maincpu.pb@(FF87CE+9C) LT 3"> <!-- Blanka MP/Chun Li MK -->
+        maincpu.pb@(FF87CE+9C)=3
+      </action>
+      <action condition="(temp0 == 2 OR temp0 == 5) AND maincpu.pb@(FF87CE+9E) LT 3"> <!-- Blanka HP/Chun Li HK -->
+        maincpu.pb@(FF87CE+9E)=3
+      </action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="No Background Music">
+    <script state="run">
+      <action>audiocpu.pw@F018=0000</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Hide Background"> <comment>Activate before match start; set to Claw or Dictator stage for no BG sprites</comment>
+    <script state="on">
+      <action>
+        temp0=maincpu.pb@FF8049 band 0F, temp1=maincpu.pb@FF804F band 0F,
+        temp2=maincpu.ow@00C260, temp3=maincpu.od@00C262, temp4=maincpu.od@00C266,
+        temp5=maincpu.ow@00C2A4, temp6=maincpu.ow@00638A, temp7=maincpu.ow@008720, temp8=maincpu.ow@008848
+      </action>
+    </script>
+    <script state="run">
+      <action>
+        maincpu.pb@FF8049=maincpu.pb@FF8049 bor temp0, maincpu.pb@FF804F=maincpu.pb@FF804F bor temp1,
+        maincpu.ow@00C2A4=temp5, maincpu.ow@00638A=temp6, maincpu.ow@008720=temp7, maincpu.ow@008848=temp8,
+        maincpu.ow@00C260=4E71, maincpu.od@00C262=4E714E71, <!-- initial HUD draw -->
+        maincpu.od@00C266=4E714E71 <!-- initial timer draw -->
+      </action>
+      <action condition="(maincpu.pw@FF8008 > 6 and maincpu.pb@FF83F8 == 0 and maincpu.pb@FF87F8 == 0 and maincpu.pb@FF8BE4 == 0)"> <!-- activate only before and during match -->
+        maincpu.ow@00C2A4=6010, <!-- HUD updates -->
+        maincpu.ow@00638A=4E75 <!-- score updates -->
+      </action>
+      <action condition="(maincpu.pw@FF8008 == A and maincpu.pw@FF8CD2 == 0 and maincpu.pb@FF8BE4 == 0)"> <!-- activate only during match -->
+        maincpu.pb@FF8049=maincpu.pb@FF8049 band F0, maincpu.pb@FF804F=maincpu.pb@FF804F band F0, <!-- BG layers -->
+        maincpu.ow@008720=4E71, maincpu.ow@008848=4E71 <!-- flashing text -->
+      </action>
+    </script>
+    <script state="off">
+      <action>
+        maincpu.pb@FF8049=maincpu.pb@FF8049 bor temp0, maincpu.pb@FF804F=maincpu.pb@FF804F bor temp1,
+        maincpu.ow@00C260=temp2, maincpu.od@00C262=temp3, maincpu.od@00C266=temp4,
+        maincpu.ow@00C2A4=temp5, maincpu.ow@00638A=temp6, maincpu.ow@008720=temp7, maincpu.ow@008848=temp8
+      </action>
+    </script>
+  </cheat>
+
+  <cheat desc="Select Region"> <comment>This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET</comment>
+    <parameter>
+      <item value="0x00">Japan</item>
+      <item value="0x02">USA</item>
+      <item value="0x04">ETC</item>
+      <item value="0x06">Hispanic</item>
+      <item value="0x08">Asia</item>
+      <item value="0x0A">Asia TW</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@FF82CF=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Sound Test">
+    <parameter min="1" max="511" step="1"/>
+    <script state="change">
+      <action>audiocpu.pw@F007=0000</action>
+      <action>audiocpu.pq@F100=0000FF0000FF00FF</action>
+      <action>audiocpu.pq@F108=00FFFF0000000000</action>
+      <action>audiocpu.pq@F110=1000FF0000FF0000</action>
+      <action>audiocpu.pq@F118=00FFFF0000000000</action>
+      <action condition="(param LT 100)">audiocpu.pb@F111=param</action>
+      <action>temp0=param/100</action>
+      <action condition="(param GE 100)">audiocpu.pb@F110=temp0</action>
+      <action condition="(param GE 100)">audiocpu.pb@F111=param-(temp0*100)</action>
+      <action>audiocpu.pb@F007=20</action>
+    </script>
+  </cheat>
+
+</mamecheat>
+<!-- Cheat file downloaded from http://www.mamecheat.co.uk, see cheat.txt for list of contributors. -->

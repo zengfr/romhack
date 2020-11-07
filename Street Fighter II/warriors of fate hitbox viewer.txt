@@ -1,0 +1,560 @@
+mem = manager:machine().devices[":maincpu"].spaces["program"]
+
+local memory = {
+	readbyte        = function(addr) return mem:read_u8(addr) end,
+	readbytesigned  = function(addr) return mem:read_i8(addr) end,
+	
+	readword        = function(addr) return mem:read_u16(addr) end,
+	readwordsigned  = function(addr) return mem:read_i16(addr) end,
+
+	readdword       = function(addr) return mem:read_u32(addr) end,
+	readdwordsigned = function(addr) return mem:read_i32(addr) end,
+}
+
+local s = manager:machine().screens[":screen"]
+local screenwidth = s:width()
+local screenheight = s:height()
+
+local olddata = {}
+for i=1,0xF0,1 do
+	olddata[i] = 0
+end
+
+
+local boxes = {
+	      ["vulnerability"] = {color = 0x7777FF, fill = 0x40, outline = 0xFF},
+	             ["attack"] = {color = 0xFF0000, fill = 0x40, outline = 0xFF},
+	               ["hold"] = {color = 0xFFff00, fill = 0x40, outline = 0xFF},
+	             ["beheld"] = {color = 0xFF00ff, fill = 0x20, outline = 0xFF},
+	["proj. vulnerability"] = {color = 0x00FFFF, fill = 0x40, outline = 0xFF},
+	       ["proj. attack"] = {color = 0xFF66FF, fill = 0x40, outline = 0xFF},
+}
+
+local globals = {
+	axis_color     = 0xFFFFFFFF,
+	blank_color    = 0xFFFFFFFF,
+	axis_size      = 4,
+	mini_axis_size = 2,
+	blank_screen   = false,
+	draw_axis      = true,
+	draw_mini_axis = false,
+	no_alpha       = false, --fill = 0x00, outline = 0xFF for all box types
+
+	text_color = {
+		life = 0xCC00FF00,
+		life_low = 0xCCffFF00,
+		life_critical = 0xCCff0000,
+		life_high = 0xCCff00ff,
+		life_dead = 0x80808080,
+		remain_possibility = 0xCC00FF00,
+		remain_possibility_low = 0xCCffFF00,
+		remain_possibility_none = 0xCCff0000,
+	}
+}
+
+local count = 0
+
+local profile = {
+{	game = "wof",
+	address = {
+		screen_left = 0xFF7a8c, --0xFF6346,0xFF6348,0xFF7a8c,0xff7c26
+		game_phase  = 0xFF0000,
+	},
+	offset = {
+		flip_x = 0x16,
+		pos_x  = 0x04,
+		pos_y  = 0x08,
+		pos_z  = 0x0C,
+		pos_z2 = 0x10, -- ground height
+	},
+	objects = {
+		{address = 0xFFbe1c, number = 0x03, space = 0xe0, invulnerable = 0xB9, 
+		 hp = 0x82, hp_previous = 0x84, 
+		 status = 0x31, command = 0xb0, command_countdown = 0xb1, command_grab = 0xc1, 
+		 command_grab_countdown = {0xc2,0xc3,0xc4,0xc5,0xc6,0xc7,0xc8,0xc9},
+		 weapon = 0x8c,
+		 }, --players
+		{addr_list = 0xff837e, number_addr = 0xff8318, status = 0x31, hp = 0x82, hp_previous = 0x84,
+		temp1 = 0x2A, temp2 = 0x2c, temp3 =0x2e}, -- enemies and corpses
+		{addr_list = 0xff841e, number_addr = 0xff831a, status = 0x31}, -- projectiles
+		{addr_list = 0xff84be, number_addr = 0xff831c, status = 0x31}, -- projectiles
+		{addr_list = 0xff850e, number_addr = 0xff831e, style = "noheight"}, -- items on ground
+		{addr_list = 0xff855e, number_addr = 0xff8320, style = "noheight", remain = "0xAA"}, -- weapons on ground
+		{addr_list = 0xff85ae, number_addr = 0xff8322, hp=0x82, hp_previous = 0x84}, -- chests
+	},
+	box = {
+		radius_read = memory.readwordsigned,
+		val_x = 0x0, val_y = 0x4, rad_x = 0x2, rad_y = 0x6,
+		radscale = 2,
+	},
+	box_list = {
+		{id_ptr = 0x6e, type = "vulnerability"},
+		{id_ptr = 0x6c, type = "beheld"},
+		{id_ptr = 0x70, status_code = 0x4, type = "attack"},
+		{id_ptr = 0x70, status_code = 0xc, type = "attack"},
+		{id_ptr = 0x70, status_code = 0x8, type = "hold"},
+		{id_ptr = 0x70, status_code = 0x1C, type = "hold"},
+		{id_ptr = 0x70, status_code = 0x1C, type = "attack"},
+		{id_ptr = 0x70, status_code = 0x14, type = "attack"},
+		{id_ptr = 0x70, status_code = 0x24, type = "attack"},
+		{id_ptr = 0x70, status_code = 0x18, type = "attack"},
+		{id_ptr = 0x32, status_code = 0x18, type = "attack", style = "noheight"},
+		{id = function(base_addr) return memory.readword(memory.readword(base_addr+0x8c) + 0xFF0000 + 0x70) end,
+		 status_code = 0x20, type = "weapon"}, -- find weapon
+		{id = function(base_addr) return 0x16c8 end, character = 0x1, type = "hold"} -- command grab
+	},
+	id_read = memory.readword,
+	box_address = function(obj, box, box_entry)
+		local address = 0xe3e4a
+		return address + box.id
+	end,
+},
+}
+
+--------------------------------------------------------------------------------
+-- post-process modules
+
+for game in ipairs(profile) do
+	local g = profile[game]
+	g.box.offset_read = g.box.radius_read == memory.readbytesigned and memory.readbytesigned or memory.readwordsigned
+	g.offset.pos_y = g.offset.pos_x + 0x4
+	g.exist_val = g.exist_val or 0x0100
+	for entry in ipairs(g.objects) do
+		if type(g.objects[entry].active) == "number" then
+			g.objects[entry].active = {g.objects[entry].active}
+		end
+	end
+	if type(g.address.screen_left) ~= "table" then
+		g.address.screen_left = {g.address.screen_left}
+	end
+end
+
+for _, box in pairs(boxes) do
+	box.fill    = (globals.no_alpha and 0x00 or box.fill)    * 0x1000000 + box.color
+	box.outline = (globals.no_alpha and 0x00 or box.outline) * 0x1000000 + box.color
+end
+
+local game, framebuffer
+local DRAW_DELAY = 1
+-- if fba then
+-- 	DRAW_DELAY = DRAW_DELAY + 1
+-- end
+
+
+--------------------------------------------------------------------------------
+-- prepare the hitboxes
+
+local set_box_center = {
+	function(obj, box)
+		return
+			obj.pos_x + box.val_x * (obj.flip_x > 0 and -1 or 1),
+			obj.pos_y - box.val_y
+	end,
+
+	function(obj, box)
+		return
+			obj.pos_x + (box.val_x + box.rad_x) * (obj.flip_x > 0 and -1 or 1),
+			obj.pos_y - (box.val_y + box.rad_y)
+	end,
+}
+
+local function object_pos(f,obj) 
+	obj.flip_x = memory.readbyte(obj.base + game.offset.flip_x)
+	obj.pos_z  = game.offset.pos_z and memory.readwordsigned(obj.base + game.offset.pos_z) or 0
+	obj.pos_z  = obj.pos_z + (game.offset.pos_z2 and memory.readwordsigned(obj.base + game.offset.pos_z2) or 0)
+	obj.pos_x  = memory.readwordsigned(obj.base + game.offset.pos_x) - f.screen_left
+	obj.pos_y  = memory.readwordsigned(obj.base + game.offset.pos_y) + obj.pos_z
+	obj.pos_y  = screenheight - (obj.pos_y - 0x0F) + f.screen_top
+	return obj
+end
+
+
+local function define_box(f,obj, box_entry)
+	local box = {type = box_entry.type, style = box_entry.style}
+	local base_id = obj.base
+
+	if box_entry.status_code then 
+		if not obj.status or memory.readbyte(obj.base+obj.status) ~= box_entry.status_code then
+			return nil
+		end
+		if box_entry.status_code == 0x18 and box_entry.id_ptr == 0x70 then return nil end -- no horse
+		if box_entry.status_code == 0x00 and memory.readbyte(base_id+0x63) == 1 then return nil end -- on horse
+	end
+
+	if box_entry.character then
+		if memory.readbyte(base_id + 0x21) ~= box_entry.character then return nil end
+		if memory.readbyte(base_id + 0xc1) ~= 0xff then return nil end
+	end
+	
+	if box_entry.id_ptr then 
+		if box_entry.id_ptr == 0x32 and memory.readbyte(base_id+0x63) == 1 then return nil end -- on horse
+		box.id = game.id_read(base_id + box_entry.id_ptr)
+	elseif box_entry.id then
+		box.id = box_entry.id(obj.base)
+	else
+		return nil
+	end
+
+
+	if base_id == 0 or box.id == 0 or (obj.invulnerable and box.type == "vulnerability") then 
+		return nil
+	end
+
+	box.address = game.box_address(obj, box, box_entry)
+	if not box.address then
+		return nil
+	end
+
+	if obj.style and not box.style then box.style = obj.style end
+
+	box.rad_x = game.box.radius_read(box.address + game.box.rad_x)/game.box.radscale
+	box.rad_y = game.box.radius_read(box.address + game.box.rad_y)/game.box.radscale
+	box.val_x = game.box.offset_read(box.address + game.box.val_x)
+	box.val_y = game.box.offset_read(box.address + game.box.val_y)
+
+	if box.type == "beheld" then
+		box.val_y = box.rad_x
+		box.rad_x = 0
+		box.rad_y = 0
+	end
+	if box.type == "weapon" then 
+		local newobj = object_pos(f,{base=0xff0000+memory.readword(obj.base+0x8c),})
+		box.val_x, box.val_y = set_box_center[game.box.radscale](newobj, box)
+		box.type = "attack"
+	else
+		box.val_x, box.val_y = set_box_center[game.box.radscale](obj, box)
+	end
+	box.left   = box.val_x - box.rad_x
+	box.right  = box.val_x + box.rad_x
+	box.top    = box.val_y - box.rad_y
+	box.bottom = box.val_y + box.rad_y
+
+	return box
+end
+
+
+local function update_object(f, obj)
+	object_pos(f,obj)
+
+	for entry in ipairs(game.box_list) do
+		table.insert(obj, define_box(f,obj, game.box_list[entry]))
+	end
+	return obj
+end
+
+local function inactive(base, active)
+	for _, offset in ipairs(active) do
+		if memory.readword(base + offset) > 0 then
+			return false
+		end
+	end
+	return true
+end
+
+function deepcopy(orig)
+    local orig_type = type(orig)
+    local copy
+    if orig_type == 'table' then
+        copy = {}
+        for orig_key, orig_value in next, orig, nil do
+            copy[deepcopy(orig_key)] = deepcopy(orig_value)
+        end
+        setmetatable(copy, deepcopy(getmetatable(orig)))
+    else -- number, string, boolean, etc
+        copy = orig
+    end
+    return copy
+end
+
+local function update_hitboxes()
+	if not game then
+		return
+	end
+	for f = 1, DRAW_DELAY do
+		framebuffer[f] = deepcopy(framebuffer[f+1])
+	end
+
+	-- framebuffer[DRAW_DELAY+1] = {game_active = memory.readbyte(game.address.game_phase) > 0}
+	framebuffer[DRAW_DELAY+1] = {game_active = true}
+	local f = framebuffer[DRAW_DELAY+1]
+	if not f.game_active then
+		return
+	end
+
+	local camera_mode = game.address.camera_mode and memory.readbyte(game.address.camera_mode) or 1
+	if not game.address.screen_left[camera_mode] then
+		camera_mode = 1
+	end
+	f.screen_left = memory.readwordsigned(game.address.screen_left[camera_mode])
+	f.screen_top  = memory.readwordsigned(game.address.screen_left[camera_mode] + 0x4)
+
+	for _, set in ipairs(game.objects) do
+		local obj_count = set.number or set.number_addr and memory.readword(set.number_addr)
+		
+		for n = 1, obj_count do
+			local obj = {base = set.address and set.address + (n-1) * set.space or 0xff0000 + memory.readword(set.addr_list-(n-1)*2)}
+			if memory.readword(obj.base) >= game.exist_val then
+				obj.projectile = set.projectile
+				obj.invulnerable = (set.hp and memory.readwordsigned(obj.base + set.hp) < 0) or
+					(set.alive and memory.readword(obj.base + set.alive) == 0) or
+					(set.invulnerable and memory.readword(obj.base + set.invulnerable) > 0)
+				obj.harmless = set.harmless or (set.active and inactive(obj.base, set.active))
+				if set.hp then
+					obj.life = memory.readwordsigned(obj.base+set.hp)
+					obj.life_previous = memory.readwordsigned(obj.base+set.hp_previous)
+				end
+				if set.command then
+					obj.command = memory.readbyte(obj.base+set.command)
+					obj.command_countdown = memory.readbyte(obj.base+set.command_countdown)
+				end
+				
+				if memory.readbyte(obj.base + 0x63) == 1 then -- on horse
+					local d1 = memory.readbyte(obj.base + 0xa0)
+					local d2 = memory.readbyte(obj.base + 0xa1)
+					if d1 ~= 0 and d1 == d2 then
+						if d1 == 2 or d1 == 6 or d1 == 0xa then
+							if memory.readbyte(obj.base + 0x16) == 0x00 then
+								obj.turnback_countdown = memory.readbyte(obj.base+0xb7)
+							end
+						elseif d1 == 1 or d1 == 5 or d1 == 9 then
+							if memory.readbyte(obj.base + 0x16) == 0xff then
+								obj.turnback_countdown = memory.readbyte(obj.base+0xb7)
+							end
+						end
+					end
+				elseif set.command_grab and memory.readbyte(obj.base+0x21) == 0x1 then -- not no horse and kassar/zhang fei
+					obj.command_grab = memory.readbyte(obj.base+set.command_grab)
+					obj.command_grab_countdown = {}
+					for i,v in ipairs(set.command_grab_countdown) do
+						table.insert(obj.command_grab_countdown,memory.readbyte(obj.base+v))
+					end
+				end
+
+				if set.weapon and memory.readword(obj.base+set.weapon) ~= 0 then
+					local weapon_obj = object_pos(f,{base = 0xff0000+memory.readword(obj.base+set.weapon)})
+					weapon_obj.remain = memory.readdword(weapon_obj.base + 0xaa)
+					weapon_obj.remain_possibility = memory.readbytesigned(weapon_obj.remain)
+					if weapon_obj.remain_possibility < 0 then
+						weapon_obj.remain_possibility = - weapon_obj.remain_possibility
+					end
+					table.insert(f,weapon_obj)
+				end
+
+				if set.remain then
+					local remain = memory.readdword(obj.base + set.remain)
+					obj.remain_possibility = memory.readbytesigned(remain)
+					if obj.remain_possibility < 0 then
+						obj.remain_possibility = - obj.remain_possibility
+					end
+				end
+
+				if set.temp1 then
+					obj.temp1 = memory.readword(obj.base+set.temp1)
+					obj.temp2 = memory.readword(obj.base+set.temp2)
+					obj.temp3 = memory.readword(obj.base+set.temp3)
+				end
+				obj.addr_table = set.addr_table
+				obj.status = set.status
+				obj.style = set.style
+				table.insert(f, update_object(f, obj))
+				if obj.box_count then
+					f.box_count = obj.box_count
+				end
+			end
+		end
+	end
+end
+
+
+-- emu.registerafter( function()
+-- 	update_hitboxes()
+-- end)
+
+
+--------------------------------------------------------------------------------
+-- draw the hitboxes
+
+local function draw_hitbox(hb)
+	if not hb then
+		return
+	end
+
+	if globals.draw_mini_axis then
+		s:draw_line(hb.val_x, hb.val_y+globals.mini_axis_size-1, hb.val_x, hb.val_y-globals.mini_axis_size+1, boxes[hb.type].outline)
+		s:draw_line(hb.val_x-globals.mini_axis_size, hb.val_y, hb.val_x+globals.mini_axis_size, hb.val_y, boxes[hb.type].outline)
+	end
+
+	if hb.type == "beheld" then
+		s:draw_line(hb.val_x, hb.val_y-globals.mini_axis_size, hb.val_x, hb.val_y+globals.mini_axis_size, boxes[hb.type].outline)
+		s:draw_line(hb.val_x-globals.mini_axis_size, hb.val_y, hb.val_x+globals.mini_axis_size, hb.val_y, boxes[hb.type].outline)
+		return
+	end
+
+	if hb.style == "noheight" then
+		s:draw_box(hb.left, hb.top, hb.right, hb.bottom, boxes[hb.type].fill)
+	else
+		s:draw_box(hb.left, hb.top, hb.right, hb.bottom, boxes[hb.type].fill, boxes[hb.type].outline)
+	end
+end
+
+local function draw_axis(obj)
+	s:draw_line(obj.pos_x, obj.pos_y+globals.axis_size-1, obj.pos_x, obj.pos_y-globals.axis_size+1, globals.axis_color)
+	s:draw_line(obj.pos_x-globals.axis_size, obj.pos_y, obj.pos_x+globals.axis_size, obj.pos_y, globals.axis_color)
+end
+
+local function display_bar(obj)
+	if obj.life then
+		local life_color = globals.text_color.life
+		if obj.life < 0 then
+			life_color = globals.text_color.life_dead
+		elseif obj.life < 26 then
+			life_color = globals.text_color.life_critical
+		elseif obj.life < 52 then
+			life_color = globals.text_color.life_low
+		elseif obj.life > 104 then
+			life_color = globals.text_color.life_high
+		end
+		if obj.life_previous and obj.life ~= obj.life_previous then
+			s:draw_text(obj.pos_x-26, obj.pos_y-8, string.format("%d (%d)",obj.life,obj.life-obj.life_previous),life_color)
+		else
+			s:draw_text(obj.pos_x-26, obj.pos_y-8, string.format("%d",obj.life),life_color)
+		end
+		bar_count = math.floor(obj.life/104)
+		for i=0,bar_count do
+			if i < bar_count then
+				s:draw_box(obj.pos_x-26, obj.pos_y+i*4, obj.pos_x-26+104/2, obj.pos_y+i*4+3, life_color-0x40000000)
+			else
+				s:draw_box(obj.pos_x-26, obj.pos_y+i*4, obj.pos_x-26+(obj.life%104)/2, obj.pos_y+i*4+3, life_color-0x40000000)
+			end
+		end
+	end
+
+	if obj.remain_possibility then
+		local color = globals.text_color.remain_possibility
+		if obj.remain_possibility >= 0x18 then
+			color = globals.text_color.remain_possibility_low
+		elseif obj.remain_possibility >= 0x20 then
+			obj.remain_possibility = 0x20
+			color = globals.text_color.remain_possibility_none
+		end
+		s:draw_text(obj.pos_x-4, obj.pos_y-8, string.format("%d/32",0x20 - obj.remain_possibility),color)
+	end
+
+	if obj.command and obj.command ~= 0 then
+		local color = obj.command == 2 and 0xa0cccc00 or 0xa0cc0000
+		s:draw_box(obj.pos_x-26, obj.pos_y-12, obj.pos_x-26+obj.command_countdown, obj.pos_y-12+3, color)
+	end
+
+	if obj.turnback_countdown then
+		local color = 0xa0cc0000
+		s:draw_box(obj.pos_x-26, obj.pos_y-16, obj.pos_x-26+obj.turnback_countdown, obj.pos_y-16+3, color)
+	elseif obj.command_grab and obj.command_grab ~= 0 then
+		local color = obj.command_grab == 0xff and 0xa0cc0000 or 0xa0cccc00
+		for i,v in ipairs(obj.command_grab_countdown) do
+			s:draw_box(obj.pos_x-26+(i-1)*2, obj.pos_y-13-v, obj.pos_x-26+i*2, obj.pos_y-13, color)
+		end
+	end
+end
+
+
+local function render_hitboxes()
+	local f = framebuffer[1]
+	if not f then return end
+	if not f.game_active then
+		return
+	end
+
+	if globals.blank_screen then
+		s:draw_box(0, 0, screenwidth, screenheight, globals.blank_color)
+	end
+
+	for entry = 1, f.box_count or #game.box_list do
+		for _, obj in ipairs(f) do
+			draw_hitbox(obj[entry])
+		end
+	end
+
+	if globals.draw_axis then
+		for _, obj in ipairs(f) do
+			draw_axis(obj)
+		end
+	end
+
+	for _, obj in ipairs(f) do
+		display_bar(obj)
+	end
+
+end
+
+
+
+emu.register_frame_done(function()
+	update_hitboxes()
+	render_hitboxes()
+-- local watch_list = {
+-- 		0x4,0x5,0x8,0x9,0xc,0xd,
+-- 		0x84,0x85,0x82,0x83,0x16,0x70,0x10,0x11,
+-- 		0x16,0x31,0xb9,0x78,0xe0,0x30,0x6e,0x6f,
+-- 		0x7c,0x7d,0x7e,0x7f,0x79,0x72,0x73,0x16,
+-- 		0x96,0x6a,0x6b,0x82,0x83,0x3a,0x3b,0x6a,0x6b,
+-- 		0xa9
+-- 	}
+	
+	
+-- 	local offset = 0xffbe10
+-- 	local base_setting = memory.readword(0xff8510)
+-- 	if base_setting ~= 0 then
+-- 		offset=0xff0000+base_setting
+-- 	end
+
+-- 	-- local offset = 0xffcf90
+-- 	for i = 0,0xE,1 do
+-- 		s:draw_box(1,2+i*8,92,10+i*8,0x40000000)
+-- 		for ii=0,0xF,1 do
+-- 			local addr = offset+i*0x10+ii
+-- 			local data = memory.readbyte(addr)
+			
+-- 			local text_color = (data == olddata[i*0x10+ii+1] and 0x80FFFFFF) or 0xA0FF0000
+-- 			local watch_color = (data == olddata[i*0x10+ii+1] and 0xFFffFF00) or 0xFF00FF00
+
+-- 			for _,j in ipairs(watch_list) do 
+-- 				if addr - offset == j + 0xC then 
+-- 					text_color = watch_color
+-- 					break
+-- 				end
+-- 			end
+
+-- 			s:draw_text(1+ii*12,2+i*8,string.format("%02X",data),text_color)
+-- 			olddata[i*0x10+ii+1]=data
+-- 		end
+-- 	end
+	
+end)
+
+-- initialize on game startup
+
+local function initialize_fb()
+	framebuffer = {}
+	for f = 1, DRAW_DELAY + 1 do
+		framebuffer[f] = {}
+	end
+end
+
+
+local function whatgame()
+	print()
+	game = nil
+	initialize_fb()
+	for _, module in ipairs(profile) do
+			if emu.romname() == module.game then
+			print("drawing hitboxes for " .. emu.gamename())
+			game = module
+			return
+		end
+	end
+	print("not prepared for " .. emu.gamename())
+end
+
+
+initialize_fb()
+whatgame()

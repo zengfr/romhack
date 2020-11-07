@@ -1,0 +1,189 @@
+Address	T	Instruction/Data	Comment
+          0XAD60	N	move.b  (0x200C10).l, d3| 获取关卡变量	获取关卡变量
+          0XAD8E	N	move.l  d0, 0x20(a0)| 获取X坐标	获取X坐标
+          0XADA2	N	move.l  0x2C(a0), d0| X OFFSET	X OFFSET
+          0XB2B8	N	and.b   (a0), d2| A0  人物内存基址	A0  人物内存基址
+          0XB2BE	N	moveq   #0x7F, d5| 脚本组结构1，4字节，格式为112。未知，结构2组数-1，脚本偏移。	脚本组结构1，4字节，格式为112。未知，结构2组数-1，脚本偏移。
+          0XB2C0	N	and.b   1(a3), d5| 字节1	字节1
+          0XB2C4	N	suba.w  2(a3), a3| 字节2-3,脚本偏移值	字节2-3,脚本偏移值
+          0XB2C8	N	addq.w  #2, a3| 新指针+2	新指针+2
+          0XB2DE	N	bsr.w   Set_X| X	X
+          0XB2E2	N	move.w  0x28(a0), d4| Z	Z
+          0XB2E6	N	add.w   0x24(a0), d4| Y	Y
+          0XB330	N	moveq   #0x3F, d0 | '?'| 脚本组结构2，10字节，格式为221122,其中第一个成员似乎被跳过	脚本组结构2，10字节，格式为221122,其中第一个成员似乎被跳过
+          0XB332	N	and.b   3(a3), d0| 字节5，注意这里开始前面指针是加2的	字节5，注意这里开始前面指针是加2的
+          0XB33A	N	move.w  0(a3), 2(a1)| 字节2-3	字节2-3
+          0XB348	N	move.w  6(a3), d1| 字节8-9	字节8-9
+          0XB35C	N	move.w  4(a3), d1| 字节6-7	字节6-7
+          0XB382	N	move.b  2(a3), d0| 字节4	字节4
+          0XB38A	N	or.w    d3, d0| PAL NO 相关参数 D0 = ROLE PAL NUM	PAL NO 相关参数 D0 = ROLE PAL NUM
+          0XB394	N	move.b  3(a3), d1| 字节5	字节5
+          0XB3B0	N	addq.w  #8, a3| 指针加8	指针加8
+          0XB4B0	N	btst    #6, d0| 检查标志位	检查标志位
+          0XB4BC	N	bmi.w   loc_B502| 负数转移	负数转移
+          0XB4C0	N	move.l  0x1C(a0), d1| 脚本指针为零	脚本指针为零
+          0XB4C4	N	beq.w   loc_B4E4| 跳转到影子显示	跳转到影子显示
+          0XB4E0	N	move.b  d0, 0x17(a0)| 设置标志位	设置标志位
+          0XB502	N	moveq   #4, d0| 获取动作指针	获取动作指针
+          0XB514	N	move.w  0x10(a0), d1| OBJ ID	OBJ ID
+          0XB520	N	move.w  0x12(a0), d1| 动作ID	动作ID
+          0XB52C	N	move.l  a2, 0x1C(a0)| 动作指针内存	动作指针内存
+          0XB534	N	lea     4(a2), a4| 获取脚本指针	获取脚本指针
+          0XB538	N	move.b  0(a4), d1| 字节1	字节1
+          0XB53C	N	cmpi.b  #0xFE, d1| =-2	=-2
+          0XB580	N	move.l  a4, 0x1C(a0)| 设置动作	设置动作
+          0XB584	N	addq.w  #1, 0x14(a0)| 计数+1	计数+1
+          0XB58A	N	cmpa.l  #0x213800, a0| 213800,疑似敌人BASE	213800,疑似敌人BASE
+          0XB630	N	move.w  0x14(a0), d1| 脚本指针移动	脚本指针移动
+          0XB660	N	addq.w  #4, a6| 脚本指针加4	脚本指针加4
+          0XB664	N	cmpi.b  #0xFE, 0(a6)| 不等于FE,循环	不等于FE,循环
+          0XB6D0	N	movea.l 0x1C(a0), a3| 获得脚本指针	获得脚本指针
+          0XE928	N	move.w  (0x211010).l, 0x8E(a1)| 脚本相关颜色载入,从调色板载入。	脚本相关颜色载入,从调色板载入。
+          0XE938	N	movea.l (0x21101C).l, a0| 脚本指针	脚本指针
+          0XE93E	N	suba.w  2(a0), a0| 颜色指针相对脚本指针偏移	颜色指针相对脚本指针偏移
+          0XE946	N	lsl.w   #6, d0| 0x40,PAL长度	0x40,PAL长度
+          0XF01C	N	cmpi.w  #0x40, 0x4C(a0) | '@'| 特殊ID	特殊ID
+          0XF26A	N	clr.w   0x14(a0)| 计数器=0	计数器=0
+          0XF284	N	movea.l (a2,d1.w), a2| 获取动作指针	获取动作指针
+          0XF292	N	move.b  0(a2), d1| 脚本字节1	脚本字节1
+          0XF29A	N	addq.w  #4, a2| 脚本指针+4	脚本指针+4
+          0XF29E	N	cmpi.b  #0xFE, 0(a2)| 不等于-2，循环	不等于-2，循环
+          0XF2A6	N	move.w  d0, 6(a1)| 保存计数	保存计数
+          0XF976	N	.word 0x10| F984	F984
+          0XFB6C	N	move.w  Player_Font_Pic_No(pc,d0.w), 0x12(a1)| 动作ID	动作ID
+          0XFB72	N	move.b  Player_Font_Pal_Param(pc,d0.w), 0x18(a1)| 查表	查表
+          0XFB84	N	move.w  Cursor_Y_Pos_Tbl(pc,d0.w), 0x24(a1)| 设置光标Y坐标	设置光标Y坐标
+          0XFC62	N	lea     (0x211300).l, a1| 选人光标文字OBJ BASE	选人光标文字OBJ BASE
+          0XFC68	N	lea     (0x200800).l, a2| 选人光标内存BASE	选人光标内存BASE
+          0XFCA8	N	btst    d6, (0x200078).l| ID检测，具体不明。	ID检测，具体不明。
+          0XFCAE	N	beq.w   locret_FCF0| 跳到结束	跳到结束
+          0XFCE4	N	bsr.w   loc_FE8E| 判断是否同人位置	判断是否同人位置
+          0XFCE8	N	bsr.w   Set_Cursor_X_Pos| 疑似光标坐标初始载入	疑似光标坐标初始载入
+          0XFD34	N	move.w  word_FD42(pc,d2.w), 0x20(a1)| 光标字坐标	光标字坐标
+          0XFD3A	N	move.w  word_FD48(pc,d2.w), 0x320(a1)| 光标块X坐标	光标块X坐标
+          0XFD50	N	move.b  0x10(a0,d6.w), d0| D0 当前选中人物ID	D0 当前选中人物ID
+          0XFD54	N	move.b  d6, 0xC(a0,d0.w)| PLAYER FLAG	PLAYER FLAG
+          0XFD6C	N	move.w  word_FD42(pc,d0.w), 0x20(a1)| 当前控制光标坐标，再获取	当前控制光标坐标，再获取
+          0XFD9A	N	move.b  #2, 0x18(a2)| 颜色代码相关	颜色代码相关
+          0XFDD4	N	move.b  0x10(a0,d6.w), d2| 获得人物ID	获得人物ID
+          0XFDD8	N	tst.b   0xC(a0,d2.w)| NOP掉，限制ID和选同人代码	NOP掉，限制ID和选同人代码
+          0XFDE0	N	bsr.w   CheckSelect| 当前未选人不会调用这里。	当前未选人不会调用这里。
+          0XFDE4	N	move.b  2(a0,d6.w), d0| 选人时间9秒	选人时间9秒
+          0XFDEA	N	move.b  5(a0,d6.w), d0| 选人时间毫秒	选人时间毫秒
+          0XFDF0	N	beq.w   loc_FE72| 时间结束，自动选人。返回4	时间结束，自动选人。返回4
+          0XFE00	N	bcc.w   loc_FE14| 时间大于970,跳	时间大于970,跳
+          0XFE10	N	bne.w   loc_FE72| 查表后自动选人？	查表后自动选人？
+          0XFE1A	N	andi.b  #0x30, d2 | '0'| 按A或B选人?	按A或B选人?
+          0XFE2C	N	btst    #0, d1| 按左	按左
+          0XFE34	N	btst    #1, d1| 按右	按右
+          0XFE82	N	addq.w  #1, d2| 已选中相同ID，ID+1	已选中相同ID，ID+1
+          0XFE84	N	cmpi.w  #3, d2| 不超过3，修改为可选人物ID	不超过3，修改为可选人物ID
+          0XFE8C	N	moveq   #0, d2| 恢复到最小ID	恢复到最小ID
+          0XFE8E	N	cmp.b   0x10(a0), d2| 1P	1P
+          0XFE94	N	cmp.b   0x11(a0), d2| 2P	2P
+          0XFE9A	N	cmp.b   0x12(a0), d2| 3P	3P
+          0XFEA0	N	move.b  d2, 0x10(a0,d6.w)| 写入选人ID	写入选人ID
+          0XFEAE	N	move.b  0x10(a0,d6.w), d2| 按左，获得ID	按左，获得ID
+          0XFEB2	N	subq.w  #1, d2| 选人ID减-1	选人ID减-1
+          0XFEB8	N	moveq   #2, d2| 修改为写入最大人物ID	修改为写入最大人物ID
+          0XFEBA	N	tst.b   0xC(a0,d2.w)| 检验ID已选人内存表，这里没有扩展或NOP，肯定出错	检验ID已选人内存表，这里没有扩展或NOP，肯定出错
+          0XFEBE	N	bpl.s   loc_FEB2| 确认已选过相同人，ID再减少1	确认已选过相同人，ID再减少1
+          0XFEC6	N	move.b  0x10(a0,d6.w), d2| 按右，获得ID	按右，获得ID
+          0XFECA	N	addq.w  #1, d2| 选人ID+1	选人ID+1
+          0XFECC	N	cmpi.w  #3, d2| 上限3，修改为可选ID总数	上限3，修改为可选ID总数
+          0XFED6	N	tst.b   0xC(a0,d2.w)| 检验ID已选人内存表，这里没有扩展或NOP，肯定出错	检验ID已选人内存表，这里没有扩展或NOP，肯定出错
+          0XFEDA	N	bpl.s   loc_FECA| 确认已选过相同人，ID再减少1	确认已选过相同人，ID再减少1
+          0XFEEA	N	lea     (0x211200).l, a1| 遍历3P内存	遍历3P内存
+          0XFF00	N	move.w  2(a1), d0| 程序ID	程序ID
+          0XFF12	N	moveq   #0, d0| 这里由于扩展，可选序号达到了0x19个，如按此判断必死机。	这里由于扩展，可选序号达到了0x19个，如按此判断必死机。
+          0XFF3E	N	cmpi.b  #4, 8(a0,d0.w)| 按A?	按A?
+          0XFF58	R	add.w   d0, d0| 载入选中人物后动作	载入选中人物后动作
+         0X1573A	N	movea.l a6, a0| 色盘指针载入	色盘指针载入
+         0X16AD4	N	beq.w   loc_16ADC| rom校验，直接跳过	rom校验，直接跳过
+         0X17EAE	N	move.w  d2, d6| D2 = NAME ID	D2 = NAME ID
+         0X17EB8	N	lea     8(a4), a5| FIX LAYER位置	FIX LAYER位置
+         0X17EBE	N	cmpi.w  #2, d2| NAME ID  限制	NAME ID  限制
+         0X17ECC	N	move.b  (a6)+, d6| 获取字符1	获取字符1
+         0X17ED2	N	cmpi.b  #0x23, d6 | '#'| 比较字符#	比较字符#
+         0X17ED6	N	beq.w   locret_17EF2| 结束	结束
+         0X17EDA	N	cmpi.w  #0x30, d6 | '0'| 比较字符0	比较字符0
+         0X17EDE	N	bcc.w   loc_17EEA| 显示数字	显示数字
+         0X18B52	N	move.b  (a4,d2.w), 0x59(a0)| ID查表，18CD0，BYTE	ID查表，18CD0，BYTE
+         0X190E4	N	movea.l a2, a4| 获取指针	获取指针
+         0X190E6	N	suba.w  2(a2), a4| 指针减去偏移	指针减去偏移
+         0X190EA	N	adda.w  (a4), a4| 指针加上偏移	指针加上偏移
+         0X1926E	N	move.l  0x28(a0), 0x90(a0)| 暂存X，Z坐标	暂存X，Z坐标
+         0X19274	N	add.w   d1, d1| 按键输入	按键输入
+         0X1AA16	N	andi.w  #0xF, d1| 当前操作状态判断	当前操作状态判断
+         0X1AA1E	N	cmpi.w  #0xE, d0| 行走预备动作	行走预备动作
+         0X1AA26	N	cmpi.w  #0xB, d0| 行走动作	行走动作
+         0X1AA42	N	cmpi.w  #0xE, d0| 行走预备动作	行走预备动作
+         0X1AA4A	N	cmpi.w  #0xB, d0| 行走动作	行走动作
+         0X1AFC6	N	move.w  0x9A(a0), d0| 获得当前按A的ACT ID缓存	获得当前按A的ACT ID缓存
+         0X1AFCA	N	move.w  0x12(a0), d1| 获取当前动作	获取当前动作
+         0X1AFCE	N	cmpi.w  #0xDC, d1| 第一击	第一击
+         0X1E800	N	move.b  d0, 0x13(a0)| 写入当前任务ACT ID到人物OBJ	写入当前任务ACT ID到人物OBJ
+         0X1F1C8	N	move.w  0x9A(a0), d0| 获取当前按A的动作ID	获取当前按A的动作ID
+         0X1F1CC	N	addq.w  #1, d0| +1	+1
+         0X1F1CE	N	btst    #6, 0xAD(a0)| 连续输入标志	连续输入标志
+         0X1F1D8	N	move.w  #0xE0, d1| E0-4c(a0)	E0-4c(a0)
+         0X1F1DC	N	sub.w   0x4C(a0), d1| BORIS只有三段。。。。这尼玛代码写得。。。	BORIS只有三段。。。。这尼玛代码写得。。。
+         0X1F1E6	N	move.w  #0xDC, d0| 恢复到第一击	恢复到第一击
+         0X1F25C	N	cmpi.w  #0, 0x4C(a0)| 判断ID是否为KYLE。	判断ID是否为KYLE。
+         0X21944	N	cmpi.w  #0, d1| ID 判断	ID 判断
+         0X219B0	N	move.w  #0xDC, 0x9A(a0)| 4A 第一下	4A 第一下
+         0X219BA	N	lea     byte_23792, a5| 需要扩展的某表	需要扩展的某表
+         0X23696	N	move.w  0x4C(a0), d0| 比较ID	比较ID
+         0X3E3FC	N	move.w  2(a0), d0| 取2(A0)查表	取2(A0)查表
+         0X42AF0	N	move.b  #1, 0x13(a0)| 站立	站立
+         0X42B10	N	move.b  #0xB, 0x13(a0)| 行走	行走
+         0X42B80	R	move.w  8(a0), d0| 切换到0xE小碎步	切换到0xE小碎步
+         0X5BF78	R	bsr.w   sub_5BFA6| 猪头男程序	猪头男程序
+         0X5CDC6	N	move.b  0xDC(a0), d0| 敌人有限状态机	敌人有限状态机
+         0X5D35E	N	btst    #5, 0xA1(a0)| 砸地锤	砸地锤
+         0X80400	N	.long off_B6F9E| 嬉皮士	嬉皮士
+         0X80404	N	.long off_B739E| 刀子女	刀子女
+         0X80408	N	.long off_B779E| WADE	WADE
+         0X8040C	N	.long off_B7B9E| 铁链男	铁链男
+         0X80410	N	.long off_B7F9E| 判定框，定位器	判定框，定位器
+         0X80414	N	.long off_B839E| 破门	破门
+         0X80418	N	.long off_B859E| 小刀	小刀
+         0X8041C	N	.long off_B879E| 红色小块	红色小块
+         0X80420	N	.long off_BF11E| 最终BOSS	最终BOSS
+         0X80424	N	.long off_B899E| 斗篷小兵	斗篷小兵
+         0X80428	N	.long off_B8D9E| 长条。。	长条。。
+         0X8042C	N	.long off_B909E| 二关BOSS场景	二关BOSS场景
+         0X80430	N	.long off_B939E| 非主流	非主流
+         0X80434	N	.long off_B979E| 红发嬉皮士	红发嬉皮士
+         0X80438	N	.long off_B9B9E| 大木箱	大木箱
+         0X8043C	N	.long off_B9D9E| 第一关猪头无面具	第一关猪头无面具
+         0X80440	N	.long off_BA19E| 面具	面具
+         0X80444	N	.long off_BA59E| 油桶	油桶
+         0X80448	N	.long off_BA79E| 小块	小块
+         0X8044C	N	.long off_BAB9E| 龙拳	龙拳
+         0X80450	N	.long off_BAF9E| 钢管	钢管
+         0X80454	N	.long off_BB19E| 椅子	椅子
+         0X80458	N	.long off_BB39E| 带电物件	带电物件
+         0X8045C	N	.long off_BB49E| BORIS	BORIS
+         0X80460	N	.long off_BB89E| 铁甲男	铁甲男
+         0X80464	N	.long off_BBC9E| 影子	影子
+         0X80468	N	.long off_BBD1E| 橄榄球	橄榄球
+         0X8046C	N	.long off_BE61E| 龙拳部分块	龙拳部分块
+         0X80470	N	.long off_BBF1E| KYLE	KYLE
+         0X80474	N	.long off_BC31E| 肌肉男	肌肉男
+         0X80478	N	.long off_BED1E| 机械男	机械男
+         0X8047C	N	.long off_BC71E| 炸弹男	炸弹男
+         0X80480	N	.long off_BCB1E| 死胖子	死胖子
+         0X80484	N	.long off_BCF1E| 火烧状态	火烧状态
+         0X80488	N	.long off_BD31E| 野蛮人	野蛮人
+         0X8048C	N	.long off_BD71E| 花盆	花盆
+         0X80490	N	.long off_BD91E| 普通猪头男	普通猪头男
+         0X80494	N	.long off_BDD1E| 驼背剪刀手	驼背剪刀手
+         0X80498	N	.long off_BE11E| 剪刀手带刀状态	剪刀手带刀状态
+         0X8049C	N	.long off_BE51E| 摩托车	摩托车
+         0X804A0	N	.long off_BE61E| 龙拳部分块2	龙拳部分块2
+         0X804A4	N	.long off_BE71E| 神龟	神龟
+         0X804A8	N	.long off_BEB1E| 食品道具	食品道具
+         0X804AC	N	.long off_BED1E| 机械男	机械男
+         0X97C1C	N	.word 0xFFEC| X	X
+         0X97C1E	N	.word 4| Y	Y

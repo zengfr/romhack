@@ -1,0 +1,47 @@
+captcomm_addr
+[background]
+0x900000 = HUD layer
+0x904000 = background layer
+0x908000 = background 2 layer
+
+ROM:0001C4B0 bg1_draw_column:
+
+ROM:0001D956 bg2_draw_column:
+
+ROM:00098A98 bg_draw_column:                         ; CODE XREF: ROM:00098A38↑p
+ROM:00098A98                                         ; ROM:00098A48↑p ...
+ROM:00098A98                 move.w  (a1)+,(a2)
+ROM:00098A9A                 move.w  d1,2(a2)        ; write to bg layer
+ROM:00098A9E                 move.w  (a1)+,4(a2)
+ROM:00098AA2                 move.w  d1,6(a2)
+ROM:00098AA6                 lea     $80(a2),a2
+ROM:00098AAA                 move.l  a2,d2
+ROM:00098AAC                 andi.l  #$91FFFC,d2
+ROM:00098AB2                 movea.l d2,a2
+ROM:00098AB4                 dbf     d0,bg_draw_column
+
+ROM:0001C3CC                 bsr.w   bg1_set_draw_to
+ROM:0001C3D0                 bsr.w   bg1_set_draw_from
+
+
+[sprite & animation]
+ROM:00004FBC obj_draw_sprite:
+ROM:00004FC8                 movea.l $18(a0),a1      ; sprite data
+ROM:00004FCC                 move.w  $28(a0),d1      ; position index
+ROM:00004FD0                 movea.l #off_CB016,a2   ; position table
+
+
+another obj_draw_sprite
+ROM:00004D3A off_4D3A:       dc.l nullsub_2
+ROM:00004D3E                 dc.l sub_4D58
+ROM:00004D42                 dc.l sub_4D9E
+ROM:00004D46                 dc.l sub_4DF4
+ROM:00004D4A                 dc.l sub_4E3A
+ROM:00004D4E                 dc.l sub_4EA0
+ROM:00004D52                 dc.l sub_4F16
+
+[address]
+ROM:00000AF8                 move.w  #$90C0,($80010A).l ; palette base
+ROM:00000AB6                 move.w  $281A(a5),($800100).l ; 9140, obj ram
+ROM:00000ABE                 move.w  $281C(a5),($800102).l ; 9000, bg layer
+© 2020 GitHub, Inc.

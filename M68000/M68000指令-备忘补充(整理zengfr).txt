@@ -147,4 +147,51 @@ JG/JNLE()        7F                   (SO)Z=0     
 JGE/JNL()        7D                   SO=0                      >=/  
 JL/JNGE()        7C                   SO=1                      </  
 JLE/JNG()        7E                   (SO)Z=1                  <=/
+-----------------------------------------------------------------------------------------------------------
+Bcc Branch Conditionally 条件分支 [P130～131]
+运算： 如果条件成立，程序计数器＋位移值 置入 程序计数器
+语法： Bcc <label>
+操作数长度：B、W
+
+相应指令 分支条件（0：顺序执行、1：转移） 英文解释 中文解释
+
+BHI !C&&!Z High 高于转移
+BLS C||Z Low or Same 低于或相同转移
+BCC !C Carry Clear 无进／借位转移
+BCS C Carry Set 有进／借位转移
+BNE !Z Not Equal 不为零（不相等）转移
+BEQ Z Equal 为零（相等）转移
+BVC !V Overflow Clear 无溢出转移
+BVS V Overflow Set 有溢出转移
+BPL !N Plus 非负数转移
+BMI N Minus 负数转移
+BGE N&&V||!N&&!V Greater or Equal 大于等于（不小于）转移
+BLT N&&!V||!N&&V Less Than 小于转移
+BGT N&&V&&!Z||!N&&!V&&!Z Greater Than 大于转移
+BLE Z||N&&!V||!N&&V Less or Equal 小于等于（不大于）转移
+-----------------------------------------------------------------------------------------------------------
+DBcc Test Condition,Decrement,and Branch 测试条件－自减－分支，即循环控制 [P195～196]
+运算： 如果条件为“假”，Dn－1 置入 Dn ；
+如果 Dn＞-1，程序计数器＋位移值 置入 程序计数器
+语法： DBcc Dn,<label>
+操作数长度：W
+条件码（标志位）：不受影响。
+
+相应指令 分支条件（0：顺序执行、1：转移） 英文解释 中文解释
+
+DBHI !C&&!Z High 高于循环
+DBLS C||Z Low or Same 低于或相同循环
+DBCC !C Carry Clear 无进／借位循环
+DBCS C Carry Set 有进／借位循环
+DBNE !Z Not Equal 不为零（不相等）循环
+DBEQ Z Equal 为零（相等）循环
+DBVC !V Overflow Clear 无溢出循环
+DBVS V Overflow Set 有溢出循环
+DBPL !N Plus 非负数循环
+DBMI N Minus 负数循环
+DBGE N&&V||!N&&!V Greater or Equal 大于等于（不小于）循环
+DBLT N&&!V||!N&&V Less Than 小于循环
+DBGT N&&V&&!Z||!N&&!V&&!Z Greater Than 大于循环
+DBLE Z||N&&!V||!N&&V Less or Equal 小于等于（不大于）循环
+-----------------------------------------------------------------------------------------------------------
  

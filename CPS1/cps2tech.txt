@@ -1,0 +1,368 @@
+https://github.com/zengfr/romhack
+https://gitee.com/zengfr/romhack
+
+CPS2 hardware notes
+ (C) 2007-2013 Charles MacDonald
+
+ ----------------------------------------------------------------------------
+ 68K memory map
+ ----------------------------------------------------------------------------
+
+ 000000-07FFFF : Program ROM socket #3
+ 080000-0FFFFF : Program ROM socket #4
+ 100000-17FFFF : Program ROM socket #5
+ 180000-1FFFFF : Program ROM socket #6
+ 200000-27FFFF : Program ROM socket #7
+ 280000-2FFFFF : Program ROM socket #8
+ 300000-37FFFF : Program ROM socket #9
+ 380000-3FFFFF : Program ROM socket #10
+ 400000-4FFFFF : Sprite generator registers
+ 500000-5FFFFF : Unused (no /DTACK, system hangs if accessed)
+ 600000-61FFFF : Z80 /BUSREQ area
+ 620000-63FFFF : Expansion area #1 /CS
+ 640000-65FFFF : Unused (no /DTACK, system hangs if accessed)
+ 660000-67FFFF : Expansion area #2 /CS
+ 680000-6FFFFF : Unused (no /DTACK, system hangs if accessed)
+ 700000-701FFF : Sprite RAM bank #1 (8K)
+ 702000-707FFF : Sprite RAM bank #1 (mirrored locations)
+ 708000-709FFF : Sprite RAM bank #2 (8K)
+ 70A000-70FFFF : Sprite RAM bank #2 (mirrored locations)
+ 710000-7FFFFF : Unused (no /DTACK, system hangs if accessed)
+ 800000-87FFFF : I/O area
+ 880000-8FFFFF : Unused (writes are ignored, reads return $FFFF)
+ 900000-93FFFF : System RAM (256K)
+ 940000-EFFFFF : Unused (writes are ignored, reads return $FFFF)
+ FF0000-FFFFFF : System RAM (upper 64K of 256K)
+
+ Notes
+
+ The sprite generator registers are moved from 400000-40000F to
+ FFFFF0-FFFFFF when the battery is dead.
+
+ The Z80 memory space is mapped to the LSB of each word in 600000-61FFFF.
+ The MSB returns $FF when read.
+
+ Sprite RAM is two 8K SRAMs, one mapped to 700000-707FFF and the other
+ to 708000-70FFFF.
+
+ Games typically access the lower 192K of system RAM at 900000-92FFFF and
+ do not touch 930000-93FFFF, which is mirrored for convenience
+ at FF0000-FFFFFF.
+
+ ----------------------------------------------------------------------------
+ Sprite generator registers
+ ----------------------------------------------------------------------------
+
+ 400000 : ---- ---- ---- ---- : Write 7080
+ 400002 : ---- ---- ---- ---- : Write 8083
+ 400004 : ---- ---- ---- ---- : Write 0000
+ 400006 : ---- ---- ---- ---- : Write 0000
+ 400008 : ---- ---- ---- ---- : Write 0000
+ 40000A : ---- ---- ---- ---- : Write 0000
+ 40000C : ---- ---- ---- ---- : Write 0000
+ 40000E : ---- ---- ---- ---- : Write 0000
+
+ ----------------------------------------------------------------------------
+ Sprite RAM format
+ ----------------------------------------------------------------------------
+
+ +$00 : pp-- ---- ---- ---- : Priority bits (0=lowest(backmost), 3=highest(frontmost))
+ +$00 : ---- --xx xxxx xxxx : X coordinate
+ +$02 : e--- ---- ---- ---- : End of list flag (1= Hide this and all remaining sprites, 0= Show this sprite)
+ +$02 : -nn- ---- ---- ---- : Tile number bits 17,16
+ +$02 : ---- --yy yyyy yyyy : Y coordinate
+ +$04 : nnnn nnnn nnnn nnnn : Tile number bits 15-0
+ +$06 : hhhh ---- ---- ---- : Sprite height (1 to 16 rows of tiles)
+ +$06 : ---- wwww ---- ---- : Sprite width (1 to 16 columns of tiles)
+ +$06 : ---- ---- o--- ---- : Coordinate offset (0= Offset by X:-64,Y:-16, 1= No offset)
+ +$06 : ---- ---- -yx- ---- : Y flip, X flip (1= enable, 0= disable)
+ +$06 : ---- ---- ---p pppp : Palette number (0-31)
+
+ Sprites are positioned in a virtual 1024x1024 space.
+
+ ----------------------------------------------------------------------------
+ Palette
+ ----------------------------------------------------------------------------
+
+ iiii rrrr gggg bbbb : Intensity, R, G, B
+
+ The video hardware has a local copy of the color RAM which is used to
+ directly drive the video DACs. This copy is updated from shared RAM via
+ DMA once per frame during V-Blank.
+
+ This allows a game to update the color RAM in shared RAM at any time,
+ without having to worry about display flicker, and changes made are visible
+ on the next frame. It also means palette-based raster effects do not work.
+
+ ----------------------------------------------------------------------------
+ I/O ports
+ ----------------------------------------------------------------------------
+
+ 804000 : Input port #1
+
+ 4321 UDLR ---- ---- : Player #2 inputs
+ ---- ---- 4321 UDLR : Player #1 inputs
+
+ 804010 : Input port #2
+
+ 4321 UDLR ---- ---- : Player #4 inputs
+ ---- ---- 4321 UDLR : Player #3 inputs
+
+ 804020 : Input port #3 / EEPROM interface
+
+ 11-- 11-- 0000 0--- : Fixed bits when reading
+ --34 ---- ---- ---- : Player 3 and 4 coin chute detect
+ ---- --34 ---- ---- : Player 3 and 4 start button
+ ---- ---- ---- -ST- : Service and test switch
+ ---- ---- ---- ---E : 93C45 EEPROM DO pin state
+
+ Note: The test switch input connects to both the JAMMA test input
+       and the test pushbutton on the A-board.
+
+ 804030 : Q-Sound volume / Peripheral sense
+
+ s--- ---- ---- ---- : '0' if a peripheral is attached to CN7 pin B10
+ -s-- ---- ---- ---- : '0' if a peripheral is attached to CN7 pin B23
+ --0- ---- ---- ---- : Fixed bits when reading
+ ---v vvvv vvvv vvvv : Q-Sound DSP volume level
+
+ Accessing either expansion area will cause the system to hang as a
+ peripheral provides DTACK, not the system. To probe for attached peripherals,
+ the two sense bits may be checked first before accessing the expansion
+ area.
+
+ The DSP only returns 40 discrete volume steps:
+
+ 1010 0810 0410 0210 0110 0090 0050 0030
+ 1008 0808 0408 0208 0108 0088 0048 0028
+ 1004 0804 0404 0204 0104 0084 0044 0024
+ 1002 0802 0402 0202 0102 0082 0042 0022
+ 1001 0801 0401 0201 0101 0081 0041 0021
+
+ $1010 is minimum volume (silence), which is the default after power-on
+ $0021 is maximum volume
+
+ 804040 : Output port
+
+ ???? ?--- ---- ---- : 
+ ---- -CSI ---- ---- : 93C46 EEPROM CS#, SK#, DI inputs
+ ---- ---- OO-- ---- : CN5 pin 8 and 7 output levels (1=hi, 0=lo)
+ ---- ---- --L- ---- : Coin lockout #2 output level (1=hi, 0=lo)
+ ---- ---- ---L ---- : Coin lockout #1 output level (1=hi, 0=lo)
+ ---- ---- ---- Z--- : Z80 RESET# pin state
+ ---- ---- ---- -?-- : 
+ ---- ---- ---- --C- : Coin counter #2 output level
+ ---- ---- ---- ---C : Coin counter #1 output level
+
+ Z80 RESET# must not be low when trying to access the Z80 memory
+ area at 600000-61FFFF. This is because the Z80 cannot negotiate a bus
+ request while in the reset state, and the 68K will hang waiting for
+ bus arbitration to end.
+
+ 804080 : Output port
+
+ -??? ???? ???- ---- : Open bus when read
+ L--- ---- ---L LLLL : These bits can be written to and read back.
+                       Their purpose is unknown.
+
+ 804090 : Output port
+
+
+ ???? ???? ?--- ---- : Open bus when read
+ ---- ---- -111 1111 : Fixed value during reads
+
+ 8040A0 : SRAM control
+
+
+ ---- ---- ---- ---E : Shared RAM refresh enable
+
+ This bit must be '1', otherwise the contents of shared RAM become
+ corrupt.
+
+ It's possible the system was designed to work with SRAM as well as DRAM,
+ but all known variants of the CPS-1 and CPS-2 hardware use DRAM.
+
+ ----------------------------------------------------------------------------
+ Tilemap registers
+ ----------------------------------------------------------------------------
+
+ 804100 : ---- ---- ---- ---- : (No effect)
+ 804102 : -aaa aaaa aa-- ---- : BG0 (8x8) base address
+ 804104 : -aaa aaaa aa-- ---- : BG1 (16x16) base address
+ 804106 : -aaa aaaa aa-- ---- : BG2 (32x32) base address
+ 804108 : -aaa aaaa aaaa a--- : Linescroll table base address
+ 80410A : ---- ---- ---- ---- : (Palette related)
+ 80410C : ---- ---x xxxx xxxx : BG0 (8x8) horizontal scroll
+ 80410E : ---- ---y yyyy yyyy : BG0 (8x8) vertical scroll
+ 804110 : ---- --xx xxxx xxxx : BG1 (16x16) horizontal scroll
+ 804112 : ---- --yy yyyy yyyy : BG1 (16x16) vertical scroll
+ 804114 : ---- -xxx xxxx xxxx : BG2 (32x32) horizontal scroll
+ 804116 : ---- -yyy yyyy yyyy : BG2 (32x32) vertical scroll
+ 804118 : ---- ---x xxxx xxxx : Starfield 1 horizontal scroll
+ 80411A : ---- ---y yyyy yyyy : Starfield 1 vertical scroll
+ 80411C : ---- ---- ---- ---- : (No effect)
+ 80411E : ---- ---- ---- ---- : (No effect)
+ 804120 : ---- oooo oooo oooo : Start offset in linescroll table
+ 804122 : ---- ---- ---- ---r : 1= Linescroll enabled for BG1, 0= Disabled
+          ---- ---- ---- 210- : When written, changes playfield size for BG2-0
+          f--- ---- ---- ---- : 1= BG+OBJ H&V flip, 0= Normal orientation
+ 804124 : xxxx xxxx xxxx xxxx : Tilemap display trigger
+ 80414E : ---- ---- ---- ---- : 
+ 804150 : ---- ---- ---- ---- : 
+ 804152 : ---- ---- ---- ---- : 
+ 804166 : ---- ---- ---- --0- : BG0 enable (1= on, 0= off)
+          ---- ---- ---- -1-- : BG1 enable (1= on, 0= off)
+          ---- ---- ---- 2--- : BG2 enable (1= on, 0= off)
+          ---- ---- ---s ---- : Starfield 1 enable (1=on, 0=off)
+          ---- ---- --s- ---- : Starfield 2 enable (1=on, 0=off)
+          --aa bbcc dd-- ---- : Priority related
+
+         aa/bb/cc/dd : 00=No BG, 01=BG0, 10=BG1, 11=BG3
+        
+         Some kind of ordering code. Maybe bitfields represent priority levels
+         3,2,1,0 and the bits select what layer is mapped to that priority, like a
+         global priority select.
+        
+         Write $2A42 for default visibility.
+
+ 804170: ---- ---- --fe dcba : Color RAM DMA update mask
+
+ Each bit controls what part of the color RAM in system RAM is copied to
+ the real color RAM attached to the DAC. $003F transfers the entire
+ palette. You can use smaller values to reduce the amount of time spent
+ during DMA between system RAM to color RAM.
+
+ Notes
+
+ * Scroll registers for BG1 are still used in addition to the line scroll
+   table entries and line scroll table offset when line scrolling is enabled.
+
+ * Playfield size register may need to be updated in V-Blank only;
+   currently the result playfield size is random on each write (acts more
+   like a trigger to cycle values than a on/off setting)
+
+ * When the tilemap display trigger is written to, all tilemap layers are
+   temporarily filled with garbage for several frames, then revert to normal.
+   This happens when any value is written to this output port.
+   It may be a trigger register (maybe DMA, or something else that prevents
+   the video chip from accessing VRAM correctly? Or a self-reset or test
+   function?)
+
+ * Starfield details:
+   - Palette automatically cycles every few frames (maybe every 15 FPS)
+   - Lowest priority, appearing behind BG2-0.
+   - Output registers $1C and $1E were the starfield 2 scroll registers
+     for CPS-1, but they have no effect in CPS-2. So starfield 1 can be
+     scrolled but starfield 2 is fixed at (0,0).
+   - Star data comes from unknown source (not VRAM, appears to be garbage)
+     Both fields use the *same* pattern data but different palettes,
+     probably have different palette bases.
+   - Probably left over from CPS-1 and not fully implemented in CPS-2?
+
+ ----------------------------------------------------------------------------
+ Sound hardware
+ ----------------------------------------------------------------------------
+
+ Z80 memory map
+
+ 0000-7FFF : Fixed program ROM (data from 11M offsets 000000-007FFF)
+ 8000-BFFF : Banked program ROM (data from 11M and 12M)
+ C000-CFFF : Work RAM (work RAM offsets 0000-0FFF)
+ D000-DFFF : I/O registers. Only bits 2-0 select a unique register.
+ E000-EFFF : Unused (open bus)
+ F000-FFFF : Work RAM
+
+ I/O registers
+
+ D000.b    : Q-Sound data port (H)
+
+ D001.b    : Q-Sound data port (L)
+
+ D002.b    : Q-Sound command port
+
+ D003.b    : Z80 ROM banking control (write only)
+             D7 = /RSTB input to DSP
+             D3 = Bank select, bit 3
+             D2 = Bank select, bit 2
+             D1 = Bank select, bit 1
+             D0 = Bank select, bit 0
+
+ D007.b    : Z80 ROM banking and Q-Sound status (read only)
+             D7 = IACK output from DSP
+             D3 = Bank select, bit 3
+             D2 = Bank select, bit 2
+             D1 = Bank select, bit 1
+             D0 = Bank select, bit 0
+
+ F000-FFFF : Work RAM (work RAM offsets 1000-1FFF)
+
+ The DSP can be reset by writing '0' then '1' to bit 7 of $D003.
+
+ The DSP status from bit 7 of $D007 is '1' when the DSP is idle and
+ '0' when the DSP is busy according to the sound software.
+
+ ROM bank values
+
+ Bank   ROM offset          ROM selected
+
+ $00    $008000-$00BFFF     11M
+ $01    $00C000-$00FFFF     11M
+ $02    $010000-$013FFF     11M
+ $03    $014000-$017FFF     11M
+ $04    $018000-$01BFFF     11M
+ $05    $01C000-$01FFFF     11M
+
+ $06    $000000-$003FFF     12M
+ $07    $004000-$007FFF     12M
+ $08    $008000-$00BFFF     12M
+ $09    $00C000-$00FFFF     12M
+ $0A    $010000-$013FFF     12M
+ $0B    $014000-$017FFF     12M
+ $0C    $018000-$01BFFF     12M
+ $0D    $01C000-$01FFFF     12M
+
+ $0E    $000000-$003FFF     12M
+ $0F    $004000-$007FFF     12M
+
+ Note that the last two settings wrap around within the same ROM
+
+ Timing and interrupts
+
+ The Z80 runs at 8.00 MHz.
+
+ /INT is asserted 25 times per second and automatically acknowledged
+ during the interrupt acknowledge cycle.
+
+ /NMI is unused (pulled high).
+
+ Communication
+
+ Any time the 68000 accesses 600000-61FFFF, the hardware negotiates a bus
+ request and gives the 68000 access for the current bus cycle. Bus
+ ownership is lost immediately after.
+
+ This makes 68000 access to the Z80 area expensive, consider using
+ MOVEP.L to read four consecutive bytes; each byte access involves
+ requesting and releasing the bus.
+
+ ----------------------------------------------------------------------------
+ Timing
+ ----------------------------------------------------------------------------
+
+ The 68K is clocked at 16 MHz, but is frequently halted while the video
+ hardware uses DMA to access data for the backgrounds and palette from
+ shared RAM. The effective speed is closer to 12 MHz.
+
+ ----------------------------------------------------------------------------
+ PAL functions
+ ----------------------------------------------------------------------------
+
+ BGSA1 does address decoding for the shared RAM.
+ BGSA2 does address decoding for the program ROM sockets.
+ BGSB2 controls the data bus buffers between the A and B boards,
+       so that B can be isolated from A (e.g., CPU accessing ROM which are
+       both on the B board) or they can be connected (accessing shared RAM).
+
+ ----------------------------------------------------------------------------
+ End
+ ----------------------------------------------------------------------------

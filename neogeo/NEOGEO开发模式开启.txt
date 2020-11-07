@@ -1,0 +1,179 @@
+Kawaks 1.65
+运行游戏后
+游戏，NeoGeo设定..，家用机模式
+
+SNK大战卡普空(专用PCB) svcpcb
+游戏，NeoGeo设定..，，NeoGeo debug DIPs
+第一行：DIP 1 打勾
+按住加币按钮
+上下左右，控制中间的角色图片，
+向右
+重拳C键+1，重脚D键-1，
+控制图片帖
+CH  CODE  00
+－－－－－－－－－－－－－
+ACT  CODE  0000
+轻拳A键+1，轻脚B键-1
+控制ACT的帧的轻拳键
+-------------------------------
+第一行：DIP 2 打勾 判断框
+第一行：DIP 3 打勾 8行数值
+第一行：DIP 4 打勾 PLAYER1:SPEED,JUMP,A DIST,CHOHATS
+第二行：DIP 1 打勾 AI EDIT,DISTANCE EDIT,PACK EDIT,MOVEMENT EDIT,LEVEL SETTING,UTILITY(要家用机模式,
+DIST,DIST NO,PACK ENE STA,MOVE,MOV SUB,MOVE SUB SUB
+第二行：DIP 5 打勾 2数值16行
+第二行：DIP 6 打勾 MENU,CODE
+
+真.饿狼传说 rbff1
+第一行：DIP 5 打勾 OPPOS,DOT
+第二行：DIP 6 打勾 P1和P2的NO-0,D-,P,-,P,SA
+
+真.饿狼传说II:新来者 rbff2
+第一行：DIP 5 打勾 OPPOSITE.  ,  DOT
+第二行：DIP 6 打勾 P1和P2的NO-0,D-,MOTEKI
+
+真.饿狼传说特别版 rbffspec
+第一行：DIP 5 打勾 OPPOS,DOT
+第二行：DIP 6 打勾 P1和P2的NO-0,D-,P,-,P,SA
+
+开启KOF的开发模式
+游戏，NeoGeo设定..，，NeoGeo debug DIPs
+第一行：DIP 1 打勾
+cthd2003(kof2001)
+ct2k3sp(kof2001)
+KOF94
+KOF95
+KOF96
+KOF97
+KOF98
+KOF99
+KOF2000
+KOF2001
+KOF2002
+按住加币按钮
+上下左右，控制中间的角色图片，
+向右
+重拳C键+1，重脚D键-1，
+控制图片帖
+CH  CODE  00
+－－－－－－－－－－－－－
+ACT  CODE  0000
+轻拳A键+1，轻脚B键-1
+控制ACT的帧的轻拳键
+
+侍魂1
+第一行：DIP 5 打勾,0000 0000(ACT查看器)
+霸王丸的ACT数据（HAOHMARU）
+按A显示0027(DH1)，按B显示002E(DH2)，
+按C显示0041(DL1)，按D显示0048(DL2)，
+上0008,下0006，左0004，右0002，
+左上000C,右上000A,左下000
+左左00C2,右右C7
+第一行：DIP 6 打勾
+MOVE-TYPE,MOVE-NO,MOVE-STEP,MOVE-OLD,JMP-FLG
+E-FLG,SL-FLG,C-MUKI,X-POS,Y-POS,X-OFST,Y-OFST,X-SPD,Y-SPD
+PTN-CNT,HOLD-FLAG,SWORD-LIFE,DIF-PAR
+第二行：DIP 7 打勾,RANGE=3
+
+侍魂2
+第一行：DIP 1 打勾，SQU-EDIT,PAL-EDIT,SPD-EDIT,KEY-EDIT,D-SYS
+第二行：DIP 7 打勾,X,Y,PSL,HPT,ZX,ZY等一些数据,K UJ 还有角色图片
+
+侍魂3
+第一行：DIP 8  打勾,ACT一些数据
+
+侍魂4
+第一行：DIP 8  打勾,ACT一些数据
+
+侍魂5
+第二行：DIP 1  打勾，BASE,CHAR,COND,PACK,STEP,PRTS,BSTAT,TIME,LEVR,GORD,
+NRMR,OPTR,JMPR,SPLR,EXER
+
+侍魂5sp（samsh5sph）
+第二行：DIP 7  打勾,ACT一些数据
+
+合金弹头1
+第二行：DIP 1 打勾
+合金弹头2，3，4
+第一行：DIP 1 打勾
+
+龙虎之拳2  AOF2
+第一行：DIP 1 打勾 P1变电脑模式
+第一行：DIP 2 打勾 P2变电脑模式
+第一行：DIP 3 打勾 P1和P2测试：PS,OD,CT,PK,MV,HC,GP,ST,DI,KI,CR,XD,ZD,RD,AR,SB,LD,LT,TH,00
+第一行：DIP 7 打勾 P1和P2:  000000,000000(不知调用地址，还是数据)
+
+龙虎之拳3 AOF3
+第二行：DIP 1 打勾 P1变电脑模式
+第二行：DIP 2 打勾 P2变电脑模式
+第二行：DIP 3 打勾 时间底下多一些字：W!
+第二行：DIP 7 打勾 RANDOM MODE(随机模式)
+第二行：DIP 8 打勾 TOTAL ROUND=0000(全回合)P1变电脑模式
+OAJ
+双截龙 doubledr
+第二行：DIP 3 打勾 P1和P2无限蓝
+
+饿狼传说特别版 fatfursp
+第二行：DIP 6 打勾 P1和P2的OVER 1,OVER 1,OVERR,NEAR,LOWE
+FAR,NEAR,LOWER
+
+饿狼传说：狼之印记 garou
+第二行：DIP 6 打勾 P1和P2的：
+   NO-00  D-               NO-00  D-
+          00  MUTEKI             00  MUTEKI
+           0                              0  
+P-000                                        P-000
+A-002                                       A-002
+
+风云默示录:超级组队战 kizuna
+第一行：DIP 4 打勾 画在的左三盏灯，右三盏灯，亮起来
+第一行：DIP 8 打勾 P1和P2的X,Y,Z,L
+第二行：DIP 2 打勾 角色画面人物变远变小了一点
+
+狂热格斗 fightfev
+第一行：DIP 2 打勾 BOHUS GAHE模式，切12块瓦片，一直按A,20秒
+第一行：DIP 3 打勾  BOHUS GAHE模式，P1和P2右或左60秒，二人拿着木块比数量打二块木坂
+第一行：DIP 8 打勾 P1和P2判断框,NOR
+
+龙之天堂（早期原型版，不完全可玩） dragonsh
+第一行：DIP 6 打勾 P1和P2的FLAG,MAIN,POS,ANM CHR,FLAG
+第一行：DIP 8 打勾  P1和P2的不见，只见到影子
+
+三回合较量 3countb
+第一行：DIP 2 打勾 SYSEM,PAUSE,OBS T-SRH,LEV-SYS,FRAME,LEVEL UP,SHADOW,LEV-CONT,SHADOW,BNG-MTR
+第一行：DIP 3 打勾 LINK DATE,FRONT DATA LIST:DATA VALUE,CONVERSION,NORMAL,PAL,BANK,BANK-PAL
+第一行：DIP 4 打勾 ACT-NO,OFFSET,REV,PART
+第一行：DIP 5 打勾 TASK-NO:00,下面好多15行16字节的数值
+第一行：DIP 6 打勾 BANK-0,PAL-0,显示C文件的人物图片
+第一行：DIP 7 打勾 PAL-0,BANK进-0,显示S1的数字和英文和日文图片
+第一行：DIP 8 打勾 ACT,COU,CONV,STATUS,TIME,TIMEO
+第二行：DIP 1 打勾  PALET,CODE,R,G,B
+第二行：DIP 2 打勾 SOUND MODE,SOUND CODE
+第二行：DIP 3 打勾  X,Y,Z,L,R,ZX,ZY,MODE
+第二行：DIP 6 打勾 DON'T TOUCH ME!!SAFETY MODE
+第二行：DIP 7 打勾 ODER,PART,MOVING,walk,DIST,TGET,LINE,WT,midd grap on
+
+超人学园钢帝王 gowcaizr
+第一行：DIP 6 打勾 P1和P2的POS ANMCHR,FLAG
+
+月华剑士1
+第一行：DIP 2 打勾 P1和P2的WF,MX,CT
+
+月华剑士2
+第一行：DIP 2 打勾 P1和P2的8组数值ACT,0000/0000/1/01/00
+第二行：DIP 1 打勾 LEVEL 3,STAGE 1,00FF/00FF,LV,TB,ST,PP,IP,AP,EP,PK,JF,AW,PC,PW,ST,PS,KY,SN
+第二行：DIP 1 打勾 二个数值共16行
+
+神凰拳 ragnagrd,没有DIP
+热血进行曲 aodk,没有DIP
+饿狼传说:格斗之王 fatfury1
+饿狼传说II  fatfury2,没有DIP
+新.豪血寺一族:斗婚 matrim,没有DIP,没有DIP
+霸王忍法帖 ninjamas,没有DIP
+爆烈人 breakers,没有DIP
+爆烈人复仇 breakerv,没有DIP
+银行快打:宇宙战士(缺少光栅效果),没有DIP
+火热火热7 wakuwak7,没有DIP
+世界英雄 wh1,没有DIP
+世界英雄2 wh2,没有DIP
+世界英雄完美版 whp,没有DIP

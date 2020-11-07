@@ -1,0 +1,22 @@
+﻿街机dino恐龙快打框架版2020多模式加强(hack)
+1、按start换人
+2、按投币键8个币过关(第3关除外)
+3、按start+b键出武器
+4、按start+A键增兵
+5、多模式Mode选择:(投币后上下键选择不同模式Up and down keys to choose different modes after coin insertion)
+6、(如果有隐藏敌兵卡住场景,请按1次start+b键,或我方123p保持不动6秒敌兵自动唤出或自杀)
+
+街机punisher惩罚者框架版2020多模式加强(hack)
+1、按start换人
+2、按start+up键出枪、按start+down键收枪、start+B键增加手雷。
+3、多模式Mode选择(00-FF):(投币后上下左右键选择不同模式After coin input, use the up, down, left and right buttons to select different modes)
+4、(如果有隐藏敌兵卡住场景,我方12p保持不动6秒敌兵自动唤出或自杀)
+
+街机finalfight快打旋风框架版2020多模式加强(hack)
+1、按start可换人
+2、按键start+jump快速过关
+3、切换模式选择:游戏中同时按1p start+2p start.选择固定Stable(默认)、轮询Polled、随机Random、随机RandomEx、调试Debug等
+4、多模式Mode选择(00-FF):(游戏开始,投币后上下左右键选择不同模式After coin input, use the up, down, left and right buttons to select different modes)
+
+rom官方下载地址1:https://gitee.com/zengfr/romhack/tree/master/hackrom 
+rom官方下载地址2:https://github.com/zengfr/romhack/tree/master/hackrom

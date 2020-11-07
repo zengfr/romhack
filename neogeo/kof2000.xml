@@ -1,0 +1,1047 @@
+<mamecheat version="1">
+
+  <cheat desc="Infinite Time">
+    <script state="run">
+      <action>maincpu.pb@10A7E6=60</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Finish this Round Now!"> <comment>Disable Infinite Time before activating this cheat</comment>
+    <script state="on">
+      <action>maincpu.pb@10A7E6=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Infinite Selection Time"> <comment>This timer is used elsewhere; disable when not needed</comment>
+    <script state="run">
+      <action>maincpu.pb@1085D3=0F</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Mai's boobs always bounce"> <comment>Even when set to USA/Europe</comment>
+    <script state="run">
+      <action>maincpu.pb@10A7F4=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Enable Kula"> <comment>Push down from Roulette.</comment>
+    <script state="run">
+      <action>maincpu.pb@10EB9D=20|(maincpu.pb@10EB9D BAND ~20)</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Always have 9999 Battle Points (Last Round)">
+    <script state="run">
+      <action>maincpu.pw@10EC78=9999</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Always have 9999 Battle Points (Current)">
+    <script state="run">
+      <action>maincpu.pw@10DAA2=9999</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Select Current Round">
+    <parameter min="1" max="6" step="1"/>
+    <script state="run">
+      <action>maincpu.pb@10A7B6=(param-1)</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Select Backdrop">
+    <parameter>
+      <item value="0x00">Factory</item>
+      <item value="0x01">Scrap Dump</item>
+      <item value="0x02">Garbage Dump</item>
+      <item value="0x03">Desert</item>
+      <item value="0x04">Korea</item>
+      <item value="0x05">Aquarium</item>
+      <item value="0x06">Temple</item>
+      <item value="0x07">Frozen Factory</item>
+      <item value="0x08">Frozen Scrap Dump</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A7AE=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Select Backdrop Music"> <comment>2P mode only</comment>
+    <parameter>
+      <item value="0x00">KD-0084</item>
+      <item value="0x01">Inner Shade</item>
+      <item value="0x02">Terry115</item>
+      <item value="0x03">Beauty + the Beast</item>
+      <item value="0x04">The Trooper</item>
+      <item value="0x05">Will</item>
+      <item value="0x06">Come Up Smiling</item>
+      <item value="0x07">Wild Party</item>
+      <item value="0x08">Ice Place</item>
+      <item value="0x09">Slasher Zero</item>
+      <item value="0x0A">Good Bye Esaka</item>
+      <item value="0x0B">Stormy Scream - Arashi no Saxophone 4</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10ED15=param</action> <!-- Benimaru Team -->
+    </script>
+  </cheat>
+
+  <!--   Activate any N of the first eight to go to stage N. -->
+  <!--   Activate any six of the first eight to go to Zero. -->
+  <!--   Activate the last one to prevent challenges by Kula. -->
+
+  <cheat desc="Beaten Hero Team">
+    <script state="on">
+      <action>maincpu.pb@10A799=01|(maincpu.pb@10A799 BAND ~01)</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Beaten Benimaru Team">
+    <script state="on">
+      <action>maincpu.pb@10A799=02|(maincpu.pb@10A799 BAND ~02)</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Beaten Fatal Fury Team">
+    <script state="on">
+      <action>maincpu.pb@10A799=04|(maincpu.pb@10A799 BAND ~04)</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Beaten Art of Fighting Team">
+    <script state="on">
+      <action>maincpu.pb@10A799=08|(maincpu.pb@10A799 BAND ~08)</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Beaten Ikari Team">
+    <script state="on">
+      <action>maincpu.pb@10A799=10|(maincpu.pb@10A799 BAND ~10)</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Beaten Psycho Soldier Team">
+    <script state="on">
+      <action>maincpu.pb@10A799=20|(maincpu.pb@10A799 BAND ~20)</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Beaten Gals Fighters Team">
+    <script state="on">
+      <action>maincpu.pb@10A799=40|(maincpu.pb@10A799 BAND ~40)</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Beaten Korea Team">
+    <script state="on">
+      <action>maincpu.pb@10A799=80|(maincpu.pb@10A799 BAND ~80)</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Beaten Kula">
+    <script state="on">
+      <action>maincpu.pb@10A798=01|(maincpu.pb@10A798 BAND ~01)</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Hit Anywhere (Both Players)">
+    <script state="on">
+      <action>temp0 =maincpu.rw@00275C</action>
+    </script>
+    <script state="run">
+      <action>maincpu.rw@00275C=6002</action> <!-- This ROM cheat was made by nolberto82 -->
+    </script>
+    <script state="off">
+      <action>maincpu.rw@00275C=temp0 </action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="P1 Infinite Energy">
+    <script state="run">
+      <action>maincpu.pb@108239=66</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Drain all Energy Now!">
+    <script state="on">
+      <action>maincpu.pb@108239=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Maximum Power">
+    <script state="run">
+      <action>maincpu.pb@1081E8=90</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Drain all Power Now!">
+    <script state="on">
+      <action>maincpu.pb@1081E8=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Infinite Strikers">
+    <script state="run">
+      <action>maincpu.pb@1082E3=05</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Select Striker Type">
+    <parameter>
+      <item value="0x00">Regular</item>
+      <item value="0x01">Alternate</item>
+      <item value="0x02">Maniac</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A80A=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Never Get Dizzied">
+    <script state="run">
+      <action>maincpu.pb@10823F=66</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Every Hit Will Dizzy">
+    <script state="run">
+      <action>maincpu.pb@10823F=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Stun Gauge Never Recovers Until Dizzied">
+    <script state="run">
+      <action>maincpu.pb@108244=10</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Stun Gauge Instantly Recovers">
+    <script state="run">
+      <action>maincpu.pb@108244=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Never Get Guard Crushed">
+    <script state="run">
+      <action>maincpu.pb@108247=66</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Every Block Will Guard Crush">
+    <script state="run">
+      <action>maincpu.pb@108247=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Guard Bar Never Recovers Until Guard Crushed">
+    <script state="run">
+      <action>maincpu.pb@10824C=10</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Guard Bar Instantly Recovers">
+    <script state="run">
+      <action>maincpu.pb@10824C=00</action>
+    </script>
+  </cheat>
+
+  <!--   Apply following cheat after team order selection or between rounds -->
+  <!--   In team play, will determine which member in your team fights -->
+  <!--   ie. 0 - first in team order fights, 2 - third in team order fights -->
+
+  <cheat desc="P1 Select Rounds Lost">
+    <parameter min="0" max="2" step="1"/>
+    <script state="run">
+      <action>maincpu.pb@10A7F9=(param)</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Select Team">
+    <parameter>
+      <item value="0x00">Hero Team</item>
+      <item value="0x01">Benimaru Team</item>
+      <item value="0x02">Fatal Fury Team</item>
+      <item value="0x03">Art of Fighting Team</item>
+      <item value="0x04">Ikari Team</item>
+      <item value="0x05">Psycho Soldier Team</item>
+      <item value="0x06">Gals Fighters Team</item>
+      <item value="0x07">Korea Team</item>
+      <item value="0x08">Kula (solo)</item>
+      <item value="0x09">Zero (solo)</item>
+      <item value="0x0A">Kyo-Iori Team</item>
+      <item value="0x0B">Kula Team</item>
+      <item value="0x0D">Custom Team</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A7F7=param</action> <!-- Benimaru, Shingo, Lin, Seth -->
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Select Character (A)"> <comment>This refers to the first character selected</comment>
+    <parameter>
+      <item value="0x00">K'</item>
+      <item value="0x01">Maxima</item>
+      <item value="0x02">Benimaru Nikaido</item>
+      <item value="0x03">Shingo Yabuki</item>
+      <item value="0x04">Terry Bogard</item>
+      <item value="0x05">Andy Bogard</item>
+      <item value="0x06">Joe Higashi</item>
+      <item value="0x07">Mai Shiranui</item>
+      <item value="0x08">Ryo Sakazaki</item>
+      <item value="0x09">Robert Garcia</item>
+      <item value="0x0A">Yuri Sakazaki</item>
+      <item value="0x0B">Takuma Sakazaki</item>
+      <item value="0x0C">Leona</item>
+      <item value="0x0D">Ralf Jones</item>
+      <item value="0x0E">Clark Steel</item>
+      <item value="0x0F">Whip</item>
+      <item value="0x10">Athena Asamiya</item>
+      <item value="0x11">Sie Kensou</item>
+      <item value="0x12">Chin Gentsai</item>
+      <item value="0x13">Bao</item>
+      <item value="0x14">King</item>
+      <item value="0x15">Blue Mary</item>
+      <item value="0x16">Kasumi Todo</item>
+      <item value="0x17">Hinako Shijou</item>
+      <item value="0x18">Kim Kaphwan</item>
+      <item value="0x19">Chang Koehan</item>
+      <item value="0x1A">Choi Bounge</item>
+      <item value="0x1B">Jhun Hoon</item>
+      <item value="0x1C">Kyo Kusanagi</item>
+      <item value="0x1D">Ramon</item>
+      <item value="0x1E">Iori Yagami</item>
+      <item value="0x1F">Vanessa</item>
+      <item value="0x20">Lin</item>
+      <item value="0x21">Seth</item>
+      <item value="0x22">#Kula Diamond</item>
+      <item value="0x23">#Zero</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A7FA=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Select Character (B)"> <comment>This refers to the second character selected</comment>
+    <parameter>
+      <item value="0x00">K'</item>
+      <item value="0x01">Maxima</item>
+      <item value="0x02">Benimaru Nikaido</item>
+      <item value="0x03">Shingo Yabuki</item>
+      <item value="0x04">Terry Bogard</item>
+      <item value="0x05">Andy Bogard</item>
+      <item value="0x06">Joe Higashi</item>
+      <item value="0x07">Mai Shiranui</item>
+      <item value="0x08">Ryo Sakazaki</item>
+      <item value="0x09">Robert Garcia</item>
+      <item value="0x0A">Yuri Sakazaki</item>
+      <item value="0x0B">Takuma Sakazaki</item>
+      <item value="0x0C">Leona</item>
+      <item value="0x0D">Ralf Jones</item>
+      <item value="0x0E">Clark Steel</item>
+      <item value="0x0F">Whip</item>
+      <item value="0x10">Athena Asamiya</item>
+      <item value="0x11">Sie Kensou</item>
+      <item value="0x12">Chin Gentsai</item>
+      <item value="0x13">Bao</item>
+      <item value="0x14">King</item>
+      <item value="0x15">Blue Mary</item>
+      <item value="0x16">Kasumi Todo</item>
+      <item value="0x17">Hinako Shijou</item>
+      <item value="0x18">Kim Kaphwan</item>
+      <item value="0x19">Chang Koehan</item>
+      <item value="0x1A">Choi Bounge</item>
+      <item value="0x1B">Jhun Hoon</item>
+      <item value="0x1C">Kyo Kusanagi</item>
+      <item value="0x1D">Ramon</item>
+      <item value="0x1E">Iori Yagami</item>
+      <item value="0x1F">Vanessa</item>
+      <item value="0x20">Lin</item>
+      <item value="0x21">Seth</item>
+      <item value="0x22">#Kula Diamond</item>
+      <item value="0x23">#Zero</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A7FB=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Select Character (C)"> <comment>This refers to the third character selected</comment>
+    <parameter>
+      <item value="0x00">K'</item>
+      <item value="0x01">Maxima</item>
+      <item value="0x02">Benimaru Nikaido</item>
+      <item value="0x03">Shingo Yabuki</item>
+      <item value="0x04">Terry Bogard</item>
+      <item value="0x05">Andy Bogard</item>
+      <item value="0x06">Joe Higashi</item>
+      <item value="0x07">Mai Shiranui</item>
+      <item value="0x08">Ryo Sakazaki</item>
+      <item value="0x09">Robert Garcia</item>
+      <item value="0x0A">Yuri Sakazaki</item>
+      <item value="0x0B">Takuma Sakazaki</item>
+      <item value="0x0C">Leona</item>
+      <item value="0x0D">Ralf Jones</item>
+      <item value="0x0E">Clark Steel</item>
+      <item value="0x0F">Whip</item>
+      <item value="0x10">Athena Asamiya</item>
+      <item value="0x11">Sie Kensou</item>
+      <item value="0x12">Chin Gentsai</item>
+      <item value="0x13">Bao</item>
+      <item value="0x14">King</item>
+      <item value="0x15">Blue Mary</item>
+      <item value="0x16">Kasumi Todo</item>
+      <item value="0x17">Hinako Shijou</item>
+      <item value="0x18">Kim Kaphwan</item>
+      <item value="0x19">Chang Koehan</item>
+      <item value="0x1A">Choi Bounge</item>
+      <item value="0x1B">Jhun Hoon</item>
+      <item value="0x1C">Kyo Kusanagi</item>
+      <item value="0x1D">Ramon</item>
+      <item value="0x1E">Iori Yagami</item>
+      <item value="0x1F">Vanessa</item>
+      <item value="0x20">Lin</item>
+      <item value="0x21">Seth</item>
+      <item value="0x22">#Kula Diamond</item>
+      <item value="0x23">#Zero</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A7FC=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Select Character (D)"> <comment>This refers to the fourth character selected</comment>
+    <parameter>
+      <item value="0x00">K'</item>
+      <item value="0x01">Maxima</item>
+      <item value="0x02">Benimaru Nikaido</item>
+      <item value="0x03">Shingo Yabuki</item>
+      <item value="0x04">Terry Bogard</item>
+      <item value="0x05">Andy Bogard</item>
+      <item value="0x06">Joe Higashi</item>
+      <item value="0x07">Mai Shiranui</item>
+      <item value="0x08">Ryo Sakazaki</item>
+      <item value="0x09">Robert Garcia</item>
+      <item value="0x0A">Yuri Sakazaki</item>
+      <item value="0x0B">Takuma Sakazaki</item>
+      <item value="0x0C">Leona</item>
+      <item value="0x0D">Ralf Jones</item>
+      <item value="0x0E">Clark Steel</item>
+      <item value="0x0F">Whip</item>
+      <item value="0x10">Athena Asamiya</item>
+      <item value="0x11">Sie Kensou</item>
+      <item value="0x12">Chin Gentsai</item>
+      <item value="0x13">Bao</item>
+      <item value="0x14">King</item>
+      <item value="0x15">Blue Mary</item>
+      <item value="0x16">Kasumi Todo</item>
+      <item value="0x17">Hinako Shijou</item>
+      <item value="0x18">Kim Kaphwan</item>
+      <item value="0x19">Chang Koehan</item>
+      <item value="0x1A">Choi Bounge</item>
+      <item value="0x1B">Jhun Hoon</item>
+      <item value="0x1C">Kyo Kusanagi</item>
+      <item value="0x1D">Ramon</item>
+      <item value="0x1E">Iori Yagami</item>
+      <item value="0x1F">Vanessa</item>
+      <item value="0x20">Lin</item>
+      <item value="0x21">Seth</item>
+      <item value="0x22">#Kula Diamond</item>
+      <item value="0x23">#Zero</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A7FD=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Select Roulette Status">
+    <parameter>
+      <item value="0x00">No one selected at random</item>
+      <item value="0x02">All characters selected at random</item>
+      <item value="0x03">2nd, 3rd, and 4th characters selected at random</item>
+      <item value="0x04">3rd and 4th characters selected at random</item>
+      <item value="0x05">4th character selected at random</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A84A=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Select Colour (A)"> <comment>This refers to the first character selected</comment>
+    <parameter>
+      <item value="0x00">A colour</item>
+      <item value="0x01">B colour</item>
+      <item value="0x02">CD colour</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A7FE=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Select Colour (B)"> <comment>This refers to the second character selected</comment>
+    <parameter>
+      <item value="0x00">A colour</item>
+      <item value="0x01">B colour</item>
+      <item value="0x02">CD colour</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A7FF=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Select Colour (C)"> <comment>This refers to the third character selected</comment>
+    <parameter>
+      <item value="0x00">A colour</item>
+      <item value="0x01">B colour</item>
+      <item value="0x02">CD colour</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A800=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Select Colour (D)"> <comment>This refers to the fourth character selected</comment>
+    <parameter>
+      <item value="0x00">A colour</item>
+      <item value="0x01">B colour</item>
+      <item value="0x02">CD colour</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A801=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Select First Character"> <comment>This refers to the character that fights first</comment>
+    <parameter>
+      <item value="0x00">Character A</item>
+      <item value="0x01">Character B</item>
+      <item value="0x02">Character C</item>
+      <item value="0x03">Character D</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A802=param</action> <!-- Second character selected -->
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Select Second Character"> <comment>This refers to the character that fights second</comment>
+    <parameter>
+      <item value="0x00">Character A</item>
+      <item value="0x01">Character B</item>
+      <item value="0x02">Character C</item>
+      <item value="0x03">Character D</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A803=param</action> <!-- Second character selected -->
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Select Third Character"> <comment>This refers to the character that fights third</comment>
+    <parameter>
+      <item value="0x00">Character A</item>
+      <item value="0x01">Character B</item>
+      <item value="0x02">Character C</item>
+      <item value="0x03">Character D</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A804=param</action> <!-- Second character selected -->
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Select Striker"> <comment>This refers to the striker</comment>
+    <parameter>
+      <item value="0x00">Character A</item>
+      <item value="0x01">Character B</item>
+      <item value="0x02">Character C</item>
+      <item value="0x03">Character D</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A805=param</action> <!-- Second character selected -->
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="P2 Infinite Energy">
+    <script state="run">
+      <action>maincpu.pb@108439=66</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Drain all Energy Now!">
+    <script state="on">
+      <action>maincpu.pb@108439=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Maximum Power">
+    <script state="run">
+      <action>maincpu.pb@1083E8=90</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Drain all Power Now!">
+    <script state="on">
+      <action>maincpu.pb@1083E8=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Infinite Strikers">
+    <script state="run">
+      <action>maincpu.pb@1084E3=05</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Select Striker Type">
+    <parameter>
+      <item value="0x00">Regular</item>
+      <item value="0x01">Alternate</item>
+      <item value="0x02">Maniac</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A81F=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Never Get Dizzied">
+    <script state="run">
+      <action>maincpu.pb@10843F=66</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Every Hit Will Dizzy">
+    <script state="run">
+      <action>maincpu.pb@10843F=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Stun Gauge Never Recovers Until Dizzied">
+    <script state="run">
+      <action>maincpu.pb@108444=10</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Stun Gauge Instantly Recovers">
+    <script state="run">
+      <action>maincpu.pb@108444=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Never Get Guard Crushed">
+    <script state="run">
+      <action>maincpu.pb@108447=66</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Every Block Will Guard Crush">
+    <script state="run">
+      <action>maincpu.pb@108447=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Guard Bar Never Recovers Until Guard Crushed">
+    <script state="run">
+      <action>maincpu.pb@10844C=10</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Guard Bar Instantly Recovers">
+    <script state="run">
+      <action>maincpu.pb@10844C=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Select Team">
+    <parameter>
+      <item value="0x00">Hero Team</item>
+      <item value="0x01">Benimaru Team</item>
+      <item value="0x02">Fatal Fury Team</item>
+      <item value="0x03">Art of Fighting Team</item>
+      <item value="0x04">Ikari Team</item>
+      <item value="0x05">Psycho Soldier Team</item>
+      <item value="0x06">Gals Fighters Team</item>
+      <item value="0x07">Korea Team</item>
+      <item value="0x08">Kula (solo)</item>
+      <item value="0x09">Zero (solo)</item>
+      <item value="0x0A">Kyo-Iori Team</item>
+      <item value="0x0B">Kula Team</item>
+      <item value="0x0D">Custom Team</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A80C=param</action> <!-- Benimaru, Shingo, Lin, Seth -->
+    </script>
+  </cheat>
+
+  <!--   Apply following cheat after team order selection or between rounds -->
+  <!--   In team play, will determine which member in your team fights -->
+  <!--   ie. 0 - first in team order fights, 2 - third in team order fights -->
+
+  <cheat desc="P2 Select Rounds Lost">
+    <parameter min="0" max="2" step="1"/>
+    <script state="run">
+      <action>maincpu.pb@10A80E=(param)</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Select Character (A)"> <comment>This refers to the first character selected</comment>
+    <parameter>
+      <item value="0x00">K'</item>
+      <item value="0x01">Maxima</item>
+      <item value="0x02">Benimaru Nikaido</item>
+      <item value="0x03">Shingo Yabuki</item>
+      <item value="0x04">Terry Bogard</item>
+      <item value="0x05">Andy Bogard</item>
+      <item value="0x06">Joe Higashi</item>
+      <item value="0x07">Mai Shiranui</item>
+      <item value="0x08">Ryo Sakazaki</item>
+      <item value="0x09">Robert Garcia</item>
+      <item value="0x0A">Yuri Sakazaki</item>
+      <item value="0x0B">Takuma Sakazaki</item>
+      <item value="0x0C">Leona</item>
+      <item value="0x0D">Ralf Jones</item>
+      <item value="0x0E">Clark Steel</item>
+      <item value="0x0F">Whip</item>
+      <item value="0x10">Athena Asamiya</item>
+      <item value="0x11">Sie Kensou</item>
+      <item value="0x12">Chin Gentsai</item>
+      <item value="0x13">Bao</item>
+      <item value="0x14">King</item>
+      <item value="0x15">Blue Mary</item>
+      <item value="0x16">Kasumi Todo</item>
+      <item value="0x17">Hinako Shijou</item>
+      <item value="0x18">Kim Kaphwan</item>
+      <item value="0x19">Chang Koehan</item>
+      <item value="0x1A">Choi Bounge</item>
+      <item value="0x1B">Jhun Hoon</item>
+      <item value="0x1C">Kyo Kusanagi</item>
+      <item value="0x1D">Ramon</item>
+      <item value="0x1E">Iori Yagami</item>
+      <item value="0x1F">Vanessa</item>
+      <item value="0x20">Lin</item>
+      <item value="0x21">Seth</item>
+      <item value="0x22">#Kula Diamond</item>
+      <item value="0x23">#Zero</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A80F=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Select Character (B)"> <comment>This refers to the second character selected</comment>
+    <parameter>
+      <item value="0x00">K'</item>
+      <item value="0x01">Maxima</item>
+      <item value="0x02">Benimaru Nikaido</item>
+      <item value="0x03">Shingo Yabuki</item>
+      <item value="0x04">Terry Bogard</item>
+      <item value="0x05">Andy Bogard</item>
+      <item value="0x06">Joe Higashi</item>
+      <item value="0x07">Mai Shiranui</item>
+      <item value="0x08">Ryo Sakazaki</item>
+      <item value="0x09">Robert Garcia</item>
+      <item value="0x0A">Yuri Sakazaki</item>
+      <item value="0x0B">Takuma Sakazaki</item>
+      <item value="0x0C">Leona</item>
+      <item value="0x0D">Ralf Jones</item>
+      <item value="0x0E">Clark Steel</item>
+      <item value="0x0F">Whip</item>
+      <item value="0x10">Athena Asamiya</item>
+      <item value="0x11">Sie Kensou</item>
+      <item value="0x12">Chin Gentsai</item>
+      <item value="0x13">Bao</item>
+      <item value="0x14">King</item>
+      <item value="0x15">Blue Mary</item>
+      <item value="0x16">Kasumi Todo</item>
+      <item value="0x17">Hinako Shijou</item>
+      <item value="0x18">Kim Kaphwan</item>
+      <item value="0x19">Chang Koehan</item>
+      <item value="0x1A">Choi Bounge</item>
+      <item value="0x1B">Jhun Hoon</item>
+      <item value="0x1C">Kyo Kusanagi</item>
+      <item value="0x1D">Ramon</item>
+      <item value="0x1E">Iori Yagami</item>
+      <item value="0x1F">Vanessa</item>
+      <item value="0x20">Lin</item>
+      <item value="0x21">Seth</item>
+      <item value="0x22">#Kula Diamond</item>
+      <item value="0x23">#Zero</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A810=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Select Character (C)"> <comment>This refers to the third character selected</comment>
+    <parameter>
+      <item value="0x00">K'</item>
+      <item value="0x01">Maxima</item>
+      <item value="0x02">Benimaru Nikaido</item>
+      <item value="0x03">Shingo Yabuki</item>
+      <item value="0x04">Terry Bogard</item>
+      <item value="0x05">Andy Bogard</item>
+      <item value="0x06">Joe Higashi</item>
+      <item value="0x07">Mai Shiranui</item>
+      <item value="0x08">Ryo Sakazaki</item>
+      <item value="0x09">Robert Garcia</item>
+      <item value="0x0A">Yuri Sakazaki</item>
+      <item value="0x0B">Takuma Sakazaki</item>
+      <item value="0x0C">Leona</item>
+      <item value="0x0D">Ralf Jones</item>
+      <item value="0x0E">Clark Steel</item>
+      <item value="0x0F">Whip</item>
+      <item value="0x10">Athena Asamiya</item>
+      <item value="0x11">Sie Kensou</item>
+      <item value="0x12">Chin Gentsai</item>
+      <item value="0x13">Bao</item>
+      <item value="0x14">King</item>
+      <item value="0x15">Blue Mary</item>
+      <item value="0x16">Kasumi Todo</item>
+      <item value="0x17">Hinako Shijou</item>
+      <item value="0x18">Kim Kaphwan</item>
+      <item value="0x19">Chang Koehan</item>
+      <item value="0x1A">Choi Bounge</item>
+      <item value="0x1B">Jhun Hoon</item>
+      <item value="0x1C">Kyo Kusanagi</item>
+      <item value="0x1D">Ramon</item>
+      <item value="0x1E">Iori Yagami</item>
+      <item value="0x1F">Vanessa</item>
+      <item value="0x20">Lin</item>
+      <item value="0x21">Seth</item>
+      <item value="0x22">#Kula Diamond</item>
+      <item value="0x23">#Zero</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A811=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Select Character (D)"> <comment>This refers to the fourth character selected</comment>
+    <parameter>
+      <item value="0x00">K'</item>
+      <item value="0x01">Maxima</item>
+      <item value="0x02">Benimaru Nikaido</item>
+      <item value="0x03">Shingo Yabuki</item>
+      <item value="0x04">Terry Bogard</item>
+      <item value="0x05">Andy Bogard</item>
+      <item value="0x06">Joe Higashi</item>
+      <item value="0x07">Mai Shiranui</item>
+      <item value="0x08">Ryo Sakazaki</item>
+      <item value="0x09">Robert Garcia</item>
+      <item value="0x0A">Yuri Sakazaki</item>
+      <item value="0x0B">Takuma Sakazaki</item>
+      <item value="0x0C">Leona</item>
+      <item value="0x0D">Ralf Jones</item>
+      <item value="0x0E">Clark Steel</item>
+      <item value="0x0F">Whip</item>
+      <item value="0x10">Athena Asamiya</item>
+      <item value="0x11">Sie Kensou</item>
+      <item value="0x12">Chin Gentsai</item>
+      <item value="0x13">Bao</item>
+      <item value="0x14">King</item>
+      <item value="0x15">Blue Mary</item>
+      <item value="0x16">Kasumi Todo</item>
+      <item value="0x17">Hinako Shijou</item>
+      <item value="0x18">Kim Kaphwan</item>
+      <item value="0x19">Chang Koehan</item>
+      <item value="0x1A">Choi Bounge</item>
+      <item value="0x1B">Jhun Hoon</item>
+      <item value="0x1C">Kyo Kusanagi</item>
+      <item value="0x1D">Ramon</item>
+      <item value="0x1E">Iori Yagami</item>
+      <item value="0x1F">Vanessa</item>
+      <item value="0x20">Lin</item>
+      <item value="0x21">Seth</item>
+      <item value="0x22">#Kula Diamond</item>
+      <item value="0x23">#Zero</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A812=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Select Roulette Status">
+    <parameter>
+      <item value="0x00">No one selected at random</item>
+      <item value="0x02">All characters selected at random</item>
+      <item value="0x03">2nd, 3rd, and 4th characters selected at random</item>
+      <item value="0x04">3rd and 4th characters selected at random</item>
+      <item value="0x05">4th character selected at random</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A85B=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Select Colour (A)"> <comment>This refers to the first character selected</comment>
+    <parameter>
+      <item value="0x00">A colour</item>
+      <item value="0x01">B colour</item>
+      <item value="0x02">CD colour</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A813=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Select Colour (B)"> <comment>This refers to the second character selected</comment>
+    <parameter>
+      <item value="0x00">A colour</item>
+      <item value="0x01">B colour</item>
+      <item value="0x02">CD colour</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A814=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Select Colour (C)"> <comment>This refers to the third character selected</comment>
+    <parameter>
+      <item value="0x00">A colour</item>
+      <item value="0x01">B colour</item>
+      <item value="0x02">CD colour</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A815=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Select Colour (D)"> <comment>This refers to the fourth character selected</comment>
+    <parameter>
+      <item value="0x00">A colour</item>
+      <item value="0x01">B colour</item>
+      <item value="0x02">CD colour</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A816=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Select First Character"> <comment>This refers to the character that fights first</comment>
+    <parameter>
+      <item value="0x00">Character A</item>
+      <item value="0x01">Character B</item>
+      <item value="0x02">Character C</item>
+      <item value="0x03">Character D</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A817=param</action> <!-- Second character selected -->
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Select Second Character"> <comment>This refers to the character that fights second</comment>
+    <parameter>
+      <item value="0x00">Character A</item>
+      <item value="0x01">Character B</item>
+      <item value="0x02">Character C</item>
+      <item value="0x03">Character D</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A818=param</action> <!-- Second character selected -->
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Select Third Character"> <comment>This refers to the character that fights third</comment>
+    <parameter>
+      <item value="0x00">Character A</item>
+      <item value="0x01">Character B</item>
+      <item value="0x02">Character C</item>
+      <item value="0x03">Character D</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A819=param</action> <!-- Second character selected -->
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Select Striker"> <comment>This refers to the striker</comment>
+    <parameter>
+      <item value="0x00">Character A</item>
+      <item value="0x01">Character B</item>
+      <item value="0x02">Character C</item>
+      <item value="0x03">Character D</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A81A=param</action> <!-- Second character selected -->
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="No Background Music">
+    <script state="run">
+      <action>audiocpu.pb@FD89=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Hide Background"> <comment>Activate before match start</comment>
+    <script state="on">
+      <action>
+        temp0=maincpu.pb@10008F,
+        temp1=maincpu.pb@10A788,
+        temp2=maincpu.pb@10A7EA,
+        temp3=maincpu.rw@02EE8A
+      </action>
+    </script>
+    <script state="run">
+      <action condition="(maincpu.pw@10A7E6 != 0 and maincpu.pb@10A7EB == 00)"> <!-- activate only during match -->
+        maincpu.pb@10008F=00, <!-- flashing text -->
+        maincpu.pb@10A788=temp1 bor 80, <!-- BG layers -->
+        maincpu.pb@10A7EA=temp2 bor 80, <!-- portraits -->
+        maincpu.rw@02EE8A=008F, <!-- HUD -->
+        maincpu.pw@10D8EA=8F8F <!-- BG colour (pink) -->
+      </action>
+    </script>
+    <script state="off">
+      <action>
+        maincpu.pb@10008F=temp0,
+        maincpu.pb@10A788=temp1,
+        maincpu.pb@10A7EA=temp2,
+        maincpu.rw@02EE8A=temp3
+      </action>
+    </script>
+  </cheat>
+
+  <cheat desc="Select Cartridge/NeoGeo Type"> <comment>Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable.</comment>
+    <parameter>
+      <item value="0x80">Arcade (MVS)</item>
+      <item value="0x00">Home (NEOGEO)</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10FD82=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Skip RAM/ROM Checks"> <comment>Also allows a quicker start-up without the green screens.</comment>
+    <script state="on">
+      <action>temp0 =maincpu.rd@C1315C</action>
+      <action>temp1 =maincpu.rd@C1314E</action>
+      <action>temp2 =maincpu.rd@C131E8</action>
+      <action>temp3 =maincpu.rd@C13184</action>
+      <action>temp4 =maincpu.rd@C1212E</action>
+      <action>temp5 =maincpu.rd@C134FA</action>
+    </script>
+    <script state="run">
+      <action condition="(maincpu.rd@C1315C==51CFFFF2)">maincpu.rd@C1315C=6000EB08</action> <!-- Euro + Japan-S2 BIOSs -->
+      <action condition="(maincpu.rd@C1314E==51CFFFF2)">maincpu.rd@C1314E=6000EB16</action> <!-- Euro-S1 + Japan-S1 BIOSs -->
+      <action condition="(maincpu.rd@C131E8==51CFFFF2)">maincpu.rd@C131E8=6000EA52</action> <!-- US BIOS -->
+      <action condition="(maincpu.rd@C13184==51CFFFF2)">maincpu.rd@C13184=6000EAB6</action> <!-- US-E BIOS -->
+      <action condition="(maincpu.rd@C1212E==51CFFFF2)">maincpu.rd@C1212E=6000EB36</action> <!-- Asia BIOS -->
+      <action condition="(maincpu.rd@C134FA==51CFFFF2)">maincpu.rd@C134FA=6000E892</action> <!-- Japan BIOS -->
+    </script>
+    <script state="off">
+      <action>maincpu.rd@C1315C=temp0 </action>
+      <action>maincpu.rd@C1314E=temp1 </action>
+      <action>maincpu.rd@C131E8=temp2 </action>
+      <action>maincpu.rd@C13184=temp3 </action>
+      <action>maincpu.rd@C1212E=temp4 </action>
+      <action>maincpu.rd@C134FA=temp5 </action>
+    </script>
+  </cheat>
+
+  <cheat desc="Infinite Credits"> <comment>Alternatively just set Free Play to ON in the Dip Switches menu</comment>
+    <script state="run">
+      <action>maincpu.rb@D00034=99</action>
+    </script>
+  </cheat>
+
+</mamecheat>
+<!-- Cheat file downloaded from http://www.mamecheat.co.uk, see cheat.txt for list of contributors. -->

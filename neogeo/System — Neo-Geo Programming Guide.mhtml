@@ -1,0 +1,693 @@
+From: <Saved by Blink>
+Snapshot-Content-Location: http://www.ajworld.net/neogeodev/neoguide/?p=3
+Subject: =?utf-8?Q?System=20=E2=80=94=20Neo-Geo=20Programming=20Guide?=
+Date: Tue, 19 Jul 2022 02:12:59 -0000
+MIME-Version: 1.0
+Content-Type: multipart/related;
+	type="text/html";
+	boundary="----MultipartBoundary--Fv7dYvDaBaOoVVx3rjGd6oZljpIwlgmFUzV1TbepxC----"
+
+
+------MultipartBoundary--Fv7dYvDaBaOoVVx3rjGd6oZljpIwlgmFUzV1TbepxC----
+Content-Type: text/html
+Content-ID: <frame-59F75748C9ED9E52AC48407AF7A3A031@mhtml.blink>
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://www.ajworld.net/neogeodev/neoguide/?p=3
+
+<!DOCTYPE html><html lang=3D"en"><head><meta http-equiv=3D"Content-Type" co=
+ntent=3D"text/html; charset=3DUTF-8">
+<title>System =E2=80=94 Neo-Geo Programming Guide</title>
+
+<link rel=3D"stylesheet" href=3D"http://www.ajworld.net/neogeodev/neoguide/=
+media/neoprogguide.css">
+</head>
+<body>
+
+<div id=3D"container">
+
+<div id=3D"content">
+<!-- header and navigation -->
+
+<h1>System =E2=80=93 Neo-Geo Programming Guide</h1>
+
+<div id=3D"navbar">
+<a href=3D"http://www.ajworld.net/neogeodev/neoguide/"><span class=3D"navit=
+em">Front Page</span></a><a href=3D"http://www.ajworld.net/neogeodev/neogui=
+de/?p=3D1"><span class=3D"navitem">Hardware</span></a><a href=3D"http://www=
+.ajworld.net/neogeodev/neoguide/?p=3D2"><span class=3D"navitem">Tools</span=
+></a><span class=3D"navitem"><strong>System</strong></span><a href=3D"http:=
+//www.ajworld.net/neogeodev/neoguide/?p=3D4"><span class=3D"navitem">BIOS</=
+span></a><a href=3D"http://www.ajworld.net/neogeodev/neoguide/?p=3D5"><span=
+ class=3D"navitem">Program Setup</span></a><a href=3D"http://www.ajworld.ne=
+t/neogeodev/neoguide/?p=3D6"><span class=3D"navitem">Environment Setup</spa=
+n></a><a href=3D"http://www.ajworld.net/neogeodev/neoguide/?p=3D7"><span cl=
+ass=3D"navitem">Examples</span></a><a href=3D"http://www.ajworld.net/neogeo=
+dev/neoguide/?p=3D8"><span class=3D"navitem">Intermediate</span></a><a href=
+=3D"http://www.ajworld.net/neogeodev/neoguide/?p=3D9"><span class=3D"navite=
+m">Advanced</span></a><a href=3D"http://www.ajworld.net/neogeodev/neoguide/=
+?p=3D10"><span class=3D"navitem">Resources</span></a></div>
+<hr>
+<h2>Understanding the System</h2>
+<p>In order to program for the Neo-Geo, you'll need to understand how the h=
+ardware
+works at a basic level. This section covers the memory map for the two CPUs=
+, the
+interaction between the 68000 and the other hardware, and the functionality=
+ and
+formats of Neo-Geo data.</p>
+
+<h2>68000 Memory Map</h2>
+<p>The 68000 is the heart of the operation, and it's where most of your cod=
+e will
+run. You'll be sharing it with the BIOS, the Palette, the RAM, system regis=
+ters,
+among others.</p>
+<h3>Cart systems</h3>
+<table>
+	<thead>
+		<tr>
+			<th>Start</th>
+			<th>End</th>
+			<th>Short Name</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>$000000</td>
+			<td>$0FFFFF</td>
+			<td>&nbsp;</td>
+			<td>Vector Table, first bank of P ROM</td>
+		</tr>
+		<tr>
+			<td>$100000</td>
+			<td>$00F2FF</td>
+			<td><code>WORKRAM_USER</code></td>
+			<td>User RAM/Work RAM</td>
+		</tr>
+		<tr>
+			<td>$10F300</td>
+			<td>$00FFFF</td>
+			<td><code>WORKRAM_BIOS</code></td>
+			<td>RAM reserved for use by the BIOS.</td>
+		</tr>
+		<tr>
+			<td>$200000</td>
+			<td>$2FFFFF</td>
+			<td>&nbsp;</td>
+			<td>P ROM second bank; also bankswitching and special chips</td>
+		</tr>
+		<tr>
+			<td>$300000</td>
+			<td>$39FFFF</td>
+			<td>&nbsp;</td>
+			<td>Input ports</td>
+		</tr>
+		<tr>
+			<td>$3A0000</td>
+			<td>$3BFFFF</td>
+			<td>&nbsp;</td>
+			<td>Output ports</td>
+		</tr>
+		<tr>
+			<td>$3C0000</td>
+			<td>$3FFFFF</td>
+			<td>&nbsp;</td>
+			<td>GPU/LSPC ports</td>
+		</tr>
+		<tr>
+			<td>$400000</td>
+			<td>$401FFF</td>
+			<td><code>PALETTES</code></td>
+			<td>Current Palette RAM</td>
+		</tr>
+		<tr>
+			<td>$800000</td>
+			<td>$BFFFFF</td>
+			<td><code>MEMCARD</code></td>
+			<td>Memory card data (8MB max)</td>
+		</tr>
+		<tr>
+			<td>$C00000</td>
+			<td>$C1FFFF</td>
+			<td><code>BIOSROM</code></td>
+			<td>BIOS ROM (128KB)</td>
+		</tr>
+		<tr>
+			<td>$D00000</td>
+			<td>$D0FFFF</td>
+			<td><code>BRAM_START</code>,<code>MVS_BRAM</code></td>
+			<td>MVS-only Backup RAM (64KB)</td>
+		</tr>
+	</tbody>
+</table>
+
+<h3>CD systems</h3>
+<p>On CD systems, the layout is mostly similar, though there are some sligh=
+t differences.
+As this guide is mostly geared towards cart system development, please don'=
+t consider
+this table to be 100% accurate.</p>
+<table>
+	<thead>
+		<tr>
+			<th>Start</th>
+			<th>End</th>
+			<th>Short Name</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>$000000</td>
+			<td>$0FFFFF</td>
+			<td>&nbsp;</td>
+			<td>Vector Table, 68k program (<code>.PRG</code> files), 68k RAM </td>
+		</tr>
+		<tr>
+			<td>$100000</td>
+			<td>$00F2FF</td>
+			<td><code>WORKRAM_USER</code></td>
+			<td>User RAM/Work RAM</td>
+		</tr>
+		<tr>
+			<td>$10F300</td>
+			<td>$00FFFF</td>
+			<td><code>WORKRAM_BIOS</code></td>
+			<td>RAM reserved for use by the BIOS.</td>
+		</tr>
+		<tr>
+			<td>$200000</td>
+			<td>$2FFFFF</td>
+			<td>&nbsp;</td>
+			<td>?</td>
+		</tr>
+		<tr>
+			<td>$300000</td>
+			<td>$39FFFF</td>
+			<td>&nbsp;</td>
+			<td>Input ports</td>
+		</tr>
+		<tr>
+			<td>$3A0000</td>
+			<td>$3BFFFF</td>
+			<td>&nbsp;</td>
+			<td>Output ports</td>
+		</tr>
+		<tr>
+			<td>$3C0000</td>
+			<td>$3FFFFF</td>
+			<td>&nbsp;</td>
+			<td>GPU/LSPC ports</td>
+		</tr>
+		<tr>
+			<td>$400000</td>
+			<td>$401FFF</td>
+			<td><code>PALETTES</code></td>
+			<td>Current Palette RAM</td>
+		</tr>
+		<tr>
+			<td>$800000</td>
+			<td>$803FFF</td>
+			<td><code>MEMCARD</code></td>
+			<td>Virtual Memory card (8KB max). 8-bit; even bytes are always <code>$F=
+F</code>.</td>
+		</tr>
+		<tr>
+			<td>$C00000</td>
+			<td>$C7FFFF</td>
+			<td><code>BIOSROM</code></td>
+			<td>BIOS ROM (512KB)</td>
+		</tr>
+		<tr>
+			<td>$E00000</td>
+			<td>$E0FFFF</td>
+			<td><code>UPLOAD</code></td>
+			<td>Upload zone (1MB)</td>
+		</tr>
+		<tr>
+			<td>$FF0000</td>
+			<td>$FF01FF?</td>
+			<td>&nbsp;</td>
+			<td>CD and DMA specific I/O registers</td>
+		</tr>
+	</tbody>
+</table>
+
+<h2>Z80 Memory Map</h2>
+<table>
+	<thead>
+		<tr>
+			<th>Start</th>
+			<th>End</th>
+			<th>Size</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>$0000</td>
+			<td>$7FFF</td>
+			<td>32KB</td>
+			<td>Main code bank (start of M1 ROM/<code>.Z80</code> file)</td>
+		</tr>
+		<tr>
+			<td>$8000</td>
+			<td>$BFFF</td>
+			<td>16KB</td>
+			<td>Switchable bank 3</td>
+		</tr>
+		<tr>
+			<td>$C000</td>
+			<td>$DFFF</td>
+			<td>8KB</td>
+			<td>Switchable bank 2</td>
+		</tr>
+		<tr>
+			<td>$E000</td>
+			<td>$EFFF</td>
+			<td>4KB</td>
+			<td>Switchable bank 1</td>
+		</tr>
+		<tr>
+			<td>$F000</td>
+			<td>$F7FF</td>
+			<td>2KB</td>
+			<td>Switchable bank 0</td>
+		</tr>
+		<tr>
+			<td>$F800</td>
+			<td>$FFFF</td>
+			<td>2KB</td>
+			<td>Work RAM</td>
+		</tr>
+	</tbody>
+</table>
+
+<h2>Registers</h2>
+<p>Like many computers and consoles from the 1980s and 1990s, the Neo-Geo i=
+nterfaces
+with its hardware via registers located in memory. Registers live between <=
+code>$300000</code> and
+<code>$3FFFFF</code>, but not every address is used.</p>
+
+<p>(todo: this section needs to have two name columns, in cases where the f=
+reemlib
+defines are different)</p>
+
+<h3>I/O Registers</h3>
+<table>
+	<thead>
+		<tr>
+			<th>Address</th>
+			<th>Name</th>
+			<th>Read</th>
+			<th>Write</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>$300000</td>
+			<td><code>REG_P1CCNT</code></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>$300001</td>
+			<td><code>REG_DIPSW</code></td>
+			<td>Read hardware dipswitches</td>
+			<td>Kick watchdog</td>
+		</tr>
+	</tbody>
+</table>
+
+<h3>System Registers</h3>
+<p>System Registers are bytes that can only be written to.</p>
+<table>
+	<thead>
+		<tr>
+			<th>Address</th>
+			<th>Name</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>$3A0001</td>
+			<td><code>REG_NOSHADOW</code></td>
+			<td>Normal video output</td>
+		</tr>
+		<tr>
+			<td>$3A0003</td>
+			<td><code>REG_BIOSVEC</code>,<code>REG_SWPBIOS</code></td>
+			<td>Use BIOS vector table</td>
+		</tr>
+		<tr>
+			<td>$3A0005</td>
+			<td><code>REG_CRDUNLOCK1</code></td>
+			<td>Register 1/2 for enabling writes to memory card</td>
+		</tr>
+		<tr>
+			<td>$3A0007</td>
+			<td><code>REG_CRDLOCK2</code></td>
+			<td>Register 2/2 for disabling writes to memory card</td>
+		</tr>
+		<tr>
+			<td>$3A0009</td>
+			<td><code>CARD_REGSEL</code>,<code>REG_CRDREGSEL</code></td>
+			<td>Enable memory card register select</td>
+		</tr>
+		<tr>
+			<td>$3A000B</td>
+			<td><code>REG_BRDFIX</code></td>
+			<td>Use the BIOS's fix tiles and M1 ROM.</td>
+		</tr>
+		<tr>
+			<td>$3A000D</td>
+			<td><code>REG_SRAMLOCK</code></td>
+			<td>Disables writes to MVS-only Backup RAM</td>
+		</tr>
+		<tr>
+			<td>$3A000F</td>
+			<td><code>REG_PALBANK1</code></td>
+			<td>Use palette bank 1</td>
+		</tr>
+		<tr>
+			<td>$3A0011</td>
+			<td><code>REG_SHADOW</code></td>
+			<td>Darken video output</td>
+		</tr>
+		<tr>
+			<td>$3A0013</td>
+			<td><code>REG_CARTVEC</code>,<code>REG_SWPROM</code></td>
+			<td>Use cart's vector table</td>
+		</tr>
+		<tr>
+			<td>$3A0015</td>
+			<td><code>REG_CRDLOCK1</code></td>
+			<td>Register 1/2 for disabling writes to memory card</td>
+		</tr>
+		<tr>
+			<td>$3A0017</td>
+			<td><code>REG_CRDUNLOCK2</code></td>
+			<td>Register 2/2 for enabling writes to memory card</td>
+		</tr>
+		<tr>
+			<td>$3A0019</td>
+			<td><code>CARD_NORMAL</code>,<code>REG_CRDNORMAL</code></td>
+			<td>Disable memory card register select</td>
+		</tr>
+		<tr>
+			<td>$3A001B</td>
+			<td><code>REG_CRTFIX</code></td>
+			<td>Use the cart's fix tiles and M1 ROM.</td>
+		</tr>
+		<tr>
+			<td>$3A001D</td>
+			<td><code>REG_SRAMULOCK</code></td>
+			<td>Enables writes to MVS-only Backup RAM</td>
+		</tr>
+		<tr>
+			<td>$3A001F</td>
+			<td><code>REG_PALBANK0</code></td>
+			<td>Use palette bank 0</td>
+		</tr>
+	</tbody>
+</table>
+
+<h3>GPU/LSPC Registers</h3>
+<p>These registers control the LSPC/GPU. Byte writes only work on odd addre=
+sses
+and store the same data in MSB and LSB.</p>
+<table>
+	<thead>
+		<tr>
+			<th>Address</th>
+			<th>Name</th>
+			<th>Read</th>
+			<th>Write</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>$3C0000</td>
+			<td><code>REG_VRAMADDR</code></td>
+			<td>Read VRAM data</td>
+			<td>Set VRAM address</td>
+		</tr>
+		<tr>
+			<td>$3C0002</td>
+			<td><code>REG_VRAMRW</code></td>
+			<td>Read VRAM data</td>
+			<td>Write VRAM data</td>
+		</tr>
+		<tr>
+			<td>$3C0004</td>
+			<td><code>REG_VRAMMOD</code></td>
+			<td>Read VRAM increment value</td>
+			<td>Set VRAM increment value</td>
+		</tr>
+		<tr>
+			<td>$3C0006</td>
+			<td><code>REG_LSPCMODE</code></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>$3C0008</td>
+			<td><code>REG_TIMERHIGH</code></td>
+			<td>(invalid)</td>
+			<td>Timer reload value (MSB)</td>
+		</tr>
+		<tr>
+			<td>$3C000A</td>
+			<td><code>REG_TIMERLOW</code></td>
+			<td>(invalid)</td>
+			<td>Timer reload value (LSB)</td>
+		</tr>
+		<tr>
+			<td>$3C000C</td>
+			<td><code>REG_IRQACK</code></td>
+			<td>(invalid)</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>$3C000E</td>
+			<td><code>REG_TIMERSTOP</code></td>
+			<td>(invalid)</td>
+			<td>&nbsp;</td>
+		</tr>
+	</tbody>
+</table>
+
+<h3>Neo-Geo CD Registers</h3>
+<p>The CD system registers start at <code>$FF0000</code>. Most of these reg=
+isters
+have to do with the CD hardware and RAM transfers.</p>
+<p>(todo)</p>
+
+<h2>Palettes</h2>
+<p>Palette data is located in its own section of RAM, between <code>$400000=
+</code>
+and <code>$401FFF</code>. The palette RAM can be swapped between two banks,=
+ allowing
+for many possibilities. In total, there are 4096 slots for palette colors, =
+but 256
+of them are used for transparency, so the real number is closer to 3,840 (i=
+ncluding
+the background).</p>
+
+<p><strong>VERY IMPORTANT</strong>: The fix layer is only capable of using =
+the
+first 16 palette sets ($0-$F). Sprites may use all 256 palette sets ($00-$F=
+F).</p>
+
+<p>Each palette consists of 16 colors, the first of which is used for trans=
+parency
+(so only 15 effective colors per fix tile/sprite).</p>
+
+<p>(todo: Color format)</p>
+
+<h2>Fix Layer</h2>
+<p>The data for the Fix Layer lives in VRAM at <code>$7000-$74FF</code>.</p=
+>
+
+<p>(todo: VRAM fix section data format)</p>
+
+<p>Extension space is from <code>$7500-$7FFF</code>, but is only known to b=
+e used
+on the NEO-CMC chips so far. (Is something similar used in modern third-par=
+ty games?)</p>
+
+<h2>Sprites</h2>
+<p>Sprite tiles are stored differently depending on if the game is for a ca=
+rt
+system or a CD system. On CD systems, the sprites go in <code>.SPR</code> f=
+iles,
+while on cart systems, the data is split up into two ROMs.</p>
+
+<p>When it comes to actually manipulating sprites, they take up most of the=
+ VRAM space.</p>
+<table>
+	<thead>
+		<tr>
+			<th>Start</th>
+			<th>End</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>$0000</td>
+			<td>$6FFF</td>
+			<td>Sprite Control Block 1 (SCB1)</td>
+		</tr>
+		<tr>
+			<td>$8000</td>
+			<td>$81FF</td>
+			<td>Sprite Control Block 2 (SCB2)</td>
+		</tr>
+		<tr>
+			<td>$8200</td>
+			<td>$83FF</td>
+			<td>Sprite Control Block 3 (SCB3)</td>
+		</tr>
+		<tr>
+			<td>$8400</td>
+			<td>$85FF</td>
+			<td>Sprite Control Block 4 (SCB4)</td>
+		</tr>
+		<tr>
+			<td>$8600</td>
+			<td>$867F</td>
+			<td>Sprite List for Even Scanlines</td>
+		</tr>
+		<tr>
+			<td>$8680</td>
+			<td>$86FF</td>
+			<td>Sprite List for Odd Scanlines</td>
+		</tr>
+	</tbody>
+</table>
+
+<h2>Sound</h2>
+<p>The sound in the Neo-Geo is handled by the Yamaha YM2610 (OPNB). The OPN=
+B is
+capable of 4 channels of FM sound, 3 channels of Yamaha SSG (equivalent to =
+AY-3-8910,
+or more closely, the YM2149), 6 channels of fixed sampling rate (18,500Hz) =
+ADPCM (A),
+and one channel of variable sampling rate (1.8KHz-55.5KHz) ADPCM (B).</p>
+
+<p>Unlike the Sega Mega Drive/Genesis, where the (similar) YM2612 could be =
+controlled
+by either the 68K or the Z80, the Neo-Geo only lets you control the YM2610 =
+from the Z80.
+Furthermore, the cartridge systems only allow for 2048 bytes of Z80 RAM, me=
+aning most
+of your data is going to need to be in ROM.</p>
+
+<p>Overall the sound can be broken down into its various ROM components:</p=
+>
+<ul>
+<li>M1 ROM =E2=80=94 Z80 Music Driver and Sequence Data</li>
+<li>V ROMs =E2=80=94 ADPCM A and B samples</li>
+</ul>
+
+<p>(todo)</p>
+</div>
+
+<div id=3D"bottom">
+This guide written by AJ/freem, 2014-2015.<br>
+"NEOGEO" is a registered trademark of SNK Playmore Corp. All other company =
+and
+product names used are trademarks or registered trademarks of their respect=
+ive owners.<br>
+This guide is not authorized or licensed by SNK Playmore.
+</div>
+
+</div>
+
+</body></html>
+------MultipartBoundary--Fv7dYvDaBaOoVVx3rjGd6oZljpIwlgmFUzV1TbepxC----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://www.ajworld.net/neogeodev/neoguide/media/neoprogguide.css
+
+@charset "utf-8";
+
+* { margin: 0px; }
+
+body { background-color: rgb(204, 208, 221); margin: 2em; font-family: Cali=
+bri, "Open Sans", "Droid Sans", sans-serif; }
+
+code { font-family: Consolas, monospace; background-color: rgb(208, 222, 23=
+8); }
+
+p { margin-bottom: 0.5em; margin-top: 0.5em; }
+
+h1 { margin-bottom: 0.2em; }
+
+h2 { margin-top: 0.2em; margin-bottom: 0.2em; }
+
+h3 { margin-top: 0.15em; margin-bottom: 0.1em; }
+
+h4 { margin-top: 0.15em; margin-bottom: 0.1em; }
+
+h5 { margin-top: 0.15em; margin-bottom: 0.1em; }
+
+h6 { margin-top: 0.15em; margin-bottom: 0.1em; }
+
+hr { border: 1px solid rgb(153, 153, 153); margin-bottom: 0.5em; margin-top=
+: 0.5em; }
+
+table { border-collapse: collapse; border: 1px solid rgb(119, 119, 119); pa=
+dding-top: 0.1em; padding-bottom: 0.1em; margin-top: 0.1em; margin-bottom: =
+0.1em; }
+
+th { border: 1px solid rgb(102, 102, 102); background-color: rgb(136, 153, =
+170); }
+
+td { border: 1px solid rgb(102, 102, 102); background-color: rgb(221, 221, =
+221); }
+
+#container { }
+
+#content { width: 90%; margin: auto; padding: 1em; background-color: rgb(23=
+8, 238, 238); border: 1px solid rgb(170, 170, 170); box-shadow: rgb(119, 11=
+9, 119) 2px 2px 1px; background-image: linear-gradient(to top, rgb(224, 224=
+, 224) 0%, rgb(238, 238, 238) 100%); }
+
+#bottom { font-size: 80%; width: 90%; margin-top: 1em; margin-left: auto; m=
+argin-right: auto; padding: 0.5em 1em; background-color: rgb(221, 221, 221)=
+; border: 1px solid rgb(170, 170, 170); box-shadow: rgb(119, 119, 119) 2px =
+2px 1px; text-align: center; }
+
+#navbar { border: 1px solid rgb(170, 170, 170); background-color: rgb(221, =
+221, 221); }
+
+#subnavbar { border-left: 1px solid rgb(170, 170, 170); border-right: 1px s=
+olid rgb(170, 170, 170); border-bottom: 1px solid rgb(170, 170, 170); backg=
+round-color: rgb(221, 221, 221); }
+
+.navitem { border-right: 1px solid rgb(153, 153, 153); padding-left: 0.2em;=
+ padding-right: 0.2em; background-color: rgb(221, 221, 221); }
+
+.navitem:hover { background-color: rgb(221, 238, 255); }
+
+a .navitem { color: rgb(0, 0, 0); }
+
+a:hover .navitem { color: rgb(34, 34, 34); }
+
+a:visited .navitem { color: rgb(102, 51, 102); }
+
+.navitemLast { padding-left: 0.2em; padding-right: 0.2em; background-color:=
+ rgb(221, 221, 221); }
+------MultipartBoundary--Fv7dYvDaBaOoVVx3rjGd6oZljpIwlgmFUzV1TbepxC------
