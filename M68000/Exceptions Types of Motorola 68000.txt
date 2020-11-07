@@ -1,0 +1,59 @@
+Exception Processing Sequence:
+We have seen different Exceptions Types of Motorola 68000. While processing these exceptions the 68000 follows certain sequence of operations. These operations slightly vary for different types of exception. Now we will see how 68000 responds to the different types of exceptions.
+
+A) Exception Processing Sequence for TRAP instruction, an illegal or unimplemented opcode, or a privilege violation:
+Steps :
+
+
+ 
+The Status Register contents are copied into an internal register.
+The S-bit, in the Status Register is set, thus placing the MC68000 in the Supervisor mode of operation.
+3.The T-bit in the Status Register is reset to disable trace operation.
+The Program Counter contents are pushed onto the Supervisor stack. The contents of SSP will be decremented by four since four bytes are required to store the 32-bit contents of PC.
+Status register contents. are pushed onto the Supervisor stack; SSP contents are decremented by two, since the Status register is a 16-bit register.
+The new Program Counter contents are taken from the appropriate location in the interrupt vector table.
+Instruction execution then begins at the location indicated by the new contents of the Program Counter; this will be the first instruction of the exception processing program you have provided for that particular type of exception.
+B) Exception Processing Sequence for Bus Error and Address Error:
+Steps :
+The contents of the Status register are copied into an internal register.
+The S-bit in the Status register is set, placing the MC68000 in the Supervisor
+The T-bit in the Status register is reset to disable trace operation.
+The contents of the Program Counter are pushed onto the Supervisor stack and the System Stack Pointer (SSP) is decremented by four.
+The contents of the Status register are pushed onto the Supervisor stack and the contents of SSP are decremented by two.
+The contents of the MC68000¡¯s instruction register, which constitute the first word of the instruction that was in progress when the bus error occurred, are pushed onto the Supervisor stack and SSP is decremented by two.
+The 32-bit address that was being used for the bus cycle which was terminated is also pushed onto the Supervisor stack and SSP is decremented by four.
+A word which provides information as to the type of cycle that was in progress at the time of the error is pushed onto the Supervisor stack and SSP is decremented by two.
+The Program Counter contents are taken from the appropriate interrupt vector-either the bus error vector or address error vector of the exception vector table.
+Instruction execution resumes at the location indicated by the new contents of the Program Counter.
+C) Exception Processing Sequence for RESET:
+Steps :
+
+The S-bit in the Status register is set; placing the MC68000 in the Supervisor
+The T-bit in the Status register is reset to disable the trace function.
+All three interrupt mask bits in the Status register are set, thus specifying the interrupt priority mask at level seven,
+Supervisor Stack Pointer (SSP) is loaded with the contents of the first four bytes of memory (addresses 000000-000003).
+The Program Counter (PC) is loaded from the next four bytes of memory (addresses 000004-000007).
+Instruction execution commences at the address indicated by the new contents of the Program Counter, which should reference your power-on reset initialization program.
+D) Exception Processing for Interrupt Request:
+An external device requests an interrupt by encoding an interrupt request level on the IPL0-IPL2 inputs. The 68000 compares these inputs to the interrupt mask bits in the status register. If the encoded priority level is higher than the level established by the interrupt mask, interrupt request will be processed.
+
+Steps:
+
+The contents of the status register are saved internally.
+The S-bit in the status register is set, placing the MC68000 in the supervisor
+The T-bit in the, status register is reset to disable the trace function.
+The interrupt mask bits in the Status register are updated to the level of the interrupt request that is encoded on the IPL0-IPL2 This allows the current interrupt to be processed without being interrupted by lower priority events.
+Then 68000 performs interrupt acknowledge (INTA) bus cycle. This cycle serves two functions. The processor informs the requesting device that its interrupt request is The processor fetches an exception vector byte from the requesting device.
+11.10 shows the interrupt acknowledge cycle:
+Exceptions Types of Motorola 68000
+
+The requesting device places a byte of exception vector data on the lower byte of the data bus (D0-D7). The Data Transfer Acknowledge (DTACK) signal is used to effect this transfer of data just as with a normal read cycle. Throughout the interrupt acknowledge cycle, the Function Code Outputs (FC0-FC2) will be set high since these represent the interrupt acknowledge function code.
+
+Address lines A1-A3 reflect the status of IPL0-IPL2.
+
+The contents of the program counter are pushed onto the supervisor stack and SSP is decremented by four.
+The contents of the status register are pushed onto the supervisor stack and SSP is decremented by two.
+The program counter is loaded with four bytes from the appropriate location in the exception vector table.
+Instruction execution resumes at the location indicated by the new contents of the program counter.
+Spurious Interrupt:
+interrupt acknowledge cycle, if requesting device responds by asserting BERR instead of DTACK, the Exceptions Types of Motorola 68000 treats this interrupt request as Spurious Interrupt Request. For spurious interrupt, the 68000 uses vector 24 in the exception vector table to load the program counter.

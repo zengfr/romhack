@@ -1,0 +1,153 @@
+ROM code loaded into 0x0 - 0xFFFFF, 0x20000 - 0x2FFFFF
+0x20000 data are changing, controlled by 0x2FFFFE, write 0 1 2 for different pages
+
+[palette]
+PALETTES        equ $400000   ;Palette RAM
+palette = palatte base + palette in sprite
+palette data store together, loading process depends on selected characters & scene
+
+
+
+[animation]
+ROM:000058C4 off_58C4:       dc.l obj_anim_restart
+ROM:000058C8                 dc.l obj_anim_stop
+ROM:000058CC                 dc.l obj_anim_def       ; attack & defense data
+ROM:000058D0                 dc.l obj_anim_sound
+ROM:000058D4                 dc.l obj_anim_move
+ROM:000058D8                 dc.l obj_anim_extra     ; create new objects
+
+
+ROM:00005A3E obj_update_sprite:                      ; CODE XREF: obj_update↑p
+ROM:00005A3E                 move.w  $70(a4),d1
+ROM:00005A42                 move.w  $72(a4),d2
+ROM:00005A46                 lea     (off_AFBCA).l,a0
+ROM:00005A4C                 add.w   d1,d1
+ROM:00005A4E                 add.w   d1,d1
+ROM:00005A50                 movea.l (a0,d1.w),a0
+ROM:00005A54                 add.w   d2,d2
+ROM:00005A56                 move.w  (a0,d2.w),d2
+ROM:00005A5A                 move.w  #1,d0           ; memory page1 for sprite table
+ROM:00005A5E
+ROM:00005A5E loc_5A5E:                               ; CODE XREF: obj_update_sprite+2C↓j
+ROM:00005A5E                 move.w  d0,(unk_2FFFFE).l
+ROM:00005A64                 cmp.w   (unk_200000).l,d0
+ROM:00005A6A                 bne.s   loc_5A5E
+ROM:00005A6C                 lea     (sprite_table).l,a0 ; character table
+ROM:00005A72                 move.l  (a0,d1.w),$3C(a4) ; set sprite set
+ROM:00005A78                 move.w  #2,d0           ; memory page2 for animation table
+ROM:00005A7C
+ROM:00005A7C loc_5A7C:                               ; CODE XREF: obj_update_sprite+4A↓j
+ROM:00005A7C                 move.w  d0,(unk_2FFFFE).l
+ROM:00005A82                 cmp.w   (unk_200000).l,d0
+ROM:00005A88                 bne.s   loc_5A7C
+ROM:00005A8A                 lea     ($200002).l,a0
+ROM:00005A90                 movea.l (a0,d1.w),a0
+ROM:00005A94                 add.w   d2,d2
+ROM:00005A96                 add.w   d2,d2
+ROM:00005A98                 movea.l (a0,d2.w),a0
+ROM:00005A9C                 adda.w  $74(a4),a0      ; +frame step = frame data
+
+
+
+ROM:00005D74                 movea.l $28(a4),a0      ; sprite data 224982
+ROM:00005DAC                 move.w  (a0)+,d6        ; sprite index
+
+ROM:00005DCA                 movea.l $3C(a4),a6      ; sprite set
+ROM:000058FA                 move.w  $70(a4),d2      ; frame index
+ROM:00005924                 move.l  a0,$28(a4)      ; update frame
+
+ROM:000058A6                 addq.w  #6,$74(a4)      ; step frame
+
+
+
+[sprite]
+pointer at $3C(a4) of object data
+
+
+ROM:00006022 obj_draw:                               ; CODE XREF: obj_draw_loop+22↑p
+ROM:00006022                 move.w  $64BC(a5),d0
+ROM:00006026                 add.w   d0,d0
+ROM:00006028                 add.w   d0,d0
+ROM:0000602A                 movea.l off_6030(pc,d0.w),a1
+ROM:0000602E                 jmp     (a1)
+ROM:0000602E ; End of function obj_draw
+ROM:0000602E
+ROM:0000602E ; ---------------------------------------------------------------------------
+ROM:00006030 off_6030:       dc.l obj_draw_0x0       ; head tile & mask by word
+ROM:00006034                 dc.l obj_draw_0x1       ; head tile & mask by byte
+ROM:00006038                 dc.l obj_draw_0x2       ; word+byte(flag) per tile
+ROM:0000603C                 dc.l obj_draw_0x3       ; word per tile
+ROM:00006040                 dc.l obj_draw_0x0       ; head tile & mask by word
+ROM:00006044                 dc.l obj_draw_0x5       ; word+byte(flag) per tile & mask by word
+ROM:00006048                 dc.l obj_draw_0x6       ; word+byte(flag) per tile & mask by byte
+ROM:0000604C                 dc.l obj_draw_0x7       ; word per tile & mask by word
+ROM:00006050                 dc.l obj_draw_0x8       ; word per tile & mask by byte
+ROM:00006054                 dc.l obj_draw_0x9       ; byte per tile & mask by word
+ROM:00006058                 dc.l obj_draw_0xA       ; byte per tile & mask by byte
+
+
+ROM:002D8B98                 dc.b $E0                ; palette
+ROM:002D8B99                 dc.b   1                ; draw func
+ROM:002D8B9A                 dc.b   6                ; nx
+ROM:002D8B9B                 dc.b   8                ; ny
+ROM:002D8B9C                 dc.l $E12               ; tile
+ROM:002D8BA0                 dc.b $18                ; each column, fill or not
+ROM:002D8BA1                 dc.b $30 ; 0
+ROM:002D8BA2                 dc.b $30 ; 0
+ROM:002D8BA3                 dc.b $F6
+ROM:002D8BA4                 dc.b $FE
+ROM:002D8BA5                 dc.b $FE
+
+$3c0000        Read/Write location in VRAM. 
+$3c0002        Read/Write into VRAM
+$3c0004        Value to increment VRAM address by (based on words)
+
+;VRAM zones:
+SCB1            equ $0000   ;Sprite tilemaps
+FIXMAP          equ $7000
+SCB2            equ $8000   ;Sprite shrink values
+SCB3            equ $8200   ;Sprite Y positions, heights and flags
+SCB4            equ $8400   ;Sprite X positions
+
+
+0x3C0000 03DE 03DE 0001 F800
+
+
+RAMSTART        equ $100000   ;68k work RAM
+
+[palatte]
+
+RAMSTART        equ $100000   ;68k work RAM
+PALETTES        equ $400000   ;Palette RAM
+BACKDROP        equ PALETTES+(16*2*256)-2
+MEMCARD         equ $800000   ;Memory card
+SYSROM          equ $C00000   ;System ROM
+0x500000 & 0x60000 & 0x70000 seem like the same as 0x400000, all repeating 0x2000 bytes of data
+
+ROM:00004C3A                 lea     ($2CFFF0).l,a0
+ROM:00004C40                 andi.w  #$FF,d0
+ROM:00004C44                 swap    d0
+ROM:00004C46                 lsr.l   #6,d0
+ROM:00004C48                 adda.l  d0,a0
+ROM:00004C4A                 movea.l $5924(a5),a1
+ROM:00004C4E                 move.w  #$1F,d0
+ROM:00004C52
+ROM:00004C52 loc_4C52:                               ; CODE XREF: sub_4C3A+28��j
+ROM:00004C52                 move.l  (a0)+,(a1)+     ; a1 = 10c024
+ROM:00004C54                 move.l  (a0)+,(a1)+
+ROM:00004C56                 move.l  (a0)+,(a1)+
+ROM:00004C58                 move.l  (a0)+,(a1)+
+ROM:00004C5A                 move.l  (a0)+,(a1)+
+ROM:00004C5C                 move.l  (a0)+,(a1)+
+ROM:00004C5E                 move.l  (a0)+,(a1)+
+ROM:00004C60                 move.l  (a0)+,(a1)+
+
+
+ROM:0000A2D0                 move.w  (a0)+,(a1)+     ; a0 = 10c024
+ROM:0000A2D2                 move.l  (a0)+,(a1)+
+ROM:0000A2D4                 move.l  (a0)+,(a1)+
+ROM:0000A2D6                 move.l  (a0)+,(a1)+
+ROM:0000A2D8                 move.l  (a0)+,(a1)+
+ROM:0000A2DA                 move.l  (a0)+,(a1)+
+ROM:0000A2DC                 move.l  (a0)+,(a1)+
+ROM:0000A2DE                 move.l  (a0)+,(a1)+

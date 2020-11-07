@@ -1,0 +1,39 @@
+copyright	zengfr	site:http://github.com/zengfr/romhack
+	
+addq.b  #1, $20004b.l	
+beq     $1b20	
+beq     $24d2	
+bne     $1b90	
+bne     $2488	
+bne     $24d2	
+bra     $1b32	
+bra     $249a	
+bsr     $17a76	
+btst    #$0, $200082.l	
+btst    #$1, $200083.l	
+btst    #$1, ($a0,A0)	
+btst    #$7, ($e9,A0)	
+clr.b   $20005a.l	
+jsr     $162c2.l	
+jsr     $bc0.l	
+jsr     (A1)	
+lea     (A6), A4	
+move.b  #$1, $20005a.l	
+move.b  #$1, $200c18.l	
+move.b  #$1, $201800.l	
+move.b  ($d,A0), D0	
+move.b  D0, ($d,A0)	
+move.l  A6, -(A7)	
+move.l  D6, (A6)	
+move.w  #$700, D7	
+move.w  #$fe, D2	
+move.w  ($6,A0), D2	
+movea.l ($14,A0), A6	
+movea.l (A1,D6.w), A1	
+movea.l (A7)+, A1	
+movea.l (A7)+, A6	
+rts	
+subq.b  #1, D0	
+tst.b   $20005a.l	
+tst.b   ($c,A0)	
+copyright	zengfr	site:http://github.com/zengfr/romhack

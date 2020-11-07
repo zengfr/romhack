@@ -1,0 +1,24 @@
+﻿https://github.com/zengfr/romhack
+https://gitee.com/zengfr/romhack
+wpclear
+bpclear
+wp ffdd14+20-e0*0,2,w,wpdata==7c,{printf "%8x %8x %8x",frame,wpaddr,wpdata,pc;}
+wp ffdd14+20-e0*1,2,w,wpdata==7c,{printf "%8x %8x %8x",frame,wpaddr,wpdata,pc;}
+wp ffdd14+20-e0*2,2,w,wpdata==7c,{printf "%8x %8x %8x",frame,wpaddr,wpdata,pc;}
+wp ffdd14+20-e0*3,2,w,wpdata==7c,{printf "%8x %8x %8x",frame,wpaddr,wpdata,pc;}
+
+wp ffdd14+20-e0*4,2,w,wpdata==7c,{printf "%8x %8x %8x",frame,wpaddr,wpdata,pc;}
+wp ffdd14+20-e0*5,2,w,wpdata==7c,{printf "%8x %8x %8x",frame,wpaddr,wpdata,pc;}
+wp ffdd14+20-e0*6,2,w,wpdata==7c,{printf "%8x %8x %8x",frame,wpaddr,wpdata,pc;}
+wp ffdd14+20-e0*7,2,w,wpdata==7c,{printf "%8x %8x %8x",frame,wpaddr,wpdata,pc;}
+
+wp ffdd14+20-e0*8,2,w,wpdata==7c,{printf "%8x %8x %8x",frame,wpaddr,wpdata,pc;}
+wp ffdd14+20-e0*9,2,w,wpdata==7c,{printf "%8x %8x %8x",frame,wpaddr,wpdata,pc;}
+wp ffdd14+20-e0*a,2,w,wpdata==7c,{printf "%8x %8x %8x",frame,wpaddr,wpdata,pc;}
+wp ffdd14+20-e0*b,2,w,wpdata==7c,{printf "%8x %8x %8x",frame,wpaddr,wpdata,pc;}
+
+
+wp ffdd14+20-e0*c,2,w,wpdata==7c,{printf "%8x %8x %8x",frame,wpaddr,wpdata,pc;}
+wp ffdd14+20-e0*d,2,w,wpdata==7c,{printf "%8x %8x %8x",frame,wpaddr,wpdata,pc;}
+wp ffdd14+20-e0*e,2,w,wpdata==7c,{printf "%8x %8x %8x",frame,wpaddr,wpdata,pc;}
+wp ffdd14+20-e0*f,2,w,wpdata==7c,{printf "%8x %8x %8x",frame,wpaddr,wpdata,pc;}

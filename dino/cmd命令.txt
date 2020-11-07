@@ -1,0 +1,26 @@
+﻿ps -ef|grep java
+kill -9 18273
+nohup ./shell.sh &
+
+
+hadoop:
+http://localhost:8088/cluster
+hbase:
+http://127.0.0.1:16011/tablesDetailed.jsp
+pinpoint:Web UI -
+http://127.0.0.1:28080/
+http://127.0.0.1:12302/
+
+bp fc1c,1,{printf "pc:%8x A0:%8x %8x %8x D0:%8x",pc,a0,a1,a4,d0 ;g;}
+
+bp 1045b2,1,{printf "关卡场景:%4x %4x %4x",maincpu.pb@ff84d9,maincpu.pb@ff8786,maincpu.pw@ff8744;g;}
+wp ff84fb,1,w,{wpdata>1},{printf "dibinCount:%8x %2x",pc,wpdata;g}
+bp 105890,1,{printf "%4x %4x %4x",pc,d0,a3 ;g;}
+ 
+{printf "%8x %8x A0:%8x %8x %8x %8x %8x %8x %8x D0:%8x %8x %8x %8x %8x %8x %8x %8x",pc,wpdata,a0,a1,a2,a3,a4,a5,a6,a7,d0,d1,d2,d3,d4,d5,d6,d7;g;}
+
+wp ffb274,e0,w,{b@wpaddr!=wpdata and w@wpaddr!=wpdata and wpdata<=0x2 and wpaddr!=0xffb2c4 and wpaddr!=0xffb2a3},{printf "%8x %8x %4x %2x %4x A0:%8x %8x %8x %8x %8x %8x %8x D0:%8x %8x %8x %8x %8x %8x %8x %8x",pc,wpaddr,w@wpaddr,b@wpaddr,wpdata,a0,a1,a2,a3,a4,a5,a6,a7,d0,d1,d2,d3,d4,d5,d6,d7;g;}
+
+wp ffb274,e0,w,{b@wpaddr!=wpdata and w@wpaddr!=wpdata and wpdata<=0x2 and wpaddr!=0xffb27c and wpaddr!=0xffb27e},{printf "%8x %8x %4x %2x %4x A0:%8x %8x %8x %8x %8x %8x %8x D0:%8x %8x %8x %8x %8x %8x %8x %8x",pc,wpaddr,w@wpaddr,b@wpaddr,wpdata,a0,a1,a2,a3,a4,a5,a6,a7,d0,d1,d2,d3,d4,d5,d6,d7;g;}
+
+wp ffb274,e0,w,{b@wpaddr!=wpdata and wpdata<=0x2 and wpaddr!=0xffb2c4 and wpaddr!=0xffb2a3 and wpaddr!=0xffb31f and wpaddr!=0xffb27c and wpaddr!=0xffb27e},{printf "%8x %8x %4x %4x",pc,wpaddr,b@wpaddr,wpdata;g;}

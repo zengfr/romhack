@@ -12,7 +12,7 @@ https://gitee.com/zengfr/romhack/blob/master/dino/
 https://gitee.com/zengfr/romhack/tree/master/punisher
 
 video:https://space.bilibili.com/492484080
-
+使用hbmame0.226可直接玩以下游戏
 [dinos260]            Cadillacs and Dinosaurs (Triassic Edition 2020-06-07)三叠纪
 [dinos263]            Cadillacs and Dinosaurs (Demon God Dance 2020-06-09) 魔神 群魔乱舞
 [dinos268]            Cadillacs and Dinosaurs (Tianjiang Edition 2020-06-29) 天将

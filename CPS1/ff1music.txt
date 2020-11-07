@@ -1,0 +1,57 @@
+ You'll find the music data from around $34000 to about $38000. It starts with pointers to where each instrument from each music is located. The instruments are stored separately, and the musics are about in the same order as you'd find in the NSF. It starts with the intro music, at $340D0. Each byte represents a command, some of them have parameters that use one or some of the next bytes. Here's the description of each I've found out about:
+
+      00-CF: notes. Each 4-bit part is a parameter. The first one is the note, and the second
+             one is its length.
+      ------ 0x: C             x0: longest note
+      ------ 1x: C#            x1: 1.5X shorter than x0
+      ------ 2x: D             x2: 2X shorter than x0
+      ------ 3x: D#            x3: 3X sh. (still long)
+      ------ 4x: E, and so on. x4: 4X shorter than x0
+      ------ ...               x5: 6X sh. (medium len.)
+      ------ Ax: A#            x6: 8X sh.
+      ------ Bx: B             x7: 12X, getting short
+      ------ Cx: pause         etc. xA is very short
+
+      D0-D7: loop commands. Followed by a 2-byte pointer that points to the area where it
+             will loop.
+      ------ D0: infinite loop
+      ------ D1: loops once (music plays twice)
+      ------ D2: loops twice, and so on
+      ------ D7: loops 8 times.
+
+      D8-DF: octave shifts. Not sure if DC-DF are, since DB is an high octave. D8 is the
+             lowest. D8 07 will give a low and short C, while DB 07 will give a high and
+             short C.  D8 07 27 will do the same thing as D8 07 D8 27, so the octave command
+             is only necessary for changing octaves.
+
+      E0-EF: instrument change. In FF1, there's 16 you can use for the square channels. I don't
+             know which one is which, but they're all used somewhere in the game. This won't
+             have any effect for the triangle channel (often used for the bass).
+
+      F0-FF: other music commands. They often have parameters. They don't all affect the same
+             things, and some are still unknown.
+      ------ F0-F7: I still don't know what they do.
+      ------ F8: note length. Comes with a 1-byte parameter, which affects the time the
+                 note will last before "shutting up". Do not confuse with the length
+                 parameter used in the note commands.
+      ------ F9-FE: tempo. Doesn't come with any parameter. F9 is the slowest and FE
+                           is the fastest.
+      ------ FF: "Stop" command. The music stops playing.
+
+      By changing the pointers at the start of music data (from $34010 to $340CF), you can switch instruments, switch musics, move them, make them longer or shorter, etc. If an instrument is unused (like the bass in the intro music), you can use it, or you can do the opposite.
+
+      The music pointers are in this format:
+      ab cd ef gh ij kl 00 00
+
+      ab cd is a pointer to the square 1 instrument data, ef gh is the same but for the square 2, and ij kl is for the triangle instrument. The 00 00's won't do a thing, even if you change them.
+
+      The pointers point to where the music data starts. For example, the square 1 channel in the intro music starts at $340D0, with something like "FB F8 05 E6 D8" (may be different). The square 1 pointer will point at $340D0 (where there is the FB), and will be "C080".
+
+      To get the pointer value for an address:
+      take the address, substract $0010, keep only the last 4 4-bit values, add $4000, and switch the two bytes.
+      For example, with $340D0.
+      - substract $0010 --> $340C0
+      - keep only the last 4 4-bit values --> $40C0
+      - add $4000 --> $80C0
+      - switch the 2 bytes --> $C080
+      then you get the pointer for $340D0 in the music data.

@@ -1,0 +1,383 @@
+<mamecheat version="1">
+
+  <cheat desc="Infinite Time">
+    <script state="run">
+      <action>maincpu.pb@FF84E9=09</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Infinite Character Select Time">
+    <script state="run">
+      <action>maincpu.pb@FF8635=0A</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Select Starting Episode">
+    <parameter min="1" max="8" step="1"/>
+    <script state="run">
+      <action condition="(maincpu.pb@FF84D9==00)">maincpu.pb@FF84D9=(param-1)</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Hit Anywhere">
+    <script state="on">
+      <action>temp0 =maincpu.mw@0109C6</action>
+      <action>temp1 =maincpu.mw@011020</action>
+      <action>temp2 =maincpu.mw@011A0A</action>
+      <action>temp3 =maincpu.mw@012154</action>
+      <action>temp4 =maincpu.mw@01223A</action>
+      <action>temp5 =maincpu.mw@01230E</action>
+      <action>temp6 =maincpu.mw@0123A4</action>
+    </script>
+    <script state="run">
+      <action>maincpu.mw@0109C6=6002</action> <!-- This ROM cheat was made by nolberto82 -->
+      <action>maincpu.mw@011020=6002</action>
+      <action>maincpu.mw@011A0A=4E71</action>
+      <action>maincpu.mw@012154=6002</action>
+      <action>maincpu.mw@01223A=6002</action>
+      <action>maincpu.mw@01230E=6002</action>
+      <action>maincpu.mw@0123A4=6002</action>
+    </script>
+    <script state="off">
+      <action>maincpu.mw@0109C6=temp0 </action>
+      <action>maincpu.mw@011020=temp1 </action>
+      <action>maincpu.mw@011A0A=temp2 </action>
+      <action>maincpu.mw@012154=temp3 </action>
+      <action>maincpu.mw@01223A=temp4 </action>
+      <action>maincpu.mw@01230E=temp5 </action>
+      <action>maincpu.mw@0123A4=temp6 </action>
+    </script>
+  </cheat>
+
+  <cheat desc="One Hit Kills">
+    <script state="on">
+      <action>temp0 =maincpu.mw@010A62</action>
+      <action>temp1 =maincpu.mw@0110E2</action>
+      <action>temp2 =maincpu.mw@0123E8</action>
+      <action>temp3 =maincpu.mw@01256E</action>
+    </script>
+    <script state="run">
+      <action>maincpu.mw@010A62=6002</action> <!-- This ROM cheat was made by nolberto82 -->
+      <action>maincpu.mw@0110E2=6002</action>
+      <action>maincpu.mw@0123E8=6002</action>
+      <action>maincpu.mw@01256E=6002</action>
+    </script>
+    <script state="off">
+      <action>maincpu.mw@010A62=temp0 </action>
+      <action>maincpu.mw@0110E2=temp1 </action>
+      <action>maincpu.mw@0123E8=temp2 </action>
+      <action>maincpu.mw@01256E=temp3 </action>
+    </script>
+  </cheat>
+
+  <cheat desc="Infinite Ammo"> <comment>Works for Rifle, Gun, Uzi, M-16A1, Shotgun and Bazooka</comment>
+    <script state="on">
+      <action>temp0 =maincpu.md@0239DE</action>
+      <action>temp1 =maincpu.md@0239E2</action>
+      <action>temp2 =maincpu.md@180000</action>
+      <action>temp3 =maincpu.md@180004</action>
+      <action>temp4 =maincpu.md@180008</action>
+    </script>
+    <script state="run">
+      <action>maincpu.md@0239DE=4EB90018</action>
+      <action>maincpu.md@0239E2=00004E71</action> <!-- jsr $180000.l / nop -->
+      <action>maincpu.md@180000=366A00B4</action> <!-- movea.w ($b4,A2), A3 -->
+      <action>maincpu.md@180004=70323740</action> <!-- moveq #$32,D0 [ Always 50 bullets ] -->
+      <action>maincpu.md@180008=006C4E75</action> <!-- move.w D0,($6c,A3) / rts -->
+    </script>
+    <script state="off">
+      <action>maincpu.md@0239DE=temp0 </action>
+      <action>maincpu.md@0239E2=temp1 </action>
+      <action>maincpu.md@180000=temp2 </action>
+      <action>maincpu.md@180004=temp3 </action>
+      <action>maincpu.md@180008=temp4 </action>
+    </script>
+  </cheat>
+
+  <cheat desc="Never lose weapons"> <comment>After enemy hits, dropped weapons are never lost</comment>
+    <script state="on">
+      <action>temp0 =maincpu.mb@0246B2</action>
+    </script>
+    <script state="run">
+      <action>maincpu.mb@0246B2=60</action> <!-- This ROM cheat was made by syndromtr -->
+    </script>
+    <script state="off">
+      <action>maincpu.mb@0246B2=temp0 </action>
+    </script>
+  </cheat>
+
+  <cheat desc="Never drop weapons"> <comment>Weapons are never dropped unless Game Over happens.</comment>
+    <script state="on">
+      <action>temp0 =maincpu.mb@010EA2</action>
+      <action>temp1 =maincpu.mb@0117CC</action>
+      <action>temp2 =maincpu.mb@01C26C</action>
+      <action>temp3 =maincpu.mb@01C44C</action>
+      <action>temp4 =maincpu.mb@01C612</action>
+      <action>temp5 =maincpu.mb@01C7AA</action>
+      <action>temp6 =maincpu.mb@01CC96</action>
+      <action>temp7 =maincpu.mb@01D2FA</action>
+    </script>
+    <script state="run">
+      <action>maincpu.mb@010EA2=0C</action> <!-- This ROM cheat was made by syndromtr -->
+      <action>maincpu.mb@0117CC=B2</action>
+      <action>maincpu.mb@01C26C=B2</action>
+      <action>maincpu.mb@01C44C=B2</action>
+      <action>maincpu.mb@01C612=B2</action>
+      <action>maincpu.mb@01C7AA=B2</action>
+      <action>maincpu.mb@01CC96=B2</action>
+      <action>maincpu.mb@01D2FA=B2</action>
+    </script>
+    <script state="off">
+      <action>maincpu.mb@010EA2=temp0 </action>
+      <action>maincpu.mb@0117CC=temp1 </action>
+      <action>maincpu.mb@01C26C=temp2 </action>
+      <action>maincpu.mb@01C44C=temp3 </action>
+      <action>maincpu.mb@01C612=temp4 </action>
+      <action>maincpu.mb@01C7AA=temp5 </action>
+      <action>maincpu.mb@01CC96=temp6 </action>
+      <action>maincpu.mb@01D2FA=temp7 </action>
+    </script>
+  </cheat>
+
+  <cheat desc="Kill Vice T. with 1 hit Now!">
+    <script state="on">
+      <action>maincpu.pw@FFDCA0=0001</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Kill Butcher with 1 hit Now!">
+    <script state="on">
+      <action>maincpu.pw@FFDCA0=0001</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Kill Hogg with 1 hit Now!">
+    <script state="on">
+      <action>maincpu.pw@FFD3E0=0001</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Kill Slice with 1 hit Now!">
+    <script state="on">
+      <action>maincpu.pw@FFDAE0=0001</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Kill Morgan/Morgue with 1 hit Now!">
+    <script state="on">
+      <action>maincpu.pw@FFDCA0=0001</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Kill Tyrog with 1 hit Now!">
+    <script state="on">
+      <action>maincpu.pw@FFDCA0=0001</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Kill Slisaur 1 with 1 hit Now!">
+    <script state="on">
+      <action>maincpu.pw@FFD680=0001</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Kill Slisaur 2 with 1 hit Now!">
+    <script state="on">
+      <action>maincpu.pw@FFD5A0=0001</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Kill the one headed Fessenden with 1 hit Now!">
+    <script state="on">
+      <action>maincpu.pw@FFD920=0001</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Kill the several headed Fessenden with 1 hit Now!">
+    <script state="on">
+      <action>maincpu.pw@FFD4C0=0001</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Finish Episode Now!">
+    <script state="on">
+      <action>maincpu.pb@FF84D1=06</action>
+    </script>
+  </cheat>
+
+  <cheat desc="See End Sequence Now!">
+    <script state="on">
+      <action>maincpu.pb@FF84D1=06</action>
+      <action>maincpu.pb@FF84D9=07</action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="P1 Infinite Lives">
+    <script state="run">
+      <action>maincpu.pb@FFB317=03</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Infinite Energy">
+    <script state="run">
+      <action>maincpu.pb@FFB2E1=64</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Invincibility">
+    <script state="run">
+      <action>maincpu.pb@FFB274=02</action>
+      <action>maincpu.pw@FFB360=0002</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Select Character">
+    <parameter>
+      <item value="0x01">Jack.T</item>
+      <item value="0x02">Hannah.D</item>
+      <item value="0x03">Mustapha.C</item>
+      <item value="0x04">Mess.O</item>
+    </parameter>
+    <script state="run">
+      <action condition="(param==01)">maincpu.pb@FFB277=00</action>
+      <action condition="(param==01)">maincpu.pb@FF863A=00</action>
+      <action condition="(param==02)">maincpu.pb@FFB277=02</action>
+      <action condition="(param==02)">maincpu.pb@FF863A=01</action>
+      <action condition="(param==03)">maincpu.pb@FFB277=01</action>
+      <action condition="(param==03)">maincpu.pb@FF863A=02</action>
+      <action condition="(param==04)">maincpu.pb@FFB277=03</action>
+      <action condition="(param==04)">maincpu.pb@FF863A=03</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Rapid Fire - Normal"> <comment>Turn it OFF on the name entry screen</comment>
+    <script state="run">
+      <action>maincpu.pb@FFB314=00|(maincpu.pb@FFB314 BAND ~10)</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Rapid Fire - Unlimited"> <comment>Turn it OFF on the name entry screen</comment>
+    <script state="run">
+      <action>maincpu.pb@FFB314=00|(maincpu.pb@FFB314 BAND ~10)</action>
+      <action>maincpu.pb@FFB326=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="P2 Infinite Lives">
+    <script state="run">
+      <action>maincpu.pb@FFB497=03</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Infinite Energy">
+    <script state="run">
+      <action>maincpu.pb@FFB461=64</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Invincibility">
+    <script state="run">
+      <action>maincpu.pb@FFB3F4=02</action>
+      <action>maincpu.pw@FFB4E0=0002</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Select Character">
+    <parameter>
+      <item value="0x01">Jack.T</item>
+      <item value="0x02">Hannah.D</item>
+      <item value="0x03">Mustapha.C</item>
+      <item value="0x04">Mess.O</item>
+    </parameter>
+    <script state="run">
+      <action condition="(param==01)">maincpu.pb@FFB3F7=00</action>
+      <action condition="(param==01)">maincpu.pb@FF8646=00</action>
+      <action condition="(param==02)">maincpu.pb@FFB3F7=02</action>
+      <action condition="(param==02)">maincpu.pb@FF8646=01</action>
+      <action condition="(param==03)">maincpu.pb@FFB3F7=01</action>
+      <action condition="(param==03)">maincpu.pb@FF8646=02</action>
+      <action condition="(param==04)">maincpu.pb@FFB3F7=03</action>
+      <action condition="(param==04)">maincpu.pb@FF8646=03</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Rapid Fire - Normal"> <comment>Turn it OFF on the name entry screen</comment>
+    <script state="run">
+      <action>maincpu.pb@FFB494=00|(maincpu.pb@FFB494 BAND ~10)</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Rapid Fire - Unlimited"> <comment>Turn it OFF on the name entry screen</comment>
+    <script state="run">
+      <action>maincpu.pb@FFB494=00|(maincpu.pb@FFB494 BAND ~10)</action>
+      <action>maincpu.pb@FFB4A6=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="P3 Infinite Lives">
+    <script state="run">
+      <action>maincpu.pb@FFB617=03</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P3 Infinite Energy">
+    <script state="run">
+      <action>maincpu.pb@FFB5E1=64</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P3 Invincibility">
+    <script state="run">
+      <action>maincpu.pb@FFB574=02</action>
+      <action>maincpu.pw@FFB660=0002</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P3 Select Character">
+    <parameter>
+      <item value="0x01">Jack.T</item>
+      <item value="0x02">Hannah.D</item>
+      <item value="0x03">Mustapha.C</item>
+      <item value="0x04">Mess.O</item>
+    </parameter>
+    <script state="run">
+      <action condition="(param==01)">maincpu.pb@FFB577=00</action>
+      <action condition="(param==01)">maincpu.pb@FF8652=00</action>
+      <action condition="(param==02)">maincpu.pb@FFB577=02</action>
+      <action condition="(param==02)">maincpu.pb@FF8652=01</action>
+      <action condition="(param==03)">maincpu.pb@FFB577=01</action>
+      <action condition="(param==03)">maincpu.pb@FF8652=02</action>
+      <action condition="(param==04)">maincpu.pb@FFB577=03</action>
+      <action condition="(param==04)">maincpu.pb@FF8652=03</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P3 Rapid Fire - Normal"> <comment>Turn it OFF on the name entry screen</comment>
+    <script state="run">
+      <action>maincpu.pb@FFB614=00|(maincpu.pb@FFB614 BAND ~10)</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P3 Rapid Fire - Unlimited"> <comment>Turn it OFF on the name entry screen</comment>
+    <script state="run">
+      <action>maincpu.pb@FFB614=00|(maincpu.pb@FFB614 BAND ~10)</action>
+      <action>maincpu.pb@FFB626=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="Enable Hidden OBJECT TEST and SCROLL TEST"> <comment>Press F2 and get OBJECT Test on '10' and SCROLL TEST on '11'</comment>
+    <script state="run">
+      <action>maincpu.pb@FF84C3=01</action>
+    </script>
+  </cheat>
+
+</mamecheat>
+<!-- Cheat file downloaded from http://www.mamecheat.co.uk, see cheat.txt for list of contributors. -->

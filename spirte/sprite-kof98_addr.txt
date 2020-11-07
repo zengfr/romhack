@@ -1,0 +1,77 @@
+ROM code loaded into 0x0 - 0xFFFFF, 0x20000 - 0x3FFFFF
+0x20000 data are changing, controlled by 0x2FFFFE, write 0 1 2 for different pages
+initially, 0x0 -> 0x0, 0x400000 -> 0x200000
+sprite_data : 0x300000
+palette_Data: 0x400000
+the code is encrypted each 0x100 byte chunks by simply switching dword with next chunk(first dword remains)
+
+[palette]
+PALETTES        equ $400000   ;Palette RAM
+palette = palatte base + palette in sprite
+palette data store together, loading process depends on selected characters & scene
+
+ROM:000042E8                 lea     off_4462,a0    // bg palette index
+
+[sprite]
+pointer at $3C(a4) of object data
+
+
+[palatte]
+
+RAMSTART        equ $100000   ;68k work RAM
+PALETTES        equ $400000   ;Palette RAM
+BACKDROP        equ PALETTES+(16*2*256)-2
+MEMCARD         equ $800000   ;Memory card
+SYSROM          equ $C00000   ;System ROM
+0x500000 & 0x60000 & 0x70000 seem like the same as 0x400000, all repeating 0x2000 bytes of data
+
+ROM:00004C3A                 lea     ($2CFFF0).l,a0
+ROM:00004C40                 andi.w  #$FF,d0
+ROM:00004C44                 swap    d0
+ROM:00004C46                 lsr.l   #6,d0
+ROM:00004C48                 adda.l  d0,a0
+ROM:00004C4A                 movea.l $5924(a5),a1
+ROM:00004C4E                 move.w  #$1F,d0
+ROM:00004C52
+ROM:00004C52 loc_4C52:                               ; CODE XREF: sub_4C3A+28��j
+ROM:00004C52                 move.l  (a0)+,(a1)+     ; a1 = 10c024
+ROM:00004C54                 move.l  (a0)+,(a1)+
+ROM:00004C56                 move.l  (a0)+,(a1)+
+ROM:00004C58                 move.l  (a0)+,(a1)+
+ROM:00004C5A                 move.l  (a0)+,(a1)+
+ROM:00004C5C                 move.l  (a0)+,(a1)+
+ROM:00004C5E                 move.l  (a0)+,(a1)+
+ROM:00004C60                 move.l  (a0)+,(a1)+
+
+
+ROM:0000A2D0                 move.w  (a0)+,(a1)+     ; a0 = 10c024
+ROM:0000A2D2                 move.l  (a0)+,(a1)+
+ROM:0000A2D4                 move.l  (a0)+,(a1)+
+ROM:0000A2D6                 move.l  (a0)+,(a1)+
+ROM:0000A2D8                 move.l  (a0)+,(a1)+
+ROM:0000A2DA                 move.l  (a0)+,(a1)+
+ROM:0000A2DC                 move.l  (a0)+,(a1)+
+ROM:0000A2DE                 move.l  (a0)+,(a1)+
+
+[object]
+$18(a4) = x pos
+$20(a4) = y pos
+$72(a4) = animation
+
+
+000BBE50  13 88 70 85 0F 54 48 52  4F 57 20 4F 46 46 53 45  ..p..THROW OFFSE
+000BBE60  54 20 45 44 49 54 0D 0A  0D 0A 54 48 52 4F 57 20  T EDIT....THROW 
+000BBE70  4E 6F 20 20 20 20 3A 20  30 30 FE 70 88 AF 50 31  No    : 00.p..P1
+000BBE80  20 43 48 20 43 4F 44 45  20 20 3A 20 30 30 FE 70   CH CODE  : 00.p
+000BBE90  89 0F 50 32 20 43 48 20  43 4F 44 45 20 20 3A 20  ..P2 CH CODE  : 
+000BBEA0  30 30 FE 70 8A AF 50 31  20 41 43 54 20 43 4F 44  00.p..P1 ACT COD
+000BBEB0  45 20 3A 20 30 30 30 30  FE 70 8B 0F 50 31 20 41  E : 0000.p..P1 A
+000BBEC0  43 54 20 53 54 45 50 20  3A 20 30 30 0D 0A 50 32  CT STEP : 00..P2
+000BBED0  20 41 43 54 20 43 4F 44  45 20 3A 20 30 30 30 30   ACT CODE : 0000
+000BBEE0  0D 0A 50 32 20 4F 46 46  53 45 54 20 58 20 3A 20  ..P2 OFFSET X : 
+000BBEF0  2B 20 30 30 0D 0A 50 32  20 4F 46 46 53 45 54 20  + 00..P2 OFFSET 
+000BBF00  59 20 3A 20 2B 20 30 30  0D 0A 50 32 20 50 52 49  Y : + 00..P2 PRI
+000BBF10  4F 52 49 54 59 20 3A 20  30 30 0D 0A 50 32 20 52  ORITY : 00..P2 R
+000BBF20  45 56 20 20 20 20 20 20  3A 20 30 30 FE 70 91 AF  EV      : 00.p..
+000BBF30  46 4C 41 47 53 20 20 20  20 20 20 20 3A 20 30 30  FLAGS       : 00
+000BBF40  30 30 30 30 30 FF 00 00  00 FF 00 01 00 00 FF 00  00000...........

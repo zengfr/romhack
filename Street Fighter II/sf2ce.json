@@ -1,0 +1,399 @@
+[{
+    "space":{
+      "cpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "script":{
+      "on":"
+ --[[--Street Fighter II hitbox viewer]]
+ --[[--February 20, 2012]]
+ --[[--http://code.google.com/p/mame-rr/wiki/Hitboxes]]
+
+ boxes = {
+ [\"vulnerability\"] = {color = 0x7777FF, fill = 0x40, outline = 0xFF},
+ [\"attack\"] = {color = 0xFF0000, fill = 0x40, outline = 0xFF},
+ [\"proj. vulnerability\"] = {color = 0x00FFFF, fill = 0x40, outline = 0xFF},
+ [\"proj. attack\"] = {color = 0xFF66FF, fill = 0x40, outline = 0xFF},
+ [\"push\"] = {color = 0x00FF00, fill = 0x20, outline = 0xFF},
+ [\"weak\"] = {color = 0xFFFF00, fill = 0x40, outline = 0xFF},
+ [\"throw\"] = {color = 0xFFFF00, fill = 0x40, outline = 0xFF},
+ [\"throwable\"] = {color = 0xF0F0F0, fill = 0x20, outline = 0xFF},
+ [\"air throwable\"] = {color = 0x202020, fill = 0x20, outline = 0xFF},
+ }
+
+ globals = {
+ axis_color           = 0xFFFFFFFF,
+ blank_color          = 0xFFFFFFFF,
+ axis_size            = 12,
+ mini_axis_size       = 2,
+ blank_screen         = false,
+ draw_axis            = true,
+ draw_mini_axis       = false,
+ draw_pushboxes       = true,
+ draw_throwable_boxes = false,
+ no_alpha             = false, --[[--fill = 0x00, outline = 0xFF for all box types]]
+ }
+
+ profile =
+ {\tgames = {\"sf2\"},
+ address = {
+ player      = 0xFF83C6,
+ projectile  = 0xFF938A,
+ screen_left = 0xFF8BD8,
+ },
+ player_space       = 0x300,
+ box_parameter_size = 1,
+ box_list = {
+ {addr_table = 0xA, id_ptr = 0xD, id_space = 0x04, type = \"push\"},
+ {addr_table = 0x0, id_ptr = 0x8, id_space = 0x04, type = \"vulnerability\"},
+ {addr_table = 0x2, id_ptr = 0x9, id_space = 0x04, type = \"vulnerability\"},
+ {addr_table = 0x4, id_ptr = 0xA, id_space = 0x04, type = \"vulnerability\"},
+ {addr_table = 0x6, id_ptr = 0xB, id_space = 0x04, type = \"weak\"},
+ {addr_table = 0x8, id_ptr = 0xC, id_space = 0x0C, type = \"attack\"},
+ },
+ }
+
+ profile.match_active = function() return (cpup:read_u16(0xFF8008) & 0x08) > 0 end
+
+ for _, box in pairs(boxes) do
+ box.fill    = box.color | ((globals.no_alpha and 0x00 or box.fill) << 24)
+ box.outline = box.color | ((globals.no_alpha and 0xFF or box.outline) << 24)
+ end
+
+ NUMBER_OF_PLAYERS = 2
+ MAX_PROJECTILES   = 8
+ MAX_BONUS_OBJECTS = 16
+ DRAW_DELAY        = 1
+
+
+ initialize_fb = function()
+ frame_buffer = {}
+ for f = 1, DRAW_DELAY + 3 do
+ frame_buffer[f] = {}
+ end
+ end
+
+
+ initialize_throw_buffer = function()
+ throw_buffer = {}
+ for p = 1, NUMBER_OF_PLAYERS do
+ throw_buffer[game.address.player + (p-1) * game.player_space] = {}
+ end
+ end
+
+
+ whatgame = function()
+ initialize_fb()
+ game = profile
+ initialize_throw_buffer()
+ end
+
+ --[[--------------------------------------------------------------------------------]]
+ --[[-- prepare the hitboxes]]
+
+ get_box_parameters = {
+ [1] = function(box)
+ box.val_x  = cpup:read_i8(box.address + 0)
+ box.val_x2 =  cpup:read_u8(box.address + 5)
+ if box.val_x2 >= 0x80 and box.type == \"attack\" then
+ box.val_x = -box.val_x2
+ end
+ box.val_y  = cpup:read_i8(box.address + 1)
+ box.rad_x  =  cpup:read_u8(box.address + 2)
+ box.rad_y  =  cpup:read_u8(box.address + 3)
+ end,
+
+ [2] = function(box)
+ box.val_x = cpup:read_i16(box.address + 0)
+ box.val_y = cpup:read_i16(box.address + 2)
+ box.rad_x =  cpup:read_u16(box.address + 4)
+ box.rad_y =  cpup:read_u16(box.address + 6)
+ end,
+ }
+
+
+ process_box_type = {
+ [\"vulnerability\"] = function(obj, box)
+ end,
+
+ [\"attack\"] = function(obj, box)
+ if obj.projectile then
+ box.type = \"proj. attack\"
+ elseif cpup:read_u8(obj.base + 0x03) == 0 then
+ return false
+ end
+ end,
+
+ [\"push\"] = function(obj, box)
+ if obj.projectile then
+ box.type = \"proj. vulnerability\"
+ end
+ end,
+
+ [\"weak\"] = function(obj, box)
+ if (game.char_mode and cpup:read_u8(obj.base + game.char_mode) ~= 0x4)
+ or cpup:read_u8(obj.animation_ptr + 0x15) ~= 2 then
+ return false
+ end
+ end,
+
+ [\"throw\"] = function(obj, box)
+ get_box_parameters[2](box)
+ if box.val_x == 0 and box.val_y == 0 and box.rad_x == 0 and box.rad_y == 0 then
+ return false
+ end
+
+ if box.clear then
+ for offset = 0, 6, 2 do
+ cpup:write_u32(box.address + offset, 0) --[[--bad]]
+ end
+ end
+
+ box.val_x  = obj.pos_x + box.val_x * (obj.flip_x == 1 and -1 or 1)
+ box.val_y  = obj.pos_y - box.val_y
+ box.left   = box.val_x - box.rad_x
+ box.right  = box.val_x + box.rad_x
+ box.top    = box.val_y - box.rad_y
+ box.bottom = box.val_y + box.rad_y
+ end,
+
+ [\"throwable\"] = function(obj, box)
+ if (cpup:read_u8(obj.animation_ptr + 0x8) == 0 and
+ cpup:read_u8(obj.animation_ptr + 0x9) == 0 and
+ cpup:read_u8(obj.animation_ptr + 0xA) == 0) or
+ cpup:read_u8(obj.base + 0x3) == 0x0E or
+ cpup:read_u8(obj.base + 0x3) == 0x14 or
+ cpup:read_u8(obj.base + 0x143) > 0 or
+ cpup:read_u8(obj.base + 0x1BF) > 0 or
+ cpup:read_u8(obj.base + 0x1A1) > 0 then
+ return false
+ elseif cpup:read_u8(obj.base + 0x181) > 0 then
+ box.type = \"air throwable\"
+ end
+
+ box.rad_x  = cpup:read_u16(box.address + 0)
+ box.rad_y  = cpup:read_u16(box.address + 2)
+ box.val_x  = obj.pos_x
+ box.val_y  = obj.pos_y - box.rad_y/2
+ box.left   = box.val_x - box.rad_x
+ box.right  = box.val_x + box.rad_x
+ box.top    = obj.pos_y - box.rad_y
+ box.bottom = obj.pos_y
+ end,
+ }
+
+
+ define_box = function(obj, box_entry)
+ local box = {
+ type = box_entry.type,
+ id = cpup:read_u8(obj.animation_ptr + box_entry.id_ptr),
+ }
+
+ if box.id == 0 or process_box_type[box.type](obj, box) == false then
+ return nil
+ end
+
+ local addr_table = obj.hitbox_ptr + cpup:read_i16(obj.hitbox_ptr + box_entry.addr_table)
+ box.address = addr_table + box.id * box_entry.id_space
+ get_box_parameters[game.box_parameter_size](box)
+
+ box.val_x  = obj.pos_x + box.val_x * (obj.flip_x == 1 and -1 or 1)
+ box.val_y  = obj.pos_y - box.val_y
+ box.left   = box.val_x - box.rad_x
+ box.right  = box.val_x + box.rad_x
+ box.top    = box.val_y - box.rad_y
+ box.bottom = box.val_y + box.rad_y
+
+ return box
+ end
+
+
+ define_throw_box = function(obj, box_entry)
+ local box = {
+ type = box_entry.type,
+ address = obj.base + box_entry.param_offset,
+ clear = box_entry.clear,
+ }
+
+ if process_box_type[box.type](obj, box) == false then
+ return nil
+ end
+
+ return box
+ end
+
+
+ update_object = function(f, obj)
+ obj.pos_x         = cpup:read_i16(obj.base + 0x06) - f.screen_left
+ obj.pos_y         = cpup:read_i16(obj.base + 0x0A)
+ obj.pos_y         = screen:height() - (obj.pos_y - 0x0F) + f.screen_top
+ obj.flip_x        = cpup:read_u8(obj.base + 0x12)
+ obj.animation_ptr = cpup:read_u32(obj.base + 0x1A)
+ obj.hitbox_ptr    = cpup:read_u32(obj.base + 0x34)
+
+ for _, box_entry in ipairs(game.box_list) do
+ table.insert(obj, define_box(obj, box_entry))
+ end
+ return obj
+ end
+
+
+ read_projectiles = function(f)
+ for i = 1, MAX_PROJECTILES do
+ local obj = {base = game.address.projectile + (i-1) * 0xC0}
+ if cpup:read_u16(obj.base) == 0x0101 then
+ obj.projectile = true
+ table.insert(f, update_object(f, obj))
+ end
+ end
+
+ for i = 1, MAX_BONUS_OBJECTS do
+ local obj = {base = game.address.projectile + (MAX_PROJECTILES + i-1) * 0xC0}
+ if (0xFF00 & cpup:read_u16(obj.base)) == 0x0100 then
+ obj.bonus = true
+ table.insert(f, update_object(f, obj))
+ end
+ end
+ end
+
+
+ adjust_delay = function(stage_address)
+ if not stage_address then
+ return 0
+ end
+ local stage_lag = {
+ [0x0] = 0, --[[--Ryu]]
+ [0x1] = 0, --[[--E.Honda]]
+ [0x2] = 0, --[[--Blanka]]
+ [0x3] = 0, --[[--Guile]]
+ [0x4] = 0, --[[--Ken]]
+ [0x5] = 0, --[[--Chun Li]]
+ [0x6] = 0, --[[--Zangief]]
+ [0x7] = 0, --[[--Dhalsim]]
+ [0x8] = 0, --[[--Dictator]]
+ [0x9] = 0, --[[--Sagat]]
+ [0xA] = 1, --[[--Boxer*]]
+ [0xB] = 0, --[[--Claw]]
+ [0xC] = 1, --[[--Cammy*]]
+ [0xD] = 1, --[[--T.Hawk*]]
+ [0xE] = 0, --[[--Fei Long]]
+ [0xF] = 1, --[[--Dee Jay*]]
+ }
+ return stage_lag[cpup:read_u16(stage_address) & 0xF]
+ end
+
+ local function copytable(orig)
+ local copy = {}
+ for orig_key, orig_value in pairs(orig) do
+ copy[orig_key] = orig_value
+ end
+ return copy
+ end
+ function max(a, b)
+ if a > b then
+ return a
+end
+return b
+ end
+
+update_hitboxes = function()
+ if not game then
+ return
+ end
+ local effective_delay = DRAW_DELAY + adjust_delay(game.address.stage)
+ for f = 1, effective_delay do
+ frame_buffer[f] = copytable(frame_buffer[f+1])
+ end
+
+ frame_buffer[effective_delay+1] = {match_active = game.match_active()}
+ local f = frame_buffer[effective_delay+1]
+
+ f.screen_left = cpup:read_i16(game.address.screen_left)
+ f.screen_top  = cpup:read_i16(game.address.screen_left + 0x4)
+
+ for p = 1, NUMBER_OF_PLAYERS do
+ local player = {base = game.address.player + (p-1) * game.player_space}
+ if cpup:read_u8(player.base) > 0 then
+ table.insert(f, update_object(f, player))
+ local tb = throw_buffer[player.base]
+ table.insert(player, tb[1])
+ for frame = 1, #tb-1 do
+ tb[frame] = tb[frame+1]
+ end
+ table.remove(tb)
+ end
+ end
+ read_projectiles(f)
+
+ --[[--f = frame_buffer[effective_delay] ]]
+ for _, obj in ipairs(f or {}) do
+ if obj.projectile or obj.bonus then
+ break
+ end
+ table.insert(obj, define_throw_box(obj, {param_offset = 0x6C, type = \"throwable\"}))
+ table.insert(obj, define_throw_box(obj, {param_offset = 0x64, type = \"throw\", clear = true}))
+ end
+
+ f.max_boxes = 0
+ for _, obj in ipairs(f or {}) do
+ f.max_boxes = max(f.max_boxes, #obj)
+ end
+ end
+
+ --[[--------------------------------------------------------------------------------]]
+ --[[-- draw the hitboxes]]
+
+ draw_hitbox = function(hb)
+ if not hb or
+ (not globals.draw_pushboxes and hb.type == \"push\") or
+ (not globals.draw_throwable_boxes and (hb.type == \"throwable\" or hb.type == \"air throwable\")) then
+ return
+ end
+
+ if globals.draw_mini_axis then
+ draw_line(screen, hb.val_x, hb.val_y-globals.mini_axis_size, hb.val_x, hb.val_y+globals.mini_axis_size, boxes[hb.type].outline)
+ draw_line(screen, hb.val_x-globals.mini_axis_size, hb.val_y, hb.val_x+globals.mini_axis_size, hb.val_y, boxes[hb.type].outline)
+ end
+
+ draw_box(screen, hb.left, hb.top, hb.right, hb.bottom, boxes[hb.type].fill, boxes[hb.type].outline)
+ end
+
+
+ draw_axis = function(obj)
+ draw_line(screen, obj.pos_x, obj.pos_y-globals.axis_size, obj.pos_x, obj.pos_y+globals.axis_size, globals.axis_color)
+ draw_line(screen, obj.pos_x-globals.axis_size, obj.pos_y, obj.pos_x+globals.axis_size, obj.pos_y, globals.axis_color)
+ --[[--gui.text(obj.pos_x, obj.pos_y, string.format(\"%06X\", obj.base)) --debug]]
+ end
+
+
+ render_hitboxes = function()
+ local f = frame_buffer[1]
+ if not f.match_active then
+ return
+ end
+
+ for entry = 1, f.max_boxes or 0 do
+ for _, obj in ipairs(f) do
+ draw_hitbox(obj[entry])
+ end
+ end
+
+ if globals.draw_axis then
+ for _, obj in ipairs(f) do
+ draw_axis(obj)
+ end
+ end
+ end
+
+ whatgame()
+",
+      "run":"update_hitboxes() render_hitboxes()"
+    },
+    "screen":{
+      "screen":":screen"
+    },
+    "desc":"Hitbox viewer"
+}]
+--[[-- Cheat file downloaded from http://www.mamecheat.co.uk, see cheat.txt for list of contributors. ]]

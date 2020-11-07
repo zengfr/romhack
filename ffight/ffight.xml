@@ -1,0 +1,212 @@
+<mamecheat version="1">
+
+  <cheat desc="Infinite Time">
+    <script state="run">
+      <action>maincpu.pb@FF80AF=99</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Clear this Scene Now!"> <comment>Turn Off Bonus Stage</comment>
+    <script state="on">
+      <action>maincpu.pb@FF8129=01</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Go to Final Stage Now!">
+    <script state="on">
+      <action>maincpu.pb@FF80BE=05</action>
+    </script>
+  </cheat>
+
+  <cheat desc="One Hit to Kill Goons">
+    <script state="run">
+      <action>maincpu.pb@FF8701=00</action>
+      <action>maincpu.pb@FF87C1=00</action>
+      <action>maincpu.pb@FF8881=00</action>
+      <action>maincpu.pb@FF8941=00</action>
+      <action>maincpu.pb@FF8A01=00</action>
+      <action>maincpu.pb@FF8AC1=00</action>
+      <action>maincpu.pb@FF8B81=00</action>
+      <action>maincpu.pb@FF8C41=00</action>
+      <action>maincpu.pb@FF8D01=00</action>
+      <action>maincpu.pb@FF8DC1=00</action>
+      <action>maincpu.pb@FF8E81=00</action>
+      <action>maincpu.pb@FF8F41=00</action>
+      <action>maincpu.pb@FF9001=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Kill Boss Faster Now!">
+    <script state="on">
+      <action>maincpu.pw@FF9A80=0008</action>
+    </script>
+  </cheat>
+
+  <!--  f 0,ffff,w.6606,6100,00a0 -->
+  <!--  f 0,ffff,w.6706,422e,0095 -->
+  <cheat desc="Knife stab ability for Guy and Haggar"> <comment>Guy and Haggar can stab enemies with knife as Cody can.</comment>
+    <script state="on">
+      <action>temp0=maincpu.mw@BC74</action>
+      <action>temp1=maincpu.mb@BCAA</action>
+    </script>
+    <script state="run">
+      <action>maincpu.mw@BC74=4E71</action> <!-- This ROM cheat was made by syndromtr -->
+      <action>maincpu.mb@BCAA=60</action>
+    </script>
+    <script state="off">
+      <action>maincpu.mw@BC74=temp0</action>
+      <action>maincpu.mb@BCAA=temp1</action>
+    </script>
+  </cheat>
+
+  <!--  f 0,fffff,w.6710,2d7c,0400  <all three -->
+  <cheat desc="Never lose weapons"> <comment>After enemy hits, dropped weapons are never lost.</comment>
+    <script state="on">
+      <action>temp0=maincpu.mb@57CBA</action>
+      <action>temp1=maincpu.mb@5844E</action>
+      <action>temp2=maincpu.mb@58CDC</action>
+    </script>
+    <script state="run">
+      <action>maincpu.mb@57CBA=60</action> <!-- This ROM cheat was made by syndromtr -->
+      <action>maincpu.mb@5844E=60</action>
+      <action>maincpu.mb@58CDC=60</action>
+    </script>
+    <script state="off">
+      <action>maincpu.mb@57CBA=temp0</action>
+      <action>maincpu.mb@5844E=temp1</action>
+      <action>maincpu.mb@58CDC=temp2</action>
+    </script>
+  </cheat>
+
+  <!--  f 0,fffff,w.6712,306e  <1st and 2nd are 1st and 3rd -->
+  <!--  f 0,fffff,w.670e,306e  <1st of 5 goes in slot 2 -->
+  <cheat desc="Never drop weapons"> <comment>Weapons are never dropped unless player loses a life.</comment>
+    <script state="on">
+      <action>temp0=maincpu.mw@0A6A6</action>
+      <action>temp1=maincpu.mb@0A732</action>
+      <action>temp2=maincpu.mb@0A87C</action>
+    </script>
+    <script state="run">
+      <action>maincpu.mw@0A6A6=6022</action> <!-- This ROM cheat was made by syndromtr -->
+      <action>maincpu.mb@0A732=60</action>
+      <action>maincpu.mb@0A87C=60</action>
+    </script>
+    <script state="off">
+      <action>maincpu.mw@0A6A6=temp0</action>
+      <action>maincpu.mb@0A732=temp1</action>
+      <action>maincpu.mb@0A87C=temp2</action>
+    </script>
+  </cheat>
+
+
+  <cheat desc=" "/>
+
+  <cheat desc="P1 Infinite Lives">
+    <script state="run">
+      <action>maincpu.pb@FF85E8=09</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Invincibility">
+    <script state="run">
+      <action>maincpu.pb@FF85C9=FE</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Infinite Energy">
+    <script state="run">
+      <action>maincpu.pb@FF8581=90</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Punch Only Combo">
+    <script state="run">
+      <action>maincpu.pb@FF860B=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Bodyblow Only Combo"> <comment>Haggar Finish</comment>
+    <script state="run">
+      <action>maincpu.pb@FF860B=02</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Cody Finish"> <comment>Haggar is Punch</comment>
+    <script state="run">
+      <action>maincpu.pb@FF860B=04</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Guy Finish"> <comment>Cody + Haggar is Punch</comment>
+    <script state="run">
+      <action>maincpu.pb@FF860B=06</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Action Speed Up">
+    <script state="run">
+      <action>maincpu.pb@FF8590=01</action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="P2 Infinite Lives">
+    <script state="run">
+      <action>maincpu.pb@FF86A8=09</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Invincibility">
+    <script state="run">
+      <action>maincpu.pb@FF8689=FE</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Infinite Energy">
+    <script state="run">
+      <action>maincpu.pb@FF8641=90</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Punch Only Combo">
+    <script state="run">
+      <action>maincpu.pb@FF86CB=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Bodyblow Only Combo"> <comment>Haggar Finish</comment>
+    <script state="run">
+      <action>maincpu.pb@FF86CB=02</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Cody Finish"> <comment>Haggar is Punch</comment>
+    <script state="run">
+      <action>maincpu.pb@FF86CB=04</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Guy Finish"> <comment>Cody + Haggar is Punch</comment>
+    <script state="run">
+      <action>maincpu.pb@FF86CB=06</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Action Speed Up">
+    <script state="run">
+      <action>maincpu.pb@FF8650=01</action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="Sound Test">
+    <parameter min="1" max="255" step="1"/>
+    <script state="change">
+      <action>maincpu.pb@800181=param</action>
+    </script>
+  </cheat>
+
+</mamecheat>
+<!-- Cheat file downloaded from http://www.mamecheat.co.uk, see cheat.txt for list of contributors. -->

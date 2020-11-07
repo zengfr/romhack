@@ -29,5 +29,13 @@ github:https://github.com/zengfr/romhack
 
 gitee:https://gitee.com/zengfr/romhack
 
+blog:https://my.oschina.net/zengfr
+
+https://github.com/zengfr/arcade_game_romhacking_sourcecode_top_secret_data
+
+https://gitee.com/zengfr/arcade_game_romhacking_sourcecode_top_secret_data
+
+https://github.com/zengfr/arcade-romhacking-framework
+
 video:https://space.bilibili.com/492484080/video
 ~~~

@@ -1,0 +1,66 @@
+ROM:000939EC                 lea     word_939FC,a0
+ROM:000939F0                 jmp     loc_3A6
+
+
+ROM:00003AC6                 movea.l character_func(pc,d6.w),a4
+ROM:00003ACA                 jmp     (a4)
+ROM:00003ACA ; ---------------------------------------------------------------------------
+ROM:00003ACC character_func: dc.l loc_4C0CA
+ROM:00003AD0                 dc.l loc_514B0
+ROM:00003AD4                 dc.l loc_57EBC
+ROM:00003AD8                 dc.l loc_5F02C
+ROM:00003ADC                 dc.l loc_65C1A
+ROM:00003AE0                 dc.l loc_6B2B0
+ROM:00003AE4                 dc.l loc_72556
+ROM:00003AE8                 dc.l loc_797D8
+ROM:00003AEC                 dc.l loc_7F742
+ROM:00003AF0                 dc.l loc_85F08
+ROM:00003AF4                 dc.l loc_89B74
+ROM:00003AF8                 dc.l loc_8E0FC
+  then load animation
+ROM:0007F74C                 move.w  word_7F75C(pc,d1.w),d1
+ROM:0007F750                 lea     word_7F75C(pc,d1.w),a0
+ROM:0007F754                 jmp     loc_3A6
+
+
+ROM:000003B2                 move.l  a0,$1A(a6)      ; load animation
+
+ROM:000022DE                 movea.l $1A(a6),a0      ; a0 = 728f4, sprite
+
+
+ROM:00096CAC                 movea.l $1A(a1),a2      ; a2 = 728DC
+ROM:00096CB0                 movea.l 4(a2),a2        ; a2 = 7290E
+
+ROM:00096CEE                 move.b  $13(a2),d4      ; flip flag
+
+
+ROM:00096DF0                 move.w  d4,(a0)+        ; x
+ROM:00096DF2                 move.w  (a3)+,d4        ; a3 = 9ac44
+ROM:00096DF4                 add.w   d1,d4
+ROM:00096DF6                 andi.w  #$1FF,d4
+ROM:00096DFA                 move.w  d4,(a0)+        ; y
+ROM:00096DFC                 move.w  (a2)+,(a0)+     ; a2 = 84060, a0 = 9103a8, tile
+ROM:00096DFE                 move.w  d2,(a0)+        ; write character to gfx, palette
+
+
+[background]
+layer 1 (8x8) 90C000, blank tile = 4020 (+10000???)
+layer 2 (16x16) 904000, blank tile = 2800 (+8000???)
+layer 3 (32x32) 908000, blank tile = 400 (+2000???)
+
+
+[global]
+ROM:0000051C                 move.w  #$9100,($800100).l
+ROM:00000524                 move.w  #$9100,$26(a5)
+ROM:0000052A                 move.w  #$90C0,($800102).l
+ROM:00000532                 move.w  #$90C0,$28(a5)
+ROM:00000538                 move.w  #$9040,($800104).l
+ROM:00000540                 move.w  #$9040,$2A(a5)
+ROM:00000546                 move.w  #$9080,($800106).l
+ROM:0000054E                 move.w  #$9080,$2C(a5)
+ROM:00000554                 move.w  #$9200,($800108).l
+ROM:0000055C                 move.w  #$9200,$2E(a5)
+
+
+ROM:00000516                 move.w  #$9000,$30(a5)	// palette
+ROM:00000690                 move.w  $30(a5),($80010A).l

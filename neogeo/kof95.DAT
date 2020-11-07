@@ -1,0 +1,380 @@
+[0]
+Name=角色解锁
+0=Off
+1=开启 (选择角色可选稳藏人物),10E79B,01
+Default=1
+
+[1]
+Name=选人时间
+0=Off
+1=15秒,1085D0,15
+2=停止 (推荐),1085D2,2F
+
+[2]
+Name=对战时间
+0=Off
+1=00秒,10A837,00
+2=60秒 (KO後解锁),10A837,60
+3=停止 (推荐),10A836,2F
+
+[3]
+Name=P1 血槽
+0=Off
+1=无血,108220,01
+2=红血,108220,40
+3=满血,108220,CF
+
+[4]
+Name=P2 血槽
+0=Off
+1=无血,108420,01
+2=红血,108420,40
+3=满血,108420,CF
+
+[5]
+Name=P1 气力槽
+0=Off
+1=无气,108218,00,108251,00
+2=满气,108218,7F,108251,02
+
+[6]
+Name=P2 气力槽
+0=Off
+1=无气,108418,00,108451,00
+2=满气,108418,7F,108451,02
+
+[7]
+Name=P1 角色 1 选择
+0=Off
+1=海迪伦 | Heidern,10A842,00
+2=拉尔夫 | Ralf,10A842,01
+3=克拉克 | Clark,10A842,02
+4=麻宫雅典娜 | Atena Asamiya,10A842,03
+5=椎拳崇 | Sie Kensou,10A842,04
+6=镇元斋 | Chin Gentsai,10A842,05
+7=草剃京 | Kyo Kusanagi,10A842,06
+8=二阶堂红丸 | Benimaru Nikaidou,10A842,07
+9=大门五郎 | Goro Daimon,10A842,08
+10=八神庵 | Iori Yagami,10A842,09
+11=如月影二 | Eiji Kisaragi,10A842,0A
+12=比利凯恩 | Billy Kane,10A842,0B
+13=金卡法 | Kim Kaphwan,10A842,0C
+14=陈可汉 | Chang Koehan,10A842,0D
+15=邱丰凯 | Choi Bounge,10A842,0E
+16=泰瑞柏格 | Terry Bogard,10A842,0F
+17=安迪柏格 | Andy Bogard,10A842,10
+18=东丈 | Joe Higashi,10A842,11
+19=阪崎良 | Ryo Sakazaki,10A842,12
+20=罗伯特 | Robert Garcia,10A842,13
+21=阪崎琢磨 | Takuma Sakazaki,10A842,14
+22=阪崎百合 | Yuri Sakazaki,10A842,15
+23=不知火舞 | Mai Shiranui,10A842,16
+24=金 | King,10A842,17
+25=*草剃柴舟 | Saisyu Kusanagi,10A842,18
+26=*路卡尔 | Rugal Bernstein,10A842,19
+
+[8]
+Name=P1 角色 2 选择
+0=Off
+1=海迪伦 | Heidern,10A845,00
+2=拉尔夫 | Ralf,10A845,01
+3=克拉克 | Clark,10A845,02
+4=麻宫雅典娜 | Atena Asamiya,10A845,03
+5=椎拳崇 | Sie Kensou,10A845,04
+6=镇元斋 | Chin Gentsai,10A845,05
+7=草剃京 | Kyo Kusanagi,10A845,06
+8=二阶堂红丸 | Benimaru Nikaidou,10A845,07
+9=大门五郎 | Goro Daimon,10A845,08
+10=八神庵 | Iori Yagami,10A845,09
+11=如月影二 | Eiji Kisaragi,10A845,0A
+12=比利凯恩 | Billy Kane,10A845,0B
+13=金卡法 | Kim Kaphwan,10A845,0C
+14=陈可汉 | Chang Koehan,10A845,0D
+15=邱丰凯 | Choi Bounge,10A845,0E
+16=泰瑞柏格 | Terry Bogard,10A845,0F
+17=安迪柏格 | Andy Bogard,10A845,10
+18=东丈 | Joe Higashi,10A845,11
+19=阪崎良 | Ryo Sakazaki,10A845,12
+20=罗伯特 | Robert Garcia,10A845,13
+21=阪崎琢磨 | Takuma Sakazaki,10A845,14
+22=阪崎百合 | Yuri Sakazaki,10A845,15
+23=不知火舞 | Mai Shiranui,10A845,16
+24=金 | King,10A845,17
+25=*草剃柴舟 | Saisyu Kusanagi,10A845,18
+26=*路卡尔 | Rugal Bernstein,10A845,19
+
+[9]
+Name=P1 角色 3 选择
+0=Off
+1=海迪伦 | Heidern,10A844,00
+2=拉尔夫 | Ralf,10A844,01
+3=克拉克 | Clark,10A844,02
+4=麻宫雅典娜 | Atena Asamiya,10A844,03
+5=椎拳崇 | Sie Kensou,10A844,04
+6=镇元斋 | Chin Gentsai,10A844,05
+7=草剃京 | Kyo Kusanagi,10A844,06
+8=二阶堂红丸 | Benimaru Nikaidou,10A844,07
+9=大门五郎 | Goro Daimon,10A844,08
+10=八神庵 | Iori Yagami,10A844,09
+11=如月影二 | Eiji Kisaragi,10A844,0A
+12=比利凯恩 | Billy Kane,10A844,0B
+13=金卡法 | Kim Kaphwan,10A844,0C
+14=陈可汉 | Chang Koehan,10A844,0D
+15=邱丰凯 | Choi Bounge,10A844,0E
+16=泰瑞柏格 | Terry Bogard,10A844,0F
+17=安迪柏格 | Andy Bogard,10A844,10
+18=东丈 | Joe Higashi,10A844,11
+19=阪崎良 | Ryo Sakazaki,10A844,12
+20=罗伯特 | Robert Garcia,10A844,13
+21=阪崎琢磨 | Takuma Sakazaki,10A844,14
+22=阪崎百合 | Yuri Sakazaki,10A844,15
+23=不知火舞 | Mai Shiranui,10A844,16
+24=金 | King,10A844,17
+25=*草剃柴舟 | Saisyu Kusanagi,10A844,18
+26=*路卡尔 | Rugal Bernstein,10A844,19
+
+[10]
+Name=P2 角色 1 选择
+0=Off
+1=海迪伦 | Heidern,10A852,00
+2=拉尔夫 | Ralf,10A852,01
+3=克拉克 | Clark,10A852,02
+4=麻宫雅典娜 | Atena Asamiya,10A852,03
+5=椎拳崇 | Sie Kensou,10A852,04
+6=镇元斋 | Chin Gentsai,10A852,05
+7=草剃京 | Kyo Kusanagi,10A852,06
+8=二阶堂红丸 | Benimaru Nikaidou,10A852,07
+9=大门五郎 | Goro Daimon,10A852,08
+10=八神庵 | Iori Yagami,10A852,09
+11=如月影二 | Eiji Kisaragi,10A852,0A
+12=比利凯恩 | Billy Kane,10A852,0B
+13=金卡法 | Kim Kaphwan,10A852,0C
+14=陈可汉 | Chang Koehan,10A852,0D
+15=邱丰凯 | Choi Bounge,10A852,0E
+16=泰瑞柏格 | Terry Bogard,10A852,0F
+17=安迪柏格 | Andy Bogard,10A852,10
+18=东丈 | Joe Higashi,10A852,11
+19=阪崎良 | Ryo Sakazaki,10A852,12
+20=罗伯特 | Robert Garcia,10A852,13
+21=阪崎琢磨 | Takuma Sakazaki,10A852,14
+22=阪崎百合 | Yuri Sakazaki,10A852,15
+23=不知火舞 | Mai Shiranui,10A852,16
+24=金 | King,10A852,17
+25=*草剃柴舟 | Saisyu Kusanagi,10A852,18
+26=*路卡尔 | Rugal Bernstein,10A852,19
+
+[11]
+Name=P2 角色 2 选择
+0=Off
+1=海迪伦 | Heidern,10A855,00
+2=拉尔夫 | Ralf,10A855,01
+3=克拉克 | Clark,10A855,02
+4=麻宫雅典娜 | Atena Asamiya,10A855,03
+5=椎拳崇 | Sie Kensou,10A855,04
+6=镇元斋 | Chin Gentsai,10A855,05
+7=草剃京 | Kyo Kusanagi,10A855,06
+8=二阶堂红丸 | Benimaru Nikaidou,10A855,07
+9=大门五郎 | Goro Daimon,10A855,08
+10=八神庵 | Iori Yagami,10A855,09
+11=如月影二 | Eiji Kisaragi,10A855,0A
+12=比利凯恩 | Billy Kane,10A855,0B
+13=金卡法 | Kim Kaphwan,10A855,0C
+14=陈可汉 | Chang Koehan,10A855,0D
+15=邱丰凯 | Choi Bounge,10A855,0E
+16=泰瑞柏格 | Terry Bogard,10A855,0F
+17=安迪柏格 | Andy Bogard,10A855,10
+18=东丈 | Joe Higashi,10A855,11
+19=阪崎良 | Ryo Sakazaki,10A855,12
+20=罗伯特 | Robert Garcia,10A855,13
+21=阪崎琢磨 | Takuma Sakazaki,10A855,14
+22=阪崎百合 | Yuri Sakazaki,10A855,15
+23=不知火舞 | Mai Shiranui,10A855,16
+24=金 | King,10A855,17
+25=*草剃柴舟 | Saisyu Kusanagi,10A855,18
+26=*路卡尔 | Rugal Bernstein,10A855,19
+
+[12]
+Name=P2 角色 3 选择
+0=Off
+1=海迪伦 | Heidern,10A854,00
+2=拉尔夫 | Ralf,10A854,01
+3=克拉克 | Clark,10A854,02
+4=麻宫雅典娜 | Atena Asamiya,10A854,03
+5=椎拳崇 | Sie Kensou,10A854,04
+6=镇元斋 | Chin Gentsai,10A854,05
+7=草剃京 | Kyo Kusanagi,10A854,06
+8=二阶堂红丸 | Benimaru Nikaidou,10A854,07
+9=大门五郎 | Goro Daimon,10A854,08
+10=八神庵 | Iori Yagami,10A854,09
+11=如月影二 | Eiji Kisaragi,10A854,0A
+12=比利凯恩 | Billy Kane,10A854,0B
+13=金卡法 | Kim Kaphwan,10A854,0C
+14=陈可汉 | Chang Koehan,10A854,0D
+15=邱丰凯 | Choi Bounge,10A854,0E
+16=泰瑞柏格 | Terry Bogard,10A854,0F
+17=安迪柏格 | Andy Bogard,10A854,10
+18=东丈 | Joe Higashi,10A854,11
+19=阪崎良 | Ryo Sakazaki,10A854,12
+20=罗伯特 | Robert Garcia,10A854,13
+21=阪崎琢磨 | Takuma Sakazaki,10A854,14
+22=阪崎百合 | Yuri Sakazaki,10A854,15
+23=不知火舞 | Mai Shiranui,10A854,16
+24=金 | King,10A854,17
+25=*草剃柴舟 | Saisyu Kusanagi,10A854,18
+26=*路卡尔 | Rugal Bernstein,10A854,19
+
+[13]
+Name=P1 角色 1 颜色
+0=Off
+1=AB 颜色,10A847,00
+2=CD 颜色,10A847,01
+
+[14]
+Name=P1 角色 2 颜色
+0=Off
+1=AB 颜色,10A846,00
+2=CD 颜色,10A846,01
+
+[15]
+Name=P1 角色 3 颜色
+0=Off
+1=AB 颜色,10A849,00
+2=CD 颜色,10A849,01
+
+[16]
+Name=P2 角色 1 颜色
+0=Off
+1=AB 颜色,10A857,00
+2=CD 颜色,10A857,01
+
+[17]
+Name=P2 角色 2 颜色
+0=Off
+1=AB 颜色,10A856,00
+2=CD 颜色,10A856,01
+
+[18]
+Name=P2 角色 3 颜色
+0=Off
+1=AB 颜色,10A859,00
+2=CD 颜色,10A859,01
+
+[19]
+Name=P1 结局动画
+0=Off
+1=巴西队 (怒之队),10A840,00
+2=中国队 (超能力战士队),10A840,01
+3=主人公队 (草剃京队),10A840,02
+4=天敌队 (八神庵队),10A840,03
+5=韩国队 (金卡法队),10A840,04
+6=意大利队 (饿狼传说队),10A840,05
+7=墨西哥队 (龙虎拳队),10A840,06
+8=英国队 (女性格斗家队),10A840,07
+
+[20]
+Name=P2 结局动画
+0=Off
+1=巴西队 (怒之队),10A850,00
+2=中国队 (超能力战士队),10A850,01
+3=主人公队 (草剃京队),10A850,02
+4=天敌队 (八神庵队),10A850,03
+5=韩国队 (金卡法队),10A850,04
+6=意大利队 (饿狼传说队),10A850,05
+7=墨西哥队 (龙虎拳队),10A850,06
+8=英国队 (女性格斗家队),10A850,07
+
+[21]
+Name=P1 游戏得分
+0=Off
+1=00,10DE57,00,10DE56,00,10DE59,00,10DE58,00
+2=9999999,10DE57,99,10DE56,99,10DE59,99,10DE58,99
+
+[22]
+Name=P2 游戏得分
+0=Off
+1=00,10DE5B,00,10DE5A,00,10DE5D,00,10DE5C,00
+2=9999999,10DE5B,99,10DE5A,99,10DE5D,99,10DE5C,99
+
+[23]
+Name=P1 角色外观
+0=Off
+1=正常,10812E,FF,10812F,FF
+2=闪身,10812A,A3
+3=隐形,10812E,00,10812F,00
+4=变小,10812E,88,10812F,88
+
+[24]
+Name=P2 角色外观
+0=Off
+1=正常,10832E,FF,10832F,FF
+2=闪身,10832A,A3
+3=隐形,10832E,00,10832F,00
+4=变小,10832E,88,10832F,88
+
+[25]
+Name=P1 穿过对方
+0=Off
+1=关闭,1081A5,01
+2=开启,1081A5,80
+
+[26]
+Name=P2 穿过对方
+0=Off
+1=关闭,1083A5,01
+2=开启,1083A5,80
+
+[27]
+Name=倒地无限追打
+0=Off
+1=P1,10817D,06
+2=P2,10837D,06
+3=P1+P2,10817D,06,10837D,06
+
+[28]
+Name=动作加快
+0=Off
+1=P1,10817B,00
+2=P2,10837B,00
+3=P1+P2,10817B,00,10837B,00
+
+[29]
+Name=全身保护
+0=Off
+1=P1,108194,01
+2=P2,108394,01
+3=P1+P2,108194,01,108394,01
+
+[30]
+Name=远程攻击
+0=Off
+1=P1,108192,FF
+2=P2,108392,FF
+3=P1+P2,108192,FF,108392,FF
+
+[31]
+Name=总是晕眩
+0=Off
+1=P1,108225,00
+2=P2,108425,00
+3=P1+P2,108225,00,108425,00
+
+[32]
+Name=背景选择
+0=Off
+1=背景 1,10A7E9,00
+2=背景 2,10A7E9,01
+3=背景 3,10A7E9,02
+4=背景 4,10A7E9,03
+5=背景 5,10A7E9,04
+6=背景 6,10A7E9,05
+7=背景 7,10A7E9,06
+8=背景 8,10A7E9,07
+9=终背景 1,10A7E9,08
+10=终背景 2,10A7E9,09
+
+[33]
+Name=家用投币数
+0=Off
+1=P1,10A813,99
+2=P2,10A812,99
+3=P1+P2,10A813,99,10A812,99

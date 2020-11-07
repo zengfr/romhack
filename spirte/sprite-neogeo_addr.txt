@@ -1,0 +1,272 @@
+SCB1 is used to store the tilemaps and tile attributes of each sprite.
+
+(Note that the $7000~$7FFF range in VRAM is used for the Fix layer).
+
+Each sprite has a 64-words table, in which each pair of words correspond to a tile in the sprite, top to bottom.
+
+Even locations are the tile number's 16 lower bits:
+
+Bit	15	14	13	12	11	10	9	8	7	6	5	4	3	2	1	0
+Def	Tile number LSBs
+Odd locations contain the remaining tile number bits, palette index and attributes:
+
+Bit	15	14	13	12	11	10	9	8	7	6	5	4	3	2	1	0
+Def	Palette	Tile number MSBs	3bit Auto-anim	2bit Auto-anim	Vertical flip	Horizontal flip
+
+
+
+System Information:
+Resolution:                         320(304?)x224
+Color Palette:                      65,536
+Maximum Colors On-Screen:           4,096
+Maximum Sprites On-Screen:          380
+Minimum Sprite Size:                1x2
+Maximum Sprite Size:                16x512
+Maximum Amount of Game Planes:      3(?)
+Sound Channels:                     4-FM synthesis, 7-Digital, 3-PSG, 1-Noise channel
+                                    Yamaha 2610 sound chip.   
+Internal RAM:                       Work RAM: 64Kb
+58MBit DRAM, 512KBit VRAM and 64KBit SRAM (CD version only).
+512KBit DRAM, 512KBit VRAM (Cartridge version).
+
+Graphics information:
+$00000 - $DFFF: Blocks of sprite data, each $80 bytes:
+    Each $80 block is made up of $20 double words, their format is:
+    Word: Sprite number (16 bits)
+    Byte: Palette number (8 bits)
+    Byte: Bit 0: X flip
+          Bit 1: Y flip
+          Bit 2: Automatic animation flag (4 tiles?)
+          Bit 3: Automatic animation flag (8 tiles?)
+          Bit 4: MSB of sprite number (confirmed, Karnov_r, Mslug). See note.
+          Bit 5: MSB of sprite number (MSlug2)
+          Bit 6: MSB of sprite number (Kof97)
+          Bit 7: Unknown for now
+
+    Each double word sprite is drawn directly underneath the previous one,
+    based on the starting coordinates.
+
+$7000 - $7a00   : Front plane fix tiles (8*8), 2 bytes each
+
+$8000: Control for sprites banks, arranged in words
+    Bit 0 to 3 - Y zoom LSB
+    Bit 4 to 7 - Y zoom MSB (ie, 1 byte for Y zoom).
+    Bit 8 to 11 - X zoom, $f is full size (no scale).
+    Bit 12 to 15 - Unknown, probably unused
+
+$8200: Control for sprite banks, arranged in words
+    Bit 0 to 5: Number of sprites in this bank (see note below).
+    Bit 6 - If set, this bank is placed to right of previous bank
+    (same Y-coord).
+    Bit 7 to 15 - Y position for sprite bank.
+
+$8400: Control for sprite banks, arranged in words
+    Bit 0 to 5: Unknown
+    Bit 7 to 15 - X position for sprite bank.
+
+Memory Locations:
+$10FD83     Nationality of the machine (0 = Japanese / 1 & 2 = English)
+$10FDAE     Set to zero before booting to force complete initialization.
+$10FE80     Set to FF to activate debug mode.
+$10F6EE     (DWORD) Contains a copy of 68000 (IRQ Vector).
+$300000     (Write) Watchdog Reset
+$300001   
+$300000        Controller #1
+            bit 7 : Button D
+            bit 6 : Button C
+            bit 5 : Button B
+            bit 4 : button A
+            bit 3 : Right
+            bit 2 : Left
+            bit 1 : Down
+            bit 0 : Up
+
+$300001        Dipswitches
+            bit 0 : Selftest
+            bit 1 : Unknown (Unused ?) \ something to do with
+            bit 2 : Unknown (Unused ?) / auto repeating keys ?
+            bit 3 : \
+            bit 4 :  | communication setting ?
+            bit 5 : /
+            bit 6 : free play
+            bit 7 : stop mode ?
+                          
+$300080        Controller #4   - Test switch in here
+$300081   
+$31001c        Unknown (ghost pilots)
+$320000        Sound CPU
+$320001
+$320001
+    The Neo Geo contains an NEC 4990 Serial I/O calendar & clock accesed
+    through $320001, $380050, $280050 (shadow adress). A schematic
+    for this device can be found on the NEC webpages.
+            bit 0 : COIN 1
+            bit 1 : COIN 2
+            bit 2 : SERVICE
+            bit 3 : UNKNOWN
+            bit 4 : UNKNOWN
+            bit 5 : UNKNOWN
+            bit 6 : 4990 test pulse bit.
+            bit 7 : 4990 data bit.
+
+
+$340000        Controller #2 (same bits as $300000)
+$380000        Status byte
+            0 PAD1 START
+            1 PAD1 SELECT
+            2 PAD2 START
+            3 PAD2 SELECT
+            4 --\  MEMORY CARD
+            5 --/  INSERTED
+            6 MEMORY CARD WRITE PROTECTION
+            7 UNUSED (?)
+$380011        Backup bank select
+$380051        4990 control write register
+            bit 0: C0
+            bit 1: C1
+            bit 2: C2
+            bit 3-7: unused.
+
+            $00 = register hold.
+            $02 = shift.
+            $03 = time read (reset register).
+            $04 = ????.
+
+$3a0001        Enable display.
+$3a0003        Swap in Bios ($80 bytes vector table of BIOS)
+$3a000a        Select board FIX char rom
+$3a000b   
+$3a000c        Neogeo Sram Lock
+$3a000d
+$3a000e        Neogeo Setpalbank1
+$3a000f   
+$3a001a        Select game FIX char rom
+$3a001b
+$3a001c        Neogeo Sram Unlock
+$3a001d
+$3a001e        Neogeo SetPalbank0 Palette banking
+$3a001f
+$3a0011        Disable display
+$3a001b        set bios vector table (?)  mirror ?
+$3a001d        unlock backup ram
+$3a0013        Swap in Rom  ($80 bytes vector table of ROM bank)
+$3c000c        IRQ acknowledge
+            4 = IRQ 1
+            2 = IRQ 2
+            1 = IRQ 3 (does any game use this?)
+
+$3c000e $3c000f  Control R
+    The format of this very important location is:  AAAA AAAA B??? CDDD
+
+    A is most likely the video beam line, however from how it is used it
+    doesn't seem to be a 0-255 direct map: the top bit is often masked out.
+
+    I think the top bit of A is: (vblank OR irq2). sdodgeb loops waiting for
+    it to be 1; zedblade heavily depends on it to work correctly.
+
+    B is used together with A in one place, so most likely video beam position
+
+    Maybe AAAAAAAAB is a 9-bit video line counter.
+    It is tested individually in many cases (e.g. samsho3) so it might not be
+    the low bit of the raster line.
+
+    C is definitely a PAL/NTSC flag. Evidence:
+        1) trally changes the position of the speed indicator depending on
+           it (0 = lower 1 = higher).
+        2) samsho3 sets a variable to 60 when the bit is 0 and 50 when
+           it's 1. This is obviously the video refresh rate in Hz.
+        3) samsho3 sets another variable to 256 or 307. This could be the
+           total screen height (including vblank), or close to that.
+           Some game (e.g. lstbld2, samsho3) do this (or similar):
+           bclr    #$0, $3c000e.l
+           when the bit is set, so 3c000e (whose function is unknown) has to
+           be related
+    D is unknown (counter of some kind, used in a couple of places).
+        in blazstar, this controls the background speed in level 2.
+
+IO addresses
+$3c0000        Read/Write location in VRAM. 
+$3c0002        Read/Write into VRAM
+$3c0004        Value to increment VRAM address by (based on words)
+$3c0006        Unknown, set vblank counter (?)
+$3c0008        shadow adress for $3c0000.
+$3c000a        shadow adress for $3c0002.
+
+68k Addresses
+$000000 $0fffff   Rom bank 1
+$100000 $10ffff   Ram bank 1
+$200000 $2fffff   Rom bank 2
+$2ffff0 $2fffff   Neo Bankswitch Write
+$400000 $401fff   Neogeo Palette Ram Read
+$800000 $800fff   NeoGeo Memcard Read
+    Memory card is a 2kb battery backed RAM.
+    It is accessed thru $800000-$800FFF.
+    Even bytes are always $FF
+    Odd bytes are memcard data ($800 bytes)
+
+$c00000 $c1ffff   System Bios Rom
+$d00000 $d0ffff   64k battery backed SRAM
+
+trally writes to 200000-200003 as well, probably looking for a serial
+link both games write to 0000fe before writing to 200000. The two
+things could be related. Sidekicks reads and writes to several
+addresses in this range, using this for copy protection.
+
+Z80 Addresses
+    $0000  $7fff  Rom
+    $8000  $bfff  Bank 5
+    $c000  $dfff  Bank 6
+    $e000  $efff  Bank 7
+    $f000  $f7ff  Bank 8
+    $f800  $ffff  Ram
+
+Character layout
+    8 x 8 chars
+    4096 in total
+    4 bits per pixel (planes are packed in a nibble)    
+    32 bytes per char
+
+Sprite Layout
+    16 x 16
+    4 bits per pixel
+    128 bytes per sprite
+
+$00  Stack pointer
+$04  Initial PC ($C11002)
+$64  VBlank pointer
+$100 "NEO-GEO",0
+$108 NGH Number, a unique number assigned to each cart. (WORD) (Thanks to Apollo69 for this info.)
+$10A ?
+$10C ?
+$10E Pointer to debug dip switches ?
+$112 ?
+$114 Starting Sprite Number / $100 for the Neo Geo logo.
+     Logo is (64 x 64 chars. 4096 bytes total in each bank).
+$116 Pointer to Japanese name
+$11A Pointer to English name
+$122 Entry point of the software
+$182 Pointer to security code.
+
+
+
+
+
+[code]
+
+The system ROM doesn't just jump to the game's code once and for all. It jumps to code at $122, which is also defined in the header.asm file.
+
+JT_USER:
+    dc.l    StartupInit             ; Jump table for the different things the system ROM can ask for
+    dc.l    EyeCatcher
+    dc.l    Game
+    dc.l    Title
+
+USER:
+    move.b  d0,REG_DIPSW            ; Kick watchdog
+    clr.l   d0                      ; Clear register D0
+    move.b  BIOS_USER_REQUEST,d0    ; Put BIOS_USER_REQUEST (byte) in D0
+    lsl.b   #2,d0                   ; D0 <<= 2
+    lea     JT_USER,a0              ; Put the address of JT_USER in A0
+    movea.l (a0,d0),a0              ; Read from jump table
+    jsr     (a0)                    ; Jump to label
+    jmp     SYS_RETURN              ; Tell the system ROM that we're done

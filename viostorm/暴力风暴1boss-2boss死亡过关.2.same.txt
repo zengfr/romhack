@@ -1,0 +1,69 @@
+copyright	zengfr	site:http://github.com/zengfr/romhack
+	
+:addq.b  #1, $20004b.l	
+:andi.b  #$7f, ($3f,A0)	
+:andi.b  #$7f, ($4f,A0)	
+:beq     $1b20	
+:beq     $24d2	
+:bne     $1b90	
+:bne     $2488	
+:bne     $24d2	
+:bra     $1b32	
+:bra     $249a	
+:bsr     $17a76	
+:btst    #$0, $200082.l	
+:btst    #$1, $200083.l	
+:btst    #$1, ($a0,A0)	
+:btst    #$7, ($e9,A0)	
+:clr.b   $20005a.l	
+:clr.w   ($6,A0)	
+:clr.w   ($ae,A0)	
+:cmpi.b  #-$1, ($9e,A0)	
+:jmp     $bc0.l	
+:jmp     ($2,PC,D0.w)	
+:jsr     $162c2.l	
+:jsr     $bc0.l	
+:jsr     ($c,PC,D1.w)	
+:jsr     (A1)	
+:lea     ($100,A5), A4	
+:lea     (A6), A4	
+:move.b  #$0, ($0,A0)	
+:move.b  #$1, $20005a.l	
+:move.b  #$1, $200c18.l	
+:move.b  #$1, $201426.l	
+:move.b  #$1, $201800.l	
+:move.b  ($d,A0), D0	
+:move.b  D0, ($d,A0)	
+:move.l  #$60000, ($30,A0)	
+:move.l  A6, -(A7)	
+:move.l  D6, (A6)	
+:move.w  #$200, D7	
+:move.w  #$5, ($4,A0)	
+:move.w  #$501, D7	
+:move.w  #$700, D7	
+:move.w  #$f00, D7	
+:move.w  #$f200, D7	
+:move.w  #$fe, D2	
+:move.w  ($10,PC,D0.w), D1	
+:move.w  ($2,A0), D0	
+:move.w  ($24,A0), D0	
+:move.w  ($4,A0), D0	
+:move.w  ($4,A0), D1	
+:move.w  ($6,A0), D0	
+:move.w  ($6,A0), D2	
+:move.w  ($6,PC,D0.w), D0	
+:movea.l ($10,A0), A5	
+:movea.l ($14,A0), A6	
+:movea.l ($84,A0), A6	
+:movea.l (A1,D6.w), A1	
+:movea.l (A7)+, A1	
+:movea.l (A7)+, A6	
+:ori.b   #$1, ($e9,A0)	
+:ori.b   #$2, ($a0,A0)	
+:ori.b   #$80, ($7f,A0)	
+:ori.b   #$80, ($e9,A0)	
+:rts	
+:subq.b  #1, D0	
+:tst.b   $20005a.l	
+:tst.b   ($c,A0)	
+copyright	zengfr	site:http://github.com/zengfr/romhack

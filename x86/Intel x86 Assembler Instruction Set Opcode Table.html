@@ -1,0 +1,1903 @@
+<html>
+<head>
+<title>Intel x86 Assembler Instruction Set Opcode Table</title>
+<style type="text/css">
+    body     { font-family: sans-serif }
+</style>
+</head>
+<body>
+<h1>Intel x86 Assembler Instruction Set Opcode Table</h1>
+<TABLE BORDER=1>
+<tr>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>ADD</B><br>
+Eb Gb <br>
+<i>00</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>ADD</B><br>
+Ev Gv <br>
+<i>01</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>ADD</B><br>
+Gb Eb <br>
+<i>02</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>ADD</B><br>
+Gv Ev <br>
+<i>03</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>ADD</B><br>
+AL Ib <br>
+<i>04</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>ADD</B><br>
+eAX Iv <br>
+<i>05</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>PUSH</B><br>
+ES  <br>
+<i>06</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>POP</B><br>
+ES  <br>
+<i>07</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>OR</B><br>
+Eb Gb <br>
+<i>08</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>OR</B><br>
+Ev Gv <br>
+<i>09</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>OR</B><br>
+Gb Eb <br>
+<i>0A</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>OR</B><br>
+Gv Ev <br>
+<i>0B</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>OR</B><br>
+AL Ib <br>
+<i>0C</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>OR</B><br>
+eAX Iv <br>
+<i>0D</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>PUSH</B><br>
+CS  <br>
+<i>0E</i>
+</td>
+<td bgcolor=#FFFFFF align=center valign=center>
+<B>TWOBYTE</B><br>
+  <br>
+<i>0F</i>
+</td>
+</tr>
+<tr>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>ADC</B><br>
+Eb Gb <br>
+<i>10</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>ADC</B><br>
+Ev Gv <br>
+<i>11</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>ADC</B><br>
+Gb Eb <br>
+<i>12</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>ADC</B><br>
+Gv Ev <br>
+<i>13</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>ADC</B><br>
+AL Ib <br>
+<i>14</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>ADC</B><br>
+eAX Iv <br>
+<i>15</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>PUSH</B><br>
+SS  <br>
+<i>16</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>POP</B><br>
+SS  <br>
+<i>17</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>SBB</B><br>
+Eb Gb <br>
+<i>18</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>SBB</B><br>
+Ev Gv <br>
+<i>19</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>SBB</B><br>
+Gb Eb <br>
+<i>1A</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>SBB</B><br>
+Gv Ev <br>
+<i>1B</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>SBB</B><br>
+AL Ib <br>
+<i>1C</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>SBB</B><br>
+eAX Iv <br>
+<i>1D</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>PUSH</B><br>
+DS  <br>
+<i>1E</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>POP</B><br>
+DS  <br>
+<i>1F</i>
+</td>
+</tr>
+<tr>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>AND</B><br>
+Eb Gb <br>
+<i>20</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>AND</B><br>
+Ev Gv <br>
+<i>21</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>AND</B><br>
+Gb Eb <br>
+<i>22</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>AND</B><br>
+Gv Ev <br>
+<i>23</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>AND</B><br>
+AL Ib <br>
+<i>24</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>AND</B><br>
+eAX Iv <br>
+<i>25</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>ES:</B><br>
+  <br>
+<i>26</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>DAA</B><br>
+  <br>
+<i>27</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>SUB</B><br>
+Eb Gb <br>
+<i>28</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>SUB</B><br>
+Ev Gv <br>
+<i>29</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>SUB</B><br>
+Gb Eb <br>
+<i>2A</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>SUB</B><br>
+Gv Ev <br>
+<i>2B</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>SUB</B><br>
+AL Ib <br>
+<i>2C</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>SUB</B><br>
+eAX Iv <br>
+<i>2D</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>CS:</B><br>
+  <br>
+<i>2E</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>DAS</B><br>
+  <br>
+<i>2F</i>
+</td>
+</tr>
+<tr>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>XOR</B><br>
+Eb Gb <br>
+<i>30</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>XOR</B><br>
+Ev Gv <br>
+<i>31</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>XOR</B><br>
+Gb Eb <br>
+<i>32</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>XOR</B><br>
+Gv Ev <br>
+<i>33</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>XOR</B><br>
+AL Ib <br>
+<i>34</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>XOR</B><br>
+eAX Iv <br>
+<i>35</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>SS:</B><br>
+  <br>
+<i>36</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>AAA</B><br>
+  <br>
+<i>37</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>CMP</B><br>
+Eb Gb <br>
+<i>38</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>CMP</B><br>
+Ev Gv <br>
+<i>39</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>CMP</B><br>
+Gb Eb <br>
+<i>3A</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>CMP</B><br>
+Gv Ev <br>
+<i>3B</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>CMP</B><br>
+AL Ib <br>
+<i>3C</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>CMP</B><br>
+eAX Iv <br>
+<i>3D</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>DS:</B><br>
+  <br>
+<i>3E</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>AAS</B><br>
+  <br>
+<i>3F</i>
+</td>
+</tr>
+<tr>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>INC</B><br>
+eAX  <br>
+<i>40</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>INC</B><br>
+eCX  <br>
+<i>41</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>INC</B><br>
+eDX  <br>
+<i>42</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>INC</B><br>
+eBX  <br>
+<i>43</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>INC</B><br>
+eSP  <br>
+<i>44</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>INC</B><br>
+eBP  <br>
+<i>45</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>INC</B><br>
+eSI  <br>
+<i>46</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>INC</B><br>
+eDI  <br>
+<i>47</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>DEC</B><br>
+eAX  <br>
+<i>48</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>DEC</B><br>
+eCX  <br>
+<i>49</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>DEC</B><br>
+eDX  <br>
+<i>4A</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>DEC</B><br>
+eBX  <br>
+<i>4B</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>DEC</B><br>
+eSP  <br>
+<i>4C</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>DEC</B><br>
+eBP  <br>
+<i>4D</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>DEC</B><br>
+eSI  <br>
+<i>4E</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>DEC</B><br>
+eDI  <br>
+<i>4F</i>
+</td>
+</tr>
+<tr>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>PUSH</B><br>
+eAX  <br>
+<i>50</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>PUSH</B><br>
+eCX  <br>
+<i>51</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>PUSH</B><br>
+eDX  <br>
+<i>52</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>PUSH</B><br>
+eBX  <br>
+<i>53</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>PUSH</B><br>
+eSP  <br>
+<i>54</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>PUSH</B><br>
+eBP  <br>
+<i>55</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>PUSH</B><br>
+eSI  <br>
+<i>56</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>PUSH</B><br>
+eDI  <br>
+<i>57</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>POP</B><br>
+eAX  <br>
+<i>58</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>POP</B><br>
+eCX  <br>
+<i>59</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>POP</B><br>
+eDX  <br>
+<i>5A</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>POP</B><br>
+eBX  <br>
+<i>5B</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>POP</B><br>
+eSP  <br>
+<i>5C</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>POP</B><br>
+eBP  <br>
+<i>5D</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>POP</B><br>
+eSI  <br>
+<i>5E</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>POP</B><br>
+eDI  <br>
+<i>5F</i>
+</td>
+</tr>
+<tr>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>PUSHA</B><br>
+  <br>
+<i>60</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>POPA</B><br>
+  <br>
+<i>61</i>
+</td>
+<td bgcolor=#FFFFFF align=center valign=center>
+<B>BOUND</B><br>
+Gv Ma <br>
+<i>62</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>ARPL</B><br>
+Ew Gw <br>
+<i>63</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>FS:</B><br>
+  <br>
+<i>64</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>GS:</B><br>
+  <br>
+<i>65</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>OPSIZE:</B><br>
+  <br>
+<i>66</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>ADSIZE:</B><br>
+  <br>
+<i>67</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>PUSH</B><br>
+Iv  <br>
+<i>68</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>IMUL</B><br>
+Gv Ev Iv<br>
+<i>69</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>PUSH</B><br>
+Ib  <br>
+<i>6A</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>IMUL</B><br>
+Gv Ev Ib<br>
+<i>6B</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>INSB</B><br>
+Yb DX <br>
+<i>6C</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>INSW</B><br>
+Yz DX <br>
+<i>6D</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>OUTSB</B><br>
+DX Xb <br>
+<i>6E</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>OUTSW</B><br>
+DX Xv <br>
+<i>6F</i>
+</td>
+</tr>
+<tr>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>JO</B><br>
+Jb  <br>
+<i>70</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>JNO</B><br>
+Jb  <br>
+<i>71</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>JB</B><br>
+Jb  <br>
+<i>72</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>JNB</B><br>
+Jb  <br>
+<i>73</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>JZ</B><br>
+Jb  <br>
+<i>74</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>JNZ</B><br>
+Jb  <br>
+<i>75</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>JBE</B><br>
+Jb  <br>
+<i>76</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>JA</B><br>
+Jb  <br>
+<i>77</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>JS</B><br>
+Jb  <br>
+<i>78</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>JNS</B><br>
+Jb  <br>
+<i>79</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>JP</B><br>
+Jb  <br>
+<i>7A</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>JNP</B><br>
+Jb  <br>
+<i>7B</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>JL</B><br>
+Jb  <br>
+<i>7C</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>JNL</B><br>
+Jb  <br>
+<i>7D</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>JLE</B><br>
+Jb  <br>
+<i>7E</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>JNLE</B><br>
+Jb  <br>
+<i>7F</i>
+</td>
+</tr>
+<tr>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>ADD</B><br>
+Eb Ib <br>
+<i>80</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>ADD</B><br>
+Ev Iv <br>
+<i>81</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>SUB</B><br>
+Eb Ib <br>
+<i>82</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>SUB</B><br>
+Ev Ib <br>
+<i>83</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>TEST</B><br>
+Eb Gb <br>
+<i>84</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>TEST</B><br>
+Ev Gv <br>
+<i>85</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>XCHG</B><br>
+Eb Gb <br>
+<i>86</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>XCHG</B><br>
+Ev Gv <br>
+<i>87</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>MOV</B><br>
+Eb Gb <br>
+<i>88</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>MOV</B><br>
+Ev Gv <br>
+<i>89</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>MOV</B><br>
+Gb Eb <br>
+<i>8A</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>MOV</B><br>
+Gv Ev <br>
+<i>8B</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>MOV</B><br>
+Ew Sw <br>
+<i>8C</i>
+</td>
+<td bgcolor=#FFFFFF align=center valign=center>
+<B>LEA</B><br>
+Gv M <br>
+<i>8D</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>MOV</B><br>
+Sw Ew <br>
+<i>8E</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>POP</B><br>
+Ev  <br>
+<i>8F</i>
+</td>
+</tr>
+<tr>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>NOP</B><br>
+  <br>
+<i>90</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>XCHG</B><br>
+eAX eCX <br>
+<i>91</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>XCHG</B><br>
+eAX eDX <br>
+<i>92</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>XCHG</B><br>
+eAX eBX <br>
+<i>93</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>XCHG</B><br>
+eAX eSP <br>
+<i>94</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>XCHG</B><br>
+eAX eBP <br>
+<i>95</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>XCHG</B><br>
+eAX eSI <br>
+<i>96</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>XCHG</B><br>
+eAX eDI <br>
+<i>97</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>CBW</B><br>
+  <br>
+<i>98</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>CWD</B><br>
+  <br>
+<i>99</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>CALL</B><br>
+Ap  <br>
+<i>9A</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>WAIT</B><br>
+  <br>
+<i>9B</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>PUSHF</B><br>
+Fv  <br>
+<i>9C</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>POPF</B><br>
+Fv  <br>
+<i>9D</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>SAHF</B><br>
+  <br>
+<i>9E</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>LAHF</B><br>
+  <br>
+<i>9F</i>
+</td>
+</tr>
+<tr>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>MOV</B><br>
+AL Ob <br>
+<i>A0</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>MOV</B><br>
+eAX Ov <br>
+<i>A1</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>MOV</B><br>
+Ob AL <br>
+<i>A2</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>MOV</B><br>
+Ov eAX <br>
+<i>A3</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>MOVSB</B><br>
+Xb Yb <br>
+<i>A4</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>MOVSW</B><br>
+Xv Yv <br>
+<i>A5</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>CMPSB</B><br>
+Xb Yb <br>
+<i>A6</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>CMPSW</B><br>
+Xv Yv <br>
+<i>A7</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>TEST</B><br>
+AL Ib <br>
+<i>A8</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>TEST</B><br>
+eAX Iv <br>
+<i>A9</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>STOSB</B><br>
+Yb AL <br>
+<i>AA</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>STOSW</B><br>
+Yv eAX <br>
+<i>AB</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>LODSB</B><br>
+AL Xb <br>
+<i>AC</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>LODSW</B><br>
+eAX Xv <br>
+<i>AD</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>SCASB</B><br>
+AL Yb <br>
+<i>AE</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>SCASW</B><br>
+eAX Yv <br>
+<i>AF</i>
+</td>
+</tr>
+<tr>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>MOV</B><br>
+AL Ib <br>
+<i>B0</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>MOV</B><br>
+CL Ib <br>
+<i>B1</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>MOV</B><br>
+DL Ib <br>
+<i>B2</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>MOV</B><br>
+BL Ib <br>
+<i>B3</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>MOV</B><br>
+AH Ib <br>
+<i>B4</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>MOV</B><br>
+CH Ib <br>
+<i>B5</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>MOV</B><br>
+DH Ib <br>
+<i>B6</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>MOV</B><br>
+BH Ib <br>
+<i>B7</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>MOV</B><br>
+eAX Iv <br>
+<i>B8</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>MOV</B><br>
+eCX Iv <br>
+<i>B9</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>MOV</B><br>
+eDX Iv <br>
+<i>BA</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>MOV</B><br>
+eBX Iv <br>
+<i>BB</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>MOV</B><br>
+eSP Iv <br>
+<i>BC</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>MOV</B><br>
+eBP Iv <br>
+<i>BD</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>MOV</B><br>
+eSI Iv <br>
+<i>BE</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>MOV</B><br>
+eDI Iv <br>
+<i>BF</i>
+</td>
+</tr>
+<tr>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>#2</B><br>
+Eb Ib <br>
+<i>C0</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>#2</B><br>
+Ev Ib <br>
+<i>C1</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>RETN</B><br>
+Iw  <br>
+<i>C2</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>RETN</B><br>
+  <br>
+<i>C3</i>
+</td>
+<td bgcolor=#FFFFFF align=center valign=center>
+<B>LES</B><br>
+Gv Mp <br>
+<i>C4</i>
+</td>
+<td bgcolor=#FFFFFF align=center valign=center>
+<B>LDS</B><br>
+Gv Mp <br>
+<i>C5</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>MOV</B><br>
+Eb Ib <br>
+<i>C6</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>MOV</B><br>
+Ev Iv <br>
+<i>C7</i>
+</td>
+<td bgcolor=#FFFFFF align=center valign=center>
+<B>ENTER</B><br>
+Iw Ib <br>
+<i>C8</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>LEAVE</B><br>
+  <br>
+<i>C9</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>RETF</B><br>
+Iw  <br>
+<i>CA</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>RETF</B><br>
+  <br>
+<i>CB</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>INT3</B><br>
+  <br>
+<i>CC</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>INT</B><br>
+Ib  <br>
+<i>CD</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>INTO</B><br>
+  <br>
+<i>CE</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>IRET</B><br>
+  <br>
+<i>CF</i>
+</td>
+</tr>
+<tr>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>#2</B><br>
+Eb 1 <br>
+<i>D0</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>#2</B><br>
+Ev 1 <br>
+<i>D1</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>#2</B><br>
+Eb CL <br>
+<i>D2</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>#2</B><br>
+Ev CL <br>
+<i>D3</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>AAM</B><br>
+Ib  <br>
+<i>D4</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>AAD</B><br>
+Ib  <br>
+<i>D5</i>
+</td>
+<td bgcolor=#FFFFFF align=center valign=center>
+<B>SALC</B><br>
+  <br>
+<i>D6</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>XLAT</B><br>
+  <br>
+<i>D7</i>
+</td>
+<td bgcolor=#FFFFFF align=center valign=center>
+<B>ESC</B><br>
+0  <br>
+<i>D8</i>
+</td>
+<td bgcolor=#FFFFFF align=center valign=center>
+<B>ESC</B><br>
+1  <br>
+<i>D9</i>
+</td>
+<td bgcolor=#FFFFFF align=center valign=center>
+<B>ESC</B><br>
+2  <br>
+<i>DA</i>
+</td>
+<td bgcolor=#FFFFFF align=center valign=center>
+<B>ESC</B><br>
+3  <br>
+<i>DB</i>
+</td>
+<td bgcolor=#FFFFFF align=center valign=center>
+<B>ESC</B><br>
+4  <br>
+<i>DC</i>
+</td>
+<td bgcolor=#FFFFFF align=center valign=center>
+<B>ESC</B><br>
+5  <br>
+<i>DD</i>
+</td>
+<td bgcolor=#FFFFFF align=center valign=center>
+<B>ESC</B><br>
+6  <br>
+<i>DE</i>
+</td>
+<td bgcolor=#FFFFFF align=center valign=center>
+<B>ESC</B><br>
+7  <br>
+<i>DF</i>
+</td>
+</tr>
+<tr>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>LOOPNZ</B><br>
+Jb  <br>
+<i>E0</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>LOOPZ</B><br>
+Jb  <br>
+<i>E1</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>LOOP</B><br>
+Jb  <br>
+<i>E2</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>JCXZ</B><br>
+Jb  <br>
+<i>E3</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>IN</B><br>
+AL Ib <br>
+<i>E4</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>IN</B><br>
+eAX Ib <br>
+<i>E5</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>OUT</B><br>
+Ib AL <br>
+<i>E6</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>OUT</B><br>
+Ib eAX <br>
+<i>E7</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>CALL</B><br>
+Jz  <br>
+<i>E8</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>JMP</B><br>
+Jz  <br>
+<i>E9</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>JMP</B><br>
+Ap  <br>
+<i>EA</i>
+</td>
+<td bgcolor=#A0EEA0 align=center valign=center>
+<B>JMP</B><br>
+Jb  <br>
+<i>EB</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>IN</B><br>
+AL DX <br>
+<i>EC</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>IN</B><br>
+eAX DX <br>
+<i>ED</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>OUT</B><br>
+DX AL <br>
+<i>EE</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>OUT</B><br>
+DX eAX <br>
+<i>EF</i>
+</td>
+</tr>
+<tr>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>LOCK:</B><br>
+  <br>
+<i>F0</i>
+</td>
+<td bgcolor=#FFFFFF align=center valign=center>
+<B>INT1</B><br>
+  <br>
+<i>F1</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>REPNE:</B><br>
+  <br>
+<i>F2</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>REP:</B><br>
+  <br>
+<i>F3</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>HLT</B><br>
+  <br>
+<i>F4</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>CMC</B><br>
+  <br>
+<i>F5</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>#3</B><br>
+Eb  <br>
+<i>F6</i>
+</td>
+<td bgcolor=#B0B0DD align=center valign=center>
+<B>#3</B><br>
+Ev  <br>
+<i>F7</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>CLC</B><br>
+  <br>
+<i>F8</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>STC</B><br>
+  <br>
+<i>F9</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>CLI</B><br>
+  <br>
+<i>FA</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>STI</B><br>
+  <br>
+<i>FB</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>CLD</B><br>
+  <br>
+<i>FC</i>
+</td>
+<td bgcolor=#D0FFD0 align=center valign=center>
+<B>STD</B><br>
+  <br>
+<i>FD</i>
+</td>
+<td bgcolor=#FFFFFF align=center valign=center>
+<B>#4</B><br>
+INC/DEC  <br>
+<i>FE</i>
+</td>
+<td bgcolor=#FFFFFF align=center valign=center>
+<B>#5</B><br>
+INC/DEC  <br>
+<i>FF</i>
+</td>
+</tr>
+</TABLE>
+<p>
+<TABLE BORDER=1>
+<TR><TD ALIGN=CENTER><b>Legend</b></TD></TR>
+<TR bgcolor=#B0B0DD><TD>HAS MOD R/M</TD></TR>
+<TR bgcolor=#D0FFD0><TD>LENGTH = 1</TD></TR>
+<TR bgcolor=#A0EEA0><TD>OTHER</TD></TR>
+<TR bgcolor=#FFFFFF><TD>UNDECODED</TD></TR>
+</TABLE>
+<p>
+<h1>80386 Instruction Format</h1>
+<h2>Prefix</h2>
+<TABLE BORDER=1 BGCOLOR="#E0E0FF">
+<TR>
+<TD ALIGN=CENTER>&nbsp;<BR>&nbsp;INSTRUCTION&nbsp;<BR>PREFIX<BR>&nbsp;</TD><TD ALIGN=CENTER>&nbsp;<BR>&nbsp;ADDRESS SIZE&nbsp;<BR>PREFIX<BR>&nbsp;</TD><TD ALIGN=CENTER>&nbsp;<BR>&nbsp;OPERAND SIZE&nbsp;<BR>PREFIX<BR>&nbsp;</TD><TD ALIGN=CENTER>&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SEGMENT&nbsp&nbsp;&nbsp;&nbsp;&nbsp;<BR>OVERRIDE<BR>&nbsp;</TD></TR>
+<TR>
+<TD ALIGN=CENTER>&nbsp;<BR>0 OR 1<BR>&nbsp;</TD><TD ALIGN=CENTER>&nbsp;<BR>0 OR 1<BR>&nbsp;</TD><TD ALIGN=CENTER>&nbsp;<BR>0 OR 1<BR>&nbsp;</TD><TD ALIGN=CENTER>&nbsp;<BR>0 OR 1<BR>&nbsp;</TD></TR>
+<TR>
+<TD ALIGN=CENTER COLSPAN=4>&nbsp;<BR>NUMBER OF BYTES<BR>&nbsp;</TD></TR>
+</TABLE>
+<h2>Required</h2>
+<TABLE BORDER=1 BGCOLOR="#E0E0FF">
+<TR>
+<TD ALIGN=CENTER>&nbsp;<BR>&nbsp;OPCODE&nbsp;<BR>&nbsp;</TD><TD ALIGN=CENTER>&nbsp;<BR>&nbsp;MOD R/M&nbsp;<BR>&nbsp;</TD><TD ALIGN=CENTER>&nbsp;<BR>&nbsp;SIB&nbsp;<BR>&nbsp;</TD><TD ALIGN=CENTER>&nbsp;<BR>&nbsp;DISPLACEMENT&nbsp;<BR>&nbsp;</TD><TD ALIGN=CENTER>&nbsp;<BR>&nbsp;IMMEDIATE&nbsp;<BR>&nbsp;</TD></TR>
+<TR>
+<TD ALIGN=CENTER>&nbsp;<BR>&nbsp;1 OR 2&nbsp;<BR>&nbsp;</TD><TD ALIGN=CENTER>&nbsp;<BR>&nbsp;0 OR 1&nbsp;<BR>&nbsp;</TD><TD ALIGN=CENTER>&nbsp;<BR>&nbsp;0 OR 1&nbsp;<BR>&nbsp;</TD><TD ALIGN=CENTER>&nbsp;<BR>&nbsp;0,1,2 OR 4&nbsp;<BR>&nbsp;</TD><TD ALIGN=CENTER>&nbsp;<BR>&nbsp;0,1,2 OR 4&nbsp;<BR>&nbsp;</TD></TR>
+<TR>
+<TD ALIGN=CENTER COLSPAN=5>&nbsp;<BR>NUMBER OF BYTES<BR>&nbsp;</TD></TR>
+</TABLE>
+<h1>MOD R/M BYTE</h1>
+<TABLE BORDER=1 BGCOLOR="#E0E0FF">
+<TR>
+<TD ALIGN=CENTER>&nbsp; &nbsp; <B>7</B> &nbsp; &nbsp;</TD>
+<TD ALIGN=CENTER>&nbsp; &nbsp; <B>6</B> &nbsp; &nbsp;</TD>
+<TD ALIGN=CENTER>&nbsp; &nbsp; <B>5</B> &nbsp; &nbsp;</TD>
+<TD ALIGN=CENTER>&nbsp; &nbsp; <B>4</B> &nbsp; &nbsp;</TD>
+<TD ALIGN=CENTER>&nbsp; &nbsp; <B>3</B> &nbsp; &nbsp;</TD>
+<TD ALIGN=CENTER>&nbsp; &nbsp; <B>2</B> &nbsp; &nbsp;</TD>
+<TD ALIGN=CENTER>&nbsp; &nbsp; <B>1</B> &nbsp; &nbsp;</TD>
+<TD ALIGN=CENTER>&nbsp; &nbsp; <B>0</B> &nbsp; &nbsp;</TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER COLSPAN=2>MOD</TD><TD ALIGN=CENTER COLSPAN=3>REG/OPCODE</TD><TD ALIGN=CENTER COLSPAN=3>R/M</TD></TR>
+</TABLE>
+<h1>SIB BYTE</h1>
+<TABLE BORDER=1 BGCOLOR="#E0E0FF">
+<TR>
+<TD ALIGN=CENTER>&nbsp; &nbsp; <B>7</B> &nbsp; &nbsp;</TD>
+<TD ALIGN=CENTER>&nbsp; &nbsp; <B>6</B> &nbsp; &nbsp;</TD>
+<TD ALIGN=CENTER>&nbsp; &nbsp; <B>5</B> &nbsp; &nbsp;</TD>
+<TD ALIGN=CENTER>&nbsp; &nbsp; <B>4</B> &nbsp; &nbsp;</TD>
+<TD ALIGN=CENTER>&nbsp; &nbsp; <B>3</B> &nbsp; &nbsp;</TD>
+<TD ALIGN=CENTER>&nbsp; &nbsp; <B>2</B> &nbsp; &nbsp;</TD>
+<TD ALIGN=CENTER>&nbsp; &nbsp; <B>1</B> &nbsp; &nbsp;</TD>
+<TD ALIGN=CENTER>&nbsp; &nbsp; <B>0</B> &nbsp; &nbsp;</TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER COLSPAN=2>SCALE</TD><TD ALIGN=CENTER COLSPAN=3>INDEX</TD><TD ALIGN=CENTER COLSPAN=3>BASE</TD></TR>
+</TABLE>
+<h1>MOD R/M 16</h1>
+<TABLE BORDER=1>
+<TR><TD>&nbsp;</TD>
+<TD ALIGN=CENTER><B>0</B></TD>
+<TD ALIGN=CENTER><B>1</B></TD>
+<TD ALIGN=CENTER><B>2</B></TD>
+<TD ALIGN=CENTER><B>3</B></TD>
+<TD ALIGN=CENTER><B>4</B></TD>
+<TD ALIGN=CENTER><B>5</B></TD>
+<TD ALIGN=CENTER><B>6</B></TD>
+<TD ALIGN=CENTER><B>7</B></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER><B>0</B></TD>
+<TD ALIGN=CENTER bgcolor=#D0FFD0>
+[BX+SI]<BR>
++1</TD>
+<TD ALIGN=CENTER bgcolor=#D0FFD0>
+[BX+DI]<BR>
++1</TD>
+<TD ALIGN=CENTER bgcolor=#D0FFD0>
+[BP+SI]<BR>
++1</TD>
+<TD ALIGN=CENTER bgcolor=#D0FFD0>
+[BP+DI]<BR>
++1</TD>
+<TD ALIGN=CENTER bgcolor=#D0FFD0>
+[SI]<BR>
++1</TD>
+<TD ALIGN=CENTER bgcolor=#D0FFD0>
+[DI]<BR>
++1</TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[Iw]<BR>
++3</TD>
+<TD ALIGN=CENTER bgcolor=#D0FFD0>
+[BX]<BR>
++1</TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER><B>1</B></TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[BX+SI+Ib]<BR>
++2</TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[BX+DI+Ib]<BR>
++2</TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[BP+SI+Ib]<BR>
++2</TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[BP+DI+Ib]<BR>
++2</TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[SI+Ib]<BR>
++2</TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[DI+Ib]<BR>
++2</TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[BP+Ib]<BR>
++2</TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[BX+Ib]<BR>
++2</TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER><B>2</B></TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[BX+SI+Iw]<BR>
++3</TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[BX+DI+Iw]<BR>
++3</TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[BP+SI+Iw]<BR>
++3</TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[BP+DI+Iw]<BR>
++3</TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[SI+Iw]<BR>
++3</TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[DI+Iw]<BR>
++3</TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[BP+Iw]<BR>
++3</TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[BX+Iw]<BR>
++3</TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER><B>3</B></TD>
+<TD ALIGN=CENTER bgcolor=#D0FFD0>
+AX<BR>
++1</TD>
+<TD ALIGN=CENTER bgcolor=#D0FFD0>
+CX<BR>
++1</TD>
+<TD ALIGN=CENTER bgcolor=#D0FFD0>
+DX<BR>
++1</TD>
+<TD ALIGN=CENTER bgcolor=#D0FFD0>
+BX<BR>
++1</TD>
+<TD ALIGN=CENTER bgcolor=#D0FFD0>
+SP<BR>
++1</TD>
+<TD ALIGN=CENTER bgcolor=#D0FFD0>
+BP<BR>
++1</TD>
+<TD ALIGN=CENTER bgcolor=#D0FFD0>
+SI<BR>
++1</TD>
+<TD ALIGN=CENTER bgcolor=#D0FFD0>
+DI<BR>
++1</TD>
+</TR>
+</TABLE>
+<h1>MOD R/M 32</h1>
+<TABLE BORDER=1>
+<TR><TD>&nbsp;</TD>
+<TD ALIGN=CENTER><B>0</B></TD>
+<TD ALIGN=CENTER><B>1</B></TD>
+<TD ALIGN=CENTER><B>2</B></TD>
+<TD ALIGN=CENTER><B>3</B></TD>
+<TD ALIGN=CENTER><B>4</B></TD>
+<TD ALIGN=CENTER><B>5</B></TD>
+<TD ALIGN=CENTER><B>6</B></TD>
+<TD ALIGN=CENTER><B>7</B></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER><B>0</B></TD>
+<TD ALIGN=CENTER bgcolor=#D0FFD0>
+[eAX]<BR>
++1</TD>
+<TD ALIGN=CENTER bgcolor=#D0FFD0>
+[eCX]<BR>
++1</TD>
+<TD ALIGN=CENTER bgcolor=#D0FFD0>
+[eDX]<BR>
++1</TD>
+<TD ALIGN=CENTER bgcolor=#D0FFD0>
+[eBX]<BR>
++1</TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[SIB]<BR>
++2</TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[Iv]<BR>
++5</TD>
+<TD ALIGN=CENTER bgcolor=#D0FFD0>
+[eSI]<BR>
++1</TD>
+<TD ALIGN=CENTER bgcolor=#D0FFD0>
+[eDI]<BR>
++1</TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER><B>1</B></TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[eAX+Ib]<BR>
++2</TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[eCX+Ib]<BR>
++2</TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[eDX+Ib]<BR>
++2</TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[eBX+Ib]<BR>
++2</TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[SIB+Ib]<BR>
++2</TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[eBP+Ib]<BR>
++2</TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[eSI+Ib]<BR>
++2</TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[eDI+Ib]<BR>
++2</TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER><B>2</B></TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[eAX+Iv]<BR>
++5</TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[eCX+Iv]<BR>
++5</TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[eDX+Iv]<BR>
++5</TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[eBX+Iv]<BR>
++5</TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[SIB+Iv]<BR>
++5</TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[eBP+Iv]<BR>
++5</TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[eSI+Iv]<BR>
++5</TD>
+<TD ALIGN=CENTER bgcolor=#A0EEA0>
+[eDI+Iv]<BR>
++5</TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER><B>3</B></TD>
+<TD ALIGN=CENTER bgcolor=#D0FFD0>
+eAX<BR>
++1</TD>
+<TD ALIGN=CENTER bgcolor=#D0FFD0>
+eCX<BR>
++1</TD>
+<TD ALIGN=CENTER bgcolor=#D0FFD0>
+eDX<BR>
++1</TD>
+<TD ALIGN=CENTER bgcolor=#D0FFD0>
+eBX<BR>
++1</TD>
+<TD ALIGN=CENTER bgcolor=#D0FFD0>
+eSP<BR>
++1</TD>
+<TD ALIGN=CENTER bgcolor=#D0FFD0>
+eBP<BR>
++1</TD>
+<TD ALIGN=CENTER bgcolor=#D0FFD0>
+eSI<BR>
++1</TD>
+<TD ALIGN=CENTER bgcolor=#D0FFD0>
+eDI<BR>
++1</TD>
+</TR>
+</TABLE>
+<h1>REGISTERS</h1>
+<TABLE BORDER=1>
+<TR><TD>&nbsp;</TD>
+<TD ALIGN=CENTER><B>0</B></TD>
+<TD ALIGN=CENTER><B>1</B></TD>
+<TD ALIGN=CENTER><B>2</B></TD>
+<TD ALIGN=CENTER><B>3</B></TD>
+<TD ALIGN=CENTER><B>4</B></TD>
+<TD ALIGN=CENTER><B>5</B></TD>
+<TD ALIGN=CENTER><B>6</B></TD>
+<TD ALIGN=CENTER><B>7</B></TD>
+</TR>
+<TR>
+<TD><B>Reg 8</B></TD>
+<TD ALIGN=CENTER BGCOLOR=#E0E0E0>AL</TD><TD ALIGN=CENTER BGCOLOR=#E0E0E0>CL</TD><TD ALIGN=CENTER BGCOLOR=#E0E0E0>DL</TD><TD ALIGN=CENTER BGCOLOR=#E0E0E0>BL</TD><TD ALIGN=CENTER BGCOLOR=#E0E0E0>AH</TD><TD ALIGN=CENTER BGCOLOR=#E0E0E0>CH</TD><TD ALIGN=CENTER BGCOLOR=#E0E0E0>DH</TD><TD ALIGN=CENTER BGCOLOR=#E0E0E0>BH</TD></TR>
+<TR>
+<TD><B>Reg 16</B></TD>
+<TD ALIGN=CENTER BGCOLOR=#E0E0E0>AX</TD><TD ALIGN=CENTER BGCOLOR=#E0E0E0>CX</TD><TD ALIGN=CENTER BGCOLOR=#E0E0E0>DX</TD><TD ALIGN=CENTER BGCOLOR=#E0E0E0>BX</TD><TD ALIGN=CENTER BGCOLOR=#E0E0E0>SP</TD><TD ALIGN=CENTER BGCOLOR=#E0E0E0>BP</TD><TD ALIGN=CENTER BGCOLOR=#E0E0E0>SI</TD><TD ALIGN=CENTER BGCOLOR=#E0E0E0>DI</TD></TR>
+<TR>
+<TD><B>Reg 32</B></TD>
+<TD ALIGN=CENTER BGCOLOR=#E0E0E0>eAX</TD><TD ALIGN=CENTER BGCOLOR=#E0E0E0>eCX</TD><TD ALIGN=CENTER BGCOLOR=#E0E0E0>eDX</TD><TD ALIGN=CENTER BGCOLOR=#E0E0E0>eBX</TD><TD ALIGN=CENTER BGCOLOR=#E0E0E0>eSP</TD><TD ALIGN=CENTER BGCOLOR=#E0E0E0>eBP</TD><TD ALIGN=CENTER BGCOLOR=#E0E0E0>eSI</TD><TD ALIGN=CENTER BGCOLOR=#E0E0E0>eDI</TD></TR>
+<TR>
+<TD><B>Segments</B></TD>
+<TD ALIGN=CENTER BGCOLOR=#E0E0E0>DS</TD><TD ALIGN=CENTER BGCOLOR=#E0E0E0>ES</TD><TD ALIGN=CENTER BGCOLOR=#E0E0E0>FS</TD><TD ALIGN=CENTER BGCOLOR=#E0E0E0>GS</TD><TD ALIGN=CENTER BGCOLOR=#E0E0E0>SS</TD><TD ALIGN=CENTER BGCOLOR=#E0E0E0>CS</TD><TD ALIGN=CENTER BGCOLOR=#E0E0E0>IP</TD><TD ALIGN=CENTER BGCOLOR=#E0E0E0>&nbsp;</TD>
+</TR>
+</TABLE>
+<p>
+<HR>
+<H1>Addressing Method Codes</H1>
+<TABLE BORDER=0>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>A</FONT></TD>
+<TD>Direct address. The instruction has no ModR/M byte; the address of the operand is encoded in the instruction; and no base register, index register, or scaling factor can be applied (for example, far JMP (EA)).</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>C</FONT></TD>
+<TD>The reg field of the ModR/M byte selects a control register (for example, MOV (0F20, 0F22)).</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>D</FONT></TD>
+<TD>The reg field of the ModR/M byte selects a debug register (for example, MOV (0F21,0F23)).</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>E</FONT></TD>
+<TD>A ModR/M byte follows the opcode and specifies the operand. The operand is either a general-purpose register or a memory address. If it is a memory address, the address is computed from a segment register and any of the following values: a base register, an index register, a scaling factor, a displacement.</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>F</FONT></TD>
+<TD>EFLAGS Register.</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>G</FONT></TD>
+<TD>The reg field of the ModR/M byte selects a general register (for example, AX (000)).</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>I</FONT></TD>
+<TD>Immediate data. The operand value is encoded in subsequent bytes of the instruction.</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>J</FONT></TD>
+<TD>The instruction contains a relative offset to be added to the instruction pointer register (for example, JMP (0E9), LOOP).</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>M</FONT></TD>
+<TD>The ModR/M byte may refer only to memory (for example, BOUND, LES, LDS, LSS, LFS, LGS, CMPXCHG8B).</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>O</FONT></TD>
+<TD>The instruction has no ModR/M byte; the offset of the operand is coded as a word or double word (depending on address size attribute) in the instruction. No base register, index register, or scaling factor can be applied (for example, MOV (A0–A3)).</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>P</FONT></TD>
+<TD>The reg field of the ModR/M byte selects a packed quadword MMX™ technology register.</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>Q</FONT></TD>
+<TD>A ModR/M byte follows the opcode and specifies the operand. The operand is either an MMX™ technology register or a memory address. If it is a memory address, the address is computed from a segment register and any of the following values: a base register,an index register, a scaling factor, and a displacement.</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>R</FONT></TD>
+<TD>The mod field of the ModR/M byte may refer only to a general register (for example, MOV (0F20-0F24, 0F26)).</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>S</FONT></TD>
+<TD>The reg field of the ModR/M byte selects a segment register (for example, MOV (8C,8E)).</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>T</FONT></TD>
+<TD>The reg field of the ModR/M byte selects a test register (for example, MOV (0F24,0F26)).</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>V</FONT></TD>
+<TD>The reg field of the ModR/M byte selects a packed SIMD floating-point register.</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>W</FONT></TD>
+<TD>An ModR/M byte follows the opcode and specifies the operand. The operand is either a SIMD floating-point register or a memory address. If it is a memory address, the address is computed from a segment register and any of the following values: a base register, an index register, a scaling factor, and a displacement</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>X</FONT></TD>
+<TD>Memory addressed by the DS:SI register pair (for example, MOVS, CMPS, OUTS, or LODS).</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>Y</FONT></TD>
+<TD>Memory addressed by the ES:DI register pair (for example, MOVS, CMPS, INS, STOS, or SCAS).</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+</TABLE>
+<p>
+<HR>
+<H1>Operand Type Codes</H1>
+<TABLE BORDER=0>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>a</FONT></TD>
+<TD>Two one-word operands in memory or two double-word operands in memory, depending on operand-size attribute (used only by the BOUND instruction).</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>b</FONT></TD>
+<TD>Byte, regardless of operand-size attribute.</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>c</FONT></TD>
+<TD>Byte or word, depending on operand-size attribute.</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>d</FONT></TD>
+<TD>Doubleword, regardless of operand-size attribute</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>dq</FONT></TD>
+<TD>Double-quadword, regardless of operand-size attribute.</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>p</FONT></TD>
+<TD>32-bit or 48-bit pointer, depending on operand-size attribute.</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>pi</FONT></TD>
+<TD>Quadword MMX™ technology register (e.g. mm0)</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>ps</FONT></TD>
+<TD>128-bit packed FP single-precision data.</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>q</FONT></TD>
+<TD>Quadword, regardless of operand-size attribute.</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>s</FONT></TD>
+<TD>6-byte pseudo-descriptor.</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>ss</FONT></TD>
+<TD>Scalar element of a 128-bit packed FP single-precision data.</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>si</FONT></TD>
+<TD>Doubleword integer register (e.g., eax)</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>v</FONT></TD>
+<TD>Word or doubleword, depending on operand-size attribute.</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+<TR BGCOLOR="#E0E0E0">
+<TD><FONT SIZE=+2>w</FONT></TD>
+<TD>Word, regardless of operand-size attribute.</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+</TABLE>
+
+
+<HR>
+<table width=100%><tr><td>
+<a href="/"><img src="http://sparksandflames.com/images/logo.jpg" border=0></a>   
+</td><td align=right valign=top>
+<i>Copyright sparksandflames.com 2016 - All Rights Reserved</i>
+</td></tr></table>
+<p>
+
+
+</body>
+</html>

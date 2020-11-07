@@ -1,0 +1,113 @@
+https://github.com/zengfr/romhack
+https://gitee.com/zengfr/romhack
+
+In additon to Z80 native instructions the Z80 microprocessor includes as a subset all 8080 instructions. This document describes only Z80 native architecture and instruction set.
+
+Memory
+Program, data and stack memories occupy the same memory space. The total addressable memory size is 64 KB.
+
+16-bit pointers and data are stored as:
+address: low-order byte
+address+1: high-order byte
+
+Program memory - program can be located anywhere in memory. Some jump and all call instructions use 16-bit addresses - they can be used to jump anywhere within 64 KB. Some conditional jump instructions can be used to jump within +129 - -126 bytes from the next instruction.
+
+Data memory - the processor can access data anywhere in the memory. Word data can be located at odd or even byte boundaries.
+
+Stack memory can be placed anywhere in memory. The stack grows from the top to bottom.
+
+Reserved locations:
+
+First 64 bytes - contains interrupt entrance points for 8080-compatible interrupts. This area should only be reserved if the CPU is using interrupt mode 0.
+0038h - contains entrance point for maskable interrupts when CPU is in interrupt mode 1.
+0066h - contains entrance point for non-maskable interrupt.
+Interrupts
+The processor has the following interrupts:
+
+INT is a maskable hardware interrupt. This interrupt can be enabled/disabled using EI/DI instructions. When an interrupt occurs, then, depending on interrupt mode set in registers IMFa and IMFb, the processor performs the following action:
+
+In interrupt mode 0: fetches an instruction from the bus, usually RST0 - RST7, and executes it.
+In interrupt mode 1: jumps to interrupt processing routine located at address 0038h.
+In interrupt mode 2: fetches one byte from the bus and jumps to interrupt-processing code located at address:
+  low-order byte of the address: the byte fetched from the bus
+  high-order byte of the address: loaded from I register
+Interrupt mode can be set using IM 0, IM 1 and IM 2 instructions. RETI instruction is used to return from maskable interrupt.
+
+NMI is a non-maskable interrupt. When non-maskable interrupt occurs the CPU will preserve the content of IFF1 register in IFF2 register, disable maskable interrupts and jump to location 0066h. This interrupt has higher priority then the maskable interrupt. RETN instruction is used to return from non-maskable interrupt.
+
+Software interrupts can be invoked by executing RST0 - RST7 instructions. These interrupts are processed in the same way as hardware mode 0 maskable interrupts.
+
+I/O ports
+256 Input ports
+256 Output ports
+
+Registers
+Z80 microprocessor has the following registers:
+
+Accumulator (A) register is an 8-bit register used for arithmetic, logic, I/O and load/store operations.
+
+Flag is an 8-bit register containing 6 1-bit flags:
+
+Carry (C), bit 0 - set if there was a carry during addition, or borrow during subtraction/comparison.
+Subtract (N), bit 1 - this flag is set if the last operation was subtract. The flag is used by DAA instruction to do proper correction of BCD numbers.
+Parity/Overflow (P/V), bit 2 - set if the parity (the number of set bits) in the result of logical operation is even. This flag also set when addition or subtraction results in a too large positive number or a too small negative number that cannot fit into destination operand, i.e. if the result is greater than +127 or smaller than -128. For example, adding 1 to 127 will set the overflow flag.
+Half carry (H), bit 4 - set if there was a carry out from bit 3 to bit 4 of the result.
+Zero (Z), bit 6 - set if the result is zero.
+Sign (S), bit 7 - set if the result is negative.
+General registers:
+
+8-bit B and 8-bit C registers can be used as one 16-bit BC register pair. When used as a pair the C register contains low-order byte and B contains high-order byte of the word. The BC register can be used for register indirect addressing. It is also used as a byte counter by block transfer and compare instructions. B register is used as a byte counter for DJNZ and I/O block instructions. C register is used as a port number in I/O block instructions.
+8-bit D and 8-bit E registers can be used as one 16-bit DE register pair. When used as a pair the E register contains low-order byte and D contains high-order byte of the word. The DE register can be used for register indirect addressing.
+8-bit H and 8-bit L registers can be used as one 16-bit HL register pair. When used as a pair the L register contains low-order byte and H contains high-order byte of the word. The HL register can be used for register indirect addressing.
+The Z80 CPU includes alternative set of of Accumulator, Flag and General registers. It is not possible to change those registers directly, but it's possible to swap main and alternative registers thus getting access to alternative registers.
+
+Index registers (IX and IY) are used for indexed addressing.
+
+Other registers:
+Stack pointer is a 16 bit register. This register points to last used memory location in program stack. The stack pointer is decremented when data is pushed into the stack, and incremented when data is popped from it.
+
+Program Counter (PC) is a 16-bit register. This register contains an address of the next instruction.
+
+Interrupt vector (I) is an 8-bit register. This register contains upper 8-bit of an address where interrupt processing routines or entrance points for interrupt mode 2 are located.
+
+Memory refresh (R) is an 8-bit register. Lower 7 bits of this register are automatically incremented after each instruction fetch and used for dynamic memory refresh. The 8th bit is not used for dynamic refresh. If necessary, the memory refresh register can be set using LD R, A instruction.
+
+Interrupt flip-flop 1 (IFF1) 1-bit register. This register contains 1 if maskable interrupts are enabled, and 0 if maskable interrupts are disabled. When non-maskable interrupt occurs the content of this register is preserved in IFF2 register, and this register is reset to 0.
+
+Interrupt flip-flop 2 (IFF2) 1-bit register. This register is used to store the content of IFF1 register when non-maskable interrupt occurs.
+
+Interrupt mode flip-flops (IMFa and IMFb) are two 1-bit registers. These registers reflect current interrupt mode:
+IMFa=0, IMFb=0 - Interrupt mode 0. This is an 8080-compatible interrupt mode.
+IMFa=0, IMFb=1 - Not used.
+IMFa=1, IMFb=0 - Interrupt mode 1. In this mode CPU jumps to location 0038h for interrupt processing.
+IMFa=1, IMFb=1 - Interrupt mode 2. In this mode CPU jumps to location, which high-order address is taken from I register, and low order address is supplied by peripheral device.
+
+Instruction Set
+Z80 instruction set consists of the following instructions:
+
+Data move and exchange instructions.
+Block move and search instructions.
+Arithmetic - add, subtract, increment, decrement, decimal adjust, negate and compare.
+Logic - AND, OR, exclusive OR, complement, shift and rotate.
+Bit manipulation - set, reset and test bits.
+Control transfer - conditional and unconditional: jumps, subroutine calls and returns from subroutine.
+Input/Output instructions.
+Other - stack operations, disabling/enabling interrupts, setting interrupt mode, etc.
+Addressing modes
+Implied - the data value/data address is implicitly associated with the instruction.
+
+Register - references the data in a register or in a register pair.
+
+Register indirect - instruction specifies a register containing an address, where data is located.
+
+Immediate - 8-bit data is provided in the instruction.
+
+Immediate extended - 16-bit data is provided in the instruction.
+
+Modified page zero - the destination address in zero page is calculated as N * 8, where N is a three-bit number supplied by the instruction.
+
+Relative - one byte offset is added to the address of the next instruction. The offset is a signed number in the range -127 - +128.
+
+Extended - the instruction operand specifies the memory address where data is located and where the program control should be transferred.
+
+Indexed - 8-bit offset is added to the contents of an index register (IX or IY), the resulting value is a pointer to location where data resides.

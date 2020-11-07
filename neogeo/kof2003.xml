@@ -1,0 +1,467 @@
+<mamecheat version="1">
+
+  <cheat desc="Infinite Time">
+    <script state="run">
+      <action>maincpu.pb@107D62=99</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Finish this Round Now!"> <comment>Disable Infinite Time before activating this cheat</comment>
+    <script state="on">
+      <action>maincpu.pb@107D62=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Mai's boobs always bounce">
+    <script state="on">
+      <action>temp0 =maincpu.pb@10785A</action>
+    </script>
+    <script state="run">
+      <action>maincpu.pb@10785A=00</action>
+    </script>
+    <script state="off">
+      <action>maincpu.pb@10785A=temp0 </action>
+    </script>
+  </cheat>
+
+  <cheat desc="Hit Anywhere (Both Players)">
+    <script state="on">
+      <action>temp0 =maincpu.rw@01621E</action>
+    </script>
+    <script state="run">
+      <action>maincpu.rw@01621E=6002</action> <!-- This ROM cheat was made by nolberto82 -->
+    </script>
+    <script state="off">
+      <action>maincpu.rw@01621E=temp0 </action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="P1 Infinite Character (A) Energy">
+    <script state="run">
+      <action>maincpu.pb@2FE91D=70</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Infinite Character (B) Energy">
+    <script state="run">
+      <action>maincpu.pb@2FEA1D=70</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Infinite Character (C) Energy">
+    <script state="run">
+      <action>maincpu.pb@2FEB1D=70</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Drain All Character (A) Energy Now!">
+    <script state="on">
+      <action>maincpu.pb@2FE91D=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Drain All Character (B) Energy Now!">
+    <script state="on">
+      <action>maincpu.pb@2FEA1D=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Drain All Character (C) Energy Now!">
+    <script state="on">
+      <action>maincpu.pb@2FEB1D=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Infinite Power">
+    <script state="run">
+      <action>maincpu.pb@2FE804=05</action>
+      <action>maincpu.pb@2FE800=48</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Select Character (A)"> <comment>This refers to the first character selected</comment>
+    <parameter>
+      <item value="0x00">Ash</item>
+      <item value="0x01">Duolon</item>
+      <item value="0x02">Shen</item>
+      <item value="0x03">Terry</item>
+      <item value="0x04">Joe</item>
+      <item value="0x05">Tizoc</item>
+      <item value="0x06">Ryo</item>
+      <item value="0x07">Robert</item>
+      <item value="0x08">Yuri</item>
+      <item value="0x09">Kim</item>
+      <item value="0x0A">Chang</item>
+      <item value="0x0B">Jhun</item>
+      <item value="0x0C">Leona</item>
+      <item value="0x0D">Ralf</item>
+      <item value="0x0E">Clark</item>
+      <item value="0x0F">Gato</item>
+      <item value="0x10">Billy</item>
+      <item value="0x11">Yamazaki</item>
+      <item value="0x12">King</item>
+      <item value="0x13">Mai</item>
+      <item value="0x14">Mary</item>
+      <item value="0x15">Benimaru</item>
+      <item value="0x16">Shingo</item>
+      <item value="0x17">Daimon</item>
+      <item value="0x18">Athena</item>
+      <item value="0x19">Hinako</item>
+      <item value="0x1A">Malin</item>
+      <item value="0x1B">K'</item>
+      <item value="0x1C">Maxima</item>
+      <item value="0x1D">Whip</item>
+      <item value="0x1E">Kyo</item>
+      <item value="0x1F">Iori</item>
+      <item value="0x21">Kusanagi</item>
+      <item value="0x20">Chizuru</item>
+      <item value="0x24">Maki</item>
+      <item value="0x22">Adel</item>
+      <item value="0x23">Mukai</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@107D0C=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Select Character (B)"> <comment>This refers to the second character selected</comment>
+    <parameter>
+      <item value="0x00">Ash</item>
+      <item value="0x01">Duolon</item>
+      <item value="0x02">Shen</item>
+      <item value="0x03">Terry</item>
+      <item value="0x04">Joe</item>
+      <item value="0x05">Tizoc</item>
+      <item value="0x06">Ryo</item>
+      <item value="0x07">Robert</item>
+      <item value="0x08">Yuri</item>
+      <item value="0x09">Kim</item>
+      <item value="0x0A">Chang</item>
+      <item value="0x0B">Jhun</item>
+      <item value="0x0C">Leona</item>
+      <item value="0x0D">Ralf</item>
+      <item value="0x0E">Clark</item>
+      <item value="0x0F">Gato</item>
+      <item value="0x10">Billy</item>
+      <item value="0x11">Yamazaki</item>
+      <item value="0x12">King</item>
+      <item value="0x13">Mai</item>
+      <item value="0x14">Mary</item>
+      <item value="0x15">Benimaru</item>
+      <item value="0x16">Shingo</item>
+      <item value="0x17">Daimon</item>
+      <item value="0x18">Athena</item>
+      <item value="0x19">Hinako</item>
+      <item value="0x1A">Malin</item>
+      <item value="0x1B">K'</item>
+      <item value="0x1C">Maxima</item>
+      <item value="0x1D">Whip</item>
+      <item value="0x1E">Kyo</item>
+      <item value="0x1F">Iori</item>
+      <item value="0x21">Kusanagi</item>
+      <item value="0x20">Chizuru</item>
+      <item value="0x24">Maki</item>
+      <item value="0x22">Adel</item>
+      <item value="0x23">Mukai</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@107D0D=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Select Character (C)"> <comment>This refers to the third character selected</comment>
+    <parameter>
+      <item value="0x00">Ash</item>
+      <item value="0x01">Duolon</item>
+      <item value="0x02">Shen</item>
+      <item value="0x03">Terry</item>
+      <item value="0x04">Joe</item>
+      <item value="0x05">Tizoc</item>
+      <item value="0x06">Ryo</item>
+      <item value="0x07">Robert</item>
+      <item value="0x08">Yuri</item>
+      <item value="0x09">Kim</item>
+      <item value="0x0A">Chang</item>
+      <item value="0x0B">Jhun</item>
+      <item value="0x0C">Leona</item>
+      <item value="0x0D">Ralf</item>
+      <item value="0x0E">Clark</item>
+      <item value="0x0F">Gato</item>
+      <item value="0x10">Billy</item>
+      <item value="0x11">Yamazaki</item>
+      <item value="0x12">King</item>
+      <item value="0x13">Mai</item>
+      <item value="0x14">Mary</item>
+      <item value="0x15">Benimaru</item>
+      <item value="0x16">Shingo</item>
+      <item value="0x17">Daimon</item>
+      <item value="0x18">Athena</item>
+      <item value="0x19">Hinako</item>
+      <item value="0x1A">Malin</item>
+      <item value="0x1B">K'</item>
+      <item value="0x1C">Maxima</item>
+      <item value="0x1D">Whip</item>
+      <item value="0x1E">Kyo</item>
+      <item value="0x1F">Iori</item>
+      <item value="0x21">Kusanagi</item>
+      <item value="0x20">Chizuru</item>
+      <item value="0x24">Maki</item>
+      <item value="0x22">Adel</item>
+      <item value="0x23">Mukai</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@107D0E=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="P2 Infinite Character (A) Energy">
+    <script state="run">
+      <action>maincpu.pb@2FED1D=70</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Infinite Character (B) Energy">
+    <script state="run">
+      <action>maincpu.pb@2FEE1D=70</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Infinite Character (C) Energy">
+    <script state="run">
+      <action>maincpu.pb@2FEF1D=70</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Drain All Character (A) Energy Now!">
+    <script state="on">
+      <action>maincpu.pb@2FED1D=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Drain All Character (B) Energy Now!">
+    <script state="on">
+      <action>maincpu.pb@2FEE1D=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Drain All Character (C) Energy Now!">
+    <script state="on">
+      <action>maincpu.pb@2FEF1D=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Infinite Power">
+    <script state="run">
+      <action>maincpu.pb@2FEC04=05</action>
+      <action>maincpu.pb@2FEC00=48</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Select Character (A)"> <comment>This refers to the first character selected</comment>
+    <parameter>
+      <item value="0x00">Ash</item>
+      <item value="0x01">Duolon</item>
+      <item value="0x02">Shen</item>
+      <item value="0x03">Terry</item>
+      <item value="0x04">Joe</item>
+      <item value="0x05">Tizoc</item>
+      <item value="0x06">Ryo</item>
+      <item value="0x07">Robert</item>
+      <item value="0x08">Yuri</item>
+      <item value="0x09">Kim</item>
+      <item value="0x0A">Chang</item>
+      <item value="0x0B">Jhun</item>
+      <item value="0x0C">Leona</item>
+      <item value="0x0D">Ralf</item>
+      <item value="0x0E">Clark</item>
+      <item value="0x0F">Gato</item>
+      <item value="0x10">Billy</item>
+      <item value="0x11">Yamazaki</item>
+      <item value="0x12">King</item>
+      <item value="0x13">Mai</item>
+      <item value="0x14">Mary</item>
+      <item value="0x15">Benimaru</item>
+      <item value="0x16">Shingo</item>
+      <item value="0x17">Daimon</item>
+      <item value="0x18">Athena</item>
+      <item value="0x19">Hinako</item>
+      <item value="0x1A">Malin</item>
+      <item value="0x1B">K'</item>
+      <item value="0x1C">Maxima</item>
+      <item value="0x1D">Whip</item>
+      <item value="0x1E">Kyo</item>
+      <item value="0x1F">Iori</item>
+      <item value="0x21">Kusanagi</item>
+      <item value="0x20">Chizur</item>
+      <item value="0x24">Maki</item>
+      <item value="0x22">Adel</item>
+      <item value="0x23">Mukai</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@107D0F=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Select Character (B)"> <comment>This refers to the second character selected</comment>
+    <parameter>
+      <item value="0x00">Ash</item>
+      <item value="0x01">Duolon</item>
+      <item value="0x02">Shen</item>
+      <item value="0x03">Terry</item>
+      <item value="0x04">Joe</item>
+      <item value="0x05">Tizoc</item>
+      <item value="0x06">Ryo</item>
+      <item value="0x07">Robert</item>
+      <item value="0x08">Yuri</item>
+      <item value="0x09">Kim</item>
+      <item value="0x0A">Chang</item>
+      <item value="0x0B">Jhun</item>
+      <item value="0x0C">Leona</item>
+      <item value="0x0D">Ralf</item>
+      <item value="0x0E">Clark</item>
+      <item value="0x0F">Gato</item>
+      <item value="0x10">Billy</item>
+      <item value="0x11">Yamazaki</item>
+      <item value="0x12">King</item>
+      <item value="0x13">Mai</item>
+      <item value="0x14">Mary</item>
+      <item value="0x15">Benimaru</item>
+      <item value="0x16">Shingo</item>
+      <item value="0x17">Daimon</item>
+      <item value="0x18">Athena</item>
+      <item value="0x19">Hinako</item>
+      <item value="0x1A">Malin</item>
+      <item value="0x1B">K'</item>
+      <item value="0x1C">Maxima</item>
+      <item value="0x1D">Whip</item>
+      <item value="0x1E">Kyo</item>
+      <item value="0x1F">Iori</item>
+      <item value="0x21">Kusanagi</item>
+      <item value="0x20">Chizur</item>
+      <item value="0x24">Maki</item>
+      <item value="0x22">Adel</item>
+      <item value="0x23">Muka</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@107D10=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Select Character (C)"> <comment>This refers to the third character selected</comment>
+    <parameter>
+      <item value="0x00">Ash</item>
+      <item value="0x01">Duolon</item>
+      <item value="0x02">Shen</item>
+      <item value="0x03">Terry</item>
+      <item value="0x04">Joe</item>
+      <item value="0x05">Tizoc</item>
+      <item value="0x06">Ryo</item>
+      <item value="0x07">Robert</item>
+      <item value="0x08">Yuri</item>
+      <item value="0x09">Kim</item>
+      <item value="0x0A">Chang</item>
+      <item value="0x0B">Jhun</item>
+      <item value="0x0C">Leona</item>
+      <item value="0x0D">Ralf</item>
+      <item value="0x0E">Clark</item>
+      <item value="0x0F">Gato</item>
+      <item value="0x10">Billy</item>
+      <item value="0x11">Yamazaki</item>
+      <item value="0x12">King</item>
+      <item value="0x13">Mai</item>
+      <item value="0x14">Mary</item>
+      <item value="0x15">Benimaru</item>
+      <item value="0x16">Shingo</item>
+      <item value="0x17">Daimon</item>
+      <item value="0x18">Athena</item>
+      <item value="0x19">Hinako</item>
+      <item value="0x1A">Malin</item>
+      <item value="0x1B">K'</item>
+      <item value="0x1C">Maxima</item>
+      <item value="0x1D">Whip</item>
+      <item value="0x1E">Kyo</item>
+      <item value="0x1F">Iori</item>
+      <item value="0x21">Kusanagi</item>
+      <item value="0x20">Chizuru</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@107D11=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="Hide Background"> <comment>Activate before match start</comment>
+    <script state="on">
+      <action>temp0=maincpu.rw@00C21E</action>
+      <action>temp1=maincpu.rd@00C220</action>
+    </script>
+    <script state="run">
+      <action condition="(maincpu.pw@1093CC == 0300)">maincpu.rw@00C21E=4E71</action><!-- activate only during match --><!-- HUD -->
+      <action condition="(maincpu.pw@1093CC == 0300)">maincpu.rd@00C220=4E714E71</action><!-- HUD -->
+      <action condition="(maincpu.pw@1093CC == 0300)">maincpu.pw@1093C4=000F</action><!-- BG layers -->
+      <action condition="(maincpu.pw@1093CC == 0300)">maincpu.pw@1093C6=8F8F</action><!-- BG colour (pink) -->
+    </script>
+    <script state="off">
+      <action>maincpu.rw@00C21E=temp0</action>
+      <action>maincpu.rd@00C220=temp1</action>
+      <action>maincpu.pw@1093C4=0000</action>
+      <action>maincpu.pw@1093C6=7DFF</action>
+    </script>
+  </cheat>
+
+  <cheat desc="No Background Music">
+    <script state="run">
+      <action>audiocpu.pb@FD89=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Select Cartridge/NeoGeo Type"> <comment>Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable.</comment>
+    <parameter>
+      <item value="0x80">Arcade (MVS)</item>
+      <item value="0x00">Home (NEOGEO)</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10FD82=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Skip RAM/ROM Checks"> <comment>Also allows a quicker start-up without the green screens.</comment>
+    <script state="on">
+      <action>temp0 =maincpu.rd@C1315C</action>
+      <action>temp1 =maincpu.rd@C1314E</action>
+      <action>temp2 =maincpu.rd@C131E8</action>
+      <action>temp3 =maincpu.rd@C13184</action>
+      <action>temp4 =maincpu.rd@C1212E</action>
+      <action>temp5 =maincpu.rd@C134FA</action>
+    </script>
+    <script state="run">
+      <action condition="(maincpu.rd@C1315C==51CFFFF2)">maincpu.rd@C1315C=6000EB08</action> <!-- Euro + Japan-S2 BIOSs -->
+      <action condition="(maincpu.rd@C1314E==51CFFFF2)">maincpu.rd@C1314E=6000EB16</action> <!-- Euro-S1 + Japan-S1 BIOSs -->
+      <action condition="(maincpu.rd@C131E8==51CFFFF2)">maincpu.rd@C131E8=6000EA52</action> <!-- US BIOS -->
+      <action condition="(maincpu.rd@C13184==51CFFFF2)">maincpu.rd@C13184=6000EAB6</action> <!-- US-E BIOS -->
+      <action condition="(maincpu.rd@C1212E==51CFFFF2)">maincpu.rd@C1212E=6000EB36</action> <!-- Asia BIOS -->
+      <action condition="(maincpu.rd@C134FA==51CFFFF2)">maincpu.rd@C134FA=6000E892</action> <!-- Japan BIOS -->
+    </script>
+    <script state="off">
+      <action>maincpu.rd@C1315C=temp0 </action>
+      <action>maincpu.rd@C1314E=temp1 </action>
+      <action>maincpu.rd@C131E8=temp2 </action>
+      <action>maincpu.rd@C13184=temp3 </action>
+      <action>maincpu.rd@C1212E=temp4 </action>
+      <action>maincpu.rd@C134FA=temp5 </action>
+    </script>
+  </cheat>
+
+  <cheat desc="Infinite Credits"> <comment>Alternatively just set Free Play to ON in the Dip Switches menu</comment>
+    <script state="run">
+      <action>maincpu.rb@D00034=99</action>
+    </script>
+  </cheat>
+
+</mamecheat>
+<!-- Cheat file downloaded from http://www.mamecheat.co.uk, see cheat.txt for list of contributors. -->

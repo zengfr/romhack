@@ -1,0 +1,242 @@
+  :               00FE0E:tst.b   (A3)
+ F:               00FE10:bne     $fe72
+ T:               00FE72:moveq   #$4, D0
+ T:               00FE74:rts
+  :               010432:cmpi.w  #$2, D0
+ F:               010436:bhi     $10472
+ T:               010472:moveq   #$0, D0
+ T:               010474:move.b  ($10,A0,D6.w), D0
+ T:               010478:move.b  D6, ($c,A0,D0.w)
+ T:               01047C:bsr     $104ca
+ T:               0104CA:moveq   #$0, D7
+ T:               0104CC:move.b  ($10,A0,D6.w), D7
+ T:               0104D0:add.w   D7, D7
+ T:               0104D2:move.w  ($a,PC,D7.w), D7
+ T:               0104D6:jsr     $162c2.l
+  :               01630E:addq.b  #1, $20004b.l
+
+ F:               016314:rts
+ T:               0104DC:rts
+ T:               010480:move.w  #$1f07, D7
+ T:               010484:add.w   D6, D7
+ T:               010486:jsr     $bc0.l
+  :               000BEA:movea.l (A7)+, A1
+ F:               000BEC:rts
+ T:               01048C:moveq   #$0, D0
+ T:               01048E:rts
+  :               01048E:rts
+ F:               010374:bne     $1039e
+ T:               010378:subq.w  #4, ($0,A0)
+ T:               01037C:move.b  ($10,A0), ($13,A0)
+ T:               010382:move.b  ($10,A0), $200a40.
+ T:               01038A:bset    D6, $20007a.l
+ T:               010390:move.b  #$2, ($18,A2)
+ T:               010396:clr.b   (A1)
+ T:               010398:jsr     $73bc.l
+ T:               0073BC:move.b  $20018a.l, D0
+ T:               0073C2:move.b  $201428.l, D1
+ T:               0073C8:andi.w  #$3, D1
+ T:               0073CC:move.b  ($20,PC,D1.w), D1
+ T:               0073D0:add.b   D1, D0
+ T:               0073D2:bcs     $73e0
+ T:               0073D6:cmp.b   $20018f.l, D0
+ T:               0073DC:bcs     $73e6
+ T:               0073E6:move.b  D0, $20018a.l
+ T:               0073EC:rts
+  :               005CDE:cmpi.b  #$2, $200818.l
+ F:               005CE6:beq     $5d02
+ T:               005D02:bsr     $64e8
+ T:               0064E8:move.b  #$0, $2000c2.l
+ T:               0064F0:move.w  $200c1a.l, $200c12
+ T:               0064FA:move.w  #$3c, $200c14.l
+ T:               006502:rts
+ T:               005D06:move.b  #$0, $200c18.l
+ T:               005D0E:move.b  #$0, $200055.l
+ T:               005D16:move.l  A6, -(A7)
+ T:               005D18:move.w  #$ef07, D7
+ T:               005D1C:jsr     $162de.l
+  :               01630E:addq.b  #1, $20004b.l
+ F:               016314:rts
+ T:               005D22:movea.l (A7)+, A6
+ T:               005D24:move.b  #$5, $200007.l
+ T:               005D2C:jsr     $20e0.l
+ T:               0020E0:clr.w   $200008.l
+ T:               0020E6:clr.w   $20000a.l
+ T:               0020EC:clr.w   $20000c.l
+ T:               0020F2:clr.w   $20000e.l
+ T:               0020F8:rts
+  :               006140:lea     (-$80,A2), A2
+ F:               006144:dbra    D7, $6136
+ T:               00615E:move.b  #$1, (A0)
+ T:               006162:clr.w   ($4,A0)
+ T:               006166:move.b  (A1), D0
+ T:               006168:ext.w   D0
+ T:               00616A:move.w  D0, ($4c,A0)
+ T:               00616E:jsr     $2365a.l
+ T:               02365A:move.w  ($4c,A0), D0
+ T:               02365E:move.w  ($cc,A0), D1
+ T:               023662:bsr     $1fa64
+  :               01FA70:movem.l (A7)+, D0-D1
+ F:               01FA74:rts
+ T:               023666:move.b  #$1, (A0)
+ T:               02366A:move.w  D0, ($4c,A0)
+ T:               02366E:move.w  D0, ($52,A0)
+ T:               023672:move.w  D1, ($cc,A0)
+ T:               023676:move.w  #$60, ($62,A0)
+ T:               02367C:move.w  #$60, ($60,A0)
+ T:               023682:move.l  A0, D0
+ T:               023684:subi.l  #$211000, D0
+ T:               02368A:move.w  D0, ($2,A0)
+ T:               02368E:rts
+  :               01A52E:tst.w   ($4,A0)
+ F:               01A532:bne     $1a542
+ T:               01A536:cmpi.b  #$2, ($18,A1)
+ T:               01A53C:beq     $1a542
+  :               01A596:tst.w   ($4,A0)
+ F:               01A59A:bne     $1a5a4
+ T:               01A59E:jmp     $23690.l
+ T:               023690:jsr     $64c4.l
+ T:               0064C4:cmpi.l  #$300000, $200c12.
+ T:               0064CE:bcc     $64e6
+ T:               0064E6:rts
+ T:               023696:move.w  ($4c,A0), D0
+ T:               02369A:cmpi.w  #$0, D0
+ T:               02369E:bne     $236a6
+ T:               0236A6:move.l  A0, D1
+ T:               0236A8:subi.l  #$211000, D1
+ T:               0236AE:bsr     $1fa64
+  :               01FA70:movem.l (A7)+, D0-D1
+ F:               01FA74:rts
+ T:               0236B2:move.w  D0, ($4c,A0)
+ T:               0236B6:move.w  D0, ($52,A0)
+ T:               0236BA:move.b  #$81, (A0)
+ T:               0236BE:move.b  #$4, ($b,A0)
+ T:               0236C4:move.b  #$ff, ($1a,A0)
+ T:               0236CA:move.w  #$5, ($4,A0)
+ T:               0236D0:move.l  #$400040, ($c,A0)
+ T:               0236D8:move.w  #$9, ($3c,A0)
+ T:               0236DE:move.w  #$2, ($c4,A0)
+ T:               0236E4:move.b  #$c0, ($13,A0)
+ T:               0236EA:move.b  #$80, ($17,A0)
+ T:               0236F0:bclr    #$7, ($4f,A0)
+ T:               0236F6:move.w  #$160, ($20,A0)
+ T:               0236FC:move.w  #$40, ($24,A0)
+ T:               023702:move.w  #$b0, ($28,A0)
+ T:               023708:move.l  A0, ($6c,A0)
+ T:               02370C:move.w  #$60, ($60,A0)
+ T:               023712:move.w  #$60, ($62,A0)
+ T:               023718:bsr     $1f2dc
+  :               000C46:rts
+ F:               01F2EE:rts
+ T:               02371C:bsr     $1f344
+ T:               01F344:move.w  #$f00, D7
+ T:               01F348:movea.l A0, A6
+ T:               01F34A:jsr     $bc0.l
+  :               000BEA:movea.l (A7)+, A1
+ F:               000BEC:rts
+ T:               01F350:rts
+ T:               023720:moveq   #-$1, D0
+ T:               023722:move.b  D0, ($a0,A0)
+ T:               023726:move.b  D0, ($a7,A0)
+ T:               02372A:bset    #$3, ($af,A0)
+ T:               023730:move.w  #$dc, ($9a,A0)
+ T:               023736:move.w  D1, ($2,A0)
+ T:               02373A:move.w  D1, D7
+ T:               02373C:lsr.w   #3, D7
+ T:               02373E:add.w   D7, ($20,A0)
+ T:               023742:lsr.w   #5, D7
+ T:               023744:bset    D7, $20007b.l
+ T:               02374A:move.w  ($4c,A0), D7
+ T:               02374E:move.b  ($42,PC,D7.w), ($4
+ T:               023754:add.w   D7, D7
+ T:               023756:move.w  ($34,PC,D7.w), ($1
+ T:               02375C:bra     $23778
+ T:               023778:jsr     $8312.l
+  :               008382:move.w  D3, D2
+ F:               008384:rts
+ T:               02377E:tst.w   D0
+ T:               023780:bne     $23760
+ T:               023782:move.w  D0, ($38,A0)
+ T:               023786:bsr     $1ed3e
+  :               01ED68:move.l  ($6,PC,D1.w), ($88
+ F:               01ED6E:rts
+ T:               02378A:rts
+  :               05FDDE:btst    #$3, ($aa,A6)
+ F:               05FDE4:bne     $5fdec
+ T:               05FDE6:subq.b  #1, $20124e.l
+  :               05FDC8:tst.b   $20124e.l
+ F:               05FDCE:bpl     $5fdd6
+ T:               05FDD0:clr.b   $20124e.l
+  :               01BBA6:move.w  ($6,PC,D7.w), D7
+ F:               01BBAA:jmp     ($2,PC,D7.w)
+ T:               01C21E:bsr     $1f510
+ T:               01F510:moveq   #$0, D0
+ T:               01F512:move.b  ($0,A1), D0
+ T:               01F516:move.w  D0, D1
+ T:               01F518:andi.w  #$30, D1
+ T:               01F51C:bne     $1f5b4
+ T:               01F520:bsr     $1f52a
+ T:               01F52A:cmpi.b  #-$1, ($49,A0)
+ T:               01F530:beq     $1f550
+ T:               01F534:btst    #$2, D0
+ T:               01F538:beq     $1f552
+ T:               01F552:clr.b   ($49,A0)
+ T:               01F556:rts
+ T:               01F524:bsr     $1f558
+ T:               01F558:move.b  ($42,PC,D0.w), D1
+ T:               01F55C:or.b    D1, ($48,A0)
+ T:               01F560:rts
+ T:               01F528:rts
+ T:               01C222:bsr     $1a1fc
+  :               01A164:moveq   #$1, D0
+ F:               01A166:rts
+ T:               01C226:beq     $1c2e8
+ T:               01C22A:tst.b   ($7,A0)
+ T:               01C22E:bne     $1c24a
+ T:               01C232:cmpi.w  #$1c, ($12,A0)
+ T:               01C238:beq     $1c384
+ T:               01C23C:bsr     $1a2be
+  :               01A2C8:beq     $1a3a0
+ F:               01A3A0:rts
+ T:               01C240:bsr     $1a284
+  :               01A1F8:moveq   #$1, D0
+ F:               01A1FA:rts
+ T:               01C244:beq     $1c292
+ T:               01C248:rts
+  :               01BCB6:move.w  ($58,PC,D7.w), D7
+ F:               01BCBA:jsr     ($54,PC,D7.w)
+ T:               01D9F8:btst    #$2, ($aa,A0)
+ T:               01D9FE:beq     $1da6e
+ T:               01DA6E:rts
+  :               01A1EC:rts
+ F:               01C244:beq     $1c292
+ T:               01C292:cmpi.w  #$d8, ($12,A0)
+ T:               01C298:bne     $1c2f6
+ T:               01C2F6:move.b  #$24, ($13,A0)
+ T:               01C2FC:move.b  #$80, ($17,A0)
+ T:               01C302:bclr    #$7, ($4f,A0)
+ T:               01C308:moveq   #$0, D0
+ T:               01C30A:move.b  #$2, ($a0,A0)
+ T:               01C310:move.b  D0, ($a7,A0)
+ T:               01C314:bclr    #$7, ($af,A0)
+ T:               01C31A:bclr    #$4, ($b0,A0)
+ T:               01C320:move.b  D0, ($7,A0)
+ T:               01C324:move.w  #$1, ($4,A0)
+ T:               01C32A:move.w  #$0, ($3c,A0)
+ T:               01C330:bsr     $1f00e
+  :               01F04E:rts
+ F:               01F01C:rts
+ T:               01C334:bclr    #$3, ($af,A0)
+ T:               01C33A:bne     $1c354
+ T:               01C354:move.b  #$80, ($3f,A0)
+ T:               01C35A:move.b  #$c0, ($a1,A0)
+ T:               01C360:bset    #$7, ($ac,A0)
+ T:               01C366:bset    #$2, ($af,A0)
+ T:               01C36C:cmpi.b  #$2, $201428.l
+ T:               01C374:bcs     $1c382
+ T:               01C382:rts
+  :               060E70:btst    #$7, ($e9,A1)
+ F:               060E76:bne     $60e84
+ T:               060E78:btst    #$0, ($e9,A1)
+ T:               060E7E:bne     $60e84
+ T:               060E80:clr.w   ($6,A0)

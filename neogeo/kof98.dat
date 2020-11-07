@@ -1,0 +1,679 @@
+[0]
+Name=选人时间
+0=Off
+1=30秒 (选完解锁),1085D2,30
+
+[1]
+Name=对战时间
+0=Off
+1=00秒,10A83B,00
+2=60秒 (KO後解锁),10A83B,60
+
+[2]
+Name=P1 血槽
+0=Off
+1=无血,108238,01
+2=红血,108238,10
+3=满血,108238,67
+
+[3]
+Name=P2 血槽
+0=Off
+1=无血,108438,01
+2=红血,108438,10
+3=满血,108438,67
+
+[4]
+Name=P1 气力槽
+0=Off
+1=Advanced | 无气,1081E9,00,1082E2,00
+2=Advanced | 满气,1081E9,00,1082E2,05
+3=Extra | 永无畜满,1081EB,00
+4=Extra | 满气 (普通版),1081E9,A0,1081EB,40,10824C,04,108252,00,10821E,08
+5=Extra | 满气 (红血版),1081E9,A0,1081EB,50,10824C,04,108252,01,10821E,08
+
+[5]
+Name=P2 气力槽
+0=Off
+1=Advanced | 无气,1083E9,00,1084E2,00
+2=Advanced | 满气,1083E9,00,1084E2,05
+3=Extra | 永无畜满,1083EB,00
+4=Extra | 满气 (普通版),1083E9,A0,1083EB,40,10844C,04,108452,00,10841E,08
+5=Extra | 满气 (红血版),1083E9,A0,1083EB,50,10844C,04,108452,01,10841E,08
+
+[6]
+Name=P1 爆气时间 (Advanced 模式)
+0=Off
+1=时间终止,1081EB,00
+2=时间无限 (时间槽正常消失),1081EB,40
+3=时间无限 (时间槽永远显示),1081EB,40,10821E,09
+
+[7]
+Name=P2 爆气时间 (Advanced 模式)
+0=Off
+1=时间终止,1083EB,00
+2=时间无限 (时间槽正常消失),1083EB,40
+3=时间无限 (时间槽永远显示),1083EB,40,10841E,09
+
+[8]
+Name=P1 气力模式
+0=Off
+1=Advanced,10A84D,00
+2=Extra,10A84D,01
+
+[9]
+Name=P2 气力模式
+0=Off
+1=Advanced,10A85C,00
+2=Extra,10A85C,01
+
+[10]
+Name=P1 角色 1 选择
+0=Off
+1=草剃京 | Kyo Kusanagi,10A84F,00
+2=二阶堂红丸 | Benimaru Nikaidou,10A84F,01
+3=大门五郎 | Goro Daimon,10A84F,02
+4=泰瑞柏格 | Terry Bogard,10A84F,03
+5=安迪柏格 | Andy Bogard,10A84F,04
+6=东丈 | Joe Higashi,10A84F,05
+7=阪崎良 | Ryo Sakazaki,10A84F,06
+8=罗伯特 | Robert Garcia,10A84F,07
+9=阪崎百合 | Yuri Sakazaki,10A84F,08
+10=蕾欧娜 | Leona,10A84F,09
+11=拉尔夫 | Ralf,10A84F,0A
+12=克拉克 | Clark,10A84F,0B
+13=麻宫雅典娜 | Atena Asamiya,10A84F,0C
+14=椎拳崇 | Sie Kensou,10A84F,0D
+15=镇元斋 | Chin Gentsai,10A84F,0E
+16=神乐千鹤 | Chizuru Kagura,10A84F,0F
+17=不知火舞 | Mai Shiranui,10A84F,10
+18=金 | King,10A84F,11
+19=金卡法 | Kim Kaphwan,10A84F,12
+20=陈可汉 | Chang Koehan,10A84F,13
+21=邱丰凯 | Choi Bounge,10A84F,14
+22=七枷社 | Yashiro Nanakase,10A84F,15
+23=雪鲁米 | Shermie,10A84F,16
+24=克里斯 | Chris,10A84F,17
+25=山崎龙二 | Ryuji Yamazaki,10A84F,18
+26=布鲁玛莉 | Blue Mary,10A84F,19
+27=比利凯恩 | Billy Kane,10A84F,1A
+28=八神庵 | Iori Yagami,10A84F,1B
+29=玛裘雅 | Mature,10A84F,1C
+30=拜丝 | Vice,10A84F,1D
+31=海迪伦 | Heidern,10A84F,1E
+32=阪崎琢磨 | Takuma Sakazaki,10A84F,1F
+33=草剃柴舟 | Saisyu Kusanagi,10A84F,20
+34=重击.D | Heavy.D!,10A84F,21
+35=洛基.古柏 | Lucky Glauber,10A84F,22
+36=布莱恩.巴特拉 | Brian Battler,10A84F,23
+37=路卡尔 | Rugal Bernstein,10A84F,24
+38=矢吹真吾 | Shingo Yabuki,10A84F,25
+
+[11]
+Name=P1 角色 2 选择
+0=Off
+1=草剃京 | Kyo Kusanagi,10A84E,00
+2=二阶堂红丸 | Benimaru Nikaidou,10A84E,01
+3=大门五郎 | Goro Daimon,10A84E,02
+4=泰瑞柏格 | Terry Bogard,10A84E,03
+5=安迪柏格 | Andy Bogard,10A84E,04
+6=东丈 | Joe Higashi,10A84E,05
+7=阪崎良 | Ryo Sakazaki,10A84E,06
+8=罗伯特 | Robert Garcia,10A84E,07
+9=阪崎百合 | Yuri Sakazaki,10A84E,08
+10=蕾欧娜 | Leona,10A84E,09
+11=拉尔夫 | Ralf,10A84E,0A
+12=克拉克 | Clark,10A84E,0B
+13=麻宫雅典娜 | Atena Asamiya,10A84E,0C
+14=椎拳崇 | Sie Kensou,10A84E,0D
+15=镇元斋 | Chin Gentsai,10A84E,0E
+16=神乐千鹤 | Chizuru Kagura,10A84E,0F
+17=不知火舞 | Mai Shiranui,10A84E,10
+18=金 | King,10A84E,11
+19=金卡法 | Kim Kaphwan,10A84E,12
+20=陈可汉 | Chang Koehan,10A84E,13
+21=邱丰凯 | Choi Bounge,10A84E,14
+22=七枷社 | Yashiro Nanakase,10A84E,15
+23=雪鲁米 | Shermie,10A84E,16
+24=克里斯 | Chris,10A84E,17
+25=山崎龙二 | Ryuji Yamazaki,10A84E,18
+26=布鲁玛莉 | Blue Mary,10A84E,19
+27=比利凯恩 | Billy Kane,10A84E,1A
+28=八神庵 | Iori Yagami,10A84E,1B
+29=玛裘雅 | Mature,10A84E,1C
+30=拜丝 | Vice,10A84E,1D
+31=海迪伦 | Heidern,10A84E,1E
+32=阪崎琢磨 | Takuma Sakazaki,10A84E,1F
+33=草剃柴舟 | Saisyu Kusanagi,10A84E,20
+34=重击.D | Heavy.D!,10A84E,21
+35=洛基.古柏 | Lucky Glauber,10A84E,22
+36=布莱恩.巴特拉 | Brian Battler,10A84E,23
+37=路卡尔 | Rugal Bernstein,10A84E,24
+38=矢吹真吾 | Shingo Yabuki,10A84E,25
+
+[12]
+Name=P1 角色 3 选择
+0=Off
+1=草剃京 | Kyo Kusanagi,10A851,00
+2=二阶堂红丸 | Benimaru Nikaidou,10A851,01
+3=大门五郎 | Goro Daimon,10A851,02
+4=泰瑞柏格 | Terry Bogard,10A851,03
+5=安迪柏格 | Andy Bogard,10A851,04
+6=东丈 | Joe Higashi,10A851,05
+7=阪崎良 | Ryo Sakazaki,10A851,06
+8=罗伯特 | Robert Garcia,10A851,07
+9=阪崎百合 | Yuri Sakazaki,10A851,08
+10=蕾欧娜 | Leona,10A851,09
+11=拉尔夫 | Ralf,10A851,0A
+12=克拉克 | Clark,10A851,0B
+13=麻宫雅典娜 | Atena Asamiya,10A851,0C
+14=椎拳崇 | Sie Kensou,10A851,0D
+15=镇元斋 | Chin Gentsai,10A851,0E
+16=神乐千鹤 | Chizuru Kagura,10A851,0F
+17=不知火舞 | Mai Shiranui,10A851,10
+18=金 | King,10A851,11
+19=金卡法 | Kim Kaphwan,10A851,12
+20=陈可汉 | Chang Koehan,10A851,13
+21=邱丰凯 | Choi Bounge,10A851,14
+22=七枷社 | Yashiro Nanakase,10A851,15
+23=雪鲁米 | Shermie,10A851,16
+24=克里斯 | Chris,10A851,17
+25=山崎龙二 | Ryuji Yamazaki,10A851,18
+26=布鲁玛莉 | Blue Mary,10A851,19
+27=比利凯恩 | Billy Kane,10A851,1A
+28=八神庵 | Iori Yagami,10A851,1B
+29=玛裘雅 | Mature,10A851,1C
+30=拜丝 | Vice,10A851,1D
+31=海迪伦 | Heidern,10A851,1E
+32=阪崎琢磨 | Takuma Sakazaki,10A851,1F
+33=草剃柴舟 | Saisyu Kusanagi,10A851,20
+34=重击.D | Heavy.D!,10A851,21
+35=洛基.古柏 | Lucky Glauber,10A851,22
+36=布莱恩.巴特拉 | Brian Battler,10A851,23
+37=路卡尔 | Rugal Bernstein,10A851,24
+38=矢吹真吾 | Shingo Yabuki,10A851,25
+
+[13]
+Name=P2 角色 1 选择
+0=Off
+1=草剃京 | Kyo Kusanagi,10A85E,00
+2=二阶堂红丸 | Benimaru Nikaidou,10A85E,01
+3=大门五郎 | Goro Daimon,10A85E,02
+4=泰瑞柏格 | Terry Bogard,10A85E,03
+5=安迪柏格 | Andy Bogard,10A85E,04
+6=东丈 | Joe Higashi,10A85E,05
+7=阪崎良 | Ryo Sakazaki,10A85E,06
+8=罗伯特 | Robert Garcia,10A85E,07
+9=阪崎百合 | Yuri Sakazaki,10A85E,08
+10=蕾欧娜 | Leona,10A85E,09
+11=拉尔夫 | Ralf,10A85E,0A
+12=克拉克 | Clark,10A85E,0B
+13=麻宫雅典娜 | Atena Asamiya,10A85E,0C
+14=椎拳崇 | Sie Kensou,10A85E,0D
+15=镇元斋 | Chin Gentsai,10A85E,0E
+16=神乐千鹤 | Chizuru Kagura,10A85E,0F
+17=不知火舞 | Mai Shiranui,10A85E,10
+18=金 | King,10A85E,11
+19=金卡法 | Kim Kaphwan,10A85E,12
+20=陈可汉 | Chang Koehan,10A85E,13
+21=邱丰凯 | Choi Bounge,10A85E,14
+22=七枷社 | Yashiro Nanakase,10A85E,15
+23=雪鲁米 | Shermie,10A85E,16
+24=克里斯 | Chris,10A85E,17
+25=山崎龙二 | Ryuji Yamazaki,10A85E,18
+26=布鲁玛莉 | Blue Mary,10A85E,19
+27=比利凯恩 | Billy Kane,10A85E,1A
+28=八神庵 | Iori Yagami,10A85E,1B
+29=玛裘雅 | Mature,10A85E,1C
+30=拜丝 | Vice,10A85E,1D
+31=海迪伦 | Heidern,10A85E,1E
+32=阪崎琢磨 | Takuma Sakazaki,10A85E,1F
+33=草剃柴舟 | Saisyu Kusanagi,10A85E,20
+34=重击.D | Heavy.D!,10A85E,21
+35=洛基.古柏 | Lucky Glauber,10A85E,22
+36=布莱恩.巴特拉 | Brian Battler,10A85E,23
+37=路卡尔 | Rugal Bernstein,10A85E,24
+38=矢吹真吾 | Shingo Yabuki,10A85E,25
+
+[14]
+Name=P2 角色 2 选择
+0=Off
+1=草剃京 | Kyo Kusanagi,10A861,00
+2=二阶堂红丸 | Benimaru Nikaidou,10A861,01
+3=大门五郎 | Goro Daimon,10A861,02
+4=泰瑞柏格 | Terry Bogard,10A861,03
+5=安迪柏格 | Andy Bogard,10A861,04
+6=东丈 | Joe Higashi,10A861,05
+7=阪崎良 | Ryo Sakazaki,10A861,06
+8=罗伯特 | Robert Garcia,10A861,07
+9=阪崎百合 | Yuri Sakazaki,10A861,08
+10=蕾欧娜 | Leona,10A861,09
+11=拉尔夫 | Ralf,10A861,0A
+12=克拉克 | Clark,10A861,0B
+13=麻宫雅典娜 | Atena Asamiya,10A861,0C
+14=椎拳崇 | Sie Kensou,10A861,0D
+15=镇元斋 | Chin Gentsai,10A861,0E
+16=神乐千鹤 | Chizuru Kagura,10A861,0F
+17=不知火舞 | Mai Shiranui,10A861,10
+18=金 | King,10A861,11
+19=金卡法 | Kim Kaphwan,10A861,12
+20=陈可汉 | Chang Koehan,10A861,13
+21=邱丰凯 | Choi Bounge,10A861,14
+22=七枷社 | Yashiro Nanakase,10A861,15
+23=雪鲁米 | Shermie,10A861,16
+24=克里斯 | Chris,10A861,17
+25=山崎龙二 | Ryuji Yamazaki,10A861,18
+26=布鲁玛莉 | Blue Mary,10A861,19
+27=比利凯恩 | Billy Kane,10A861,1A
+28=八神庵 | Iori Yagami,10A861,1B
+29=玛裘雅 | Mature,10A861,1C
+30=拜丝 | Vice,10A861,1D
+31=海迪伦 | Heidern,10A861,1E
+32=阪崎琢磨 | Takuma Sakazaki,10A861,1F
+33=草剃柴舟 | Saisyu Kusanagi,10A861,20
+34=重击.D | Heavy.D!,10A861,21
+35=洛基.古柏 | Lucky Glauber,10A861,22
+36=布莱恩.巴特拉 | Brian Battler,10A861,23
+37=路卡尔 | Rugal Bernstein,10A861,24
+38=矢吹真吾 | Shingo Yabuki,10A861,25
+
+[15]
+Name=P2 角色 3 选择
+0=Off
+1=草剃京 | Kyo Kusanagi,10A860,00
+2=二阶堂红丸 | Benimaru Nikaidou,10A860,01
+3=大门五郎 | Goro Daimon,10A860,02
+4=泰瑞柏格 | Terry Bogard,10A860,03
+5=安迪柏格 | Andy Bogard,10A860,04
+6=东丈 | Joe Higashi,10A860,05
+7=阪崎良 | Ryo Sakazaki,10A860,06
+8=罗伯特 | Robert Garcia,10A860,07
+9=阪崎百合 | Yuri Sakazaki,10A860,08
+10=蕾欧娜 | Leona,10A860,09
+11=拉尔夫 | Ralf,10A860,0A
+12=克拉克 | Clark,10A860,0B
+13=麻宫雅典娜 | Atena Asamiya,10A860,0C
+14=椎拳崇 | Sie Kensou,10A860,0D
+15=镇元斋 | Chin Gentsai,10A860,0E
+16=神乐千鹤 | Chizuru Kagura,10A860,0F
+17=不知火舞 | Mai Shiranui,10A860,10
+18=金 | King,10A860,11
+19=金卡法 | Kim Kaphwan,10A860,12
+20=陈可汉 | Chang Koehan,10A860,13
+21=邱丰凯 | Choi Bounge,10A860,14
+22=七枷社 | Yashiro Nanakase,10A860,15
+23=雪鲁米 | Shermie,10A860,16
+24=克里斯 | Chris,10A860,17
+25=山崎龙二 | Ryuji Yamazaki,10A860,18
+26=布鲁玛莉 | Blue Mary,10A860,19
+27=比利凯恩 | Billy Kane,10A860,1A
+28=八神庵 | Iori Yagami,10A860,1B
+29=玛裘雅 | Mature,10A860,1C
+30=拜丝 | Vice,10A860,1D
+31=海迪伦 | Heidern,10A860,1E
+32=阪崎琢磨 | Takuma Sakazaki,10A860,1F
+33=草剃柴舟 | Saisyu Kusanagi,10A860,20
+34=重击.D | Heavy.D!,10A860,21
+35=洛基.古柏 | Lucky Glauber,10A860,22
+36=布莱恩.巴特拉 | Brian Battler,10A860,23
+37=路卡尔 | Rugal Bernstein,10A860,24
+38=矢吹真吾 | Shingo Yabuki,10A860,25
+
+[16]
+Name=P1 里角色切换
+0=Off
+1=全部原角色,10A85B,00
+2=角色 1  (2+3 原角色),10A85B,01
+3=角色 2  (1+3 原角色),10A85B,02
+4=角色 3  (1+2 原角色),10A85B,04
+5=角色 1+2  (3 原角色),10A85B,03
+6=角色 1+3  (2 原角色),10A85B,05
+7=角色 2+3  (1 原角色),10A85B,06
+8=角色 1+2+3,10A85B,07
+9=-------------角色对应-------------
+10=草剃京| 路卡尔
+11=泰瑞柏格| 安迪柏格| 东丈
+12=不知火舞| 比利凯恩
+13=阪崎良| 罗伯特| 阪崎百合
+14=七枷社| 雪鲁米| 克里斯
+
+[17]
+Name=P2 里角色切换
+0=Off
+1=全部原角色,10A86A,00
+2=角色 1  (2+3 原角色),10A86A,01
+3=角色 2  (1+3 原角色),10A86A,02
+4=角色 3  (1+2 原角色),10A86A,04
+5=角色 1+2  (3 原角色),10A86A,03
+6=角色 1+3  (2 原角色),10A86A,05
+7=角色 2+3  (1 原角色),10A86A,06
+8=角色 1+2+3,10A86A,07
+9=-------------角色对应-------------
+10=草剃京| 路卡尔
+11=泰瑞柏格| 安迪柏格| 东丈
+12=不知火舞| 比利凯恩
+13=阪崎良| 罗伯特| 阪崎百合
+14=七枷社| 雪鲁米| 克里斯
+
+[18]
+Name=P1 角色 1 颜色
+0=Off
+1=A 颜色,10A850,00
+2=B 颜色,10A850,01
+3=C 颜色,10A850,02
+4=D 颜色,10A850,03
+
+[19]
+Name=P1 角色 2 颜色
+0=Off
+1=A 颜色,10A853,00
+2=B 颜色,10A853,01
+3=C 颜色,10A853,02
+4=D 颜色,10A853,03
+
+[20]
+Name=P1 角色 3 颜色
+0=Off
+1=A 颜色,10A852,00
+2=B 颜色,10A852,01
+3=C 颜色,10A852,02
+4=D 颜色,10A852,03
+
+[21]
+Name= P2 角色 1 颜色
+0=Off
+1=A 颜色,10A863,00
+2=B 颜色,10A863,01
+3=C 颜色,10A863,02
+4=D 颜色,10A863,03
+
+[22]
+Name=P2 角色 2 颜色
+0=Off
+1=A 颜色,10A862,00
+2=B 颜色,10A862,01
+3=C 颜色,10A862,02
+4=D 颜色,10A862,03
+
+[23]
+Name=P2 角色 3 颜色
+0=Off
+1=A 颜色,10A865,00
+2=B 颜色,10A865,01
+3=C 颜色,10A865,02
+4=D 颜色,10A865,03
+
+[24]
+Name=P1 结局动画
+0=Off
+1=日本队 Kyo | Benimaru | Daimon,10A84A,00
+2=饿狼传说队 Terry | Andy | Joe,10A84A,01
+3=龙虎之拳队 Ryo | Robert | Yuri,10A84A,02
+4=怒之队,10A84A,03
+5=超能力战士队 Athena | Kensou | Chin,10A84A,04
+6=女性格斗家队 Chizuru | Mai | King,10A84A,05
+7=韩国队 Kim | Chang | Choi,10A84A,06
+8=大蛇队 Yashiro | Shermie | Chris,10A84A,07
+9=特别队 Yamazaki | Mary | Billy,10A84A,08
+10=八神队 Iori | Mature | Vice,10A84A,09
+11=老爹队 Heidern | Takuma | Saisyu,10A84A,0A
+12=美国队 Heavy D! | Lucky | Brian,10A84A,0B
+13=矢吹真吾 (1 vs 3),10A84A,0C
+14=路卡尔 (1 vs 3),10A84A,0D
+15=Custom 队,10A84A,0E
+16=真吾队 Kyo | Iori | Shingo,10A84A,0F
+17=98魔王队 Mature | Vice | Rugal,10A84A,10
+18=叁神器队 Kyo | Iori | Chizuru,10A84A,11
+19=第 1 主角队 Kyo | Terry | Ryo,10A84A,12
+20=第 2 主角队 Andy | Benimaru | Robert,10A84A,13
+21=第 3 主角队 Daimon | Joe | Yuri,10A84A,14
+22=青少年队 Chris | Kensou | Shingo,10A84A,15
+23=女大蛇队 Shermie | Mature | Vice,10A84A,16
+24=男大蛇队 Yashiro | Yamazaki | Chris,10A84A,17
+25=阪崎队 Ryo | Yuri | Takuma,10A84A,18
+26=老爸队 Kim | Takuma | Saisyu,10A84A,19
+27=连打GoGo队 Billy | Chang | Joe,10A84A,1A
+28=大蛇剃队 Kyo | Saisyu | Chris,10A84A,1B
+29=草剃流古武术队 Kyo | Saisyu | Shingo,10A84A,1C
+30=Cute队 Chin | Chang | Choi,10A84A,1D
+31=搞笑队 Choi | Kensou | Robert,10A84A,1E
+32=破坏力队 Brian | Chang | Ralf,10A84A,1F
+33=同月同日生队 King | Mature | Shingo,10A84A,20
+34=野球队 Lucky | Mary | Ralf,10A84A,21
+35=鸭舌帽队 Terry | Lucky | Clark,10A84A,22
+36=女主角队 Athena | Mai | Yuri,10A84A,23
+37=新日本队 Shingo | Benimaru | Daimon,10A84A,24
+38=新怒队 Heidern | Leona | Ralf,10A84A,25
+39=94女性格斗家队 Yuri | Mai | King,10A84A,26
+
+[25]
+Name=P2 结局动画
+0=Off
+1=日本队 Kyo | Benimaru | Daimon,10A85D,00
+2=饿狼传说队 Terry | Andy | Joe,10A85D,01
+3=龙虎之拳队 Ryo | Robert | Yuri,10A85D,02
+4=怒之队,10A85D,03
+5=超能力战士队 Athena | Kensou | Chin,10A85D,04
+6=女性格斗家队 Chizuru | Mai | King,10A85D,05
+7=韩国队 Kim | Chang | Choi,10A85D,06
+8=大蛇队 Yashiro | Shermie | Chris,10A85D,07
+9=特别队 Yamazaki | Mary | Billy,10A85D,08
+10=八神队 Iori | Mature | Vice,10A85D,09
+11=老爹队 Heidern | Takuma | Saisyu,10A85D,0A
+12=美国队 Heavy D! | Lucky | Brian,10A85D,0B
+13=矢吹真吾 (1 vs 3),10A85D,0C
+14=路卡尔 (1 vs 3),10A85D,0D
+15=Custom 队,10A85D,0E
+16=真吾队 Kyo | Iori | Shingo,10A85D,0F
+17=98魔王队 Mature | Vice | Rugal,10A85D,10
+18=叁神器队 Kyo | Iori | Chizuru,10A85D,11
+19=第 1 主角队 Kyo | Terry | Ryo,10A85D,12
+20=第 2 主角队 Andy | Benimaru | Robert,10A85D,13
+21=第 3 主角队 Daimon | Joe | Yuri,10A85D,14
+22=青少年队 Chris | Kensou | Shingo,10A85D,15
+23=女大蛇队 Shermie | Mature | Vice,10A85D,16
+24=男大蛇队 Yashiro | Yamazaki | Chris,10A85D,17
+25=阪崎队 Ryo | Yuri | Takuma,10A85D,18
+26=老爸队 Kim | Takuma | Saisyu,10A85D,19
+27=连打GoGo队 Billy | Chang | Joe,10A85D,1A
+28=大蛇剃队 Kyo | Saisyu | Chris,10A85D,1B
+29=草剃流古武术队 Kyo | Saisyu | Shingo,10A85D,1C
+30=Cute队 Chin | Chang | Choi,10A85D,1D
+31=搞笑队 Choi | Kensou | Robert,10A85D,1E
+32=破坏力队 Brian | Chang | Ralf,10A85D,1F
+33=同月同日生队 King | Mature | Shingo,10A85D,20
+34=野球队 Lucky | Mary | Ralf,10A85D,21
+35=鸭舌帽队 Terry | Lucky | Clark,10A85D,22
+36=女主角队 Athena | Mai | Yuri,10A85D,23
+37=新日本队 Shingo | Benimaru | Daimon,10A85D,24
+38=新怒队 Heidern | Leona | Ralf,10A85D,25
+39=94女性格斗家队 Yuri | Mai | King,10A85D,26
+
+[26]
+Name=P1 游戏得分
+0=Off
+1=00,1081FD,00,1081FC,00,1081FF,00,1081FE,00
+2=9999999,1081FD,99,1081FC,99,1081FF,99,1081FE,99
+
+[27]
+Name=P2 游戏得分
+0=Off
+1=00,1083FD,00,1083FC,00,1083FF,00,1083FE,00
+2=9999999,1083FD,99,1083FC,99,1083FF,99,1083FE,99
+
+[28]
+Name=P1 角色外观
+0=Off
+1=正常,1081E2,00,10812E,FF,10812F,FF
+2=雷电,1081E2,22
+3=闪身,10812A,A3
+4=隐形,10812E,00,10812F,00
+5=变小,10812E,88,10812F,88
+
+[29]
+Name=P2 角色外观
+0=Off
+1=正常,1083E2,00,10832E,FF,10832F,FF
+2=雷电,1083E2,22
+3=闪身,10832A,A3
+4=隐形,10832E,00,10832F,00
+5=变小,10832E,88,10832F,88
+
+[30]
+Name=P1 打击特效
+0=Off
+1=爪击,10817F,10
+2=红火,10817F,20
+3=紫火,10817F,30
+4=雷电,10817F,40
+
+[31]
+Name=P2 打击特效
+0=Off
+1=爪击,10837F,10
+2=红火,10837F,20
+3=紫火,10837F,30
+4=雷电,10837F,40
+
+[32]
+Name=P1 盔甲效果
+0=Off
+1=关闭,1083E7,00
+2=开启,1083E7,01
+
+[33]
+Name=P2 盔甲效果
+0=Off
+1=关闭,1081E7,00
+2=开启,1081E7,01
+
+[34]
+Name=P1 昏倒控制
+0=Off
+1=容易昏倒,10823E,00
+2=永不昏倒,10823E,FF
+
+[35]
+Name=P2 昏倒控制
+0=Off
+1=容易昏倒,10843E,00
+2=永不昏倒,10843E,FF
+
+[36]
+Name=P1 穿过对方
+0=Off
+1=关闭,1081A5,01
+2=开启,1081A5,80
+
+[37]
+Name=P2 穿过对方
+0=Off
+1=关闭,1083A5,01
+2=开启,1083A5,80
+
+[38]
+Name=P1 行动禁止
+0=Off
+1=关闭,1081E3,00
+2=开启,1081E3,0E
+
+[39]
+Name=P2 行动禁止
+0=Off
+1=关闭,1083E3,00
+2=开启,1083E3,0E
+
+[40]
+Name=P1 显示连段
+0=Off
+1=无连段,1084B1,00
+2=99连段,1084B1,99
+
+[41]
+Name=P2 显示连段
+0=Off
+1=无连段,1082B1,00
+2=99连段,1082B1,99
+
+[42]
+Name=倒地无限追打
+0=Off
+1=P1,10837D,06,108394,01
+2=P2,10817D,06,108194,01
+3=P1+P2,10837D,06,108394,01,10817D,06,108194,01
+
+[43]
+Name=招式中断
+0=Off
+1=P1,10817C,7F
+2=P2,10837C,7F
+3=P1+P2,10817C,7F,10837C,7F
+
+[44]
+Name=防御崩溃 (Guard Crush)
+0=Off
+1=P1,108246,00
+2=P2,108446,00
+3=P1+P2,108246,00,108446,00
+
+[45]
+Name=战前偷袭
+0=Off
+1=P1,1081E3,10
+2=P2,1083E3,10
+3=P1+P2,1081E3,10,1083E3,10
+
+[46]
+Name=攻击加快
+0=Off
+1=P1,108225,00
+2=P2,108425,00
+3=P1+P2,108225,00,108425,00
+
+[47]
+Name=动作加快
+0=Off
+1=P1,10817B,00
+2=P2,10837B,00
+3=P1+P2,10817B,00,10837B,00
+
+[48]
+Name=空中出招
+0=Off
+1=P1,1081E1,00
+2=P2,1083E1,00
+3=P1+P2,1081E1,00,1083E1,00
+
+[49]
+Name=全身保护
+0=Off
+1=P1,10819B,0C
+2=P2,10839B,0C
+3=P1+P2,10819B,0C,10839B,0C
+
+[50]
+Name=远程攻击
+0=Off
+1=P1,108192,FF
+2=P2,108392,FF
+3=P1+P2,108192,FF,108392,FF
+
+[51]
+Name=背景选择
+0=Off
+1=日本街头,10A7EB,00
+2=中国船上,10A7EB,01
+3=韩国河边,10A7EB,02
+4=中东城市,10A7EB,03
+5=西班牙院子,10A7EB,04
+6=美国铁路,10A7EB,05
+7=日本破庙,10A7EB,06
+8=美国码头,10A7EB,07
+9=路卡尔场地,10A7EB,08
+
+[52]
+Name=家用投币数
+0=Off
+1=P1,10A817,99
+2=P2,10A816,99
+3=P1+P2,10A817,99,10A816,99

@@ -1,0 +1,98 @@
+[0]
+Name=时间无限
+0=Off
+1=开启,FF84E8,60
+
+[1]
+Name=选人时间
+0=Off
+1=开启,FF8634,0A
+
+[2]
+Name=P1 生命无限
+0=Off
+1=开启,FFB316,03
+
+[3]
+Name=P2 生命无限
+0=Off
+1=开启,FFB496,03
+
+[4]
+Name=P3 生命无限
+0=Off
+1=开启,FFB616,03
+
+[5]
+Name=P1 体力无限
+0=Off
+1=开启,FFB2E0,64
+
+[6]
+Name=P2 体力无限
+0=Off
+1=开启,FFB460,64
+
+[7]
+Name=P3 体力无限
+0=Off
+1=开启,FFB5E0,64
+
+[8]
+Name=P1 角色无敌
+0=Off
+1=有闪烁,FFB35F,01,FFB360,68
+2=无闪烁,FFB275,02
+
+[9]
+Name=P2 角色无敌
+0=Off
+1=有闪烁,FFB4E1,01,FFB4E0,68
+2=无闪烁,FFB3F5,02
+
+[10]
+Name=P3 角色无敌
+0=Off
+1=有闪烁,FFB661,01,FFB660,68
+2=无闪烁,FFB575,02
+
+[11]
+Name=P1 角色选择
+0=Off
+1=Jack.T,FFB276,00,FF863B,00
+2=Hannah.D,FFB276,02,FF863B,01
+3=Mustapha.C,FFB276,01,FF863B,02
+4=Mess.O,FFB276,03,FF863B,03
+
+[12]
+Name=P2 角色选择
+0=Off
+1=Jack.T,FFB3F6,00,FF8647,00
+2=Hannah.D,FFB3F6,02,FF8647,01
+3=Mustapha.C,FFB3F6,01,FF8647,02
+4=Mess.O,FFB3F6,03,FF8647,03
+
+[13]
+Name=P3 角色选择
+0=Off
+1=Jack.T,FFB576,00,FF8653,00
+2=Hannah.D,FFB576,02,FF8653,01
+3=Mustapha.C,FFB576,01,FF8653,02
+4=Mess.O,FFB576,03,FF8653,03
+
+[14]
+Name=弹药无限
+0=Off
+1=开启,FF0F60,06,FF0F62,06,FF98A0,06,FF9060,06,FF9660,06,FF9720,06,FF8EE0,06,FF9960,06,FF9420,04,FF95A0,06,FF94E0,06,FF92A0,06,FF97E0,06,FF9A20,06
+
+[15]
+Name=关卡选择
+0=Off
+1=Stage 1,FF84D8,00
+2=Stage 2,FF84D8,01
+3=Stage 3,FF84D8,02
+4=Stage 4,FF84D8,03
+5=Stage 5,FF84D8,04
+6=Stage 6,FF84D8,05
+7=Stage 7,FF84D8,06
+8=Stage 8,FF84D8,07

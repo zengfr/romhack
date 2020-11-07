@@ -1,0 +1,20 @@
+SSG registers decode
+
+AB CD EF GH IJ KL
+x  x   x  x  x xx -> 00111 Channel enable flags
+x   x x  x  x  xx -> 01000 Volume A
+x   x x  x   x xx -> 01001 Volume B
+x   x x   x x  xx -> 01010 Volume C
+x   x  x x   x xx -> 01101 Envelope shape
+
+AB CD EF GH IJ K
+x   x  x x  x  x -> 01100 Coarse envelope
+x  x  x  x   x x -> 00000 Fine tune A
+x  x  x   x  x x -> 00010 Fine tune B
+x  x   x x   x x -> 00100 Fine tune C
+x  x   x x  x  x -> 00101 Coarse tune C
+x  x  x   x x  x -> 00011 Coarse tune B
+x  x  x  x  x  x -> 00001 Coarse tune A
+x   x x   x  x x -> 01011 Fine envelope
+
+x  x   x  x x  x -> 00110 Noise tune
