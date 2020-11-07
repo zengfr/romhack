@@ -1,0 +1,14 @@
+
+任务目的
+  4BOSS和1p的动作动画对应起来,形成对应关系
+任务步骤:
+1\ 浏览器打开 https://asv.bombzj.com/viewer.html?punisher
+2\ 需要等待一会 等页面资源加载完成
+3\ 选择mode=animat, animation=输入2个附件的第二列值回车
+4\ 观察动画 描述 动画 如 第二列109534=第三列fa=AB血杀
+5\ 先备份两附件,把两附件的每一行后面添加注释 109534=fa=AB血杀.重复的行可以删除不用描述.
+6\ 两附件做完后发我 任务完成.
+
+两附件 
+惩罚者boss版1p-ani.txt 
+惩罚者boss版4boss-ani.txt

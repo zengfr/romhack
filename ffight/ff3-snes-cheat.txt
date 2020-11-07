@@ -1,0 +1,230 @@
+<cheat desc="Infinite Time">
+    <script state="run">
+      <action>maincpu.pb@7E0405=63</action>
+    </script>
+  </cheat>
+<cheat desc="-----"/>
+  <cheat desc="Infinite Lives P1">
+    <script state="run">
+      <action>maincpu.pb@7E0515=09</action>
+    </script>
+  </cheat>
+  <cheat desc="Infinite Energy P1">
+    <script state="run">
+      <action>maincpu.pb@7E0558=47</action>
+    </script>
+  </cheat>
+  <cheat desc="Infinite Power P1">
+    <script state="run">
+      <action>maincpu.pb@7E0516=77</action>
+    </script>
+  </cheat>
+  <cheat desc="Invincibility P1">
+    <script state="run">
+      <action>maincpu.pb@7E0516=FF</action>
+    </script>
+  </cheat>
+  <cheat desc="Action Speed Up P1">
+    <script state="run">
+      <action>maincpu.pb@7E0510=01</action>
+    </script>
+  </cheat>
+  <cheat desc="Weapon Select P1">
+	<parameter>
+		<item value="0x01">Pipe</item>
+		<item value="0x02">Nunckukus</item>
+		<item value="0x03">Baton</item>
+		<item value="0x04">Hammer</item>
+	</parameter>
+    <script state="run">
+      <action>maincpu.pb@7E0514=param</action>
+    </script>
+  </cheat>
+<cheat desc="-----"/>
+  <cheat desc="Infinite Lives P2">
+    <script state="run">
+      <action>maincpu.pb@7E0615=09</action>
+    </script>
+  </cheat>
+  <cheat desc="Infinite Energy P2">
+    <script state="run">
+      <action>maincpu.pb@7E0658=47</action>
+    </script>
+  </cheat>
+  <cheat desc="Infinite Power P2">
+    <script state="run">
+      <action>maincpu.pb@7E0616=77</action>
+    </script>
+  </cheat>
+  <cheat desc="Invincibility P2">
+    <script state="run">
+      <action>maincpu.pb@7E0616=FF</action>
+    </script>
+  </cheat>
+  <cheat desc="Action Speed Up P2">
+    <script state="run">
+      <action>maincpu.pb@7E0610=01</action>
+    </script>
+  </cheat>
+  <cheat desc="Weapon Select P2">
+	<parameter>
+		<item value="0x01">Pipe</item>
+		<item value="0x02">Nunckukus</item>
+		<item value="0x03">Baton</item>
+		<item value="0x04">Hammer</item>
+	</parameter>
+    <script state="run">
+      <action>maincpu.pb@7E0614=param</action>
+    </script>
+  </cheat>
+<cheat desc="-- Debug Dips --"/>
+	<cheat desc="Reserved-1"><comment>Unused?</comment>
+		<parameter>
+			<item value="00">Disabled</item>
+			<item value="01">Enabled</item>
+		</parameter>
+		<script state="run">
+			<action condition="param==01">maincpu.pb@7E1F0B=80|(maincpu.pb@7E1F0B BAND ~80)</action>
+			<action condition="param==00">maincpu.pb@7E1F0B=00|(maincpu.pb@7E1F0B BAND ~80)</action>
+		</script>
+	</cheat>
+	<cheat desc="L+R RECOVERY"><comment>Press L+R to restore your health</comment>
+		<parameter>
+			<item value="00">Disabled</item>
+			<item value="01">Enabled</item>
+		</parameter>
+		<script state="run">
+			<action condition="param==01">maincpu.pb@7E1F0B=40|(maincpu.pb@7E1F0B BAND ~40)</action>
+			<action condition="param==00">maincpu.pb@7E1F0B=00|(maincpu.pb@7E1F0B BAND ~40)</action>
+		</script>
+	</cheat>
+	<cheat desc="TIME OVER DISP"><comment>Displays a number which increments during slowdown.</comment>
+		<parameter>
+			<item value="00">Disabled</item>
+			<item value="01">Enabled</item>
+		</parameter>
+		<script state="run">
+			<action condition="param==01">maincpu.pb@7E1F0B=20|(maincpu.pb@7E1F0B BAND ~20)</action>
+			<action condition="param==00">maincpu.pb@7E1F0B=00|(maincpu.pb@7E1F0B BAND ~20)</action>
+		</script>
+	</cheat>
+	<cheat desc="X ENEMY CLASH"><comment>Press X to kill every enemy on screen.</comment>
+		<parameter>
+			<item value="00">Disabled</item>
+			<item value="01">Enabled</item>
+		</parameter>
+		<script state="run">
+			<action condition="param==01">maincpu.pb@7E1F0B=10|(maincpu.pb@7E1F0B BAND ~10)</action>
+			<action condition="param==00">maincpu.pb@7E1F0B=00|(maincpu.pb@7E1F0B BAND ~10)</action>
+		</script>
+	</cheat>
+	<cheat desc="SOUND TEST"><comment>Enable sound test in options.</comment>
+		<parameter>
+			<item value="00">Disabled</item>
+			<item value="01">Enabled</item>
+		</parameter>
+		<script state="run">
+			<action condition="param==01">maincpu.pb@7E1F0B=08|(maincpu.pb@7E1F0B BAND ~08)</action>
+			<action condition="param==00">maincpu.pb@7E1F0B=00|(maincpu.pb@7E1F0B BAND ~08)</action>
+		</script>
+	</cheat>
+	<cheat desc="A2P TO FULL AUTO"><comment>Both players are CPU in Auto 2P mode.</comment>
+		<parameter>
+			<item value="00">Disabled</item>
+			<item value="01">Enabled</item>
+		</parameter>
+		<script state="run">
+			<action condition="param==01">maincpu.pb@7E1F0B=04|(maincpu.pb@7E1F0B BAND ~04)</action>
+			<action condition="param==00">maincpu.pb@7E1F0B=00|(maincpu.pb@7E1F0B BAND ~04)</action>
+		</script>
+	</cheat>
+	<cheat desc="EVERYTIME SUPER"><comment>Can always perform super moves.</comment>
+		<parameter>
+			<item value="00">Disabled</item>
+			<item value="01">Enabled</item>
+		</parameter>
+		<script state="run">
+			<action condition="param==01">maincpu.pb@7E1F0B=02|(maincpu.pb@7E1F0B BAND ~02)</action>
+			<action condition="param==00">maincpu.pb@7E1F0B=00|(maincpu.pb@7E1F0B BAND ~02)</action>
+		</script>
+	</cheat>
+	<cheat desc="PAUSE DEBUG"><comment>Press select while the game is paused.</comment>
+		<parameter>
+			<item value="00">Disabled</item>
+			<item value="01">Enabled</item>
+		</parameter>
+		<script state="run">
+			<action condition="param==01">maincpu.pb@7E1F0A=80|(maincpu.pb@7E1F0A BAND ~80)</action>
+			<action condition="param==00">maincpu.pb@7E1F0A=00|(maincpu.pb@7E1F0A BAND ~80)</action>
+		</script>
+	</cheat>
+	<cheat desc="PAUSE NO DISPLAY"><comment>"Pause" not displayed during pause.</comment>
+		<parameter>
+			<item value="00">Disabled</item>
+			<item value="01">Enabled</item>
+		</parameter>
+		<script state="run">
+			<action condition="param==01">maincpu.pb@7E1F0A=40|(maincpu.pb@7E1F0A BAND ~40)</action>
+			<action condition="param==00">maincpu.pb@7E1F0A=00|(maincpu.pb@7E1F0A BAND ~40)</action>
+		</script>
+	</cheat>
+	<cheat desc="END MARK"><comment>Displays a CPU% indicator.</comment>
+		<parameter>
+			<item value="00">Disabled</item>
+			<item value="01">Enabled</item>
+		</parameter>
+		<script state="run">
+			<action condition="param==01">maincpu.pb@7E1F0A=20|(maincpu.pb@7E1F0A BAND ~20)</action>
+			<action condition="param==00">maincpu.pb@7E1F0A=00|(maincpu.pb@7E1F0A BAND ~20)</action>
+		</script>
+	</cheat>
+	<cheat desc="BGM CUT"><comment>Disables ingame music, except pause jingle.</comment>
+		<parameter>
+			<item value="00">Disabled</item>
+			<item value="01">Enabled</item>
+		</parameter>
+		<script state="run">
+			<action condition="param==01">maincpu.pb@7E1F0A=10|(maincpu.pb@7E1F0A BAND ~10)</action>
+			<action condition="param==00">maincpu.pb@7E1F0A=00|(maincpu.pb@7E1F0A BAND ~10)</action>
+		</script>
+	</cheat>
+	<cheat desc="STAGE SELECT"><comment>Hold L when selecting a character.  Press A to switch between map and list.</comment>
+		<parameter>
+			<item value="00">Disabled</item>
+			<item value="01">Enabled</item>
+		</parameter>
+		<script state="run">
+			<action condition="param==01">maincpu.pb@7E1F0A=08|(maincpu.pb@7E1F0A BAND ~08)</action>
+			<action condition="param==00">maincpu.pb@7E1F0A=00|(maincpu.pb@7E1F0A BAND ~08)</action>
+		</script>
+	</cheat>
+	<cheat desc="OPENING SELECT"><comment>Press select while intro is playing.</comment>
+		<parameter>
+			<item value="00">Disabled</item>
+			<item value="01">Enabled</item>
+		</parameter>
+		<script state="run">
+			<action condition="param==01">maincpu.pb@7E1F0A=04|(maincpu.pb@7E1F0A BAND ~04)</action>
+			<action condition="param==00">maincpu.pb@7E1F0A=00|(maincpu.pb@7E1F0A BAND ~04)</action>
+		</script>
+	</cheat>
+	<cheat desc="ANIMATION TEST"><comment>Hold R during Capcom logo for loop.</comment>
+		<parameter>
+			<item value="00">Disabled</item>
+			<item value="01">Enabled</item>
+		</parameter>
+		<script state="run">
+			<action condition="param==01">maincpu.pb@7E1F0A=02|(maincpu.pb@7E1F0A BAND ~02)</action>
+			<action condition="param==00">maincpu.pb@7E1F0A=00|(maincpu.pb@7E1F0A BAND ~02)</action>
+		</script>
+	</cheat>
+	<cheat desc="ENEMY FREE"><comment>No enemies.</comment>
+		<parameter>
+			<item value="00">Disabled</item>
+			<item value="01">Enabled</item>
+		</parameter>
+		<script state="run">
+			<action condition="param==01">maincpu.pb@7E1F0A=01|(maincpu.pb@7E1F0A BAND ~01)</action>
+			<action condition="param==00">maincpu.pb@7E1F0A=00|(maincpu.pb@7E1F0A BAND ~01)</action>
+		</script>
+	</cheat>

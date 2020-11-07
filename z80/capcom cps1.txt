@@ -1,0 +1,37 @@
+https://github.com/zengfr/romhack
+https://gitee.com/zengfr/romhack
+
+CPS-1 the detail
+
+The design consist of a number of interconnected pcbs known as A, B and the later added C board and Q-sound board. Here's a description of each layer:
+
+A: the base board containing most of the system hardware. eg: cpu, memory, sound, etc...
+B: the game rom board containing a combined number of mask roms and/or eproms.
+C (later added): an small satellite board containing a video logic custom chip, and sometimes additional IO.
+QSound (later added): a full size intermediate board providing new sound capabilities, the board is sandwiched in between A and B.
+
+
+Note: C board was introduced right after the two initial game releases: Forgotten Worlds & Ghosts and Ghouls, and wasn't part of the original CPS-1 design. Instead, its contents were an integral part of the B board.
+
+CPS-1 Technical specs: (source: Wikipedia)
+
+CPU
+Primary: Motorola 68000 @ 10 MHz (some later boards 12 MHz)
+Secondary: Zilog Z-80 @ 3.579 MHz
+Sound Chips:
+Yamaha YM2151 @ 3.579 MHz
+Oki OKI6295 @ 7.576 MHz, Stereo
+Display
+Resolution: Raster, 384x224 @ 59.6294 Hz
+Color Depth: 12 bit RGB with a 4 bit brightness value
+Colors available: 4096
+Onscreen colors: 3072 (192 global palettes with 16 colors each)
+Sprites:
+Simultaneously displayable: 256 (per scanlines)
+Sizes: 16x16, max. 16 colors (15 unique + 1 transparent)
+Vertical and Horizontal Flipping capability
+Tiles: Sizes 8x8, 16x16, 32x32 with 16 colors (15 unique + 1 transparent)
+Tile Maps: 3 Maps, 512x512, 1024x1024, 2048x2048 pixel
+68K RAM: 64 KB WORK RAM + 192 KB VRAM (Shadow)
+PPU: 192 KB VRAM + 16 KB CACHE RAM
+Z80 RAM: 2 KB WORK RAM

@@ -1,0 +1,242 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Z80 Assembly</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script src="/cdn-cgi/apps/head/HN2yr-WjAPj_mRBhCVcOzfdQRRo.js"></script><link rel="Stylesheet" href="normal.css">
+</head>
+<body>
+<h1>Z80 Assembly - Simple Tasks</h1>
+<p>This section contains some elementary routines that perform certain actions you are likely to need in the future. Besides, they are also useful to get a bit more practice in creating more and more efficient structures. I will also try to gradually introduce a new way of commenting from now on, because it doesn&rsquo;t make much sense to comment every single line. My aim is to help you develop a better skill of understanding others&rsquo; sources on your own. <i>It is essential for you to be able to understand these routines on your own, so take the time to think about how they work.</i> Before starting the discussion of these tasks, I have to introduce some additional instructions.</p>
+<h2>Working with data</h2>
+<p>All the computers are capable of doing basically one single thing: they manipulate data. This section gives an introduction to these possibilities in the case of the Z80.</p>
+<h3>Addition and subtraction</h3>
+<p>The Z80 processor is able to directly add or subtract both 8 and 16-bit numbers. These operations are performed by four simple instructions: <code>add</code>, <code>sub</code>, <code>adc</code> and <code>sbc</code>. (If you have been reading linearly, you could already see <code>add</code> in action.) Except for <code>sub</code>, they all have two operands, and the result is written back into the first one. The number of bits is determined by the first operand: 8-bit operations always involve the <tt>A</tt> register, while the 16-bit versions rely on <tt>HL</tt>/<tt>IX</tt>/<tt>IY</tt>. In the case of <code>sub</code>, there is only one operand whose value is always subtracted from <tt>A</tt>, and the result is naturally written back into <tt>A</tt>, too. The four instructions do the following:</p>
+<table border="0" cellspacing="0" cellpadding="0" align="center">
+<tr><td><div align="left"><code>add op1,op2</code></div></td><td><div align="left">&nbsp;&ndash; op1=op1+op2</div></td></tr>
+<tr><td><div align="left"><code>sub op2</code></div></td><td><div align="left">&nbsp;&ndash; A=A&ndash;op2</div></td></tr>
+<tr><td><div align="left"><code>adc op1,op2</code></div></td><td><div align="left">&nbsp;&ndash; op1=op1+(op2+<kbd>carry</kbd>)</div></td></tr>
+<tr><td><div align="left"><code>sbc op1,op2</code></div></td><td><div align="left">&nbsp;&ndash; op1=op1&ndash;(op2+<kbd>carry</kbd>)</div></td></tr>
+</table>
+<p>As I said, the first operand is either of the four ones listed above. What the second operand can be depends on the number of bits. In 8-bit operations OP2 can be an 8-bit constant, any 8-bit general purpose register (<tt>A</tt>, <tt>B</tt>, <tt>C</tt>, <tt>D</tt>, <tt>E</tt>, <tt>H</tt>, <tt>L</tt>, <tt>IXH</tt>, <tt>IXL</tt>, <tt>IYH</tt> or <tt>IYL</tt>) or an indirectly addressed byte of the memory (<tt>(HL)</tt>, <tt>(IX+n)</tt>, <tt>(IY+n)</tt>, but <i>not</i> <tt>(BC)</tt> or <tt>(DE)</tt>!). However, with 16-bit operations you can only use <tt>BC</tt>, <tt>DE</tt>, <tt>SP</tt> or what you used as OP1 (i. e. <em>add hl,ix</em> is not possible, contrary to <code>add hl,hl</code>), no constants or data in the memory.</p>
+<p><kbd>Carry</kbd> is the value of the <kbd>carry</kbd> flag: either 0 or 1. You might ask why it is useful to include the value of a flag in some operations, since you could not see such a thing in other programming languages. This is just another thing that is naturally handled by high-level languages, but has to be programmed manually in assembly (one example is adding numbers of a bit number greater than 16). <kbd>Carry</kbd> usually holds the (n+1)th bit of the result of arithmetic operations. For instance, if you add two 8-bit numbers, the result generally needs 9 bits to be stored. The name &ldquo;carry&rdquo; suggests that this 9<sup>th</sup> bit might be of some use later, that is the reason to carry it around. You will see some examples for its usage in the following sections.</p>
+<h3>Bit-level operations</h3>
+<p>You could already encounter logical operations if you have programming experience, e. g. when examining conditions like &ldquo;(i=1) and (j=2)&rdquo;. On the CPU level, they are preformed by the logical <code>and</code>, <code>or</code> and <code>xor</code> instructions. All the three need an 8-bit operand, which can be the same as that of the 8-bit arithmetic instructions (just about anything). Naturally, the <tt>A</tt> register is always involved, both as one of the factors and as the holder of the result. The individual bits are completely independent of each other in these operations, and the <i><kbd>carry</kbd> is always cleared</i> after one of these instructions is executed (so if you want to do a 16-bit subtraction without <kbd>carry</kbd>, you can still do it with <code>sbc</code> by putting <code>or a</code> or <code>and a</code> before it, so the <kbd>carry</kbd> is guaranteed to be zero).</p>
+<p>When <code>or</code> is performed, each bit of the result will be one if at least one of the factors had its corresponding bit set:</p>
+<pre>  %00101110
+  %10011101  i. e. only two zeroes give zero, all the other combinations result in one
+  ---------
+  %10111111 (result)</pre>
+<p>In turn, <code>and</code> makes each bit of the result be zero if at least one of the factors had its corresponding bit reset:</p>
+<pre>  %00101110
+  %10011101  i. e. only two ones give one, all the other combinations result in zero
+  ---------
+  %00001100 (result)</pre>
+<p>The third one, <code>xor</code> (which comes from the expression &ldquo;exclusive or&rdquo;) makes a bit of the result set if and only if one of the factors had its corresponding bit set, while the same bit of the other factor was reset prior to execution:</p>
+<pre>  %00101110
+  %10011101  i. e. inequality gives one, while equality gives zero as a result
+  ---------
+  %10110011 (result)</pre>
+<p>You are going to use these instructions a lot. To close their discussion, here is a little trick: you can load zero into <tt>A</tt> by executing <code>xor a</code>, i. e. by <code>xor</code>ing <tt>A</tt> with itself (just think about it why this is true). This is useful as it is faster and smaller than <code>ld a,0</code>. The only drawback is that it modifies the flags, but you do not usually need to preserve them for a long time anyway.</p>
+<h2><a name="sum"></a>Summing one-byte numbers</h2>
+<p>Let&rsquo;s assume that we have five 8-bit numbers stored beginning at the address <var>$1000</var>. We want to calculate their sum. For now, we assume that the sum itself will also remain within 8 bits (i. e. it will be less than 256). An unefficient but straightforward solution could be the following:</p>
+<pre>  ld b,0                         ; Initialising the partial sum
+  ld a,($1000)                   ; Reading the first number into the accumulator
+  add a,b                        ; Adding it to the sum
+  ld b,a                         ; Writing the sum back to B
+  ld a,($1001)                   ; Reading the second number into the accumulator
+  add a,b                        ; Adding it to the sum
+  ld b,a                         ; Writing the sum back to B
+  ld a,($1002)                   ; Adding the 3rd value
+  add a,b
+  ld b,a
+  ld a,($1003)                   ; Adding the 4th value
+  add a,b
+  ld b,a
+  ld a,($1004)                   ; And adding the 5th value, too
+  add a,b
+  ld b,a</pre>
+<p>If you have the eyes of an eagle and noticed that something odd is going on at the beginning, you could already ask why not <code>ld</code> the first value into <tt>B</tt> instead of zeroing it first. The answer is that this is not the final version. The first improvement could be using indirect addressing instead of directly addressing every single byte of the data.</p>
+<pre>  ld a,0                         ; Initialising the partial sum
+  ld hl,$1000                    ; Initialising the pointer to the first byte of the data
+  add a,(hl)                     ; Adding the current data to the sum
+  inc hl                         ; Proceeding to the next byte of the data
+  add a,(hl)
+  inc hl
+  add a,(hl)
+  inc hl
+  add a,(hl)
+  inc hl
+  add a,(hl)
+  inc hl
+  ld b,a                         ; We want the result in B</pre>
+<p>There are two advantages of this solution. First, you can directly add the data to the sum without having to load it first into a register. Naturally, addition implies that the sum is either in <tt>A</tt> (8-bit) or in <tt>HL</tt>/<tt>IX</tt>/<tt>IY</tt> (16-bit). The other, more important change is that now it is much easier to modify the program if you decide to sum another consecutive series of five numbers in the memory&mdash;you only need to modify the initialisation part. Besides these advantages, the code also improved in terms of speed and size. However, there is still a redundant <code>inc hl</code> at the end... Why? If you look at the code, you can see five <code>add</code>&ndash;<code>inc</code> pairs. As these pairs are completely identical, we could as well put them in a loop.</p>
+<pre>  ld c,5                         ; Setting up the loop counter
+  ld a,0                         ; Initialising the partial sum
+  ld hl,$1000                    ; Initialising the pointer to the first byte of the data
+Repeat:                          ; Adds the current byte to the sum and proceeds
+  add a,(hl)
+  inc hl
+  dec c                          ; Handling the loop (without djnz this time)
+  jr nz,Repeat
+  ld b,a                         ; We want the result in B</pre>
+<p>This also explains why we could not use <code>ld</code> for the first byte: we had to separate the initialisation from the actual calculation. Doing so is in general unefficient, but it helps to maintain a cleaner code, which is useful in the <i>development stage</i>&mdash;but it is certainly worth to optimise the code prior to releasing it. Introducing the loop also enables us to easily modify the number of bytes involved without having to add or remove code. However, when it is possible to use <tt>B</tt> as loop counter, it is advisable to do so:</p>
+<pre>  ld b,5                         ; Setting up the loop counter
+  ld a,0                         ; Initialising the partial sum
+  ld hl,$1000                    ; Initialising the pointer to the first byte of the data
+Repeat:                          ; Adds the current byte to the sum and proceeds
+  add a,(hl)
+  inc hl
+  djnz Repeat
+  ld b,a                         ; We want the result in B</pre>
+<p>After going through all this, it is important to note that using 8 bits for the sum is not really practical. Let&rsquo;s extend it to 16 bits then. And to make it even better, I will also make the loop counter 16-bit:</p>
+<pre>  ld ix,$1000                    ; Pointer to the data
+  ld hl,0                        ; The beginning sum
+  ld bc,500                      ; Loop counter
+  ld d,0                         ; The upper 8 bits of the numbers to be added
+Repeat:                          ; Adds the current byte to the sum and proceeds
+  ld e,(ix)
+  add hl,de                      ; Note that D=0
+  inc ix
+  dec bc                         ; This instruction does not modify the flags!
+  ld a,b                         ; Verifying whether the counter reached zero
+  or c                           ; The zero flag is set if both bytes of BC are zero
+  jr nz,Repeat</pre>
+<p>If you still don&rsquo;t understand how this 16-bit counter works, try to remember the principle of the <code>or</code> operation: if the result is zero, then both values must have been zero. To perform the operation &ldquo;<tt>B</tt> or <tt>C</tt>&rdquo; the value of <tt>B</tt> has to be loaded into <tt>A</tt>, because all the logical operations suppose one of the factors to be in <tt>A</tt>. Get used to this method, because it is frequently applied in practice.</p>
+<h2><a name="addition"></a>Adding large numbers</h2>
+<p>Let&rsquo;s say we have two 16-byte (128-bit) numbers in the memory. The first is at <var>$1000</var>, the second at <var>$1010</var>. Their sum is to be put into the 16 bytes starting at <var>$1020</var>. All the numbers start with the least significant byte. The magic word is <kbd>carry</kbd> in this case, which holds the bits transferred between the byte boundaries.</p>
+<pre>  ld ix,$1000                    ; Pointer to the first number
+  ld b,16                        ; The number of bytes in each number
+  or a                           ; A dummy logical instruction, used to clear the carry
+Repeat:                          ; Adds 8 bits on each iteration
+  ld a,(ix)
+  adc a,(ix+$10)                 ; Add with carry (the 9th bit of the previous addition)
+  ld (ix+$20),a                  ; Storing the current byte of the result
+  inc ix
+  djnz Repeat</pre>
+<p>Note that neither 16-bit <code>inc</code> nor <code>djnz</code> alters the flags, and actually this is the reason for it. The loop would not work if the CPU designers had not thought about these cases.</p>
+<h2><a name="moving"></a>Moving data blocks</h2>
+<p>This is a typical programming task, you will certainly need to move around data in your programs. Let&rsquo;s start with the elementary memory block movement. The aim is to move 500 bytes of data from the address <var>$2000</var> to <var>$4000</var>. Fortunately the Z80 processor is capable of performing this task with a single instruction:</p>
+<pre>  ld hl,$2000                    ; Pointer to the source
+  ld de,$4000                    ; Pointer to the destination
+  ld bc,500                      ; Number of bytes to move
+  ldir                           ; Moves BC bytes from (HL) to (DE)</pre>
+<p>The <code>ldir</code> instruction is a composite instruction, which is equivalent to the following piece of code:</p>
+<pre>Repeat:
+  ld a,(hl)                      ; Getting the current byte
+  inc hl
+  ld (de),a                      ; Storing it
+  inc de
+  dec bc                         ; Handling the loop
+  ld a,b
+  or c
+  jr nz,Repeat</pre>
+<p>The only difference (besides the rather obvious fact that <code>ldir</code> is much smaller and much faster than the loop above) is that the <tt>A</tt> register is not involved when using <code>ldir</code>. For the programmers&rsquo; convenience there is also an instruction called <code>ldi</code> which does almost the same thing except that it moves only one byte (but still updates all the three counters!).</p>
+<p>This little instruction can also be used to fill each byte of an area of the memory with a given value. I might as well call it a little trick, but it isn&rsquo;t actually a complicated one. The following code fills 500 bytes from the address <var>$2000</var> with 150.</p>
+<pre>  ld hl,$2000                    ; Pointer to the source
+  ld de,$2001                    ; Pointer to the destination
+  ld bc,499                      ; Number of bytes to move
+  ld (hl),150                    ; The value to fill
+  ldir                           ; Moves BC bytes from (HL) to (DE)</pre>
+<p>What happens? If you think it over, you can realise that in each iteration the preceding byte is copied into the current byte, which results in step by step copying the value of 150 at the beginning into each byte of the region. This happens because the two regions&mdash;the source and the destination&mdash;overlap. Now you could start wondering about what to do if you really want to move these 500 bytes one byte ahead instead of filling them with the same value. The solution is simple: you have to start from the end of the region, and go backwards. The instruction to do this is <code>lddr</code>, which does almost the same as <code>ldir</code>, with the only difference that it <i>decrements</i> HL and DE in each iteration. The example to move 500 bytes from the address of <var>$2000</var> to <var>$2001:</var></p>
+<pre>  ld hl,$21F3                    ; Pointer to the end of the source (500=$1F4)
+  ld de,$21F4                    ; Pointer to the end of the destination
+  ld bc,500                      ; Number of bytes to move
+  lddr                           ; Moves BC bytes from (HL) to (DE) backwards</pre>
+<p>Note that if the overlapping is the other way around, i. e. the destination is at the lower address, you have to use <code>ldir</code>. Think about this before proceeding to the next section.</p>
+<h2><a name="manipulate"></a>Manipulating data blocks</h2>
+<h3>Simple conditions</h3>
+<p>After getting to know some elementary methods, we can start thinking about practical problems. The next task is a bit more complicated: there are 200 numbers (8-bit <i>signed</i> integers) stored from the address <var>$1000</var>, and we want to separate the negative and the non-negative numbers. We want to create two separate lists: that of the non-negative numbers at <var>$2000</var> and the negative values at <var>$3000</var>. A possible solution could look like this:</p>
+<pre>  ld hl,$1000                    ; Pointer to the data
+  ld ix,$2000                    ; Pointer to the non-negative list
+  ld iy,$3000                    ; Pointer to the negative list
+  ld b,200                       ; Loop counter
+Repeat:
+  ld a,(hl)                      ; Getting and checking the sign of the current element
+  inc hl
+  cp $80
+  jr nc,Negative
+  ld (ix),a                      ; Storing a non-negative value
+  inc ix
+  jr Continue
+Negative:
+  ld (iy),a                      ; Storing a negative value
+  inc iy
+Continue:
+  djnz Repeat</pre>
+<p>A comment for programmers of TI calculators: the <tt>IY</tt> register is reserved for the system, so you can only use it if you save its value and disable interrupts. In this example, you could use <tt>DE</tt> instead of <tt>IY</tt>, but in a normal everyday situation you will most probably find all your registers full of important data, particularly the general purpose registers (<tt>A</tt>, <tt>B</tt>, <tt>C</tt>, <tt>D</tt>, <tt>E</tt>, <tt>H</tt>, <tt>L</tt>)...</p>
+<h3>Sorting</h3>
+<p>This time I would like to show a way to implement simple bubble sort in Z80 assembly. For those who don&rsquo;t know the algorithm, here is the explanation:</p>
+<ol>
+<li>Going through the array from the beginning to the end, if two neighbouring elements are in the wrong order, we swap them. By this the greatest number will be the last element of the list.</li>
+<li>We repeat the step above, but this time we do not include the last element, we stop before reaching it. This way the second greatest number will also be put into its proper place.</li>
+<li>Doing the second step with a decreasing number of elements until this number becomes one. Then we are done. We will also stop sorting if there was no need to sort in an intermediate step, because that implies that the elements are already in the right order.</li>
+</ol>
+<p>The code:</p>
+<pre>  ld c,NumberOfElements
+  dec c                          ; Note that the first step involves N-1 checks
+  ld hl,1                        ; Setting H=0 and L=1, for optimising speed
+Step:
+  ld ix,ArrayAddress
+  ld e,h                         ; Bit 0 of E will indicate if there was need to swap
+  ld b,c                         ; C holds the number of elements in the current step
+Loop:
+  ld a,(ix)
+  ld d,(ix+1)
+  cp d                           ; If A was less than D, the carry will be set
+  jr c,Continue
+  ld (ix),d                      ; Swapping order is actually performed by simply writing
+  ld (ix+1),a                    ; the values back in a reversed order
+  ld e,l                         ; Swapping is indicated here (L=1)
+Continue:
+  inc ix
+  djnz Loop
+  dec e
+  jr nz,Finish                   ; If E became zero after DEC, we have to continue
+  dec c
+  jr nz,Step
+Finish:</pre>
+<p>Of course, this is the slowest sorting algorithm, but it is easy to understand. Later, in the advanced section you are going to find an implementation of the QuickSort algorithm, too.</p>
+<h3>Searching</h3>
+<p>Another useful thing is searching byte sequences in the memory, e. g. strings in a text. The program below does the following: given the address and length of a text, and the same parameters of a string to be found in it (all four are 2-byte words), it returns the (first) address where the string is found in <tt>HL</tt>. If the text does not contain the string given, it returns 0 in <tt>HL</tt>.</p>
+<pre>Start:
+  ld hl,(TextAddress)
+  ld de,(StringAddress)
+  ld bc,(StringLength)
+Repeat:                          ; This loop verifies if the text from the current byte
+  ld a,(de)                      ; matches the string given, character by character. If
+  cp (hl)                        ; it does, then the zero flag is set. Execution is
+  jr nz,EndRepeat                ; continued from EndRepeat, regardless of the success of
+  inc hl                         ; the search.
+  inc de
+  dec bc
+  ld a,b
+  or c
+  jr nz,Repeat
+EndRepeat:
+  ld hl,(TextAddress)            ; Note that LD preserves the flags
+  jr z,Finish
+  inc hl                         ; The text pointer is advanced
+  ld (TextAddress),hl
+  ld bc,(TextLength)
+  dec bc                         ; Total byte count is decreased
+  ld (TextLength),bc
+  ld a,b
+  or c
+  jr nz,Start
+  ld hl,0                        ; This part is executed in case of failure (BC=0)
+Finish:
+  ...                            ; There should be some code following here, otherwise
+                                 ; execution would continue in the data part...
+TextAddress:
+  .word $1000
+TextLength:
+  .word 500
+StringAddress:
+  .word $2000
+StringLength:
+  .word 20</pre>
+<p>It was intentional that I only gave some loose comments, because by now you should be able to understand what is going on. Take the time to do so, I give you a break for now.</p>
+<p><a href="index.htm">Back to the index</a></p>
+</body>
+</html>

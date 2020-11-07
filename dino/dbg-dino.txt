@@ -1,0 +1,27 @@
+bpc
+wpc
+--wp 0x900000-0x0,1*0x4,w,wpdata>0,{logerror "\r\n%06x:obj:%06x:%8x:",wpaddr,pc,wpdata;g}
+--wp 0x908000-0x4,1*0x4,w,wpdata>0,{logerror "\r\n%06x:obj:%06x:%8x:",wpaddr,pc,wpdata;g}
+--wp 0x908000-0x0,1*0x4,w,wpdata>0,{logerror "\r\n%06x:scr1:%06x:%8x:",wpaddr,pc,wpdata;g}
+--wp 0x90C000-0x4,1*0x4,w,wpdata>0,{logerror "\r\n%06x:scr1:%06x:%8x:",wpaddr,pc,wpdata;g}
+--wp 0x90C000-0x0,1*0x4,w,wpdata>0,{logerror "\r\n%06x:scr2:%06x:%8x:",wpaddr,pc,wpdata;g}
+--wp 0x910000-0x4,1*0x4,w,wpdata>0,{logerror "\r\n%06x:scr2:%06x:%8x:",wpaddr,pc,wpdata;g}
+--wp 0x910000-0x0,1*0x4,w,wpdata>0,{logerror "\r\n%06x:scr3:%06x:%8x:",wpaddr,pc,wpdata;g}
+--wp 0x914000-0x4,1*0x4,w,wpdata>0,{logerror "\r\n%06x:scr3:%06x:%8x:",wpaddr,pc,wpdata;g}
+--wp 0x914000-0x0,1*0x4,w,wpdata>0,{logerror "\r\n%06x:pal:%06x:%8x:",wpaddr,pc,wpdata;g}
+--wp 0x918000-0x4,1*0x4,w,wpdata>0,{logerror "\r\n%06x:pal:%06x:%8x:",wpaddr,pc,wpdata;g}
+
+
+--wp 0xFF8000,1*0x874,rw,wpdata>=0,{logerror "\r\n%06x:base+%3x:%06x:%8x:",wpaddr,(wpaddr-0xFF8000),pc,wpdata;g}
+--wp 0xFF8874,c0*0x18,w,wpdata>=0,{logerror "\r\n%06x:item+%2x:%06x:%8x:",wpaddr,(wpaddr-0xFF8874)%0xc0,pc,wpdata;g}
+--wp 0xFFB274,0x180*0x03,rw,wpdata>=0,{logerror "\r\n%06x:123p+%3x:%06x:%8x:",wpaddr,(wpaddr-0xFFB274)%0x180,pc,wpdata;g}
+--wp 0xFFB6F4,c0*0x18,w,wpdata>=0,{logerror "\r\n%06x:etc+%2x:%06x:%8x:",wpaddr,(wpaddr-0xFFB6F4)%0xc0,pc,wpdata;g}
+--wp 0xFFC8F4,e0*0x18,rw,wpdata>=0,{logerror "\r\n%06x:enemy+%2x:%06x:%8x:",wpaddr,(wpaddr-0xFFC8F4)%0xe0,pc,wpdata;g}
+--wp 0,180000,r,wpaddr!=pc,{logerror "\r\n%06x:tbl:%06x:%8x:",wpaddr,pc,wpdata;g}
+--trace t.log
+--wp ff8000,8000,rw,1,{dasm t.log,pc,4;g}
+--trace off
+
+wp 0xFFe000,1*0x1000,rw,wpdata>=0,{logerror "\r\n%06x:base+%3x:%06x:%8x:",wpaddr,(wpaddr-0xFF8000),pc,wpdata;g}
+bpc
+wpc

@@ -1,0 +1,123 @@
+904000:   Sprites Start Region (8 Bytes each sprite)
+907FFF:   Sprites End Region
+908000:   HUD, Texts, etc Sprites Start Region
+90BFFF:   HUD, Texts, etc Sprites End Region
+90C000:   Floor Sprites Start Region
+90FFFF:   Floor Sprites Start End
+910000:   Background Sprites Start Region
+913FFF:   Background Sprites End Region
+914000:   Palletes
+
+
+
+
+Palletes
+
+B8A52:
+B8A72:
+B8A92:
+B8AB2:
+
+FF8016.B:       Player 1 input (KeyDown).
+FF801B.B:       Player 1 input (KeyDown).
+
+
+FF8017.B:       Player 2 input (KeyDown).
+FF801C.B:       Player 2 input (KeyDown).
+
+
+FF8018.B:       Player 3 input (KeyDown).
+FF801D.B:       Player 3 input (KeyDown).
+
+FF8744.W:   Camera Position.
+
+
+FF847D.B:   P1 Coin Amount
+FF848D.B:   P2 Coin Amount
+FF849D.B:   P3 Coin Amount
+
+
+FF84D9.B:   Stage ID
+FF84E8.L:   Stage Time
+FF8634.L:   Character Select Screen Time
+FF863A:     Player 1 Character ID
+
+
+FF8786:     Area ID
+
+
+FFF768:     Game Difficulty 1
+
+
+
+8C1D4: Can be used to clear car color flags?
+
+
+01033E:   List of Time values.
+02C9B6:   List of values used as power (128 values).
+031454:   List of enemy HPs.
+
+FFB274:   Player 1 Character Memory Region
+FFB3F4:   Player 2 Character Memory Region
+FFB574:   Player 3 Character Memory Region
+xxxx0C:   Air position (Height)
+xxxx08:   Ground position X
+xxxx10:   Ground position Y
+xxxxC6:   Current Power
+
+xxx182:   Extra Life Flag (use it to fix the immortal bug)
+
+
+FFD364:   1st enemy memory region?
+xxxx03:   Enemy ID
+xxxx06:   Action / Posture ID?
+xxxx6A:   Starting HP (Max 64)
+xxxx6C:   Current HP
+xxxx9A:   Dizzy Flag
+
+
+FFDD14:   Boss Memory Region?
+xxxx06.B: Enemy action (Walk, Idle, Punch, etc.)
+xxxx76:   Slice Target
+xxxxA2:   Slice Possible Target P1
+xxxxA4:   Slice Possible Target P2
+xxxxA6:   Slice Possible Target P3
+xxxxC4:   Slice Timer
+xxxx79:   Enemies unknown timer
+
+
+
+
+Morgan Actions
+
+0E:   Punch with Uzi.
+1E:   Throw Grenades.
+
+
+Tyrog
+
+0E:   Slap.
+50:   Spine Attack.
+
+
+
+
+
+
+
+
+4C008:   Slice timer decrease.
+4C00E:   Slice timer reset code, add here too a reset to the targeting.
+
+
+
+14574:   Replace this code
+145CA:   Code that adds the sprite in the screen?
+
+
+
+
+
+smaller address - bigger address
+lsr 2 for title screen, lsr 7 for in game things
+and 3, now you have 0, 1 and 2

@@ -1,0 +1,3 @@
+bp 963c4,d0==11
+wp ffada8,c0,w,1,{logerror "%8x %4x %4x w\r\n",wpaddr-ffada8,wpdata,pc;go}
+wp ffada8,c0,r,1,{logerror "%8x %4x %4x r\r\n",wpaddr-ffada8,wpdata,pc;go}

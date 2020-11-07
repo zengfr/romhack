@@ -1,0 +1,80 @@
+<mamecheat version="1">
+
+  <cheat desc="Infinite Time">
+    <script state="run">
+      <action>maincpu.pw@200C12=0959</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Select Starting Stage">
+    <parameter min="1" max="18" step="1"/>
+    <script state="run">
+      <action condition="(maincpu.pb@200C10==00)">maincpu.pb@200C10=(param-1)</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Hit Anywhere">
+    <script state="on">
+      <action>temp0 =maincpu.mw@018BF4</action>
+      <action>temp1 =maincpu.mw@018BFC</action>
+      <action>temp2 =maincpu.mw@018C02</action>
+      <action>temp3 =maincpu.mw@018C12</action>
+    </script>
+    <script state="run">
+      <action>maincpu.mw@018BF4=6002</action> <!-- This ROM cheat was made by Abystus -->
+      <action>maincpu.mw@018BFC=6002</action>
+      <action>maincpu.mw@018C02=6002</action>
+      <action>maincpu.mw@018C12=6002</action>
+    </script>
+    <script state="off">
+      <action>maincpu.mw@018BF4=temp0 </action>
+      <action>maincpu.mw@018BFC=temp1 </action>
+      <action>maincpu.mw@018C02=temp2 </action>
+      <action>maincpu.mw@018C12=temp3 </action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="P1 Infinite Lives">
+    <script state="run">
+      <action>maincpu.pb@20080C=0A</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Infinite Energy">
+    <script state="run">
+      <action>maincpu.pb@211063=60</action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="P2 Infinite Lives">
+    <script state="run">
+      <action>maincpu.pb@20088C=0A</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Infinite Energy">
+    <script state="run">
+      <action>maincpu.pb@211163=60</action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="P3 Infinite Lives">
+    <script state="run">
+      <action>maincpu.pb@20090C=0A</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P3 Infinite Energy">
+    <script state="run">
+      <action>maincpu.pb@211263=60</action>
+    </script>
+  </cheat>
+
+</mamecheat>
+<!-- Cheat file downloaded from http://www.mamecheat.co.uk, see cheat.txt for list of contributors. -->

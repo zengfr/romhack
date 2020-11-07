@@ -1,0 +1,47 @@
+
+https://wiki.neogeodev.org/index.php?title=68k_program_header
+--------------------------------------------------------------------------------------
+github:https://github.com/zengfr/romhack
+
+gitee:https://gitee.com/zengfr/romhack
+
+blog:https://my.oschina.net/zengfr
+
+https://github.com/zengfr/arcade_game_romhacking_sourcecode_top_secret_data
+
+https://gitee.com/zengfr/arcade_game_romhacking_sourcecode_top_secret_data
+
+https://github.com/zengfr/arcade-romhacking-framework
+
+video:https://space.bilibili.com/492484080/video
+--------------------------------------------------------------------------------------
+68k program header
+ASM ROM header templates.
+
+Contents
+1	For cartridge systems
+1.1	Minimal header (from Smkdan's sources)
+1.2	Full header (from some unknown example code)
+2	For CD systems
+For cartridge systems
+Address	Size	Description
+$100	7 bytes	"NEO-GEO" string (first cartridge recognition code).
+$107	byte	System version (0 for cartridge systems, 1 or 2 for adapted cart games on Neo CD ?).
+$108	word	NGH number in BCD, 0000 prohibited.
+$10A	longword	Total P ROM data size in bytes.
+$10E	longword	Pointer to backup RAM data block (in 68k user RAM). The first 2 bytes are the debug DIPs.
+$112	word	Size of the required game save data in bytes.
+$114	byte	Eyecatcher animation flag. 0=Done by system ROM, 1=Done by game, 2=Nothing.
+$115	byte	Sprite bank number (upper 8 bits of tile number) for the eye-catcher logo, if done by system ROM.
+$116	longword	Pointer to Japanese software DIPs settings layout.
+$11A	longword	Pointer to US settings software DIPs settings layout.
+$11E	longword	Pointer to Euro settings software DIPs settings layout.
+$122	6 bytes	JMP to USER subroutine (code start).
+$128	6 bytes	JMP to PLAYER_START subroutine.
+$12E	6 bytes	JMP to DEMO_END subroutine.
+$134	6 bytes	JMP to COIN_SOUND subroutine.
+$182	longword	Pointer to security code (second cartridge recognition code).
+$186	longword	Unknown (seems only set to 0x00000000 on boards containing Spanish software DIPs).
+$18A	longword	Unknown (seems only set to 0x00000001 on boards containing Spanish software DIPs).
+$18E	longword	Pointer to Spanish settings software DIPs settings layout (not all games use this).
+

@@ -1,0 +1,591 @@
+<mamecheat version="1">
+
+  <cheat desc="Infinite Time">
+    <script state="on">
+      <action>temp0 =maincpu.pb@10A836</action>
+    </script>
+    <script state="run">
+      <action condition="(frame % 300 == 0) AND (maincpu.pb@10A836!=temp0 )">maincpu.pb@10A836=60</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Finish Round Now!">
+    <script state="on">
+      <action>maincpu.pb@10A836=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Boss code + Timer stop">
+    <script state="run">
+      <action>maincpu.pb@100000=04</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Enable hidden characters"> <comment>Adds the extra two hidden characters to the selection screen</comment>
+    <script state="run">
+      <action>maincpu.pb@10E79A=01</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Always Ready Special Move">
+    <script state="on">
+      <action>temp0 =maincpu.rb@00492E</action>
+      <action>temp1 =maincpu.rb@00B5A8</action>
+      <action>temp2 =maincpu.rb@00B5D4</action>
+      <action>temp3 =maincpu.rb@00B618</action>
+    </script>
+    <script state="run">
+      <action>maincpu.rb@00492E=60</action>
+      <action>maincpu.rb@00B5A8=60</action>
+      <action>maincpu.rb@00B5D4=60</action>
+      <action>maincpu.rb@00B618=60</action>
+    </script>
+    <script state="off">
+      <action>maincpu.rb@00492E=temp0 </action>
+      <action>maincpu.rb@00B5A8=temp1 </action>
+      <action>maincpu.rb@00B5D4=temp2 </action>
+      <action>maincpu.rb@00B618=temp3 </action>
+    </script>
+  </cheat>
+
+  <cheat desc="Invincibility [Master Code]" tempvariables="55">
+    <script state="on">
+      <action>temp0 =maincpu.rd@0023BE</action>
+      <action>temp1 =maincpu.rd@0023C2</action>
+      <action>temp2 =maincpu.rd@080150</action>
+      <action>temp3 =maincpu.rd@080154</action>
+      <action>temp4 =maincpu.rd@080158</action>
+      <action>temp5 =maincpu.rd@08015C</action>
+      <action>temp6 =maincpu.rd@080160</action>
+      <action>temp7 =maincpu.rd@00A60E</action>
+      <action>temp8 =maincpu.rw@00A612</action>
+      <action>temp9 =maincpu.rd@080164</action>
+      <action>temp10=maincpu.rd@080168</action>
+      <action>temp11=maincpu.rd@08016C</action>
+      <action>temp12=maincpu.rd@080170</action>
+      <action>temp13=maincpu.rd@080174</action>
+      <action>temp14=maincpu.rd@01017C</action>
+      <action>temp15=maincpu.rd@010180</action>
+      <action>temp16=maincpu.rd@0115DC</action>
+      <action>temp17=maincpu.rd@0115E0</action>
+      <action>temp18=maincpu.rd@011936</action>
+      <action>temp19=maincpu.rd@01193A</action>
+      <action>temp20=maincpu.rd@01214A</action>
+      <action>temp21=maincpu.rd@01214E</action>
+      <action>temp22=maincpu.rd@01AEB4</action>
+      <action>temp23=maincpu.rd@01AEB8</action>
+      <action>temp24=maincpu.rd@01BB9A</action>
+      <action>temp25=maincpu.rd@01BB9E</action>
+      <action>temp26=maincpu.rd@01CC38</action>
+      <action>temp27=maincpu.rd@01CC3C</action>
+      <action>temp28=maincpu.rd@02E7BA</action>
+      <action>temp29=maincpu.rd@02E7BE</action>
+      <action>temp30=maincpu.rd@02EB76</action>
+      <action>temp31=maincpu.rd@02EB7A</action>
+      <action>temp32=maincpu.rd@030524</action>
+      <action>temp33=maincpu.rd@030528</action>
+      <action>temp34=maincpu.rd@030876</action>
+      <action>temp35=maincpu.rd@03087A</action>
+      <action>temp36=maincpu.rd@080178</action>
+      <action>temp37=maincpu.rd@08017C</action>
+      <action>temp38=maincpu.rd@080180</action>
+      <action>temp39=maincpu.rd@080184</action>
+      <action>temp40=maincpu.rd@080188</action>
+      <action>temp41=maincpu.rd@00E87C</action>
+      <action>temp42=maincpu.rw@00E880</action>
+      <action>temp43=maincpu.rd@08018C</action>
+      <action>temp44=maincpu.rd@080190</action>
+      <action>temp45=maincpu.rw@080194</action>
+      <action>temp46=maincpu.rd@080196</action>
+      <action>temp47=maincpu.rd@08019A</action>
+      <action>temp48=maincpu.rd@01AD2E</action>
+      <action>temp49=maincpu.rw@01AD32</action>
+      <action>temp50=maincpu.rd@08019E</action>
+      <action>temp51=maincpu.rw@0801A2</action>
+      <action>temp52=maincpu.rd@0801A4</action>
+      <action>temp53=maincpu.rd@0801A8</action>
+      <action>temp54=maincpu.rd@0801AC</action>
+    </script>
+    <script state="run">
+      <action>maincpu.rd@0023BE=4EB90008</action>
+      <action>maincpu.rd@0023C2=01504E71</action> <!-- [ Direct Attack or Firearm ] -->
+      <action>maincpu.rd@080150=2C6D27A0</action> <!-- 023BE - jsr $80150.l / nop -->
+      <action>maincpu.rd@080154=4A2E01F0</action> <!-- 80150 - movea.l ($27a0,A5),A6 -->
+      <action>maincpu.rd@080158=6606052E</action> <!-- 80154 - tst.b ($1f0,A6) / 80158 - bne $80160 -->
+      <action>maincpu.rd@08015C=007C4E75</action> <!-- 8015A - btst D2,($7c,A6) / 8015E - rts -->
+      <action>maincpu.rd@080160=74004E75</action> <!-- 80160 - moveq #$0,D2 / 80162 - rts -->
+      <action>maincpu.rd@00A60E=4EB90008</action> <!-- [ Catch or Throw ] -->
+      <action>maincpu.rw@00A612=0164</action> <!-- 0A60E - jsr $80164.l -->
+      <action>maincpu.rd@080164=48411210</action> <!-- 80164 - swap D1 / 80166 - move.b (A0),D1 -->
+      <action>maincpu.rd@080168=4A2B01F0</action> <!-- 80168 - tst.b ($1f0,A3) / 8016C - bne $80172 -->
+      <action>maincpu.rd@08016C=6604C207</action> <!-- 8016E - and.b D7,D1 -->
+      <action>maincpu.rd@080170=4E75323C</action> <!-- 80170 - rts -->
+      <action>maincpu.rd@080174=00004E75</action> <!-- 80172 - move.w #$0,D1 / 80176 - rts -->
+      <action>maincpu.rd@01017C=4EB90008</action> <!-- [ Super Argentine Back Breaker (Ralf) - Call check routine ] -->
+      <action>maincpu.rd@010180=01784E71</action> <!-- 1017C - jsr $80178.l / nop -->
+      <action>maincpu.rd@0115DC=4EB90008</action> <!-- [ Super Argentine Back Breaker (Clark) - Call check routine ] -->
+      <action>maincpu.rd@0115E0=01784E71</action> <!-- 115DC - jsr $80178.l / nop -->
+      <action>maincpu.rd@011936=4EB90008</action> <!-- [ Super Arabian (Clark) - Call check routine ] -->
+      <action>maincpu.rd@01193A=01784E71</action> <!-- 11936 - jsr $80178.l / nop -->
+      <action>maincpu.rd@01214A=4EB90008</action> <!-- [ Ultra Argentine Back Breaker (Clark) - Call check routine ] -->
+      <action>maincpu.rd@01214E=01784E71</action> <!-- 1214A - jsr $80178.l / nop -->
+      <action>maincpu.rd@01AEB4=4EB90008</action> <!-- [ Chou Oosotogari (Daimon) - Call check routine ] -->
+      <action>maincpu.rd@01AEB8=01784E71</action> <!-- 1AEB4 - jsr $80178.l / nop -->
+      <action>maincpu.rd@01BB9A=4EB90008</action> <!-- [ Tenchi Gaeshi (Daimon) - Call check routine ] -->
+      <action>maincpu.rd@01BB9E=01784E71</action> <!-- 1BB9A - jsr $80178.l / nop -->
+      <action>maincpu.rd@01CC38=4EB90008</action> <!-- [ Jigoku Gokuraku Otoshi (Daimon) - Call check routine ] -->
+      <action>maincpu.rd@01CC3C=01784E71</action> <!-- 1CC38 - jsr $80178.l / nop -->
+      <action>maincpu.rd@02E7BA=4EB90008</action> <!-- [ Syouran Kyaku - B (Takuma) - Call check routine ] -->
+      <action>maincpu.rd@02E7BE=01784E71</action> <!-- 2E7BA - jsr $80178.l / nop -->
+      <action>maincpu.rd@02EB76=4EB90008</action> <!-- [ Syouran Kyaku - D (Takuma) - Call check routine ] -->
+      <action>maincpu.rd@02EB7A=01784E71</action> <!-- 2EB76 - jsr $80178.l / nop -->
+      <action>maincpu.rd@030524=4EB90008</action> <!-- [ Hyakuretsu Binta - A (Yuri) - Call check routine ] -->
+      <action>maincpu.rd@030528=01784E71</action> <!-- 30524 - jsr $80178.l / nop -->
+      <action>maincpu.rd@030876=4EB90008</action> <!-- [ Hyakuretsu Binta - C (Yuri) - Call check routine ] -->
+      <action>maincpu.rd@03087A=01784E71</action> <!-- 30876 - jsr $80178.l / nop -->
+      <action>maincpu.rd@080178=4A2B01F0</action> <!-- [ Check routine for the above (special) throw moves ] -->
+      <action>maincpu.rd@08017C=660A302C</action> <!-- 80178 - tst.b ($1f0,A3) / 8017C - bne $80188 -->
+      <action>maincpu.rd@080180=0018906B</action> <!-- 8017E - move.w ($18,A4),D0 -->
+      <action>maincpu.rd@080184=00184E75</action> <!-- 80182 - sub.w ($18,A3),D0 / 80186 - rts -->
+      <action>maincpu.rd@080188=707F4E75</action> <!-- 80188 - moveq #$7f,D0 / 8018A - rts -->
+      <action>maincpu.rd@00E87C=4EB90008</action> <!-- [ Storm Bringer (Heidern) ] -->
+      <action>maincpu.rw@00E880=018C</action> <!-- 0E87C - jsr $8018c.l -->
+      <action>maincpu.rd@08018C=3210E249</action> <!-- 8018C - move.w (A0),D1 / 8018E - lsr.w #1,D1 -->
+      <action>maincpu.rd@080190=4A2B01F0</action> <!-- 80190 - tst.b ($1f0,A3) -->
+      <action>maincpu.rw@080194=6604</action> <!-- 80194 - bne $8019a -->
+      <action>maincpu.rd@080196=90414E75</action> <!-- 80196 - sub.w D1,D0 / 80198 - rts -->
+      <action>maincpu.rd@08019A=707F4E75</action> <!-- 8019A - moveq #$7f,D0 / 8019C - rts -->
+      <action>maincpu.rd@01AD2E=4EB90008</action> <!-- [ Jiraishin (Daimon) ] -->
+      <action>maincpu.rw@01AD32=019E</action> <!-- 1AD2E - jsr $8019e.l -->
+      <action>maincpu.rd@08019E=4A2B01F0</action> <!-- 8019E - tst.b ($1f0,A3) -->
+      <action>maincpu.rw@0801A2=6608</action> <!-- 801A2 - bne $801ac -->
+      <action>maincpu.rd@0801A4=082B0005</action> <!-- 801A4 - btst #$5,($e3,A3) -->
+      <action>maincpu.rd@0801A8=00E34E75</action> <!-- 801AA - rts -->
+      <action>maincpu.rd@0801AC=707F4E75</action> <!-- 801AC - moveq ##$7f,D0 / 801AE - rts -->
+    </script>
+    <script state="off">
+      <action>maincpu.rd@0023BE=temp0 </action>
+      <action>maincpu.rd@0023C2=temp1 </action>
+      <action>maincpu.rd@080150=temp2 </action>
+      <action>maincpu.rd@080154=temp3 </action>
+      <action>maincpu.rd@080158=temp4 </action>
+      <action>maincpu.rd@08015C=temp5 </action>
+      <action>maincpu.rd@080160=temp6 </action>
+      <action>maincpu.rd@00A60E=temp7 </action>
+      <action>maincpu.rw@00A612=temp8 </action>
+      <action>maincpu.rd@080164=temp9 </action>
+      <action>maincpu.rd@080168=temp10</action>
+      <action>maincpu.rd@08016C=temp11</action>
+      <action>maincpu.rd@080170=temp12</action>
+      <action>maincpu.rd@080174=temp13</action>
+      <action>maincpu.rd@01017C=temp14</action>
+      <action>maincpu.rd@010180=temp15</action>
+      <action>maincpu.rd@0115DC=temp16</action>
+      <action>maincpu.rd@0115E0=temp17</action>
+      <action>maincpu.rd@011936=temp18</action>
+      <action>maincpu.rd@01193A=temp19</action>
+      <action>maincpu.rd@01214A=temp20</action>
+      <action>maincpu.rd@01214E=temp21</action>
+      <action>maincpu.rd@01AEB4=temp22</action>
+      <action>maincpu.rd@01AEB8=temp23</action>
+      <action>maincpu.rd@01BB9A=temp24</action>
+      <action>maincpu.rd@01BB9E=temp25</action>
+      <action>maincpu.rd@01CC38=temp26</action>
+      <action>maincpu.rd@01CC3C=temp27</action>
+      <action>maincpu.rd@02E7BA=temp28</action>
+      <action>maincpu.rd@02E7BE=temp29</action>
+      <action>maincpu.rd@02EB76=temp30</action>
+      <action>maincpu.rd@02EB7A=temp31</action>
+      <action>maincpu.rd@030524=temp32</action>
+      <action>maincpu.rd@030528=temp33</action>
+      <action>maincpu.rd@030876=temp34</action>
+      <action>maincpu.rd@03087A=temp35</action>
+      <action>maincpu.rd@080178=temp36</action>
+      <action>maincpu.rd@08017C=temp37</action>
+      <action>maincpu.rd@080180=temp38</action>
+      <action>maincpu.rd@080184=temp39</action>
+      <action>maincpu.rd@080188=temp40</action>
+      <action>maincpu.rd@00E87C=temp41</action>
+      <action>maincpu.rw@00E880=temp42</action>
+      <action>maincpu.rd@08018C=temp43</action>
+      <action>maincpu.rd@080190=temp44</action>
+      <action>maincpu.rw@080194=temp45</action>
+      <action>maincpu.rd@080196=temp46</action>
+      <action>maincpu.rd@08019A=temp47</action>
+      <action>maincpu.rd@01AD2E=temp48</action>
+      <action>maincpu.rw@01AD32=temp49</action>
+      <action>maincpu.rd@08019E=temp50</action>
+      <action>maincpu.rw@0801A2=temp51</action>
+      <action>maincpu.rd@0801A4=temp52</action>
+      <action>maincpu.rd@0801A8=temp53</action>
+      <action>maincpu.rd@0801AC=temp54</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Hit Anywhere (Both Players)">
+    <script state="on">
+      <action>temp0 =maincpu.rw@002430</action>
+    </script>
+    <script state="run">
+      <action>maincpu.rw@002430=4E71</action> <!-- This ROM cheat was made by nolberto82 -->
+    </script>
+    <script state="off">
+      <action>maincpu.rw@002430=temp0 </action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="P1 Infinite Energy">
+    <script state="run">
+      <action>maincpu.pb@108221=CF</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Drain all Energy Now!">
+    <script state="on">
+      <action>maincpu.pb@108221=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Invincibility"> <comment>Works after you've enabled 'Invincibility [Master Code]'</comment>
+    <script state="on">
+      <action>temp0 =maincpu.pb@1082F0</action>
+    </script>
+    <script state="run">
+      <action>maincpu.pb@1082F0=01</action>
+    </script>
+    <script state="off">
+      <action>maincpu.pb@1082F0=temp0 </action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Always have Max POW">
+    <script state="run">
+      <action>maincpu.pb@108219=7F</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Get Max POW Now!">
+    <script state="on">
+      <action>maincpu.pb@108219=7F</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Select 1st Character"> <comment>Free player selection - Use just after character selection. If used in-game the character will only change when a new round starts (both teams).</comment>
+    <parameter>
+      <item value="0x00">Heidern</item>
+      <item value="0x01">Ralf</item>
+      <item value="0x02">Clark</item>
+      <item value="0x03">Athena</item>
+      <item value="0x04">Kensou</item>
+      <item value="0x05">Chin</item>
+      <item value="0x06">Kyo</item>
+      <item value="0x07">Benimaru</item>
+      <item value="0x08">Daimon</item>
+      <item value="0x09">Iori</item>
+      <item value="0x0A">Eiji</item>
+      <item value="0x0B">Billy</item>
+      <item value="0x0C">Kim</item>
+      <item value="0x0D">Chang</item>
+      <item value="0x0E">Choi</item>
+      <item value="0x0F">Terry</item>
+      <item value="0x10">Andy</item>
+      <item value="0x11">Joe</item>
+      <item value="0x12">Ryo</item>
+      <item value="0x13">Robert</item>
+      <item value="0x14">Takuma</item>
+      <item value="0x15">Yuri</item>
+      <item value="0x16">Mai</item>
+      <item value="0x17">King</item>
+      <item value="0x18">Saisyu Kusanagi</item>
+      <item value="0x19">Omega Rugal</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A843=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Select 2nd Character"> <comment>Free player selection - Use just after character selection. If used in-game the character will only change when a new round starts (both teams).</comment>
+    <parameter>
+      <item value="0x00">Heidern</item>
+      <item value="0x01">Ralf</item>
+      <item value="0x02">Clark</item>
+      <item value="0x03">Athena</item>
+      <item value="0x04">Kensou</item>
+      <item value="0x05">Chin</item>
+      <item value="0x06">Kyo</item>
+      <item value="0x07">Benimaru</item>
+      <item value="0x08">Daimon</item>
+      <item value="0x09">Iori</item>
+      <item value="0x0A">Eiji</item>
+      <item value="0x0B">Billy</item>
+      <item value="0x0C">Kim</item>
+      <item value="0x0D">Chang</item>
+      <item value="0x0E">Choi</item>
+      <item value="0x0F">Terry</item>
+      <item value="0x10">Andy</item>
+      <item value="0x11">Joe</item>
+      <item value="0x12">Ryo</item>
+      <item value="0x13">Robert</item>
+      <item value="0x14">Takuma</item>
+      <item value="0x15">Yuri</item>
+      <item value="0x16">Mai</item>
+      <item value="0x17">King</item>
+      <item value="0x18">Saisyu Kusanagi</item>
+      <item value="0x19">Omega Rugal</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A844=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Select 3rd Character"> <comment>Free player selection - Use just after character selection. If used in-game the character will only change when a new round starts (both teams).</comment>
+    <parameter>
+      <item value="0x00">Heidern</item>
+      <item value="0x01">Ralf</item>
+      <item value="0x02">Clark</item>
+      <item value="0x03">Athena</item>
+      <item value="0x04">Kensou</item>
+      <item value="0x05">Chin</item>
+      <item value="0x06">Kyo</item>
+      <item value="0x07">Benimaru</item>
+      <item value="0x08">Daimon</item>
+      <item value="0x09">Iori</item>
+      <item value="0x0A">Eiji</item>
+      <item value="0x0B">Billy</item>
+      <item value="0x0C">Kim</item>
+      <item value="0x0D">Chang</item>
+      <item value="0x0E">Choi</item>
+      <item value="0x0F">Terry</item>
+      <item value="0x10">Andy</item>
+      <item value="0x11">Joe</item>
+      <item value="0x12">Ryo</item>
+      <item value="0x13">Robert</item>
+      <item value="0x14">Takuma</item>
+      <item value="0x15">Yuri</item>
+      <item value="0x16">Mai</item>
+      <item value="0x17">King</item>
+      <item value="0x18">Saisyu Kusanagi</item>
+      <item value="0x19">Omega Rugal</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A845=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="P2 Infinite Energy">
+    <script state="run">
+      <action>maincpu.pb@108421=CF</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Drain all Energy Now!">
+    <script state="on">
+      <action>maincpu.pb@108421=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Invincibility"> <comment>Works after you've enabled 'Invincibility [Master Code]'</comment>
+    <script state="on">
+      <action>temp0 =maincpu.pb@1084F0</action>
+    </script>
+    <script state="run">
+      <action>maincpu.pb@1084F0=01</action>
+    </script>
+    <script state="off">
+      <action>maincpu.pb@1084F0=temp0 </action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Always have Max POW">
+    <script state="run">
+      <action>maincpu.pb@108419=7F</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Get Max POW Now!">
+    <script state="on">
+      <action>maincpu.pb@108419=7F</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Select 1st Character"> <comment>Free player selection - Use just after character selection. If used in-game the character will only change when a new round starts (both teams).</comment>
+    <parameter>
+      <item value="0x00">Heidern</item>
+      <item value="0x01">Ralf</item>
+      <item value="0x02">Clark</item>
+      <item value="0x03">Athena</item>
+      <item value="0x04">Kensou</item>
+      <item value="0x05">Chin</item>
+      <item value="0x06">Kyo</item>
+      <item value="0x07">Benimaru</item>
+      <item value="0x08">Daimon</item>
+      <item value="0x09">Iori</item>
+      <item value="0x0A">Eiji</item>
+      <item value="0x0B">Billy</item>
+      <item value="0x0C">Kim</item>
+      <item value="0x0D">Chang</item>
+      <item value="0x0E">Choi</item>
+      <item value="0x0F">Terry</item>
+      <item value="0x10">Andy</item>
+      <item value="0x11">Joe</item>
+      <item value="0x12">Ryo</item>
+      <item value="0x13">Robert</item>
+      <item value="0x14">Takuma</item>
+      <item value="0x15">Yuri</item>
+      <item value="0x16">Mai</item>
+      <item value="0x17">King</item>
+      <item value="0x18">Saisyu Kusanagi</item>
+      <item value="0x19">Omega Rugal</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A853=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Select 2nd Character"> <comment>Free player selection - Use just after character selection. If used in-game the character will only change when a new round starts (both teams).</comment>
+    <parameter>
+      <item value="0x00">Heidern</item>
+      <item value="0x01">Ralf</item>
+      <item value="0x02">Clark</item>
+      <item value="0x03">Athena</item>
+      <item value="0x04">Kensou</item>
+      <item value="0x05">Chin</item>
+      <item value="0x06">Kyo</item>
+      <item value="0x07">Benimaru</item>
+      <item value="0x08">Daimon</item>
+      <item value="0x09">Iori</item>
+      <item value="0x0A">Eiji</item>
+      <item value="0x0B">Billy</item>
+      <item value="0x0C">Kim</item>
+      <item value="0x0D">Chang</item>
+      <item value="0x0E">Choi</item>
+      <item value="0x0F">Terry</item>
+      <item value="0x10">Andy</item>
+      <item value="0x11">Joe</item>
+      <item value="0x12">Ryo</item>
+      <item value="0x13">Robert</item>
+      <item value="0x14">Takuma</item>
+      <item value="0x15">Yuri</item>
+      <item value="0x16">Mai</item>
+      <item value="0x17">King</item>
+      <item value="0x18">Saisyu Kusanagi</item>
+      <item value="0x19">Omega Rugal</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A854=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Select 3rd Character"> <comment>Free player selection - Use just after character selection. If used in-game the character will only change when a new round starts (both teams).</comment>
+    <parameter>
+      <item value="0x00">Heidern</item>
+      <item value="0x01">Ralf</item>
+      <item value="0x02">Clark</item>
+      <item value="0x03">Athena</item>
+      <item value="0x04">Kensou</item>
+      <item value="0x05">Chin</item>
+      <item value="0x06">Kyo</item>
+      <item value="0x07">Benimaru</item>
+      <item value="0x08">Daimon</item>
+      <item value="0x09">Iori</item>
+      <item value="0x0A">Eiji</item>
+      <item value="0x0B">Billy</item>
+      <item value="0x0C">Kim</item>
+      <item value="0x0D">Chang</item>
+      <item value="0x0E">Choi</item>
+      <item value="0x0F">Terry</item>
+      <item value="0x10">Andy</item>
+      <item value="0x11">Joe</item>
+      <item value="0x12">Ryo</item>
+      <item value="0x13">Robert</item>
+      <item value="0x14">Takuma</item>
+      <item value="0x15">Yuri</item>
+      <item value="0x16">Mai</item>
+      <item value="0x17">King</item>
+      <item value="0x18">Saisyu Kusanagi</item>
+      <item value="0x19">Omega Rugal</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10A855=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="No Background Music">
+    <script state="run">
+      <action>audiocpu.pb@FE1A=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Hide Background"> <comment>Activate before match start; makes match uncompletable</comment>
+    <script state="on">
+      <action>temp0=maincpu.pb@10A785</action>
+      <action>temp1=maincpu.rd@0009C6</action>
+      <action>temp2=maincpu.rd@009412</action>
+      <action>temp3=maincpu.rw@009418</action>
+    </script>
+    <script state="run">
+      <action condition="(maincpu.pb@10A782 == 1A)">maincpu.pb@10A785=temp0 bor 20</action> <!-- activate only during match --> <!-- BG layers -->
+      <action condition="(maincpu.pb@10A782 == 1A)">maincpu.rd@0009C6=60244E71</action> <!-- flashing text -->
+      <action condition="(maincpu.pb@10A782 == 1A)">maincpu.rd@009412=4E714E71</action> <!-- HUD text -->
+      <action condition="(maincpu.pb@10A782 == 1A)">maincpu.rw@009418=00FF</action> <!-- HUD sprites -->
+      <action condition="(maincpu.pb@10A782 == 1A)">maincpu.pw@10D6AC=8F8F</action> <!-- BG colour (pink) -->
+    </script>
+    <script state="off">
+      <action>maincpu.pb@10A785=temp0</action>
+      <action>maincpu.rd@0009C6=temp1</action>
+      <action>maincpu.rd@009412=temp2</action>
+      <action>maincpu.rw@009418=temp3</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Select Cartridge/NeoGeo Type"> <comment>Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable.</comment>
+    <parameter>
+      <item value="0x80">Arcade (MVS)</item>
+      <item value="0x00">Home (NEOGEO)</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@10FD82=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Skip RAM/ROM Checks"> <comment>Also allows a quicker start-up without the green screens.</comment>
+    <script state="on">
+      <action>temp0 =maincpu.rd@C1315C</action>
+      <action>temp1 =maincpu.rd@C1314E</action>
+      <action>temp2 =maincpu.rd@C131E8</action>
+      <action>temp3 =maincpu.rd@C13184</action>
+      <action>temp4 =maincpu.rd@C1212E</action>
+      <action>temp5 =maincpu.rd@C134FA</action>
+    </script>
+    <script state="run">
+      <action condition="(maincpu.rd@C1315C==51CFFFF2)">maincpu.rd@C1315C=6000EB08</action> <!-- Euro + Japan-S2 BIOSs -->
+      <action condition="(maincpu.rd@C1314E==51CFFFF2)">maincpu.rd@C1314E=6000EB16</action> <!-- Euro-S1 + Japan-S1 BIOSs -->
+      <action condition="(maincpu.rd@C131E8==51CFFFF2)">maincpu.rd@C131E8=6000EA52</action> <!-- US BIOS -->
+      <action condition="(maincpu.rd@C13184==51CFFFF2)">maincpu.rd@C13184=6000EAB6</action> <!-- US-E BIOS -->
+      <action condition="(maincpu.rd@C1212E==51CFFFF2)">maincpu.rd@C1212E=6000EB36</action> <!-- Asia BIOS -->
+      <action condition="(maincpu.rd@C134FA==51CFFFF2)">maincpu.rd@C134FA=6000E892</action> <!-- Japan BIOS -->
+    </script>
+    <script state="off">
+      <action>maincpu.rd@C1315C=temp0 </action>
+      <action>maincpu.rd@C1314E=temp1 </action>
+      <action>maincpu.rd@C131E8=temp2 </action>
+      <action>maincpu.rd@C13184=temp3 </action>
+      <action>maincpu.rd@C1212E=temp4 </action>
+      <action>maincpu.rd@C134FA=temp5 </action>
+    </script>
+  </cheat>
+
+  <cheat desc="Infinite Credits"> <comment>Alternatively just set Free Play to ON in the Dip Switches menu</comment>
+    <script state="run">
+      <action>maincpu.rb@D00034=99</action>
+    </script>
+  </cheat>
+
+</mamecheat>
+<!-- Cheat file downloaded from http://www.mamecheat.co.uk, see cheat.txt for list of contributors. -->

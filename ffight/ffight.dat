@@ -1,0 +1,96 @@
+[0]
+Name=无限时间*
+0=Off
+1=开启,FF80AE,99
+
+[1]
+Name=生命无限
+0=Off
+1=P1,FF85E9,03
+2=P2,FF86A9,03
+3=P1+P2,FF85E9,03,FF86A9,03
+
+[2]
+Name=体力无限
+0=Off
+1=P1,FF8580,90,FF8582,90
+2=P2,FF8640,90,FF8642,90
+3=P1+P2,FF8580,90,FF8582,90,FF8640,90,FF8642,90
+
+[3]
+Name=人物无敌
+0=Off
+1=P1,FF85C8,B4
+2=P2,FF8688,B4
+3=P1+P2,FF85C8,B4,FF8688,B4
+
+[4]
+Name=动作加快
+0=Off
+1=P1,FF8591,01
+2=P2,FF8651,01
+3=P1+P2,FF8591,01,FF8651,01
+
+[5]
+Name=小角色 - 一击必杀*
+0=Off
+1=开启,FF8700,00,FF87C0,00,FF8880,00,FF8940,00,FF8A00,00,FF8AC0,00,FF8B80,00,FF8C40,00,FF8D00,00,FF8DC0,00,FF8E80,00,FF8F40,00,FF9000,00
+
+[6]
+Name=Boss - 两击必杀
+0=Off
+1=开启,FF9A80,00
+
+[7]
+Name=跳攻击连续出腿
+0=Off
+1=P1,FF860C,00
+2=P2,FF86CC,00
+3=P1+P2,FF860C,00,FF86CC,00
+
+[8]
+Name=P1 人物选择
+0=Off
+1=Guy,FF857D,00
+2=Cody,FF857D,01
+3=Haggar,FF857D,02
+
+[9]
+Name=P2 人物选择
+0=Off
+1=Guy,FF863D,00
+2=Cody,FF863D,01
+3=Haggar,FF863D,02
+
+[10]
+Name=P1 攻击模式
+0=Off
+1=All - Endless Attack,FF860A,00
+2=Guy - Finish Blow,FF860A,06
+3=Cody - Finish Blow (Uppercut),FF860A,04
+4=Cody - Finish Blow (Body Blow),FF860A,02
+5=Haggar - Finish Blow,FF860A,02
+
+[11]
+Name=P2 攻击模式
+0=Off
+1=All - Endless Attack,FF86CA,00
+2=Guy - Finish Blow,FF86CA,06
+3=Cody - Finish Blow (Uppercut),FF86CA,04
+4=Cody - Finish Blow (Body Blow),FF86CA,02
+5=Haggar - Finish Blow,FF86CA,02
+
+[12]
+Name=跳过此关*
+0=Off
+1=开启,FF8128,01
+
+[13]
+Name=关卡选择*
+0=Off
+1=Stage 1,FF80BF,00
+2=Stage 2,FF80BF,01
+3=Stage 3,FF80BF,02
+4=Stage 4,FF80BF,03
+5=Stage 5,FF80BF,04
+6=Stage 6,FF80BF,05

@@ -1,0 +1,144 @@
+[obj anim]
+init anim : 
+ROM:00022BDA                 movea.l #off_8DA68,a4
+
+ROM:0000247C                 movea.l (a4)+,a6
+ROM:0000247E                 move.l  (a4)+,$30(a0)
+ROM:00002482                 move.w  (a4)+,d1
+ROM:00002484                 bmi.w   loc_249E
+ROM:00002488                 move.w  d1,$34(a0)
+ROM:0000248C                 move.l  a4,$2C(a0)      ; update frame
+ROM:00002490                 move.l  a6,$12(a0)      ; write sprite
+
+
+anim data:
+ROM:0008DA68 off_8DA68:      dc.l unk_8E126          ; DATA XREF: ROM:00022BDA¡üo
+ROM:0008DA6C                 dc.l asc_FFFF           ; "XNua"
+ROM:0008DA70                 dc.w 1
+ROM:0008DA72 off_8DA72:      dc.l unk_8E864          ; DATA XREF: ROM:0008DA9A¡ýo
+ROM:0008DA76                 dc.l 0
+ROM:0008DA7A                 dc.w 7
+ROM:0008DA7C                 dc.l unk_8E892
+ROM:0008DA80                 dc.l 0
+ROM:0008DA84                 dc.w 9
+ROM:0008DA86                 dc.l unk_8E8C4
+ROM:0008DA8A                 dc.l 0
+ROM:0008DA8E                 dc.w 7
+ROM:0008DA90                 dc.l unk_8E8F2
+ROM:0008DA94                 dc.l 0
+ROM:0008DA98                 dc.w $8009
+ROM:0008DA9A                 dc.l off_8DA72
+
+
+
+
+ROM:00002470                 subq.w  #1,$34(a0)
+ROM:00002474                 bgt.w   locret_249C
+ROM:00002478                 movea.l $2C(a0),a4		// $2c keeps anim
+
+update (next anim frame)
+ROM:000024A6                 movea.l (a4),a4
+ROM:000024A8                 move.l  a4,$2C(a0)		// move frame to next and save
+ROM:000024AC                 move.l  a6,$12(a0)      ; set sprite to draw, $12 keeps sprite
+
+
+ROM:0000D768                 lea     off_D90C,a4		// list of anims, per 4 bytes
+ROM:0000D76C                 movea.l (a4,d1.w),a4
+
+
+ROM:000056CC obj_anim_list:  dc.l off_6F75A		// a big list of anims
+ROM:000056D0                 dc.l off_74C04
+ROM:000056D4                 dc.l off_71C3E
+
+
+
+
+
+each frame draw:
+ROM:0005D950 draw_sprite:  from a1                        ; DATA XREF: ROM:0005D7D0¡üo
+ROM:0005D950                 lea     3(a1),a2
+
+ROM:0005D956                 move.b  (a2)+,d2	// tile count
+
+ROM:0005D972                 move.w  (a2)+,d0	// x
+
+ROM:0005D98A                 sub.w   (a2)+,d1	// y
+ROM:0005D98C                 move.w  (a2)+,d6	// flag
+
+ROM:0005D9D2                 move.w  (a2)+,d5	// tile
+ROM:0005D9D4                 movem.w d0-d1/d5-d6,(a4)
+
+
+
+// drawing function entry
+ROM:0005D7BE draw:                                   ; CODE XREF: update+1B6¡üp
+ROM:0005D7BE                                         ; sub_5D7F0+16¡ýj ...
+ROM:0005D7BE                 move.b  0(a1),d1
+ROM:0005D7C2                 movea.l off_5D7C8(pc,d1.w),a6
+ROM:0005D7C6                 jmp     (a6)
+
+
+ROM:0006FF94 unk_6FF94:      dc.b   8        // which function to handle drawing
+ROM:0006FF95                 dc.b $12
+ROM:0006FF96                 dc.b   2
+ROM:0006FF97                 dc.b   5	// tile counts
+ROM:0006FF98                 dc.b $FF	// x
+ROM:0006FF99                 dc.b $E8	// x
+ROM:0006FF9A                 dc.b   0	// y
+ROM:0006FF9B                 dc.b $51   // y
+ROM:0006FF9C                 dc.b   2	// tile nx ny
+ROM:0006FF9D                 dc.b   1	// palette
+ROM:0006FF9E                 dc.b   2	// tile
+ROM:0006FF9F                 dc.b $ED	// tile
+
+
+ROM:00075642 unk_75642:      dc.b  $C                ; DATA XREF: ROM:00074C0E¡üo
+ROM:00075643                 dc.b $15
+ROM:00075644                 dc.b   0
+ROM:00075645                 dc.b   7
+ROM:00075646                 dc.b $56 ; V
+ROM:00075647                 dc.b $56 ; V
+ROM:00075648                 dc.b   0
+ROM:00075649                 dc.b   7
+ROM:0007564A                 dc.b $58 ; X
+ROM:0007564B                 dc.b $E2
+
+anim
+ROM:0006F75A off_6F75A:      dc.l unk_6FF94          ; DATA XREF: ROM:obj_anim_list¡üo
+ROM:0006F75A                                         ; ROM:00005788¡üo ...
+ROM:0006F75E                 dc.b   5
+ROM:0006F75F                 dc.b   8
+ROM:0006F760                 dc.b   0
+ROM:0006F761                 dc.b   0
+ROM:0006F762                 dc.b   0
+ROM:0006F763                 dc.b   4
+ROM:0006F764                 dc.l unk_6FFD0	// frame
+ROM:0006F768                 dc.b   5
+ROM:0006F769                 dc.b   8
+ROM:0006F76A                 dc.b   0
+ROM:0006F76B                 dc.b   0
+ROM:0006F76C                 dc.b   0
+ROM:0006F76D                 dc.b   4
+ROM:0006F76E                 dc.l unk_7000C
+ROM:0006F772                 dc.b   5
+
+
+[background]
+
+map1 ram FFFF7a88
+map2 ram FFFF7b88
+[set]
+ROM:0001922A                 move.l  (a1)+,$80(a0)
+ROM:0001922E                 move.l  (a1)+,$A4(a0)   ; map tile index
+ROM:00019232                 move.l  (a1)+,$84(a0)   ; map tile data
+
+ROM:00018A86 off_18A86:      dc.l unk_B29BA        // big index, 8x8x(2x2) to small index
+ROM:00018A8A                 dc.l unk_B2EEA		  // small index 2x2 to tiles
+ROM:00018A8E                 dc.l unk_BCEEA			// tiles
+
+[get]
+ROM:00018CB2 bg_draw_column:                         ; CODE XREF: bg_draw_loop+2C¡üp
+ROM:00018CB2                 move.w  $74(a0),d3
+ROM:00018CB6                 move.w  $76(a0),d4
+ROM:00018CBA                 movea.l $80(a0),a4
+ROM:00018CBE                 movea.l $A4(a0),a3

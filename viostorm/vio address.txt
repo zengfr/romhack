@@ -1,0 +1,46 @@
+ 
+ROM:00002B10                     Load_Fsm_Info
+ROM:00002B2C                     Load_Fsm_Info_1
+ROM:0007950C 0007 960C           Fsm_Info_Tbl
+ROM:0000AD60                     UpdateObjPos:                           | CODE XREF: sub_74CA+3880↑p
+ROM:0000AD60 1639 0020 0C10                      move.b  (0x200C10).l, d3 | 获取关卡变量
+ROM:0000AD8E 2140 0020                           move.l  d0, 0x20(a0)    | 获取X坐标
+ROM:0000ADA2 2028 002C                           move.l  0x2C(a0), d0    | X OFFSET
+ROM:0000B2B6                     Deal_Role_Script:                       | CODE XREF: sub_B218+66↑p
+ROM:0000B482                     ReadScript:
+ROM:0000B5BC                     Display_Shadow
+ROM:0000B6A2                     Deal_Script
+ROM:0000EF7C                     Get_Prg_Id_By_Objid
+ROM:0000F952                     Player_Select
+ROM:0000FB16                     | 初始化载入选人画面人物OBJ
+ROM:0000FB3E 001C                Sel_Role_Tbl
+ROM:0000FB56                     Draw_Cursor
+ROM:0000FB94 0034                Player_Font_Pic_No
+ROM:0000FB9A 9400                Player_Font_Pal_Param
+ROM:0000FBA0 00B0                Cursor_Y_Pos_Tbl
+ROM:0000FBF4                     | 画选人画面左右箭头
+ROM:0000FC4A                     Draw_Cursor_All
+ROM:0000FC92                     Set_Cursor_Pos
+ROM:0000FD18                     Set_Cursor_X_Pos_1
+ROM:0000FD32                     Set_Cursor_X_Pos
+ROM:0000FD4E                     Set_Cursor_X_Pos_2
+ROM:0000FDD2                     | 选人逻辑程序
+ROM:0000FE76                     CheckSelect
+ROM:000104CA                     | 播放选人后的名字音
+ROM:000104DE 1900                Role_Name_Sound_Tbl
+ROM:000162C2                     Play_Sound
+ROM:00017E9E                     Draw_Role_Name
+ROM:00017EF4 0001 8300           Role_Name_Tbl
+ROM:00017F00 0001 8318           Name_Tbl
+ROM:000190E0                     Read_Script_2
+ROM:00019268                     PosOffset
+ROM:0001A900                     Role_Main_1A900 三主角公用主程序
+ROM:0001AC14                     Kyle_1AC14
+ROM:0001E800                     load_Role_ActId
+ROM:0002365A                     Init_Hp
+ROM:0005CC16                     Enemy_Dabel_Jump
+ROM:0005CC62                     Enemy_Dabel_Jump_Kick
+ROM:0005CE58                     Enemy_Dabel_Hammer_4A
+ROM:0005CEA0                     Play_Sound_3800
+ROM:0005CEBC                     Play_Sound_Tbl_5CF14
+ROM:0005D35E                     Enemy_Dabel_Hammer_Shake 砸地锤

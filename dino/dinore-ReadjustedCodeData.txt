@@ -1,0 +1,281 @@
+------------------------------------------------------------------------
+Extra Code
+------------------------------------------------------------------------
+
+Color Select Manager
+
+180100:   Color Select Caller (Select Screen)
+180130:   Color Select Caller (Mid Game)
+180160:   Pallete Replace Caller (All Players)
+180190:   Pallete Replace Caller (All Players)
+1801C0:   Pallete Replace Caller (Current Player)
+1801F0:   Pallete Replace Caller (Current Player)
+180220:   Print Player Indicator Caller (Current Player)
+180250:   Play Mode Limiter and Custom Difficulty Caller (Game Start)
+180290:   Convert Custom Difficulty to Original Caller (Service Menu)
+
+
+Color Select
+
+180300:   Color Select (Select Screen)
+180360:   Color Select (Mid Game)
+
+
+Color Label
+
+180400:   Color Label (Select Screen)
+180440:   Color Label (Mid Game)
+
+
+Color Confirmation
+
+180580:   Color Confirmation
+
+
+Color Flag
+
+180600:   Color Flag Activate
+180630:   Color Flag Clear
+180660:   Car Color Flag Clear
+180680:   Player Car Seat Activate
+180700:   Car Color Flag Activate
+180740:   Inside Car Flag Activate
+180780:   Car Color Flags Clear Caller
+
+
+Player Pallete Replace
+
+180800:   Player Pallete Replace (Current Player)
+180860:   Player Pallete Replace (All Players)
+
+
+Pallete Mapper
+
+180900:   Save Custom Pallete ID
+180950:   Pallete Mapper
+1809A0:   Save Custom Pallete ID Caller (Default)
+1809C0:   Save Custom Pallete ID Caller (Special Cases)
+
+
+Idle Screen Pallete Fix
+
+180A00:   Main Characters Default Pallete Setter
+180A80:   Player Active Flag Clear
+180AA0:   Idle Screen Default Pallete Caller
+180AD0:   1st Ending Scene Default Pallete Caller
+
+
+Enemy Action Callback
+
+180C00:   Enemy Knocked Down Callback
+180C30:   Enemy Clinched Callback
+
+
+Enemy Target Improvement
+
+180D00:   Enemy Target Update
+180DE0:   Fessenden 2nd Form On Clinch Target Update
+180E00:   Fessenden 1st Form Target Update Caller
+
+
+Title Screen Text
+
+181000:   In Line Sprite Renderer
+181030:   Title Screen Text Renderer
+1810A0:   Title Screen Text Renderer Caller (No Coin 1)
+1810C0:   Title Screen Text Renderer Caller (No Coin 2)
+1810E0:   Title Screen Text Renderer Caller (With Coin)
+
+
+Coin Score
+
+181200:   Coin Score Update
+
+
+Play Mode Limiter
+
+181300:   Play Mode Limiter (Game Start)
+
+
+Enemy Invulnerability Improvement
+
+181400:   Activate Enemy Invulnerability (Current Enemy)
+1814A0:   Remove Enemy Invulnerability (Butcher, Slice, Morgue, Tyrog, Fessenden 1st Form)
+1814D0:   Remove Enemy Invulnerability (Morgan)
+181500:   Add Invulnerability Compatibility When Getting Up (Current Enemy)
+
+
+Power Indicator
+
+181600:   Draws the power indicator (Current Player)
+
+
+Game Difficulty Improvement
+
+181700:   Converts Original Difficulty to Custom (Game Starts)
+181730:   Converts Custom Difficulty to Original (Service Menu)
+181760:   Converts Original Difficulty to Custom (Service Menu)
+
+
+Enemy Action Improvement
+
+181800:   Sets Outside Screen Flag (Slisaur)
+181840:   Force Aggressive Action When Outside Screen Flag is Active (Slisaur)
+
+
+Main Characters Palletes
+
+1A0000:   Jack Palletes
+1A0100:   Mustapha Palletes
+1A0200:   Hannah Palletes
+1A0300:   Mess Palletes
+
+------------------------------------------------------------------------
+Callers
+------------------------------------------------------------------------
+
+007174:   Calls 180130
+0071DA:   Calls 1801F0
+007494:   Calls 181200
+008942:   Calls 180190
+008A4E:   Calls 180160
+00B274:   Calls 180100
+0108DE:   Calls 180C30
+014054:   Calls 1809A0
+014122:   Calls 1809C0
+01433E:   Calls 180950
+014390:   Calls 180950
+014436:   Calls 180950
+014488:   Calls 180950
+01450A:   Calls 180950
+0145C6:   Calls 180950
+0146CA:   Calls 180950
+014786:   Calls 180950
+014C2E:   Calls 180950
+014C90:   Calls 180950
+0151FE:   Calls 180AA0
+016456:   Calls 180220
+018A98:   Calls 1801C0
+01E6E2:   Calls 180AD0
+02AFE4:   Calls 180C00
+02B55C:   Calls 181500
+036C34:   Calls 1814A0
+04C038:   Calls 1814A0
+051890:   Calls 1814D0
+053FDA:   Calls 1814A0
+05882E:   Calls 1814A0
+067ED2:   Calls 1814A0
+067F46:   Calls 180E00
+068068:   Calls 180E00
+0682BA:   Calls 180E00
+08AB9A:   Calls 180AA0
+08BD66:   Calls 180680
+08C006:   Calls 180740
+08C836:   Calls 180780
+096FDE:   Calls 180700
+09A54E:   Calls 1810A0
+09A572:   Calls 1810C0
+09A828:   Calls 180AA0
+09D6FA:   Calls 1810E0
+0A848C:   Calls 1810E0
+0AC9B0:   Calls 181760
+0ACAA0:   Calls 180250
+
+------------------------------------------------------------------------
+Other Changes
+------------------------------------------------------------------------
+
+Tag Team Action
+
+006902: Jack Push Jack
+00690C: Hannah Throw Jack
+006912: Mustapha Throw Mustapha
+006920: Mess Throw Mess
+
+
+Punch + Jump Attack Invulnerability After the End
+
+006C46: Mustapha Invulnerability
+006C47: Jack Invulnerability
+006C48: Mess Invulnerability
+006C49: Hannah Invulnerability
+
+
+Equal Characters Restriction Removal
+
+007266: Equal Characters Restriction Removal Mid Game
+00B23A: Equal Characters Restriction Removal Character Select Screen
+
+
+Stage Time
+
+01034E: 3rd Stage Time 
+01037C: Final Boss Time 
+0104E2: Player Spawn Time Increase Limit (After Death or Coin Use)
+0104EC: Player Spawn Time Increase Limit (After Death or Coin Use)
+0AFFDA: 5th Boss Time
+0B0830: 6th Boss Time
+0B16E0: 7th Boss Time
+
+
+Punch + Jump Attack Damage Taken
+
+010B08: Punch + Jump Attack Damage Taken 2nd Hit
+010B14: Punch + Jump Attack Damage Taken 1st Hit
+011C80: Punch + Jump Attack Damage Taken 2nd Hit
+011C8C: Punch + Jump Attack Damage Taken 1st Hit
+
+
+Extra Life Immortal Bug Fix
+
+018E62: Extra Life Immortal Bug Fix
+
+
+Weapon Bullets
+
+024D9E: Rifle Starting Bullets
+024EAA: Bazooka Starting Bullets
+02855A: Rifle Bullets Refill (Ammo Pickup)
+02858A: Bazooka Bullets Refill (Ammo Pickup)
+
+
+Tyrog Wake Up Action
+
+037416: Tyrog Wake Up Action Changed (Tries to Move, ends at 3742E)
+
+
+Morgan Wake Up Action
+
+0527CC: Morgan Wake Up Action Changed (Tries to Move, ends at 527E4)
+
+
+3rd Stage CPU Car Driver
+
+08C7B0: Hannah Car Driver.
+
+
+Punch + Jump Attack Damage Given
+
+0A2755: Jack Punch + Jump Attack Damage Given
+0A2935: Mustapha Punch + Jump Attack Damage Given
+0A2B25: Hannah Punch + Jump Attack Damage Given
+0A2D05: Mess Punch + Jump Attack Damage Given
+
+
+Punch + Jump Attack Dizzy Flag
+
+0A275A: Jack Punch + Jump Attack Dizzy Flag
+0A293A: Mustapha Punch + Jump Attack Dizzy Flag
+0A2B2A: Hannah Punch + Jump Attack Dizzy Flag
+0A2D0A: Mess Punch + Jump Attack Dizzy Flag
+
+
+Play Mode
+
+0A85DC: Play Mode as 3 Players 3 Coin Chutes (Service Menu)
+
+
+Palletes
+
+0B7AB2: Mess Pallete Changed to Hannah
+0B7D12: Razor New Pallete

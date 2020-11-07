@@ -1,0 +1,216 @@
+
+--------------------------------------------------------------------------------------
+github:https://github.com/zengfr/romhack
+
+gitee:https://gitee.com/zengfr/romhack
+
+blog:https://my.oschina.net/zengfr
+
+https://github.com/zengfr/arcade_game_romhacking_sourcecode_top_secret_data
+
+https://gitee.com/zengfr/arcade_game_romhacking_sourcecode_top_secret_data
+
+https://github.com/zengfr/arcade-romhacking-framework
+
+video:https://space.bilibili.com/492484080/video
+--------------------------------------------------------------------------------------
+# Returns the list of memory addresses required to train on Street Fighter
+def setup_memory_addresses():
+    return {
+        "round": Address('0x10A7F1', 'u8'),
+        "stage": Address('0x10A798', 'u8'),
+        "start": Address('0x1081E2', 'u8'),
+        "winsP1": Address('0x10A85B', 'u8'),
+        "winsP2": Address('0x10A84A', 'u8'),
+        "healthP1": Address('0x108239', 'u8'),
+        "healthP2": Address('0x108439', 'u8'),
+        "positionP1": Address('0x108118', 'u16'),
+        "positionP2": Address('0x108318', 'u16'),
+        "powerP1": Address('0x1082E3', 'u8')
+    }
+	
+Backup_Start = 0x100000
+Backup_Size  = 0x100
+BIOS_SYSTEM_MODE = 0x10FD80
+BIOS_USER_REQUEST = 0x10FDAE
+BIOS_USER_MODE = 0x10FDAF
+BIOS_CREDIT_DEC = 0x10fdb0
+BIOS_START_FLAG = 0x10fdb4
+BIOS_PLAYER_MOD1 = 0x10fdb6
+BIOS_SELECT_TIMER = 0x10FDDA
+
+PAL_START = 0x2cfff0
+
+REG_VRAMADDR = 0x3C0000
+REG_VRAMRW = 0x3C0002
+REG_VRAMMOD = 0x3c0004
+
+REG_WATCHDOG = 0x3C0001
+REG_IRQACK = 0x3C000C
+REG_SOUND   =   0x320000
+
+BIOS_CLEAR_SPRITES = 0xC004C8
+
+COINS_SOUND = 0x0010009E
+
+A5Seg.DebugDips = -0x8000
+A5Seg.COINS_SOUND = -0x7f62
+A5Seg.VBlankCounter = -0x7f68
+
+OBJ_LIST_HEAD = 0x100100
+
+ScreenObj = 0x0
+ScreenObj.X = 0x18
+ScreenObj.Y = 0x1c 
+ScreenObj.YFromGround = 0x20
+ScreenObj.ShrinkRate = 0x2e
+ScreenObj.BackgroundSpriteHeight = 0x60
+ScreenObj.VRamBaseOffsetInSCB1 = 0x70
+ScreenObj.SCB4UpdateVramAddr = 0x72
+ScreenObj.SCB3UpdateVramAddr = 0x74
+ScreenObj.SCB2UpdateVramAddr = 0x76
+ScreenObj.MaxNumOfSpritesToUse = 0x78
+ScreenObj.WidthInTiles = 0x7a
+ScreenObj.HeightInTiles = 0x7c
+ScreenObj.pBackgroundSCB1Data = 0x84
+ScreenObj.RightPixelsX = 0x88
+ScreenObj.LeftPixelsX = 0x8a
+ScreenObj.TopPixelsY = 0x8c
+ScreenObj.BottomPixelsY = 0x8e
+ScreenObj.Flag = 0x90
+ScreenObj.LastShrink = 0xa0
+ScreenObj.pDataFromParam = 0xc2
+ScreenObj.VRamBaseOffset = 0xca
+ScreenObj.XfromParam = 0xd2
+ScreenObj.YfromParam = 0xd4
+ScreenObj.BackgroundSpriteWidthFromParam = 0xd6
+ScreenObj.BackgroundSpriteHeightFromParam = 0xd8
+
+Object = 0x0
+Object.PNext = 0x4
+Object.PPrev = 0x6
+Object.Level = 0x8
+Object.TagString = 0x10
+Object.OriX = 0x18
+Object.OriY = 0x1c
+Object.YFromGround = 0x20
+Object.XinScreen = 0x24
+Object.pGraphInfoEntry = 0x28
+Object.Z = 0x2c
+Object.RoleShrinkRate = 0x2e
+Object.IsFaceToRight = 0x31
+Object.Palette = 0x3a
+Object.ExGraphFlags = 0x3B
+Object.pGraphDataSubmenuBase = 0x3c
+Object.speedX = 0x50
+Object.ChCode = 0x70
+Object.ActCode = 0x72
+Object.MovOffsetFromActBase = 0x74
+Object.PrevChCode = 0x76
+Object.PrevActCode = 0x78
+Object.SpanTime = 0x7a
+Object.FreezeDelayTime = 0x7b
+Object.HitBoxFlag = 0x7c
+Object.RecoveryFlags = 0x7d
+Object.HitSpecialStatus = 0x7e
+Object.MovIndexInAct = 0x80
+Object.ParentObj = 0x84
+Object.EffectChild = 0x88
+Object.FixlayVramTextXDelta = 0x8c
+Object.FixlayVramTextYDelta = 0x8e
+Object.Box0 = 0x90
+Object.selfBuf2 = 0xc2
+Object.selfBuf1 = 0xd2
+Object.RoleStatusFlags = 0xe0
+
+
+A5Seg.MainNextRoutine = 0x500
+A5Seg.SpritePoolBaseTable = 0x2700
+ObjPoolBaseTable = 0x10a700
+A5Seg.ObjPoolStackIndex = 0x2780
+A5Seg.VBlankSpinEvent = 0x2785
+A5Seg.VideoSpecialModes = 0x2788
+A5Seg.TileUpdateFlag = 0x2789
+|A5Seg.PaletteUpdateFlag = 0x278a
+A5Seg.PLAYER1_phase = 0x2790
+A5Seg.IsPlayerExist = 0x27f2
+A5seg.TitlePressButtonStruct = 0x282a
+TitlePressButtonStruct = 0x10a82a
+A5Seg.ObjZBuf = 0x286a
+A5Seg.NumInObjZBuf = 0x2e6c
+A5Seg.TileVertPositionsBuff_Main = 0x2e6e
+A5Seg.BackUpTileOffsetInSCB1_Main = 0x306e
+A5Seg.TileOffsetInSCB1_Main = 0x3070
+A5Seg.ObjTotalSpriteNumbers_Main = 0x3072
+A5Seg.SpriteAlreadyUsed_Main = 0x3076
+A5Seg.ScreenLeftX = 0x3082
+A5Seg.ScreenTopY = 0x3092
+A5Seg.BackGroundObjLayer0 = 0x30b2
+A5Seg.BackGroundObjLayer1 = 0x31b2
+A5Seg.BackGroundObjLayer2 = 0x32b2
+A5Seg.BackGroundObjLayer3 = 0x33b2
+A5Seg.BackGroundObjLayer4 = 0x34b2
+A5Seg.BackGroundObjLayer5 = 0x35b2
+A5Seg.BackGroundObjLayer6 = 0x36b2
+A5Seg.BackGroundObjLayer7 = 0x37b2
+A5Seg.PendingNumOfBackgroundLayerToUpdate = 0x38b2
+A5Seg.ShrinkNumBlocksToUpdate = 0x38b5
+A5Seg.BackgroundUpdateSCB3_4NumBlocksPending = 0x38b4
+A5Seg.pBackgroundUpdateSCB3_4BlocksStart = 0x38b6
+A5Seg.BackgroundSCB3_4BlocksBuf = 0x38be
+
+A5Seg.ShrinkUpdateBlocksStart = 0x38ba
+A5Seg.UpdateOffsetInSCB2 = 0x3cfe | 0x10bcfe
+
+PaletteTempQueueStart = 0x108000 + 0x4022	|0x10c022
+A5Seg.PaletteTempQueueStart = 0x4022
+A5Seg.PAL_IN_POINT = 0x5924
+A5Seg.ColorTargetReachedFlag = 0x5928
+A5Seg.PalGradDeltaR = 0x592e
+A5Seg.PalGradDeltaG = 0x5930
+A5Seg.PalGradDeltaB = 0x5932
+A5Seg.SD_IN_POINT = 0x5936
+A5Seg.SD_OUT_POINT = 0x5937
+A5Seg.BGM_CODE      = 0x5938
+A5Seg.SOUND_CODE_W  = 0x593a
+A5Seg.SOUND_BUFFER = 0x593e     |size: 0x100
+
+A5Seg.pPalGradEntry1 = 0x649e
+A5Seg.pPalGradEntry2 = 0x64a2
+A5Seg.PalGradTargetR= 0x64a6
+A5Seg.PalGradTargetG = 0x64a8
+A5Seg.PalGradTargetB = 0x64aa
+A5Seg.FirstObjIndexInZBuf = 0x64d2
+A5Seg.pGhostBuf = 0x64d6
+A5Seg.SpriteDrawHoriCoefficient = 0x64e6
+A5Seg.SpriteDrawVertCoefficient = 0x6448
+A5Seg.TempGraphLevel = 0x64ee
+A5Seg.TempExGraphMask = 0x64f0
+A5Seg.TextOutputOffset = 0x64f6
+A5Seg.TextOutputEntryHigh = 0x64f8
+A5Seg.TextOutputDefaultPalIndex = 0x64fa
+A5Seg.BackgroundSpritesXTempBuf = 0x6506
+A5Seg.WhoPushedStart = 0x66bc
+A5Seg.PaletteSubGroupIndex = 0x66be
+A5Seg.FlashScreenTypeIndex = 0x6b8b
+A5Seg.GlobalCamaraYDelta = 0x6ce4
+
+PalGradObj = 0x0
+PalGradObj.pEntryIndex1 = 0xa
+PalGradObj.pEntryIndex2 = 0xe
+PalGradObj.GradDeltaR = 0x12
+PalGradObj.GradDeltaG = 0x14
+PalGradObj.GradDeltaB = 0x16
+PalGradObj.Counter = 0x18
+PalGradObj.GradDDR = 0x1a
+PalGradObj.GradDDG = 0x1c
+PalGradObj.GradDDB = 0x1e
+PalGradObj.CounterResetVal = 0x20
+PalGradObj.MaxGradSteps = 0x21
+PalGradObj.RGBbuf1 = 0x22
+PalGradObj.RGBbuf2 = 0x112
+
+FixLayerStruct = 0
+FixLayerStruct.y = 2
+FixLayerStruct.Flag = 4
+FixLayerStruct.PCHAR = 8

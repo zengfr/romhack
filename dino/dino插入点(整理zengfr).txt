@@ -1,0 +1,735 @@
+github:https://github.com/zengfr/romhack
+
+https://github.com/zengfr/romhack
+https://gitee.com/zengfr/romhack
+https://github.com/zengfr/arcade_game_romhacking_sourcecode_top_secret_data/dino/trace
+0\106380-106520 149B0
+1\106530-10675C 不能改 18D88* 
+2\106760-10698c 16474 164DC 16518 1656e 165f4 164EA 1648a 1649E 18d88* 106554*
+3\1069A0-106df2 acee 1720A 7BEDC 58612 517d6 61882 52D8a ABEC 810ba
+4\107A60-107F44  AAF6 145c6 14390 1433e 14560 192ce 71DA
+5\104800-104974  106548* 4D9A 4dc2 4DF0 10b32 11770 116cc 28adc 28ab8 28Ad0 28ae4
+6\1004F0-100580 不能改 $100aa0-$100b1c 188a4*
+7\BB020-BB058   9d3f4
+8\105800-105CA8  7b3c6 7bf82
+9\100590-100620  104430-104496  188a4* 100570* fe5a*
+10\1044A0-1047fe 103b00-103bf4  5cca0 20A0C
+11\104A00-104c1e  2AF8C 52dde 52ebe 97f66 97fA0
+12\105Ce0-105e42 fe5a* 
+13\106e00-107A3c 23428 23436 655ba 14516 492e 655ba 655ca 655e0
+14\101c00-101Ff4
+15\BB0A0
+16 102CA0
+17 105e60
+------------------------------
+ 0\1047c0-104960  1\1049a0-104bcc   2\104c00-$104e30 3\104e70-1052c2  4\105300-105814   5\105840-1059b4 
+ 6\105a00 -105b12 *7\BB040          *8\101c00-1021da  9\105b40-105caa  *10\11f140-11f574改成107300了 11\147200-1473da
+12\147400-147582 13\1063c0-107000  14\1475c0-1479b4 15\147a00-147b9e 16\147ba0-147bff 17\147c20-147c56 19
+
+w$0 序号
+b$2 场景
+w$4 卷轴
+b$6 1已COPY
+w$8 同卷轴下的出兵个数
+w$A 现场BOSS数
+b$E ; 总统计
+b$10 ;计数复位
+w$12 ;索引+1 按键出兵的
+w#$4+$10 4规律的 进门随机+后面+1
+w#$6+$10 6规律的 6锁定的 关底BOSS
+w#$8+$10 索引偏移 8随机的 幻影
+
+w$A+$10 索引偏移 A敌兵的
+
+------------------------------
+;source dbg.cmd bp 104626
+
+wp ffb27c,2,w,wpdata>=0,{printf "ffb27c 08 X %8x %4x a0:%8x d0:%8x %8x",pc,wpdata,a0,d0,d1;g}
+wp ffb284,2,w,wpdata>=0,{printf "ffb284 10 Y %8x %4x a0:%8x d0:%8x %8x",pc,wpdata,a0,d0,d1;g}
+wp ffb280,2,w,wpdata>=0,{printf "ffb280 0C G %8x %4x a0:%8x d0:%8x %8x",pc,wpdata,a0,d0,d1;g}
+bp 5388,1,{printf "5388 action %8x a0:%8x d0:%8x %8x",pc,a0,d0,d1;g}
+bp fe5a,1,{printf "table %8x a0:%8x a2:%8x %8x %8x %8x %2x",pc,a0,a2,maincpu.pw@(a2+02),maincpu.pw@(a2+04),maincpu.pw@(a2+0A),maincpu.pw@(fff890);g}
+
+
+bp fcd2,1,{printf "table1 %8x a0:%8x a2:%8x %8x %8x %8x %2x",pc,a0,a2,maincpu.pw@(a2+02),maincpu.pw@(a2+04),maincpu.pw@(a2+0A),maincpu.pw@(fff890);g}
+
+bp fe36,1,{printf "table2 %8x a0:%8x a2:%8x %8x %8x %8x %2x",pc,a0,a2,maincpu.pw@(a2+02),maincpu.pw@(a2+04),maincpu.pw@(a2+0A),maincpu.pw@(fff890);g}
+
+bp fef4,1,{printf "table3 %8x a0:%8x a2:%8x %8x %8x %8x %2x",pc,a0,a2,maincpu.pw@(a2+02),maincpu.pw@(a2+04),maincpu.pw@(a2+0A),maincpu.pw@(fff890);g}
+---------------------------------------------------------------------------------------------------------------------
+名将911014前前加速
+18e18+008 0003->0006
+18e18+088 0003->0006
+18e18+108 0003->0006
+18e18+188 0003->0006
+18e18+208 0003->0006
+18e18+288 0003->0006
+......
+18e18+608 0003->0006
+
+18e18+090 fffc->fff9
+18e18+110 fffc->fff9
+18e18+190 fffc->fff9
+18e18+210 fffc->fff9
+bp 11a3e
+bp 11982,1,{printf "%8x %8x",a1,d0;g}
+wp ffa994+a,2,w,1,{printf "%8x %8x %8x",pc,wpdata,maincpu.pw@(ffa994+0x40);g;}
+bp 11a3e,1,{printf "%8x %8x %8x",a1,d0,maincpu.pw@(a0+0x40);g;}
+名将 sub_7C78
+ffa8bx dipswitch
+ffa8ce 关卡
+ffa82e ffa832 卷轴
+1234p:ffa994+0x100*4 FFAc94
++0a 坐标x
++3c 血量
++a0 id
++a2 按键
++d5 无敌
++e8 生命
+enemy:ffc114+0xc0*14 ffc114-ffcad4
++2 =04死亡
++a 横标      
++e 高度
++12 纵标
++16 头像
++22 色板
++34 人物ID
++38 动作
++3c 血量
+($80,A0), A0 //子物品基址
++86 打击血量
++5c 状态
++5a 相对绝对横标
++98 方向
++9c 色板
+出兵a8124,a815a
+($6a5a,A5) 人物数量
+($6a5c,A5) 影子数量
+$6C6A(a5) 人物+道具物品的总数
+$6C60(a5),a4
+5d07e 死亡
+第一个敌兵ffca14
+第一个坐骑兵ffc714 0e19,坐骑ffd9d4 1300 bp a1c94
+bp 4bea 910000 obj
+ff8a22+0xc0*9=ff90e2
+FFAc94-ffc114=c0*1a
+ff8c62+68=ff8a22+a0=ff8ac2=敌兵数
+---------------------------------------------------------------------------------------------------------------------
+快打旋风
+dbg mode:wp ff8084,1,rw,1,{pb@ff8084=1;g}
+$3bec ; Random
+5e7b6 reset
+14C2 17DC draw_string/hide_string
+126c 打印字符串
+165C8 900000
+FF8129 (b)过关 4d40 Gameplay demo switch,sublevel outro (00 = not in demo, 01 = in demo, FF = signal demo end?)
+90B014	- First visible tile of leftmost dynamite scene portrait, SCROLL2
+{address = 0xFF8568, number = 0x0F, space = 0xC0, hp = 0x18}, --players and enemies
+		{address = 0xFF90A8, number = 0x06, space = 0xC0, projectile = true}, --weapons
+		{address = 0xFF9528, number = 0x08, space = 0xC0, hp = 0x18}, --bosses and enemies
+		FF9B28-FFB2E7 ,number = 0x1f, space = 0xC0
+		{address = 0xFFB2E8, number = 0x10, space = 0xC0, hp = 0x18, projectile = true}, --containers
+		{address = 0xFFBEE8, number = 0x0A, space = 0xC0, projectile = true}, --items
+FF86e8 to Ff90a7 Enemy memory regions, c0 bytes each, 13 slots
+FF90a8 to FF9527 Weapons, c0 bytes each, 6 slots
+FF9528 to FF9B27 Boss memory, c0 bytes each, 8 slots ff9a68
+FF8568 P1
+0x00E6D0;Intro demos
+0x00CBF6;Middle demos
+0x00F4F8;Outro demos
+wp 908610,2,w 血条
+FF8581(18) P1 Infinite Energy
+FF85C9(61) P1 Invincibility无敌 r:32cc,a79e,a7a4 w:79d4被打
+FF85E8(80)(b) lives
+FF85EA(82)(b) 1P Input
+FF860B(a3)(b) 00 02 04 06 动作组合
+FF8590(28)(b)=01 Action Speed Up
+FF9a68 boss 79c0,3ce4敌兵减血
+ffb1e8 xx基址 bp 5b0a 5b76
+ff1150,ff1152 bp 3bec
+bp 79c0,1,{printf "%8x %8x %8x %8x ",frame,pc,a3,pb@FF85C9;pb@FF85C9=0x28;g}
+bp 79d4,1,{printf "%8x %8x %8x %8x ",frame,pc,a3,pb@FF85C9;pb@FF85C9=0x28;g}
+bp 5ea8,1,{printf "db1 %8x %8x %8x %8x %8x %8x %8x %8x",frame,pc,a4,a3,pd@(a3+0),pd@(a3+4),pd@(a3+8),pw@(a3+c);g}
+bp 6210,1,{printf "db2 %8x %8x %8x %8x %8x %8x %8x %8x",frame,pc,a4,a3,pd@(a3+0),pd@(a3+4),pd@(a3+8),pw@(a3+c);g}
+bp 1faf2,1,{printf "db3 %8x %8x %8x %8x %8x %8x",frame,pc,a4,a0,a2,pd@(a0+0),pd@(a2+0);g}
+($12,A4)         ;entity class ID 0 2 敌兵 4 6 8 敌兵 a 物品箱子  080f门
+($13,A4)		; player ID 
+($15,A4)		; 敌兵掉物 
+($18,A4)		; hp
+($2F,A4)		; palette ID色板
+($2e,A6)        ;1P Direction facing 00 = right, 01 = left
+($36,A6)        ;Movement direction
+($3f,A6)        ;
+($60,A6)        ;
+($62,A6)        ; 
+($70,A6)        ;
+($6,A2)   ; X position  FF856e
+($a,A2)   ; y position  FF8572
+($20,A2)  ; Head x position
+
+
+($412,A5)  ; Level scroll x
+($416,A5)  ; Level scroll y
+$31A8(a5) $31e8(a5) ;场景 出兵指针
+bp 3a12 敌兵死清内存
+bp 61ba 5ea8 1faf2 敌兵分配内存
+a5956 箱子打破掉物
+354ba 敌兵掉武器
+6d0ca 大箱子
+6ec1a
+108c投币1134减币进入选人
+db1:5EA74,5EA7C,414,A2C6,9ACA,61C0,3A12,5EAE,A5CC,9F8C,,,,,
+db2:3D13A,5A95C,
+db4:595AC
+db5:5A924,
+ 
+---------------------------------------------------------------------------------------------------------------------
+d6760-d67da 00
+f9e80-fa05f 01
+fa0b0-fa110 02 不要
+fa0d0-fa192 021
+f85e0-f89d8 03 大片空白不能写 f926a fb276 fb3ea
+fad80-fb118 03
+fbc20-fbdca 03
+f95e0-f9a7c 04
+fa740-fa7be 05
+f8d80-f8ddf 06
+f8e00-f924e 07
+
+08CBBA: jmp     (A0)
+8CBD000
+bp 1723e,1,{pb@(a6+2)=01;pw@(a6+5c)=01;pw@(a6+ee)=04;pd@(a5-2424)=0xFF5BE4;d0=pw@(a5-244c);g}
+bp 172fa,1,{pb@(ff8e68+2)=00;g}
+bp 17302,1,{pb@(ff8e68+2)=01;g}
+--
+惩罚者
+@FF18AB=BF Infinite Time 
+@FF5D96=01 Always have Gun drawn
+@01ADEE=60 Sticky Weapons
+@FF5FA1=FF Finish this Level Now
+@FF5BB9=0x06 Select Starting Stage  bp 7e7a (-2447,a5) 
+Hit Anywhere:@0905C2=4E71@09135C=4E71@092FC4=4E71@0939AE=4E71
+One Hit Kills:@096B4E=6000@02C1D0=6002@05C158=6000@0913FE=446C@095FF2=446C@093A24=446C
+@FF5FA1 :Kill all Enemies now
+FF5784:00000000:skip stage clear bonus screen
+FF5ACF:0000000C:clear this scene now
+FF0408 难度 ff5b51    ff0306+11
+FF0407 默认投币数 ff5b55 ff0306+c
+ 	     
+@FF5BA4=03 P1 Infinite Lives
+@FF5BCA=09 P1 Infinite Bombs
+@FF8E9F=88 P1 Infinite Energy
+@FF8EB5=F0 P1 Invincibility ;F0 Alternate Color;F1 Original Color;
+@FF8ECE)+FF0037)=FE P1 Infinite Weapon on Pickup
+
+@FF5BA5=03 P2 Infinite Lives
+@FF5BCB=09 P2 Infinite Bombs
+@FF8F9F=88 P2 Infinite Energy
+@FF8FB5=F0 P2 Invincibility
+@FF8FCE)+FF0037)=FE P2 Infinite Weapon on Pickup
+@FF5BF6:00 Special Ending;01 Normal Ending;
+Play Hidden Bonus Stage:FF769B=0 FF769F=0;
+@FF8E6E Palette PL1;@FF8F6E Palette PL2
+<cheat desc="Palette PL1">
+    <parameter>
+	  <item value="0x80">Punisher</item>
+	  <item value="0x81">Nick Fury</item>
+	  <item value="0x82">Blue+Orange</item>
+	  <item value="0x83">Green+Brown</item>
+	  <item value="0x84">Invincible Color</item>
+	  <item value="0x85">Black+Gray</item>
+	  <item value="0x86">White+Red</item>
+	  <item value="0x87">Cream+Blue</item>
+	  <item value="0x88">Pink+White</item>
+	  <item value="0x89">Brown+Green</item>
+	  <item value="0x92">Red+Alabaster</item>
+	  <item value="0x96">Gray</item>
+	</parameter>
+    <script state="run">
+      <action>maincpu.pb@FF8E6E=param</action>
+    </script>
+  </cheat>
+--------------------- 
+惩罚者(日版)快速前冲加速加长
+21cb6 03 80->1f 80
+21cd6 fc 80->e0 80
+
+a8de8 00 04->00 1f
+a8db4 ff fc->ff e0
+--------------------   
+186ea 92e8c 26806 26836 脚刀
+--------------------  
+108C30 109C10 109AF6 109C10 act:fa/2拳a4/2保险da/2翻滚64/2冲踢
+C573A  c5568 1boss真
+c5c6a  c5a98 1boss假
+132da4 133082 忍者
+11c938 11ca9c 
+120b8a 120be2 4boss act:05拳08保险11放炮0a收炮
+
+maincpu.mw@20826=C
+maincpu.mw@20828=573a
+maincpu.mw@20210=C
+maincpu.mw@20212=573a
+maincpu.mw@6bdfc=C
+maincpu.mw@6bdfe=573a
+bp 116c,1,{printf "\r\n%8x %8x %4x %4x %4x %4x",a6,a0,d0,maincpu.pw@(a6+2),maincpu.pw@(a6+c),maincpu.pw@(a6+e);go;}
+bp 1172,a6==ffff8e68,{logerror "%8x %8x %4x %4x \r\n",a6,a0,d0,maincpu.pw@(a6+2);go;}
+wp ffafe8+16,4,rw,1,{printf "%8x %8x %8x ",wpaddr,wpdata,pc;go;}
+--------------------
+数字精灵1-0:49f2/49be/4ccc-e/4f2e\4f3e\4f4e\4f4d\4faa
+90a790 显存 分数(181,a1),(201,a1)
+90c000
+918000
+90d86a 第1个金袋
+9040e0 第1个椅子 bp 1533a写obj显存
+
+ff8e68 1P基址 ff8f68 2p基址 内存0x100大小
+ffb3a8 第1个敌兵 内存0x0c0大小
+ffbe28 第1个椅子0301
+ffc968 第1个金袋
+ff8f28 1p按键 ($52,A6)
+bp 18fc  捡东西
+bp 19e4  捡起武器
+bp 14c94 写900000显存
+bp 1533a 加钱数字动画 写精灵显存
+bp 1cbfa 动作ID 10-1D156
+bp 4506  显示d2分数
+bp 9042a 角色减血
+bp 95ff2 角色拳攻击力d0 敌兵被打
+bp 93054 敌兵被武器砍
+bp 2966  敌兵血初始化
+bp 9c4f4 读取投币数01显示
+bp 963b8 第1敌兵+物品加载填充 a2=17610d,17611f  fff8a8 fffae8 ffbfa8 ffbee8 ffbe28 b2e8
+bp 9678a 出兵表COPY to ff0868 move.b  (a2)+,-$7798(a5)
+bp 96886 第3敌兵内存加载填充 读取a2=ff0868 
+bp 963fc 写场景出兵指针+12 ff7666
+bp 9646a 写场景出兵指针+04 ff7666
+bp 9647c 写场景出兵指针+04 ff7666
+bp 964ea 写场景出兵指针+04 ff7666
+bp 965be 写场景出兵指针+06 ff7666
+bp 965f0 写场景出兵指针+06 ff7666
+bp 96260 写场景出兵指针 第一次 17600c 
+bp 9623e 关卡场景加载d0->a0->ff7666
+bp 9666c 关卡动态敌兵加载d0->a0->10(a6)=ff76a6
+bp 96934 关卡动态敌兵+04加载d0->a0->10(a6)=ff76a6
+bp 968cc 关卡动态敌兵+10加载d0->a0->10(a6)=ff76a6
+bp 96924 关卡动态敌兵+08加载d0->a0->10(a6)=ff76a6
+bp 96944 关卡动态敌兵+04加载d0->a0->10(a6)=ff76a6
+bp 96960 关卡动态敌兵+02加载d0->a0->10(a6)=ff76a6
+bp 9628E 读 ff7666
+bp 96758 读 ff76a6
+bp 968cc 读 ff76a6
+bp 92fe6 武器斧头使用损耗
+bp 2a12  掉物查表 
+bp 2d66  掉物写内存
+bp 7a1a0 掉物分配实际实物 钢管查的表7aae8
+bp 9628a 初始化美女ffbbe8+5;177191;01改成00第二门出美女;zengfr
+    org $177190
+		dc.b $0100 ;$0001老鼠;$0000粉红女;$0100白领女;$0200白领男;bp 9628a 初始化美女ffbbe8+5;177191;01改成00第二门出美女;zengfr
+	org $831a1
+		dc.b $7f ;$20;美女亲吻次数+3a;
+	org $8342e
+		bgt $83442 ;beq $83442;改成6e12都掉食物
+	org $83432
+		dc.b $20 ;$74;美女亲吻掉物+99;
+maincpu.mw@1cc2e=d462 抓人后直接旋转
+ff5f96 场景源头;FF18B3也是场景;FF5ACF=0C starts triggering next section;
+ff6012 场景
+ff4ee1 过场景动画0148.ff4e83?
+ff07c6 卷轴
+ff07c8 卷轴
+ff7376 screen_left 卷轴比较 -$C8A(a5) 源头
+ff737a 卷轴比较 -$C86(a5)
+ff7396 卷轴
+ff7398 卷轴
+ff765f 场景加载指针函数索引 a6=7656=(-9aa,a5)
+ff7660 场景加载指针类型 +4 +6或 +12 
+ff7666 场景加载指针  a6=7656
+ff7696  ？(-96a,a5)
+ff76a6 动态加载敌兵指针
+ff0862  -$779E(a5)
+ff0868  -$7798(a5)
+ff5fac  时间计数
+ff5ffc
+ff5bac 分数
+ff5bc6 拳击计数
+ff5b14 投币数 
+ff5b1c start coin键
+ff5b20 按键输入
+ff5bb2 按键输入
+ff5bd0 循环计数
+ff5bda 非0不能续币-$2426(a5)
+
+ff5b3d 场景加载比较 -$24C3(a5)
+ff5bd7 场景加载比较 -$2429(a5)
+
+ff5b38 场景加载比较 -$24C8(a5)
+ff5b40 场景加载比较 -$24c0(a5)
+camera_mode = 0xFF5BD3
+game_phase  = 0xFF4E81
+a4+02  ID
+a4+03  出场动作
+a4+04  ?
+a4+05  ?
+a4+07  flip_x 
+a4+08  面向0后1前
+a4+0c  动作ID
+a4+0e  子动作ID
+a4+12  .l 精灵指针 bp 14fd4
+a4+16  enemies alive
+a4+1a  enemies active
+a4+96  ?
+a4+97  ?
+a4+99  掉物 27雷 23鸡腿
+a4+9b  ?
+a4+24  坐标Y
+a4+20  pos_x坐标X来源ff085e
+a4+28  pos_z坐标Z来源ff0860
+a4+30  hitbox_ptr 
+a4+36  血量
+a4+34  减血量
+a4+3a  第二关美女亲次数0065；bp 831a0;
+a4+3c  attack
+a4+3e  vulnerability
+a4+64  持枪02
+a4+66  持物指针
+($9c,A6) 惩罚者有个标签，可以直接让BOSS变小兵的，打死不过关等等
+f9bxx=f9cxx 大段空白 不能擦除 会异常。
+03 功夫男 03飞出
+04 铁桶
+05 时尚男
+07 小兵
+08 小兵
+09 小兵
+00 小刀兵
+0a 空
+0B 小刀兵
+0C 风衣枪兵
+0D 风衣枪兵红裤
+0E 忍者女蓝色
+0F 忍者女绿色
+10 空
+12 西装男不动
+13 机器兵红色
+18 2BOSS坦克
+1B 绿色西装手枪男
+1C 西装男红色不动
+1D 红衣大枪兵
+1E 紫色西装手枪男 14大笑
+1F 忍者女
+20 忍者女 红棕色
+21 高个绿色
+22 高个红棕色
+23 驼背斧头兵 00棒锥 08 扔雷兵
+24 驼背兵  01 棒槌
+25 红短衣枪兵
+26 浅绿短衣枪兵
+28 喷火器时尚男
+29 功夫男
+2F 跑步鞋小刀兵
+30 喷火器时尚男  
+2B 头巾跑步鞋小兵
+-------------
+掉物:
+06小蛋糕 0E大蛋糕 
+13戒指分 17枪分 
+20最大牛排 
+30大斧头 31斧头   33钢管 35断木 37弯刀 
+41机枪   42灭火器 43喷火器 
+50五星镖 56自爆雷
+63喷火器 63螺旋镖 64黄金块 65五星镖 66大蛋糕 
+74热狗
+---------------------------------------
+0002黄金块  
+0100最大牛排 0101热狗 0103鸡腿 0104大蛋糕 0107手雷
+0201斧头 0202弯刀 0203钢管 0204棒槌 0205断木 
+0403铁桶
+0503喷火器 0502灭火器 
+0600五星镖 0607飞刀 0606自爆雷 0604雨伞镖 0603螺旋镖 
+0900猫/14
+色板调式:bp 152f0,1,{printf "%8x %8x %8x %8x %8x %8x %8x",frame,pc,a6,a1,a2,d0,d6;g}
+
+wp ff8e68+0c,2,r,wpdata>0,{printf "wpr %8x %8x %8x %8x",frame,pc,wpdddr,wpdata;g}
+wp ff8e68+0c,2,w,wpdata>0,{printf "wpw %8x %8x %8x %8x",frame,pc,wpaddr,wpdata;g}
+bp 1cbfe,1,{printf "act %8x %8x %8x %8x",frame,pc,d0,a1;g}
+
+bp 96788,1,{logerror "c%2x %2x %8x|%2x %2x %2x|%2x %8x %8x %8x\n",pb@FF5BB9,pb@ff6012,a2,pb@(a2-3),pb@(a2-2),pb@(a2-1),pb@(a2+0x0),pd@(a2+0x1),pd@(a2+0x5),pd@(a2+0x9);g}
+
+bp 963e6,1,{logerror "s%2x %2x %8x|%2x|dc.w $%04x,$%04x,$%04x,$%04x,$%04x,$%02x%02x\n",pb@FF5BB9,pb@ff6012,a2,d1&1f,pw@(a0+0x2),pw@(a0+0x4),pw@(a0+0x20),pw@(a0+0x24),maincpu.pw@(a0+0x28),maincpu.pb@(a0+0x99),maincpu.pb@(a0+0x9b);g}
+
+bp 968b0,1,{logerror "d%2x %2x %8x|%2x|dc.w $%04x,$%04x,$%04x,$%04x,$%04x,$%02x%02x\n",pb@FF5BB9,pb@ff6012,a2,d1&1f,pw@(a0+0x2),pw@(a0+0x4),pw@(a0+0x20),pw@(a0+0x24),maincpu.pw@(a0+0x28),maincpu.pb@(a0+0x99),maincpu.pb@(a0+0x9b);g}
+
+bp f971c,1,{logerror " %8x %2x %2x %2x %8x %8x %8x %8x\n",frame,pb@FF5BB9,pb@ff6012,d1,a0,a2,maincpu.md@(a2),maincpu.md@(a2+0x4);g}
+---------------------------------------------------------------------------------------------------------------------
+暴力风暴
+Hit Anywhere  .mw@018C6E=6002 .mw@018C76=6002 .mw@018C7C=6002 mw@018C8C=6002 
+200600 F2保存后配置200680->200600
+20061f f2音量
+200698 F2角色生命数量
+200699 F2分数奖命first 00-02-03-05
+20069A F2分数奖命every    00-04-06
+20069B F2难度 00易-07难
+2006A0 F2 LOOP 00 on round end 01 endless
+2006A1 F2 Mode 00 lean 01 bloody
+15734  F2数据COPY校验
+2000c1 投币数
+200C10 关卡
+200C12 无限时间pw@200C12=0959
+200C18 ? 
+20080a 1p死后续币倒计时
+20080C 无限生命pb@20080C=0A
+200818 游戏状态
+201800 =1过关
+201802 
+20180B 角色数量 ;20de8f;
+201817
+201428 0360;1V3 ;bp 3E16C d0=7;R:3e20e 3e21c;
+201422 屏幕敌兵数量
+201A58 卷轴 201A00、201A98
+20de82-84 选人时间
+796e8  文字字符串
+78ef0  insert coin bp 2a32/2a9c
+13400  角色介绍文字
+
+211010 ID
+211012 动作ID
+21101A 转向00/FF
+21101C 动作指针
+211020 X  2C 80 8C 坐标相关
+211024 Z
+211028 Y
+21102c X offset
+211030 Y offset
+211034 Z offset
+211059 我方1，敌方2
+2110c6 按键 200800
+211006 敌兵ID1 查表7CD44
+211008 敌兵ID2 执行表指针子程序
+2110b4 持物内存地址 6匕首 14钢管 26baa持物 262cc扔掉 1dc8c被打掉地上 1e094被打掉消失 1e2fa被打掉地上
+217c00
+218c00
+300210 场景屏幕左上角显存
+300240 分数显示
+300D10 场景屏幕左下角显存
+300DD0 场景屏幕右下角显存
+301ca0 insert coin 显存
+300400 1P血槽显存 bp 17848/17860
+331000 1P人物显存 bp 9c9c copy 20c000/331000
+330000-330C00 场景显存
+80400  人物动作列表  0x7722载入
+669da  出兵配置表
+3df18  $5900卷轴出兵前数据查表 0x201430 0x201434  0x201438/$201A58/$201A98/$201AD8; （3E1A8也有+3E1E6 1V3相关）
+58dc-5930 一堆JSR 场景相关
+5972-59c2 一堆JSR 敌兵分配相关
+217C   3P血条相关 201600 201620 201640
+221A   3P    相关 201660 201680 2016A0
+9d78/a0ec load Pal_Ptr_Tbl_9B82
+9B82  Pal_Ptr_Tbl_9B82 0x330000/0x330400/0x330800/0x330C00/0x331000/0x331400/0x331800
+9B9E  Mem_Ptr_9B9E    0x20B000/0x20B400/0x20B800/0x20BC00/0x20C000/0x20C400/0x20C800
+443fc 敌兵减血 (过程 bp 19000 45->9f->62)
+5d4ce boss减血 1boss d/211a00/331580 2boss e/211900/3317c0
+2a1a6 桶子ID21配置表 表格大小0x08;bp 29e40     写内存 212100
+2CAE8 打破掉食品     表格大小0x08;2cc30、2cb88 写内存 212d00 
+25CCA 桶子打破掉物 钢管 14 查表25d40表格大小0x10
+286bc 桶子打破掉钢管01 小刀00 空不走
+3E250 桶子掉物控制位$A(a6);查表66ac2;4F 00 01为空桶,EF钢管 bp 286bc分配
+26baa 角色捡起钢管
+4C03E 内存出小刀06
+3e232 $3e2e6分配内存 $3E300 指针具体分配空间起止$05(a0)
+3e23a $3e246填充数据  
+66ac2 卷轴数据表大小0x0A(66a22-66a2c) 5998->3E194->3E1E6->3E246
+  
+21101C		保存动作指针	另外一处单独调用，载入BB6A处指针表
+21102C 		X OFFSET
+211030 		Y OFFSET
+211034 		Z OFFSET
+21104C 		人物ID W:3EDAE;R:3E66C查表求90、3E72A查表求91、40A4A比较13 
+211052      小头像及姓名ID	和4C关联
+211059		根据ID查表获取属性	52相关，我方1，敌方2。表地址18CD0
+211060		HP上限	
+211062		HP满值60，23676，初始化HP
+21108C		X坐标暂存	
+211090		Z坐标暂存			
+211098		等于IDX2	IDx2
+21109A		动作ID缓存	用于4A等
+2110EB		被攻击相关	和200182相关
+bp 5D4D0    1boss死4行代码,ori.b  #2,$A0(a0) 关键.
+bp 5C93C    1boss这句才会死ori.b  #$80,$E9(a0) ,e9 第0位=1则倒地弹动画=0快速倒地
+bp 1aa58   行走E
+bp 1aa7e   身体转向5
+bp 1d948   行走B
+
+bp 2008C   写角色数量$20180B
+bp 16a8c   读取1993 kinami
+bp 167ac   写798F0开机自检字符
+bp 2b44    字符串查表
+bp 3b48    200001每次加一
+bp 3E410   分配敌兵内存A0 最高 $211900-$212100
+bp 3EDAE   出兵 A5=4E806  ->A0 $211900
+bp 3EDE2   过关卡和BOSS前触发 分配 a0 213d00 213e00
+bp b524    改d1看动作 如d1=dc b 24 cb cc
+bp b2C0    动作指针解析  人物动作列表总指针原版在0x7722
+bp 40064,a0==211900,{d0=0x5;g}锁死第一敌兵AI模式
+bp 3e24c,a6==211900,{d2=0x2d;}修改敌兵ID
+
+1b1c/1b26->1b32->1ce8->1cfa->1d16 按键
+1ECE4->1ECFA->
+1ACE8->1AD06->1AD6C->1ADAE->1E800->前冲CB,CC
+---------------------------------------------------------------------------------------------------------------
+bp 3eda6 出兵
+
+方向	类型	地址	文本
+向下	p	ROM:0004A8CA	jsr     sub_3EDA6|
+向下	p	ROM:0004C594	jsr     sub_3EDA6|
+向下	p	ROM:0004D778	jsr     sub_3EDA6|
+向下	p	ROM:0004E4AA	jsr     sub_3EDA6|
+向下	p	ROM:00050D54	jsr     sub_3EDA6|
+向下	p	ROM:00051D74	jsr     sub_3EDA6|
+向下	p	ROM:000543E4	jsr     sub_3EDA6|
+向下	p	ROM:00055C7E	jsr     sub_3EDA6|
+向下	p	ROM:00056324	jsr     sub_3EDA6|
+向下	p	ROM:00056750	jsr     sub_3EDA6|
+向下	p	ROM:0005909C	jsr     sub_3EDA6|
+
+方向	类型	地址	文本
+向下	p	ROM:0004741E	jsr     sub_3EDE2|
+向下	p	ROM:00047748	jsr     sub_3EDE2|
+向下	p	ROM:00047936	jsr     sub_3EDE2|
+向下	p	ROM:000479D2	jsr     sub_3EDE2|
+----------------------------------------------------------------------------------------------------------------
+出物品表 bp 29E40
+
+      D87 tb-ljt    29E40    2A14E   212100     21AA     AA4E     FCF2       30
+      D91 tb-ljt    29E40    2A14E   212200     21AA     AA4E     FCF2       30
+     188D tb-ljt    29E40    2A1A6   212100     21F6     F653     FCF2       30
+     18E9 tb-ljt    29E40    2A146   212200     21AA     AA4E     FFFB       30
+     197D tb-ljt    29E40    2A19E   212100     21F6     F653     FFFB       30
+     2378 tb-ljt    29E40    2A0BE   212100      51C     1D43       F6       20
+     2399 tb-ljt    29E40    2A0BE   212300      51C     1D43       F6       20
+     277B tb-ljt    29E40    2A0BE   212100      51C     1D43       F6       20
+     2919 tb-ljt    29E40    2A0BE   212100      51C     1D43       F6       20
+     2AB8 tb-ljt    29E40    2A0BE   212100      51C     1D43       F6       20
+     2C13 tb-ljt    29E40    2A116   212100      52D     2E4B       FA     FFFF
+     31B1 tb-ljt    29E40    2A19E   212100     21F6     F653     FFFB       30
+     3247 tb-ljt    29E40    2A13E   212200     21A3     A34D       F6       38
+     363B tb-ljt    29E40    2A20E   212100     2140     405B      4FA        0
+     42AF tb-ljt    29E40    2A196   212100     1617     1752       F6        0
+     42B2 tb-ljt    29E40    2A1AE   212200     21FB     FB54     FEFA       48
+     42B5 tb-ljt    29E40    2A0BE   212300      51C     1D43       F6       20
+     4318 tb-ljt    29E40    2A15E   212100     21EF     EF4F       F6       34
+     4318 tb-ljt    29E40    2A15E   212200     21EF     EF4F       F6       34
+     4318 tb-ljt    29E40    2A15E   212300     21EF     EF4F       F6       34
+     45E0 tb-ljt    29E40    2A13E   212100     21A3     A34D       F6       38
+     461F tb-ljt    29E40    2A16E   212200     21BC     BC50       F6       40
+     463A tb-ljt    29E40    2A16E   212300     21BC     BC50       F6       40
+     4652 tb-ljt    29E40    2A136   212400     21A3     A34D     FFFB       38
+     4661 tb-ljt    29E40    2A136   212400     21A3     A34D     FFFB       38
+     4F76 tb-ljt    29E40    2A13E   212100     21A3     A34D       F6       38
+     4F76 tb-ljt    29E40    2A136   212200     21A3     A34D     FFFB       38
+     5203 tb-ljt    29E40    2A136   212100     21A3     A34D     FFFB       38
+     5209 tb-ljt    29E40    2A136   212400     21A3     A34D     FFFB       38
+     5212 tb-ljt    29E40    2A136   212500     21A3     A34D     FFFB       38
+     5218 tb-ljt    29E40    2A136   212600     21A3     A34D     FFFB       38
+     521C tb-ljt    29E40    2A136   212700     21A3     A34D     FFFB       38
+     5229 tb-ljt    29E40    2A136   212800     21A3     A34D     FFFB       38
+     523C tb-ljt    29E40    2A136   212900     21A3     A34D     FFFB       38
+     52B2 tb-ljt    29E40    2A10E   212200     21B2     B24A       F6       26
+     52CC tb-ljt    29E40    2A1B6   212300     21FB     FB54       F6       48
+     586C tb-ljt    29E40    2A15E   212200     21EF     EF4F       F6       34
+     587C tb-ljt    29E40    2A15E   212100     21EF     EF4F       F6       34
+     5979 tb-ljt    29E40    2A13E   212400     21A3     A34D       F6       38
+     6344 tb-ljt    29E40    2A13E   212100     21A3     A34D       F6       38
+     6375 tb-ljt    29E40    2A0F6   212200     21B1     B14A     FEFA       26
+----------------------------------------------------------------------------------------------------------------
+地址	        Function	指令
+ROM:0000D344				move.w  (a6)+,$10(a0); 
+ROM:00025CEC	sub_25CCA	move.w  (a6)+,$10(a0); 
+ROM:00027810				move.w  (a6)+,$10(a0); 
+ROM:00029CEC				move.w  (a6)+,$10(a0); 
+ROM:0002A62C				move.w  (a6)+,$10(a0); 
+ROM:0002ADE2				move.w  (a6)+,$10(a0); 
+ROM:0002CAE8				move.w  (a6)+,$10(a0); 2cb88 202d00 d0=58 id=21/d0=108 2c38 id=21/2cc30
+ROM:0002DA40				move.w  (a6)+,$10(a0); 
+ROM:0002DF9A				move.w  (a6)+,$10(a0); 
+ROM:0003225E				move.w  (a6)+,$10(a0); 
+----------------------------------------------------------------------------------------------------------------
+
+零日 hackrom 13:29:27
+先说一下动作定义。每个人物0X100个，这个需要重新MAP我是给你说过的吧，所以你需要一个EXCEL来记录每个人物的动作列表。方便你后续进行替换和进度记录。
+
+人物动作列表总指针原版在0x7722开始。ID排序如下
+
+零日 hackrom 13:29:57
+Role_Script_Tbl:	
+		.long 0xB6F9E		| 嬉皮士
+		.long 0xB739E		| 刀子女
+		.long 0xB779E		| WADE
+		.long 0xB7B9E		| 铁链男
+		.long 0xB7F9E		| 判定框，定位器
+		.long 0xB839E		| 破门
+		.long 0xB859E		| 小刀
+		.long 0xB879E		| 红色小块
+		.long 0xBF11E		| 最终BOSS
+		.long 0xB899E		| 斗篷小兵
+		.long 0xB8D9E		| 长条。。
+		.long 0xB909E		| 二关BOSS场景
+		.long 0xB939E		| 非主流
+		.long 0xB979E		| 红发嬉皮士
+		.long 0xB9B9E		| 大木箱
+		.long Script_Role_Dabel	| 第一关猪头无面具
+		.long 0xBA19E		| 面具
+		.long 0xBA59E		| 油桶
+		.long 0xBA79E		| 小块
+		.long 0xBAB9E		| 龙拳
+		.long 0xBAF9E		| 钢管
+		.long 0xBB19E		| 椅子
+		.long 0xBB39E		| 带电物件
+		.long 0xBB49E		| BORIS
+		.long 0xBB89E		| 铁甲男
+		.long 0xBBC9E		| 影子
+		.long 0xBBD1E		| 橄榄球
+		.long 0xBE61E		| 龙拳部分块
+		.long 0xBBF1E		| KYLE
+		.long 0xBC31E		| 肌肉男
+		.long 0xBED1E		| 机械男
+		.long 0xBC71E		| 炸弹男
+		.long 0xBCB1E		| 死胖子
+		.long 0xBCF1E		| 火烧状态
+		.long 0xBD31E		| 野蛮人
+		.long 0xBD71E		| 花盆
+		.long 0xBD91E		| 普通猪头男
+		.long 0xBDD1E		| 驼背剪刀手
+		.long 0xBE11E		| 剪刀手带刀状态
+		.long 0xBE51E		| 摩托车
+		.long 0xBE61E		| 龙拳部分块2
+		.long 0xBE71E		| 神龟
+		.long 0xBEB1E		| 食品道具
+		.long 0xBED1E		| 机械男
+		.long 0
+
+零日 hackrom 13:30:27
+其中有的地址是名字，就是我修改过的，所以你还是要以原ROM的地址为准
+
+零日 hackrom 13:31:19
+以野蛮人为例，看一下他的动作指针，BD31E，到这个地址看一下，后面的256*4字节，刚好0X100个动作。
+
+零日 hackrom 13:31:58
+这个动作，你目前就只需要了解到指针层面就行了。替换也只替换指针。后续没有的动作，我把动作脚本导出来再修改添加。
+
+wp 200800,2,r,0&&wpdata>0,{logerror "\n %8x act  r %8x %8x %4x",frame,pc,wpaddr,wpdata;g}
+
+wp 200800,2,w,0&&wpdata>0,{logerror "\n %8x act  w %8x %8x %4x",frame,pc,wpaddr,wpdata;g}
+wp 200800,2,r,0&&wpdata==29 or wpdata==2A,{logerror "\n %8x act  r %8x %8x %4x",frame,pc,wpaddr,wpdata;g}
+
+wp 2110c6,2,r,0&&wpdata>0,{logerror "\n %8x anj  r %8x %8x %4x",frame,pc,wpaddr,wpdata;g}
+
+wp 20080C,1,w,wpdata>0,{logerror "\n %8x live w %8x %8x %4x",frame,pc,wpaddr,wpdata;g}
+wp 211063,1,w,wpdata>0,{logerror "\n %8x xue  w %8x %8x %4x",frame,pc,wpaddr,wpdata;g}
+
+wp 211012,2,w,wpdata>0,{logerror "\n %8x 1pAct w %8x %8x %4x %4x",frame,pc,wpaddr,maincpu.pw@211010,wpdata;g}
+wp 211012,2,r,0&&wpdata>0,{logerror "\n %8x 1pAct r %8x %8x %4x %4x",frame,pc,wpaddr,maincpu.pw@211010,wpdata;g}
+
+wp 211912,2,w,wpdata>0,{logerror "\n %8x dbAct w %8x %8x %4x %4x",frame,pc,wpaddr,maincpu.pw@211910,wpdata;g}
+wp 211912,2,r,0&&wpdata>0,{logerror "\n %8x dbAct r %8x %8x %4x %4x",frame,pc,wpaddr,maincpu.pw@211910,wpdata;g}
+
+wp 211000,100,w,0&&wpdata>0 and wpaddr!=211020 and wpaddr!=211028 and wpaddr!=211059 and wpaddr!=211094 and wpaddr!=2110a3 and wpaddr!=211017  and wpaddr!=2110e6  and wpaddr!=211000  and wpaddr!=2110ac  and wpaddr!=21103f,{logerror "\n %8x 1p  w %8x %8x %4x",frame,pc,wpaddr,wpdata;g}

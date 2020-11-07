@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Z80 Assembly</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script src="/cdn-cgi/apps/head/HN2yr-WjAPj_mRBhCVcOzfdQRRo.js"></script><link rel="Stylesheet" href="normal.css">
+</head>
+<body>
+<h1>Z80 Assembly - The Basics</h1>
+<h2>Assembly in general</h2>
+<p>A program is a series of instructions given to a computer to carry out a given task. There are lots of languages existing in which you can define such a task, and certain programs &ndash; compilers &ndash; will translate your instructions into the native language of the computer: machine code. Machine code consists of series of numbers that the computer can directly understand without further interpretation. Assembly is a simple language that is very close to machine code, but short, easy-to-memorise words are used in it instead of the numbers. Besides this, assembly offers some features machine code does not, e. g. labels (explained later). Since there is almost a one-to-one correspondence between the elements of assembly and the internal instructions of the computer, you can completely exploit the capabilities of the hardware. This is actually what makes assembly hard to learn: you have to think like the computer instead of normal human thinking.</p>
+<h2><a name="compiling"></a>Compiling programs</h2>
+<p>As assembly is a text-based language, the computer cannot understand it directly. Compilation is a process that converts the text source into a binary program that can be executed. I don&rsquo;t intend to elaborate on this process too much, because this guide is about Z80 in general, while compilation depends on what kind of calculator you have (I might be using the word &ldquo;calculator&rdquo; frequently, but the guide is really useful for everything driven by a Z80). You will most probably find everything you need in the Programming section of ticalc.org. To facilitate the search, here is the list of things you will need:</p>
+<ol>
+<li><b>Graph-link cable</b> - assembly programs are written and compiled first on a PC, then they have to be sent to the calculator. It is possible in some cases to get over without a PC, but I don&rsquo;t recommend these solutions, because they are rather cumbersome.</li>
+<li><b>Assembler and linker</b> - the programs that convert the source into a binary that can be sent to the calculator without further modification. Along with these programs you are going to find more information about the syntax of the assembly sources (which might depend on which assembler you choose).</li>
+<li><b>Emulator</b> - a program that simulates a virtual calculator on your PC. This will enable you to test your programs before physically sending them to your calculator. I strongly advise you to do so, because it&rsquo;s better to crash the emulator than the real calc. The former can be reset without any problem, while in the case of a calculator crash, you have to take out all batteries and wait for a day until you can use it again... I recommend Rusty Wagner&rsquo;s Virtual TI.</li>
+<li><b>Calculator specific documentation</b> - instructions that let you use the built-in functions of your calculator saving you from having to do everything on your own.</li>
+</ol>
+<h2><a name="numbers"></a>Data and numbers</h2>
+<p>The memory of the computer contains 0&rsquo;s and 1&rsquo;s. Each of these digits is called <i>bit</i> (from <i>binary digit</i>). However, the computer cannot access these bits directly, only in groups of eight. These groups are called <i>bytes</i>. The bits of a byte are numbered from 7 to 0, where the number is the exponent of 2 that the digit belongs to. As one byte consists of eight bits, it can be easily calculated that it can contain 2<sup>8</sup>=256 different values. The computer interprets these values as the integers from 0 to 255. For example, %01110101=117, since:</p>
+<table border="0" cellspacing="0" cellpadding="0" align="center">
+<tr valign="bottom"><td><b>0</b>*2<sup>7</sup></td><td>=</td><td>0</td></tr>
+<tr valign="bottom"><td><b>1</b>*2<sup>6</sup></td><td>=</td><td>64</td></tr>
+<tr valign="bottom"><td><b>1</b>*2<sup>5</sup></td><td>=</td><td>32</td></tr>
+<tr valign="bottom"><td><b>1</b>*2<sup>4</sup></td><td>=</td><td>16</td></tr>
+<tr valign="bottom"><td><b>0</b>*2<sup>3</sup></td><td>=</td><td>0</td></tr>
+<tr valign="bottom"><td><b>1</b>*2<sup>2</sup></td><td>=</td><td>4</td></tr>
+<tr valign="bottom"><td><b>0</b>*2<sup>1</sup></td><td>=</td><td>0</td></tr>
+<tr valign="bottom"><td><b>1</b>*2<sup>0</sup></td><td>=</td><td>1</td></tr>
+<tr><td colspan="3"><hr size="1"></td></tr>
+<tr><td colspan="2">Total:</td><td>117</td></tr>
+</table>
+<p>(% stands for the fact that the number is represented in base 2). As you can see, the calculation is the same as in base 10, but instead of the powers of 10, each digit is worth a power of 2. This is the smallest unit of data that the computer can directly handle. The next one is called <i>word</i>, which is simply two bytes put together, i. e. a unit of 16 bits. Therefore, a word can take values between 0 and 2<sup>16</sup>-1=65535. On other CPU&rsquo;s there are other units like 32-bit <i>doublewords</i>, but the Z80 can only cope with bytes and words, so it is enough to know these two. The larger data blocks of <i>kilobytes</i> (1024 bytes), <i>megabytes</i> (1024 kilobytes) and so are impossible to directly interpret for the computer (in the very end of the process, of course), these units are only used by humans in reference to the size of the blocks.</p>
+<p>You should be aware of the hexadecimal (base 16) representation of numbers as well, because it is very useful and widely used. Hexadecimal numbers start with a $, and as the value of each digit can range from 0 to 15, the ones above 9 are represented with the first 6 letters of the alphabet: A stands for 10, B for 11 etc. Note that hexadecimal and binary numbers can be easily converted into each other, as one hexadecimal digit is equivalent to four binary digits. Using the example of 117 from above: %01110101=$75=7*16+5=112+5=117.</p>
+<p>There is a vital concept to mention here: endianness. There are two ways to represent large numbers in the memory, hence two processor families: little endian (e. g. Intel) and bigendian (e. g. Motorola). If a number needs more bytes to represent, you have to decide whether the LSB (<i>least significant byte</i>) or the MSB (<i>most significant byte</i>) should be written to the lowest address. The Z80 is little endian, i. e. it stores the LSB first. Therefore, if you have a 16-bit number, the lower byte is at the lower address. If you ever have to manipulate numbers on byte level&mdash;which is very likely if you dive deep into assembly&mdash;you should always keep to this rule.</p>
+<h2><a name="registers"></a>Registers</h2>
+<p>In most of the cases (which means &ldquo;always&rdquo; in the case of the Z80) memory is accessed through the CPU. As the CPU processes and transfers data, it must have its own memory for temporary data storage. This memory area is referred to as the <i>registers</i> of the CPU, and it can be accessed very fast compared to any other kind of memory in the computer. The Z80 has altogether 26 bytes of this kind of memory, whose bytes (sometimes words) all have their own names. It is actually senseless to think about them as a whole. These registers are the following (with their number of bits in parentheses):</p>
+<table border="1" cellspacing="0" cellpadding="2" align="center">
+<tr><td>A (8)</td><td>F (8)</td><td>A&rsquo; (8)</td><td>F&rsquo; (8)</td></tr>
+<tr><td>B (8)</td><td>C (8)</td><td>B&rsquo; (8)</td><td>C&rsquo; (8)</td></tr>
+<tr><td>D (8)</td><td>E (8)</td><td>D&rsquo; (8)</td><td>E&rsquo; (8)</td></tr>
+<tr><td>H (8)</td><td>L (8)</td><td>H&rsquo; (8)</td><td>L&rsquo; (8)</td></tr>
+<tr><td colspan="2">IX (16)</td><td colspan="2">IY (16)</td></tr>
+<tr><td colspan="2">SP (16)</td><td>I (8)</td><td>R (8)</td></tr>
+<tr><td colspan="2">PC (16)</td><td colspan="2">&nbsp;</td></tr>
+</table>
+<p>Each group has its special property:</p>
+<p><tt>A</tt>, <tt>B</tt>, <tt>C</tt>, <tt>D</tt>, <tt>E</tt>, <tt>H</tt>, and <tt>L</tt> can be directly accessed by the instructions of the CPU, and the pairs <tt>BC</tt>, <tt>DE</tt> and <tt>HL</tt> can be treated together as if they were 16-bit registers. In this case <tt>B</tt>, <tt>D</tt> and <tt>H</tt> are the more significant bytes (holding the greater powers) of these words, respectively. <tt>A</tt> and <tt>F</tt> are actually independent of each other, but they are sometimes paired.
+<p><tt>IX</tt> and <tt>IY</tt> are 16 bits long, and they are very similar to <tt>HL</tt> in functionality. These three are often used to address the memory, i. e. to determine which byte of the memory we are referring to. <tt>IX</tt> and <tt>IY</tt> are only divisible into 8-bit parts using <i>undocumented instructions</i>. These instructions are actually officially defined in later versions of the CPU, and they work on every Z80, even on the older ones. The term &ldquo;undocumented&rdquo; is rather traditional. <tt>IX</tt> is divided into <tt>IXH</tt> and <tt>IXL</tt> (or <tt>HX</tt> and <tt>LX</tt> in another notation), while the two halves of <tt>IY</tt> can be referred to as <tt>IYH</tt> and <tt>IYL</tt> (or <tt>HY</tt> and <tt>LY</tt>).</p>
+<p><tt>SP</tt> is the stack pointer. The stack is a place where the values of 16-bit register pairs can be saved for later retrieval. It will be explained later.</p>
+<p><tt>I</tt> stands for the <i>Interrupt Vector</i>; its usage will be explained later.</p>
+<p><tt>R</tt> is the <i>Refresh</i> register, whose value is increased by the length of every instruction, when they are executed. Only seven of its bits are updated, its MSB (<i>most significant bit</i>) is always zero. This register has normally no practical use for the programmer.</p>
+<p><tt>PC</tt> is the abbreviation for <i>Program Counter</i>, and it always contains the address of the currently executed instruction. It cannot be accessed directly by any of the instructions.</p>
+<p><tt>F</tt> is the <i>Flags</i> register, its bits give information about the results of the operation carried out by the preceding instruction(s). It cannot be accessed directly either. The information appears in the individual bits of the register:</p>
+<ul>
+<li><b>Bit 7 (S)</b>: the <i>Sign</i> flag, which is set if one of the registers changed its value from non-negative to negative. It is zero in all the other cases.</li>
+<li><b>Bit 6 (Z)</b>: the <i>Zero</i> flag, which is set if one of the registers was set to zero during the preceding operation. Note that not all operations resulting in zero alter this flag!</li>
+<li><b>Bit 5</b>: undefined.</li>
+<li><b>Bit 4 (H)</b>: the <i>BCD Half Carry</i> flag. It is set when there is a carry transfer from bit 3 to bit 4, and it is used for packed BCD correction. Personally I have never used it, and I doubt you will ever need it.</li>
+<li><b>Bit 3</b>: undefined.</li>
+<li><b>Bit 2 (P/V)</b>: the <i>Parity/Overflow</i> flag, which has different meanings depending on which instruction alters it. When it is Parity, it tells you whether the number of set (1) bits in the register is odd or even. When it means Overflow, it indicates overflowing (leaving the 0...127 or -128...-1 intervals) by being set. Actually, in the case of certain operations the contents of the flip-flop controlling the interrupt also appear here.</li>
+<li><b>Bit 1 (N)</b>: this bit indicates subtraction.</li>
+<li><b>Bit 0 (C)</b>: the <i>Carry</i> flag. It is set when the last operation caused a register to step over zero in either direction.</li>
+</ul>
+<p>The registers denoted by apostrophes are the <i>shadow registers</i>. They always come in pairs. There are special instructions that exchange the values of the shadow registers with their corresponding pairs, and neither of the other instructions can access them. They are normally used for saving data, but in a different manner than that of the stack.</p>
+<p>All the registers have some kind of special role. These roles are connected to certain instructions, and I will explain them step by step in the following sections. Besides these special roles, most of the registers can be used for general purpose data storage. The exceptions are <tt>F</tt>, <tt>PC</tt>, <tt>R</tt> and <tt>I</tt>. <tt>SP</tt> is also possible to use for storing data temporarily, but I would certainly discourage you from doing this unless you are an advanced programmer.</p>
+<h2><a name="variables"></a>Variables in assembly</h2>
+<p>The <i>variable</i> is probably the most important concept of programming. A variable is something that holds data for further reference. It is always located somewhere in the memory. You must understand something very important: from the point of view of the computer, the variable is just a nameless piece of memory, which can be referred to by its address. A memory address is a 16-bit number that tells the computer exactly at &ldquo;how manieth&rdquo; byte of the memory the variable is located. Since it would be cumbersome to memorise the exact position of your variables, you can substitute the numbers by names. This is actually a chief difference between machine code and assembly: in the latter, memory addresses can be given names, and these names are called <i>labels</i>. From then on, this label is used to access the contents of the variable. Here is an example of defining a label:</p>
+<pre>VarName:                         ; the name of the label followed by a colon
+  .byte 29                       ; the initial value of the variable</pre>
+<p>This piece of code is already assembler specific. Most assemblers will require you to start label names at the very beginning of a line, while the instructions must be tabbed in. I will also keep to this rule from now on; the syntax used is that of Telemark Assembler (TASM). When the assembler sees <var>VarName</var>, it associates this name with the address where it is currently during compilation. The directive <code>.byte</code> tells the assembler to put a byte of 29 at the current address, and advance the address by one. (Note: it might be something else than <code>.byte</code> with your assembler. E. g. <code>.db</code> is also quite common.) This way we have defined a label and allocated one byte of memory to it, which will initially contain 29 when you run the program.</p>
+<p>Registers can also be used for temporary data storage, but as their number is very limited, you end up putting most of the data into the memory. There are two special properties of the registers: they can be accessed really fast compared to normal memory, and they have to be used in basically every calculation &ndash; there is only a small number of operations where registers are not used. A simple example:</p>
+<pre>  ld a,5                         ; load 5 into A
+  ld b,7                         ; load 7 into B
+  add a,b                        ; add B to A, store result to A
+  ld (Result),a                  ; store the value of A into the variable Result</pre>
+<p>Here you could see just two important things. First of all, there is apparently no reason why the result of the addition is stored into <tt>A</tt>. This is because addition is not an operator, but an individual instruction called <code>add</code>. In the Z80, this instruction is <i>defined</i> in a way that it automatically stores its result into the first argument, which can be only either <tt>A</tt> (8 bits) or <tt>HL</tt>/<tt>IX</tt>/<tt>IY</tt> (16 bits). The other thing is that the references to memory variables are between parentheses. Do not forget that any variable names that you define will be simply substituted with numbers during compilation. Parentheses always indicate memory accesses, but they do not necessarily contain well defined variable names. The references can be registers as well. For instance, you could change the last instruction of the previous example to the following:</p>
+<pre>  ld hl,Result                   ; load the address of the Result variable in HL
+  ld (hl),a                      ; store the value of A into the byte pointed by HL</pre>
+<p>What happens in this case? <var>Result</var>, i. e. the address of the variable we call &ldquo;Result&rdquo;, a constant 16-bit value is loaded into <tt>HL</tt>, and <tt>A</tt> is stored at the address pointed by this value. Using registers to address memory is inevitable in many cases, e. g. when working with arrays.</p>
+<p>Let&rsquo;s put this together to an example that actually makes sense. We have two 8-bit variables called <var>Width</var> and <var>Height</var>, which contain the width and the height of a rectangle. We want to calculate the perimeter of the rectangle, and store it into a third 8-bit variable called <var>Perim</var>. For now, we assume that all these three values remain between 0 and 255. Here is the code:</p>
+<pre>  ld a,(Height)                  ; loading Height into A
+  ld b,a                         ; loading this value into B from A (it cannot be done
+                                 ; directly from the variable; see the possibilities below)
+  ld a,(Width)                   ; loading Width into A
+  add a,a                        ; adding A to itself, making it multiplied by two
+  add a,b                        ; adding the height once
+  add a,b                        ; adding the height again to complete the sum
+  ld (Perim),a                   ; storing the result into Perim</pre>
+<p>Hopefully the example needs no more explanation. <var>Perim</var> will take the value <var>Width</var> + <var>Width</var> + <var>Height</var> + <var>Height</var>, following the order of the code. This could have been done of course more efficiently as well, but I did not want to introduce new instructions this time. However, here is a good opportunity to show one source of error. Consider the code above, and look at this one:</p>
+<pre>  ld a,(Height)                  ; loading Height into A
+  ld b,a                         ; loading this value into B from A (it cannot be done
+                                 ; directly from the variable; see the possibilities below)
+  ld a,(Width)                   ; loading Width into A
+  add a,b                        ; adding the height once
+  add a,b                        ; adding the height again to complete the sum
+  add a,a                        ; adding A to itself, making it multiplied by two
+  ld (Perim),a                   ; storing the result into Perim</pre>
+<p>The result won&rsquo;t be the one we expect, if we expect it to return the correct perimeter... At first glance one could think that we only mixed the order of the additions, so it should return the same result. However, as I mentioned above, addition is not an operator but a complete instruction that writes back its result into the first operand. The final value of <tt>A</tt> will be therefore (<var>Width</var>+<var>Height</var>+<var>Height</var>)*2, i. e. <var>Height</var>*2 more than the result we wanted to see. The reason for this is that when you add <tt>A</tt> to the sum, it is not the original <var>Width</var> but already the sum calculated so far. Be prepared that such simple rearrangements can so easily mess up things. In this case, it was quite obvious, but it might turn out to be much harder to find such errors when writing a real program.</p>
+<h2><a name="ld"></a>The LD instruction in detail</h2>
+<p>This instruction is the most fundamental one. It is the equivalent of the &ldquo;->&rdquo; of TI-Basic, the = of C or the := of Pascal. It is used to load values into registers or memory areas, and it has both 8-bit and 16-bit versions. What it exactly does is simply copying the contents of the second operand into the first operand. The two operands must fit in size; it&rsquo;s impossible to load an 8-bit value into a 16-bit register, even if it would sound logical. There is no automatic type conversion in assembly, except for constants. One important thing to note: not all the combinations are possible. I have included a <a href="app1a.htm">table summary</a> of these combinations in the instruction reference appendix.</p>
+<h3>8-bit combinations</h3>
+<ul>
+<li>1. <tt>A</tt>, <tt>B</tt>, <tt>C</tt>, <tt>D</tt>, <tt>E</tt>, <tt>H</tt>, <tt>L</tt>, <tt>IXH</tt>, <tt>IXL</tt>, <tt>IYH</tt> and <tt>IYL</tt> can be combined in almost any way, e. g. <code>ld e,l</code> is a valid instruction. You can <code>ld</code> a register into itself as well, but it doesn&rsquo;t make much sense... You have to be aware that due to the way the CPU is designed, the halfbytes of <tt>HL</tt>, those of <tt>IX</tt> and those of <tt>IY</tt> are mutually exclusive. This is quite ambigious, so here are some examples: you can use <code>ld ixh,ixl</code> or <code>ld l,h</code> but e. g. <em>ld h,iyl</em> or <em>ld iyh,ixh</em> are impossible.</li>
+<li>2. All the above can be given an 8-bit constant value as well, e. g. <code>ld c,211</code>.</li>
+<li>3. <tt>A</tt>, <tt>B</tt>, <tt>C</tt>, <tt>D</tt>, <tt>E</tt>, <tt>H</tt> and <tt>L</tt> can be combined with <tt>(HL)</tt>, <tt>(IX+n)</tt> and <tt>(IY+n)</tt> in any direction. For example, <code>ld b,(ix+7)</code> will take the value IX+7, reads the byte at this address and copies it into <tt>B</tt>. The constant n can be any number between -128 and 127. Similarly, <code>ld (hl),d</code> copies the contents of <tt>D</tt> into the <tt>HL</tt><sup>th</sup> byte of the memory. Two memory references cannot be combined.</li>
+<li>4. A can be combined with <tt>(BC)</tt>, <tt>(DE)</tt> or with a <tt>(Variable)</tt> as well. <var>Variable</var> can be any 16-bit number, too, as 16-bit numbers and variable names are equivalent. Examples: <code>ld (de),a</code>; <code>ld a,(iy-48)</code>; <code>ld (49152),a</code>.</li>
+<li>5. <tt>(HL)</tt>, <tt>(IX+n)</tt> and <tt>(IY+n)</tt> can be directly given an 8-bit constant value, too: <code>ld (hl),19</code> will work.</li>
+<li>6. <tt>A</tt> is the only one that can be combined with <tt>I</tt> and <tt>R</tt>, which gives four instructions altogether: <code>ld a,i</code>; <code>ld a,r</code>; <code>ld i,a</code>; <code>ld r,a</code>.</li>
+</ul>
+<h3>16-bit combinations</h3>
+<ul>
+<li>7. <tt>BC</tt>, <tt>DE</tt>, <tt>HL</tt>, <tt>SP</tt>, <tt>IX</tt> and <tt>IY</tt> all can be combined with a <tt>(Variable)</tt> in both directions, and they can also take constant values. Examples: <code>ld de,(Height)</code>; <code>ld (Width),sp</code>; <code>ld hl,1228</code>.</li>
+<li>8. <tt>SP</tt> can also take the value of <tt>HL</tt>, <tt>IX</tt> or <tt>IY</tt>. For example: <code>ld sp,ix</code>.</li>
+</ul>
+<p>If you ever retrieve or write words to the memory using 16-bit instructions, they will handled in the little endian way, as I mentioned above. There might be times when this can be inconvenient, but there&rsquo;s no way to change it. It is still important to keep in mind, since normally 16-bit numbers are also accessed using 8-bit instructions as well on other occasions. Also, if you need to use larger numbers (e. g. 32-bit doublewords), you should store them in a similar way, because the little endian representation fits the Z80 instruction set better.</p>
+<h2><a name="stack"></a>Stack operations</h2>
+<p>Understanding the concept of the stack is very important, because while being a basic element of assembly language, it does not exist in high-level languages. I wrote above that the stack is a place for backing up the values of 16-bit registers for later retrieval. This is close to the truth, but it&rsquo;s a bit confusing. More exactly, the stack is a part of the memory pointed by <tt>SP</tt>. There are two things you can do: <code>push</code> or <code>pop</code> values. <code>push</code> means putting a value to the stack and <code>pop</code> means retrieving a value, to be short. Both instructions have one operand, which can be <tt>AF</tt>, <tt>BC</tt>, <tt>DE</tt>, <tt>HL</tt>, <tt>IX</tt> or <tt>IY</tt>. The exact operation looks like this:</p>
+<p>If you use <code>push hl</code>, first the value of <tt>SP</tt> is decremented by two, then virtually an <em>ld (sp),hl</em> happens. I say virtually, because such an <code>ld</code> combination cannot be used normally.</p>
+<p>The case of <code>pop hl</code> is just the inverse: first <em>ld hl,(sp)</em> occurs, then the value of SP is incremented by 2.</p>
+<p>Let&rsquo;s see a neat example:</p>
+<pre>  push af                        ; decrement SP by 2; store the value of AF into (SP)
+  push bc                        ; decrement SP by 2; store the value of BC into (SP)
+  pop de                         ; store the value of (SP) into DE; increment SP by 2
+  pop hl                         ; store the value of (SP) into HL; increment SP by 2</pre>
+<p>Just think it over. First we put two words on the stack, then we retrieve them, naturally in the reversed order. This way <tt>DE</tt> will take the value of <tt>BC</tt> and <tt>HL</tt> will be equal to <tt>AF</tt>. These four operations are equivalent to <em>ld de,bc</em> and <em>ld hl,af</em> (both impossible). The first could be actually done with two loads: <code>ld d,b</code> and <code>ld e,c</code>. However, <em>ld l,f</em> does not exist. Using <code>push</code> and <code>pop</code> we could also overcome the problem that the flags register cannot be used in <code>ld</code> instructions, because we could move it into <tt>L</tt> through the stack.</p>
+<p>As you can see, the stack does not know whose value it contains. All the registers are saved to the same area, namely at the location pointed by <tt>SP</tt>. I wanted to make this clear because there are many people who misunderstand its operation. The stack is the very same memory as the one where your program and variables reside, there is nothing &ldquo;magical&rdquo; about it.</p>
+<p><a href="index.htm">Back to the index</a></p>
+</body>
+</html>

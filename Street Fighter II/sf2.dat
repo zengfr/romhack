@@ -1,0 +1,279 @@
+[0]
+Name=对战时间
+0=Off
+1=00,FF8ABF,00
+2=98,FF8ABF,99
+3=--------------------------------------
+4=PS:98 奖励关打完请解锁
+Default=2
+
+[1]
+Name=加速模式
+0=Off
+1=关闭,FF82DC,00
+2=开启,FF82DC,01
+
+[2]
+Name=P1 血槽
+0=Off
+1=瞬死,FF83E9,80
+2=无血,FF83E8,00,FF857A,00
+3=满血 (正常效果),FF83E9,01,FF857B,01
+4=满血 (盔甲效果),FF83E8,90,FF857A,90
+Default=3
+[3]
+Name=P2 血槽
+0=Off
+1=瞬死,FF86E9,80
+2=无血,FF86E8,00,FF887A,00
+3=满血 (正常效果),FF86E9,01,FF887B,01
+4=满血 (盔甲效果),FF86E8,90,FF887A,90
+Default=3
+[4]
+Name=P1 无敌
+0=Off
+1=关闭,FF857C,00
+2=开启,FF857C,01
+
+[5]
+Name=P2 无敌
+0=Off
+1=关闭,FF887C,00
+2=开启,FF887C,01
+
+[6]
+Name=一回合胜利
+0=Off
+1=P1,FF864F,02
+2=P2,FF894F,02
+
+[7]
+Name=P1 不需集气
+0=Off
+1=E.Honda,FF843E,01
+2=Blanka,FF843E,01
+3=Guile,FF843E,01,FF8444,01
+4=Balrog,FF843E,01,FF8446,01
+5=Vega,FF843E,01,FF8446,01
+6=Chun Li,FF843E,01
+7=M.Bison,FF843E,01,FF8446,01,FF8451,01
+
+[8]
+Name=P2 不需集气
+0=Off
+1=E.Honda,FF873E,01
+2=Blanka,FF873E,01
+3=Guile,FF873E,01,FF8744,01
+4=Balrog,FF873E,01,FF8746,01
+5=Vega,FF873E,01,FF8746,01
+6=Chun Li,FF873E,01
+7=M.Bison,FF873E,01,FF8746,01,FF8751,01
+
+[9]
+Name=P1 晕眩状态
+0=Off
+1=永久晕眩,FF841E,03
+2=马上恢复,FF841E,01
+
+[10]
+Name=P2 晕眩状态
+0=Off
+1=永久晕眩,FF871E,03
+2=马上恢复,FF871E,01
+
+[11]
+Name=P1 人物选择
+0=Off
+1=Ryu,FF864E,00
+2=E.Honda,FF864E,01
+3=Blanka,FF864E,02
+4=Guile,FF864E,03
+5=Balrog,FF864E,0A
+6=Vega,FF864E,0B
+7=Ken,FF864E,04
+8=Chun Li,FF864E,05
+9=Zangief,FF864E,06
+10=Dhalsim,FF864E,07
+11=Sagat,FF864E,09
+12=M.Bison,FF864E,08
+
+[12]
+Name=P2 人物选择
+0=Off
+1=Ryu,FF894E,00
+2=E.Honda,FF894E,01
+3=Blanka,FF894E,02
+4=Guile,FF894E,03
+5=Balrog,FF894E,0A
+6=Vega,FF894E,0B
+7=Ken,FF894E,04
+8=Chun Li,FF894E,05
+9=Zangief,FF894E,06
+10=Dhalsim,FF894E,07
+11=Sagat,FF894E,09
+12=M.Bison,FF894E,08
+
+[13]
+Name=动作加快
+0=Off
+1=P1,FF83D6,01
+2=P2,FF86D6,01
+3=P1+P2,FF83D6,01,FF86D6,01
+
+[14]
+Name=跳跃增高
+0=Off
+1=P1,FF8400,20
+2=P2,FF8700,20
+3=P1+P2,FF8400,20,FF8700,20
+
+[15]
+Name=多重攻击
+0=Off
+1=P1,FF8709,00
+2=P2,FF8409,00
+3=P1+P2,FF8709,00,FF8409,00
+
+[16]
+Name=空中出招
+0=Off
+1=P1,FF853E,00
+2=P2,FF883E,00
+3=P1+P2,FF853E,00,FF883E,00
+
+[17]
+Name=飞行道具无间隔
+0=Off
+1=P1,FF8593,00,FF8592,00
+2=P2,FF8893,00,FF8892,00
+3=P1+P2,FF8593,00,FF8592,00,FF8893,00,FF8892,00
+
+[18]
+Name=飞行道具无动作
+0=Off
+1=P1,FF83DD,01
+2=P2,FF86DD,01
+3=P1+P2,FF83DD,01,FF86DD,01
+
+[19]
+Name=近身受创不弹远
+0=Off
+1=P1,FF840B,00
+2=P2,FF870B,00
+3=P1+P2,FF840B,00,FF870B,00
+
+[20]
+Name=P1 拳脚出招控制
+0=Off
+1=轻,FF853F,00
+2=中,FF853F,02
+3=重,FF853F,04
+
+[21]
+Name=P2 拳脚出招控制
+0=Off
+1=轻,FF883F,00
+2=中,FF883F,02
+3=重,FF883F,04
+
+[22]
+Name=P1 Vega - 爪
+0=Off
+1=有爪,FF850B,01
+2=无爪,FF850B,00
+
+[23]
+Name=P2 Vega - 爪
+0=Off
+1=有爪,FF880B,01
+2=无爪,FF880B,00
+
+[24]
+Name=P1 Easy Moves
+0=Off
+1=Ryu - Hadou Ken & Tatsumaki Senpuu Kyaku,FF844F,06,FF844E,06,FF8457,06,FF8456,06
+2=Ryu - Shoryuu Ken & Tatsumaki Senpuu Kyaku,FF845F,06,FF845E,06,FF8457,06,FF8456,06
+3=E.Honda - Super Zutsuki,FF843F,08,FF8440,01
+4=E.Honda - Hyakuretsu Harite,FF8459,03,FF845B,03,FF845D,03
+5=Blanka - Rolling Attack,FF843F,08,FF8440,01
+6=Blanka - Electric Thunder,FF8459,04,FF845B,04,FF845D,04
+7=Guile - Sonic Boom & Somersault Kick,FF843F,08,FF8440,01,FF8445,08,FF8446,01
+8=Balrog - Dash Straight & Upper,FF843F,08,FF8440,01,FF8447,08,FF8448,01
+9=Balrog - Dash Straight & Turn Punch 2,FF843F,08,FF8440,01,FF84CE,04
+10=Balrog - Turn Punch 1 & 2,FF84CF,04,FF84CE,04
+11=Balrog - Turn Punch 1 & Dash Upper,FF84CF,04,FF8447,08,FF8448,01
+12=Vega - Rolling Crystal Flash & Flying Barcelona Attack & Backstep,FF843F,08,FF8440,01,FF8447,08,FF8448,01,FF8451,02
+13=Ken - Hadou Ken & Tatsumaki Senpuu Kyaku,FF844F,06,FF844E,06,FF8457,06,FF8456,06
+14=Ken - Shoryuu Ken & Tatsumaki Senpuu Kyaku,FF845F,06,FF845E,06,FF8457,06,FF8456,06
+15=Chun Li - Spinning Bird Kick,FF843F,08,FF8440,01
+16=Chun Li - Hyakuretsu Kyaku,FF8459,04,FF845B,04,FF845D,04
+17=Zangief - Screw Piledriver,FF843F,08,FF8441,06
+18=Dhalsim - Yoga Fire,FF844F,04,FF8450,06
+19=Dhalsim - Yoga Flame,FF8457,04,FF8458,0A
+20=Sagat - Ground & Tiger Shot,FF844F,04,FF8450,06,FF845F,04,FF8460,06
+21=Sagat - Tiger Shot & Knee,FF844F,04,FF8450,06,FF8467,04,FF8468,06
+22=Sagat - Tiger Uppercut & Ground Shot,FF8457,04,FF8458,06,FF845F,04,FF8460,06
+23=Sagat - Tiger Uppercut & Knee,FF8457,04,FF8458,06,FF8467,04,FF8468,06
+24=M.Bison - Double Knee Press & Psycho Crusher Attack,FF8447,08,FF8448,01,FF843F,08,FF8440,01
+25=M.Bison - Head Press & Psycho Crusher Attack,FF844E,08,FF8453,01,FF843F,08,FF8440,01
+
+[25]
+Name=P2 Easy Moves
+0=Off
+2=Ryu - Hadou Ken & Tatsumaki Senpuu Kyaku,FF874F,06,FF874E,06,FF8757,06,FF8756,06
+2=Ryu - Shoryuu Ken & Tatsumaki Senpuu Kyaku,FF875F,06,FF875E,06,FF8757,06,FF8756,06
+3=E.Honda - Super Zutsuki,FF873F,08,FF8740,01
+4=E.Honda - Hyakuretsu Harite,FF8759,03,FF875B,03,FF875D,03
+5=Blanka - Rolling Attack,FF873F,08,FF8740,01
+6=Blanka - Electric Thunder,FF8759,04,FF875B,04,FF875D,04
+7=Guile - Sonic Boom & Somersault Kick,FF873F,08,FF8740,01,FF8745,08,FF8746,01
+8=Balrog - Dash Straight & Upper,FF873F,08,FF8740,01,FF8747,08,FF8748,01
+9=Balrog - Dash Straight & Turn Punch 2,FF873F,08,FF8740,01,FF87CE,04
+10=Balrog - Turn Punch 1 & 2,FF87CF,04,FF87CE,04
+11=Balrog - Turn Punch 1 & Dash Upper,FF87CF,04,FF8747,08,FF8748,01
+12=Vega - Rolling Crystal Flash & Flying Barcelona Attack & Backstep,FF873F,08,FF8740,01,FF8747,08,FF8748,01,FF8751,02
+13=Ken - Hadou Ken & Tatsumaki Senpuu Kyaku,FF874F,06,FF874E,06,FF8757,06,FF8756,06
+14=Ken - Shoryuu Ken & Tatsumaki Senpuu Kyaku,FF875F,06,FF875E,06,FF8757,06,FF8756,06
+15=Chun Li - Spinning Bird Kick,FF873F,08,FF8740,01
+16=Chun Li - Hyakuretsu Kyaku,FF8759,04,FF875B,04,FF875D,04
+17=Zangief - Screw Piledriver,FF873F,08,FF8741,06
+18=Dhalsim - Yoga Fire,FF874F,04,FF8750,06
+19=Dhalsim - Yoga Flame,FF8757,04,FF8758,0A
+20=Sagat - Ground & Tiger Shot,FF874F,04,FF8750,06,FF875F,04,FF8760,06
+21=Sagat - Tiger Shot & Knee,FF874F,04,FF8750,06,FF8767,04,FF8768,06
+22=Sagat - Tiger Uppercut & Ground Shot,FF8757,04,FF8758,06,FF875F,04,FF8760,06
+23=Sagat - Tiger Uppercut & Knee,FF8757,04,FF8758,06,FF8767,04,FF8768,06
+24=M.Bison - Double Knee Press & Psycho Crusher Attack,FF8747,08,FF8748,01,FF873F,08,FF8740,01
+25=M.Bison - Head Press & Psycho Crusher Attack,FF874E,08,FF8753,01,FF873F,08,FF8740,01
+
+[26]
+Name=背景选择
+0=Off
+1=Ryu,FFDD5E,00
+2=E.Honda,FFDD5E,01
+3=Blanka,FFDD5E,02
+4=Guile,FFDD5E,03
+5=Balrog,FFDD5E,0A
+6=Vega,FFDD5E,0B
+7=Ken,FFDD5E,04
+8=Chun Li,FFDD5E,05
+9=Zangief,FFDD5E,06
+10=Dhalsim,FFDD5E,07
+11=Sagat,FFDD5E,09
+12=M.Bison,FFDD5E,08
+
+[27]
+Name=关卡选择
+0=Off
+1=Stage 1,FF89C0,00
+2=Stage 2,FF89C0,01
+3=Stage 3,FF89C0,02
+4=Stage 4,FF89C0,03
+5=Stage 5,FF89C0,04
+6=Stage 6,FF89C0,05
+7=Stage 7,FF89C0,06
+8=Stage 8,FF89C0,07
+9=Stage 9,FF89C0,08
+10=Stage 10,FF89C0,09
+11=Stage 11,FF89C0,0A
+12=Stage 12,FF89C0,0B

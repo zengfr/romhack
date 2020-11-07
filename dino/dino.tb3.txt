@@ -1,0 +1,8 @@
+tb3  2  0 5224    B2B0A    0    8 FFD0   40    0    0   2A FFFFD7D4
+tb3  2  0 5224    B2B1A   60    8  190   20    0    0   2B FFFFD374
+tb3  2  0 5224    B2B40   40   34 FFD0   40    C    0    0 FFFFD614
+tb3  2  0 5224    B2B50    0   34  190   40  40C    0    0 FFFFDC34
+tb3  2  0 5224    B2B76    0  118  190   18    0    0   14 FFFFD614
+tb3  2  0 5224    B2B9C    0    8 FFD0   20  200    0   2B FFFFD614
+tb3  2  0 5224    B2BAC   60    8  190   30    0    0   2C FFFFD7D4
+tb3  2  0 5224    B2BD2    0   28 FFD0   20    0    0    0 FFFFDC34

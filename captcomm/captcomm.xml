@@ -1,0 +1,346 @@
+<mamecheat version="1">
+
+  <cheat desc="Infinite Credits"> <comment>Note, in 4 Player Configuration this will give you Infinite Lives for all Players</comment>
+    <script state="run">
+      <action>maincpu.pd@FFA850=09090909</action> <!-- This longword write covers all the various player configurations -->
+    </script>
+  </cheat>
+
+  <cheat desc="Select Starting Stage">
+    <parameter min="1" max="9" step="1"/>
+    <script state="run">
+      <action condition="(maincpu.pb@FFA8CE==00)">maincpu.pb@FFA8CE=(param-1)</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Hit Anywhere">
+    <script state="on">
+      <action>temp0 =maincpu.md@008256</action>
+      <action>temp1 =maincpu.md@009114</action>
+      <action>temp2 =maincpu.md@009F5C</action>
+      <action>temp3 =maincpu.md@00A698</action>
+    </script>
+    <script state="run">
+      <action>maincpu.md@008256=600000B4</action> <!-- This ROM cheat was made by nolberto82 -->
+      <action>maincpu.md@009114=600000A2</action>
+      <action>maincpu.md@009F5C=6000008C</action>
+      <action>maincpu.md@00A698=60000074</action>
+    </script>
+    <script state="off">
+      <action>maincpu.md@008256=temp0 </action>
+      <action>maincpu.md@009114=temp1 </action>
+      <action>maincpu.md@009F5C=temp2 </action>
+      <action>maincpu.md@00A698=temp3 </action>
+    </script>
+  </cheat>
+
+  <cheat desc="One Hit Kills">
+    <script state="on">
+      <action>temp0 =maincpu.mw@0083FA</action>
+      <action>temp1 =maincpu.mw@0091D6</action>
+      <action>temp2 =maincpu.mw@009FF4</action>
+      <action>temp3 =maincpu.mw@00A712</action>
+    </script>
+    <script state="run">
+      <action>maincpu.mw@0083FA=4469</action> <!-- This ROM cheat was made by nolberto82 -->
+      <action>maincpu.mw@0091D6=4469</action>
+      <action>maincpu.mw@009FF4=4469</action>
+      <action>maincpu.mw@00A712=4469</action>
+    </script>
+    <script state="off">
+      <action>maincpu.mw@0083FA=temp0 </action>
+      <action>maincpu.mw@0091D6=temp1 </action>
+      <action>maincpu.mw@009FF4=temp2 </action>
+      <action>maincpu.mw@00A712=temp3 </action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="P1 Infinite Lives">
+    <script state="run">
+      <action>maincpu.pb@FFAA7C=64</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Infinite Energy">
+    <script state="run">
+      <action>maincpu.pb@FFA9D1=48</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Infinite Ammo on Pickup">
+    <script state="run">
+      <action>maincpu.pb@FFAA41=02</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Invincibility">
+    <script state="run">
+      <action>maincpu.pb@FFAA69=C8</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Select Weapon"> <comment>Use this in conjunction with the 'Infinite Ammo on Pickup' cheat. You will get this weapon the next time you pick a weapon up or if you start with it enabled.</comment>
+    <parameter>
+      <item value="0x00">Hand Gun</item>
+      <item value="0x04">Machine Gun</item>
+      <item value="0x08">Missile</item>
+      <item value="0x0C">Shock Beam</item>
+      <item value="0x0E">Ninja Knife</item>
+      <item value="0x10">Laser</item>
+      <item value="0x12">Hummer</item>
+      <item value="0x14">Special Attack</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@FFEE63=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Action Speed Up">
+    <script state="run">
+      <action>maincpu.pb@FFA9C1=01</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Endless Grab Attack">
+    <script state="run">
+      <action>maincpu.pb@FFAA3F=09</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Select Character">
+    <parameter>
+      <item value="0x00">Mummy Commando</item>
+      <item value="0x01">Captain Commando</item>
+      <item value="0x02">Ninja Commando</item>
+      <item value="0x03">Baby Commando</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@FFAA34=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="P2 Infinite Lives">
+    <script state="run">
+      <action>maincpu.pb@FFAB7C=64</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Infinite Energy">
+    <script state="run">
+      <action>maincpu.pb@FFAAD1=48</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Infinite Ammo on Pickup">
+    <script state="run">
+      <action>maincpu.pb@FFAB41=02</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Invincibility">
+    <script state="run">
+      <action>maincpu.pb@FFAB69=C8</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Select Weapon">
+    <parameter>
+      <item value="0x00">Hand Gun</item>
+      <item value="0x04">Machine Gun</item>
+      <item value="0x08">Missile</item>
+      <item value="0x0C">Shock Beam</item>
+      <item value="0x0E">Ninja Knife</item>
+      <item value="0x10">Laser</item>
+      <item value="0x12">Hummer</item>
+      <item value="0x14">Special Attack</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@FFEF63=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Action Speed Up">
+    <script state="run">
+      <action>maincpu.pb@FFAAC1=01</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Endless Grab Attack">
+    <script state="run">
+      <action>maincpu.pb@FFAB3F=09</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Select Character">
+    <parameter>
+      <item value="0x00">Mummy Commando</item>
+      <item value="0x01">Captain Commando</item>
+      <item value="0x02">Ninja Commando</item>
+      <item value="0x03">Baby Commando</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@FFAB34=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="P3 Infinite Lives">
+    <script state="run">
+      <action>maincpu.pb@FFAC7C=64</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P3 Infinite Energy">
+    <script state="run">
+      <action>maincpu.pb@FFABD1=48</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P3 Infinite Ammo on Pickup">
+    <script state="run">
+      <action>maincpu.pb@FFAC41=02</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P3 Invincibility">
+    <script state="run">
+      <action>maincpu.pb@FFAC69=C8</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P3 Select Weapon">
+    <parameter>
+      <item value="0x00">Hand Gun</item>
+      <item value="0x04">Machine Gun</item>
+      <item value="0x08">Missile</item>
+      <item value="0x0C">Shock Beam</item>
+      <item value="0x0E">Ninja Knife</item>
+      <item value="0x10">Laser</item>
+      <item value="0x12">Hummer</item>
+      <item value="0x14">Special Attack</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@FFF063=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P3 Action Speed Up">
+    <script state="run">
+      <action>maincpu.pb@FFABC1=01</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P3 Endless Grab Attack">
+    <script state="run">
+      <action>maincpu.pb@FFAC3F=09</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P3 Select Character">
+    <parameter>
+      <item value="0x00">Mummy Commando</item>
+      <item value="0x01">Captain Commando</item>
+      <item value="0x02">Ninja Commando</item>
+      <item value="0x03">Baby Commando</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@FFAC34=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="P4 Infinite Lives">
+    <script state="run">
+      <action>maincpu.pb@FFAD7C=64</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P4 Infinite Energy">
+    <script state="run">
+      <action>maincpu.pb@FFACD1=48</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P4 Infinite Ammo on Pickup">
+    <script state="run">
+      <action>maincpu.pb@FFAD41=02</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P4 Invincibility">
+    <script state="run">
+      <action>maincpu.pb@FFAD69=C8</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P4 Select Weapon">
+    <parameter>
+      <item value="0x00">Hand Gun</item>
+      <item value="0x04">Machine Gun</item>
+      <item value="0x08">Missile</item>
+      <item value="0x0C">Shock Beam</item>
+      <item value="0x0E">Ninja Knife</item>
+      <item value="0x10">Laser</item>
+      <item value="0x12">Hummer</item>
+      <item value="0x14">Special Attack</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@FFF163=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P4 Action Speed Up">
+    <script state="run">
+      <action>maincpu.pb@FFACC1=01</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P4 Endless Grab Attack">
+    <script state="run">
+      <action>maincpu.pb@FFAD3F=09</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P4 Select Character">
+    <parameter>
+      <item value="0x00">Mummy Commando</item>
+      <item value="0x01">Captain Commando</item>
+      <item value="0x02">Ninja Commando</item>
+      <item value="0x03">Baby Commando</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@FFAD34=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="Select Region"> <comment>This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET</comment>
+    <parameter>
+      <item value="0x00">Japan</item>
+      <item value="0x01">U.S.A.</item>
+      <item value="0x02">World</item>
+      <item value="0x03">Japan with Capcom Copyright + No Warning</item>
+      <item value="0x04">U.S.A. with Capcom U.S.A. Copyright + No Warning</item>
+      <item value="0x05">World + No Warning</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pb@FFF88A=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Sound Test">
+    <parameter min="1" max="255" step="1"/>
+    <script state="change">
+      <action>maincpu.pb@800181=param</action>
+    </script>
+  </cheat>
+
+</mamecheat>
+<!-- Cheat file downloaded from http://www.mamecheat.co.uk, see cheat.txt for list of contributors. -->
