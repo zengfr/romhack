@@ -1,0 +1,10 @@
+wp 19704,c,r,{printf "%8x %8x %8x",pc,wpaddr,wpdata;g}
+wp 19848,c,r,{printf "%8x %8x %8x",pc,wpaddr,wpdata;g}
+wp 1e03e,12,r,{printf "%8x %8x %8x",pc,wpaddr,wpdata;g}
+wp a6f38,4,r,{printf "%8x %8x %8x",pc,wpaddr,wpdata;g}
+wp a7e58,4,r,{printf "%8x %8x %8x",pc,wpaddr,wpdata;g}
+bp 1a3fe,1,{printf "%8x",pc;g}
+bp 34CCC,1,{printf "%8x",pc;g}
+bp 34BEC,1,{printf "%8x",pc;g}
+bp 34A5E,1,{printf "%8x",pc;g}
+bp 34CD6,1,{printf "%8x",pc;g}

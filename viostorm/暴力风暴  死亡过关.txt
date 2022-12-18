@@ -1,0 +1,13 @@
+0002fb76		move.b #0x1,(DAT_00201800).l
+00031488		move.b #0x1,(DAT_00201800).l
+00036112		move.b #0x1,(DAT_00201800).l
+00039924		move.b #0x1,(DAT_00201800).l
+0003c4a0		move.b #0x1,(DAT_00201800).l
+00049e02		move.b #0x1,(DAT_00201800).l
+00049eb2		move.b #0x1,(DAT_00201800).l
+0004a020		move.b #0x1,(DAT_00201800).l
+0004a0b8		move.b #0x1,(DAT_00201800).l
+0004a160		move.b #0x1,(DAT_00201800).l
+0004a1d8		move.b #0x1,(DAT_00201800).l
+0004a364		move.b #0x1,(DAT_00201800).l
+0005a9c4		move.b #0x1,(DAT_00201800).l

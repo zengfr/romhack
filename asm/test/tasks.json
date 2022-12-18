@@ -1,0 +1,40 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        
+        {
+            "label": "s15n",
+            "type": "shell",
+            "command": "nasm.exe -g -l s15n.lst  s15n.asm -o s15n.com",
+            "problemMatcher": {
+                "pattern": {
+                    "regexp": "error"
+                }
+            },
+            "group": "build",
+            "presentation": {
+                "focus": true,
+                "panel": "dedicated",
+                "reveal": "silent",
+                "clear": true
+            }
+        },
+        {
+            "label": "testn",
+            "type": "shell",
+            "command": "nasm.exe -g -l testn.lst  testn.asm -o testn.com",
+            "problemMatcher": {
+                "pattern": {
+                    "regexp": "error"
+                }
+            },
+            "group": "build",
+            "presentation": {
+                "focus": true,
+                "panel": "dedicated",
+                "reveal": "silent",
+                "clear": true
+            }
+        }
+    ]
+}

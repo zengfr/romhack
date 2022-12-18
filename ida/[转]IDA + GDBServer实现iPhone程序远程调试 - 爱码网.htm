@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<!-- saved from url=(0042)https://www.likecs.com/show-307873840.html -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+<meta http-equiv="content-language" content="zh-CN">
+<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+    <title>[转]IDA + GDBServer实现iPhone程序远程调试 - 爱码网</title>
+     
+<meta name="keywords" content="[转]IDA + GDBServer实现iPhone程序远程调试">
+<meta name="description" content="目录ECharts异步加载ECharts
+数据可视化在过去几年中取得了巨大进展。开发人员对可视化产品的期望不再是简单的图表创建工具，而是在交互、性能、数据处理等方面有更高的要求。
+chart.setOption({
+    color: [">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="./[转]IDA + GDBServer实现iPhone程序远程调试 - 爱码网_files/base.css">
+<script src="./[转]IDA + GDBServer实现iPhone程序远程调试 - 爱码网_files/hm.js.下载"></script><script src="./[转]IDA + GDBServer实现iPhone程序远程调试 - 爱码网_files/hm.js.下载"></script><script src="./[转]IDA + GDBServer实现iPhone程序远程调试 - 爱码网_files/detail.min.js.下载"></script>   
+<script>
+   $(document).ready(function () { 
+		$("img").error(function () {
+			$(this).hide();
+		}); 
+	}); 
+</script>
+</head>
+<body class="home-template dtpg">
+<nav class="main-nav clearfix">
+    <div class="inner">
+        <ul class="nav">
+            <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-886"><a href="https://www.likecs.com/" title="爱码网">首页</a></li>
+                        <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-886"><a href="https://www.likecs.com/nav/1.html" title="前端技术">前端技术</a></li>
+                        <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-886"><a href="https://www.likecs.com/nav/9.html" title="编程语言">编程语言</a></li>
+                        <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-886"><a href="https://www.likecs.com/nav/31.html" title="人工智能">人工智能</a></li>
+                        <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-886"><a href="https://www.likecs.com/nav/41.html" title="运维知识">运维知识</a></li>
+                        <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-886"><a href="https://www.likecs.com/nav/52.html" title="资源下载">资源下载</a></li>
+                        <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-886"><a href="https://www.likecs.com/nav/68.html" title="常用小工具">常用小工具</a></li>
+                        <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-886"><a href="https://www.likecs.com/nav/72.html" title="技术问答">技术问答</a></li>
+                    </ul>            
+	 
+    </div>
+</nav><div class="site-wrapper">
+ 
+    <header style="height: auto;padding: 10px 0px;" class="main-header">
+        <div style="max-width:910px" class="main-header-content inner">
+                        <h1 class="page-title"><a href="https://www.likecs.com/show-307873840.html" title="[转]IDA + GDBServer实现iPhone程序远程调试">[转]IDA + GDBServer实现iPhone程序远程调试</a></h1>
+            
+        </div>
+
+    </header>
+    <main class="content" role="main">
+	
+
+        <div class="leftbox">
+    <article class="post tag-uifont tag-webview">
+        <header class="post-header">
+            <footer class="tc">  
+                <time class="post-date" datetime="2022-12-23">2022-12-23</time>
+            </footer>
+        </header>
+        <section class="post-content">
+            <div class="contentbef" style="display: none;">  
+                  
+                              </div>
+
+            
+                                    
+<p>源地址：http://bbs.pediy.com/showthread.php?t=138472</p>
+<p><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">IDA&nbsp;+&nbsp;GDBServer实现iPhone程序远程调试</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">By：obaby</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">在早期的IDA中包含了一个iphoneserver的程序，这个程序就是配合IDA实现远程调试的。但是在最新版的IDA中这个东西已经不复存在了，因而下载的破解版的IDA中没有那个文件并不是被删除掉了，而是本来就没有，*^_^*。所以一直以来调试iPhone上的二进制程序只能悲催的使用ssh+gdb进行调试，虽然调试器的功能还算可以，但是每次调试都需要设置显示，只能使用命令进行控制，因而用起来还是不是十分爽。</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">其实网上关于IDA实现ios设备远程调试的文章从网上也是可以找到的，但是说的都不是十分具体。本文主要是介绍下IDA实现远程iPhone程序调试的方法，当然这样调试还存在一些问题，如果大家有什么好的解决方案还请不吝赐教。</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">需要注意的是要想调试ios设备上的程序并不是简单的吧gdbserver拷贝到ios设备上行就可以了，此时如果使用gdbserver启动进程将得到类似如图1所示的提示信息：</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">&nbsp;</span><img title="[转]IDA + GDBServer实现iPhone程序远程调试" src="./[转]IDA + GDBServer实现iPhone程序远程调试 - 爱码网_files/img" border="0" alt="[转]IDA + GDBServer实现iPhone程序远程调试"><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">图1</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">提示文件没有找到，但是如果设备曾经链接过xcode进行过程序调试则不会出现下面的情况。这是因为xcode在进行程序调试的时候会将所需要的文件拷贝到Develop目录下，这样的话不论gdbserver在哪个目录下程序都是可以正常执行的。同样在上面的命令中看到的debugserver是苹果自己编译的一个gdbserver调试服务器，而实际使用则基本是没有任何的差异和影响的。</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">首先来配置下设备上的调试环境，从xcode的/Developer/Platforms/iPhoneOS.platform/DeviceSupport/3.2目录下找到DeveloperDiskImage.dmg文件，而3.2则是对应的ios设备上的系统版本，在DeviceSupport目录下通常会包含如如2所示的版本列表：</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">&nbsp;</span><img title="[转]IDA + GDBServer实现iPhone程序远程调试" src="./[转]IDA + GDBServer实现iPhone程序远程调试 - 爱码网_files/img(1)" border="0" alt="[转]IDA + GDBServer实现iPhone程序远程调试"><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">图02</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">在实际的调试过程中只需要选择相应的版本就可以了。在每个目录下都存在一个DeveloperDiskImage.dmg文件，用ultraiso打开这个文件可以看到如图3的文件目录列表：</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">&nbsp;</span><img title="[转]IDA + GDBServer实现iPhone程序远程调试" src="./[转]IDA + GDBServer实现iPhone程序远程调试 - 爱码网_files/img(2)" border="0" alt="[转]IDA + GDBServer实现iPhone程序远程调试"><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">图3</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">在调试的过程中需要将整个dmg文件下的所有目录和文件拷贝到设备上的/Developer目录下，如图4所示。这一步可以使用ios的文件管理工具，或者使用winscp上传文件，不建议使用后者，太卡了～，如果使用过xcode开发调试过程序那么这个目录下的所有东西应该都是存在的，可以无需手工复制。</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">&nbsp;</span><img title="[转]IDA + GDBServer实现iPhone程序远程调试" src="./[转]IDA + GDBServer实现iPhone程序远程调试 - 爱码网_files/img(3)" border="0" alt="[转]IDA + GDBServer实现iPhone程序远程调试"><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">图4</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">另外还需要在设备上安装ssh服务端，这个直接从cydia源中安装即可。最后就是程序的调试了。</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">在这里的调试可以使用预先分析文件和直接attach的方式进行调试。直接attach的方式比较简单一些，使用ssh客户端连接到设备（需要无线网络支持，如果木有，那我也冇办法哦～），在win下可以使用putty。</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">登录后默认会在root目录下，如图5所示。</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">&nbsp;</span><img title="[转]IDA + GDBServer实现iPhone程序远程调试" src="./[转]IDA + GDBServer实现iPhone程序远程调试 - 爱码网_files/img(4)" border="0" alt="[转]IDA + GDBServer实现iPhone程序远程调试"><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">切换到/Develop/usr/bin/目录下，给debugserver增加执行权限，如图6所示。</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">&nbsp;</span><img title="[转]IDA + GDBServer实现iPhone程序远程调试" src="./[转]IDA + GDBServer实现iPhone程序远程调试 - 爱码网_files/img(5)" border="0" alt="[转]IDA + GDBServer实现iPhone程序远程调试"><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">图6</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">现在就可以执行一个程序了，以AppleAssistantHD为例，执行./debugserver&nbsp;port:2008&nbsp;/var/mobile/Applications/ABDEE3BA-02BE-4251-A57B-ECC363813133/AppleAssistantHD.app/AppleAssistantHD，此时debugserver会执行目标程序并且同时打开一个端口监听远程连接，如图7所示</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">&nbsp;</span><img title="[转]IDA + GDBServer实现iPhone程序远程调试" src="./[转]IDA + GDBServer实现iPhone程序远程调试 - 爱码网_files/img(6)" border="0" alt="[转]IDA + GDBServer实现iPhone程序远程调试"><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">图7</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">现在就可以运行ida链接远程调试器了。执行ida直接点go进入到程序界面即可，如图8所示。</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">&nbsp;</span><img title="[转]IDA + GDBServer实现iPhone程序远程调试" src="./[转]IDA + GDBServer实现iPhone程序远程调试 - 爱码网_files/img(7)" border="0" alt="[转]IDA + GDBServer实现iPhone程序远程调试"><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">图8</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">进入之后点击菜单的Debugger-&gt;Attach-&gt;Remote&nbsp;GdbDebuger，如图9所示</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">&nbsp;</span><img title="[转]IDA + GDBServer实现iPhone程序远程调试" src="./[转]IDA + GDBServer实现iPhone程序远程调试 - 爱码网_files/img(8)" border="0" alt="[转]IDA + GDBServer实现iPhone程序远程调试"><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">执行之后将会打开如图10所示的调试器附加窗口。</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">&nbsp;</span><img title="[转]IDA + GDBServer实现iPhone程序远程调试" src="./[转]IDA + GDBServer实现iPhone程序远程调试 - 爱码网_files/img(9)" border="0" alt="[转]IDA + GDBServer实现iPhone程序远程调试"><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">图10</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">在Hostname中输入设备的ip，port中输入debugserver的监听端口。点击Debug&nbsp;options打开调试选项，如图11所示。</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">&nbsp;</span><img title="[转]IDA + GDBServer实现iPhone程序远程调试" src="./[转]IDA + GDBServer实现iPhone程序远程调试 - 爱码网_files/img(10)" border="0" alt="[转]IDA + GDBServer实现iPhone程序远程调试"><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">图11</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">执行Edit&nbsp;exceptions打开异常处理选项窗口，如图12所示。</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">&nbsp;</span><img title="[转]IDA + GDBServer实现iPhone程序远程调试" src="./[转]IDA + GDBServer实现iPhone程序远程调试 - 爱码网_files/img(11)" border="0" alt="[转]IDA + GDBServer实现iPhone程序远程调试"><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">图12</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">编辑11号异常，去掉stop&nbsp;program的勾，如图13，否则在调试的过程中会非常的痛苦。</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">&nbsp;</span><img title="[转]IDA + GDBServer实现iPhone程序远程调试" src="./[转]IDA + GDBServer实现iPhone程序远程调试 - 爱码网_files/img(12)" border="0" alt="[转]IDA + GDBServer实现iPhone程序远程调试"><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">图13</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">关闭所有的设置窗口，现在就可以进行附加了，点击ok之后将会弹出如图14所示的进程列表。</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">&nbsp;</span><img title="[转]IDA + GDBServer实现iPhone程序远程调试" src="./[转]IDA + GDBServer实现iPhone程序远程调试 - 爱码网_files/img(13)" border="0" alt="[转]IDA + GDBServer实现iPhone程序远程调试"><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">图14</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">选择进程id为0的进程进行附加，如果成功将会弹出如图15所示的窗口。</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">&nbsp;</span><img title="[转]IDA + GDBServer实现iPhone程序远程调试" src="./[转]IDA + GDBServer实现iPhone程序远程调试 - 爱码网_files/img(14)" border="0" alt="[转]IDA + GDBServer实现iPhone程序远程调试"><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">图15</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">现在就可以进行调试了，如图16所示。</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">&nbsp;</span><img title="[转]IDA + GDBServer实现iPhone程序远程调试" src="./[转]IDA + GDBServer实现iPhone程序远程调试 - 爱码网_files/img(15)" border="0" alt="[转]IDA + GDBServer实现iPhone程序远程调试"><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">图16</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">上面的是直接attach的方法，这种方法能看到的只有内存数据，所以在实际的调试中并不是最好的方法。另外一种方式是直接用ida载入文件之后采用链接远程调试器的方式。首先将调试器设置为Remote&nbsp;gdb&nbsp;debuger然后编辑ida的Debug&nbsp;application&nbsp;setup:gdb设置，如图17所示：</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">&nbsp;</span><img title="[转]IDA + GDBServer实现iPhone程序远程调试" src="./[转]IDA + GDBServer实现iPhone程序远程调试 - 爱码网_files/img(16)" border="0" alt="[转]IDA + GDBServer实现iPhone程序远程调试"><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">图17</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">在application和input&nbsp;file中输入设备上的文件的绝对路径，其余的设置与attach的方式是完全一致的。设置完成之后就可以启动调试器了，此时会提示已经有远程进程在被调试，是否附加到，如图18.</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">&nbsp;</span><img title="[转]IDA + GDBServer实现iPhone程序远程调试" src="./[转]IDA + GDBServer实现iPhone程序远程调试 - 爱码网_files/img(17)" border="0" alt="[转]IDA + GDBServer实现iPhone程序远程调试"><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">图18</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">点击yes之后就可以进行调试了，如果附加成功将会弹出提示信息。这样调试的时候代码看起来还是比较清晰的，如图19</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">&nbsp;</span><img title="[转]IDA + GDBServer实现iPhone程序远程调试" src="./[转]IDA + GDBServer实现iPhone程序远程调试 - 爱码网_files/img(18)" border="0" alt="[转]IDA + GDBServer实现iPhone程序远程调试"><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">图19</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">虽然现在可以调试了，但是还有几个问题。也是我现在没有处理掉的：</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">1.&nbsp;&nbsp;在静态分析的时候设置的断点会变为无效，如图20所示；</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">&nbsp;</span><img title="[转]IDA + GDBServer实现iPhone程序远程调试" src="./[转]IDA + GDBServer实现iPhone程序远程调试 - 爱码网_files/img(19)" border="0" alt="[转]IDA + GDBServer实现iPhone程序远程调试"><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">图20</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">2.&nbsp;&nbsp;一旦将进程挂起之后重启启动进程已经卡死了，没有任何的响应。</span><br style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)"><span style="color: rgba(19, 37, 60, 1); font-family: 宋体, verdana, geneva, lucida, &quot;lucida grande&quot;, arial, helvetica, sans-serif; font-size: 12px; line-height: 19px; background-color: rgba(245, 245, 245, 1)">由于上面的两个问题导致现在ida虽然可以附加到进程或者启动独立的进程进行调试，但是实际的效果并不理想。明显是一锤子买卖，一旦暂停就完全死翘翘了，这也就是在文章开始处提到的那个问题。所以对于上面的两个问题哪位大大有好的解决办法还望不吝赐教。</span></p>
+ 
+                    
+            
+                <div style="margin-top: 10px;">
+                  </div> 
+        <p style="padding: 20px;color: #cacaca;">原文链接：https://www.cnblogs.com/Proteas/archive/2012/12/20/2826893.html</p></section>
+	 
+        <footer class="post-footer">
+            <section class="author">
+                                            </section>
+        </footer>
+        <p class="mt10">相关文章：</p>
+        <div style="width: 100%;" class="contentcard">
+      
+            <div style="width: 100%;height: auto;" class="carditem litem clearfix"> 
+                    <ul style="padding-left: 0rem;" class="cardcont">
+                                                    <li>
+                                <a title="gdb调试和gdbserver远程调试" href="https://www.likecs.com/show-203473884.html" target="_blank">gdb<em>调试</em>和<em>gdbserver</em><em>远程</em><em>调试</em></a> 
+                                <span>2021-09-22</span>
+                            </li>
+                                                        <li>
+                                <a title="IDA远程调试" href="https://www.likecs.com/show-203472730.html" target="_blank"><em>IDA</em><em>远程</em><em>调试</em></a> 
+                                <span>2021-11-06</span>
+                            </li>
+                                                        <li>
+                                <a title="gdbserver远程调试工具" href="https://www.likecs.com/show-203473922.html" target="_blank"><em>gdbserver</em><em>远程</em><em>调试</em>工具</a> 
+                                <span>2021-05-11</span>
+                            </li>
+                                                        <li>
+                                <a title="Ida远程动态调试" href="https://www.likecs.com/show-203472734.html" target="_blank"><em>Ida</em><em>远程</em>动态<em>调试</em></a> 
+                                <span>2021-12-28</span>
+                            </li>
+                                                        <li>
+                                <a title="ida GDB 远程调试" href="https://www.likecs.com/show-305875706.html" target="_blank"><em>ida</em> GDB <em>远程</em><em>调试</em></a> 
+                                <span>2021-11-04</span>
+                            </li>
+                                                        <li>
+                                <a title="IDA远程调试Android" href="https://www.likecs.com/show-307695114.html" target="_blank"><em>IDA</em><em>远程</em><em>调试</em>Android</a> 
+                                <span>2022-12-23</span>
+                            </li>
+                                                        <li>
+                                <a title="IDA 远程调试设置" href="https://www.likecs.com/show-308058663.html" target="_blank"><em>IDA</em> <em>远程</em><em>调试</em>设置</a> 
+                                <span>2022-12-23</span>
+                            </li>
+                                                        <li>
+                                <a title="qtcretor通过gdb和gdbserver远程调试arm程序" href="https://www.likecs.com/show-203473898.html" target="_blank">qtcretor通过gdb和<em>gdbserver</em><em>远程</em><em>调试</em>arm<em>程序</em></a> 
+                                <span>2021-06-03</span>
+                            </li>
+                                                </ul>
+               </div>   
+         </div>
+    </article>
+
+  
+
+</div>
+
+<div class="rigthbox contentcard mt10">
+ 
+          <div style="height: auto;" class="carditem litem">
+    <div class="cardtit">猜你喜欢 </div>
+        <ul class="cardcont">
+                                 <li>
+                    <a title="QTCreator + gdbserver 实现远程调试" href="https://www.likecs.com/show-203473958.html" target="_blank">QTCreator + <em>gdbserver</em> <em>实现</em><em>远程</em><em>调试</em></a> 
+                    <span>2021-07-04</span>
+                </li>
+                                     <li>
+                    <a title="使用gdbserver远程调试" href="https://www.likecs.com/show-305775160.html" target="_blank">使用<em>gdbserver</em><em>远程</em><em>调试</em></a> 
+                    <span>2022-01-25</span>
+                </li>
+                            </ul>
+   </div> 
+
+<div style="height: auto;" class="carditem litem">
+    <div class="cardtit">相关资源 </div>
+        <ul class="cardcont">
+              
+                                         <li>
+                        <a title="PhpLog php 程序调试追踪功能实现源码下载" href="https://www.likecs.com/down-53791.html" target="_blank">PhpLog php <em>程序</em><em>调试</em>追踪功能<em>实现</em>源码下载</a> 
+                        <span>2022-12-02</span>
+                    </li>
+                                             <li>
+                        <a title="rar在线转zip格式php程序 1.0下载" href="https://www.likecs.com/down-39584.html" target="_blank">rar在线<em>转</em>zip格式php<em>程序</em> 1.0下载</a> 
+                        <span>2021-06-07</span>
+                    </li>
+                                             <li>
+                        <a title="小哦远程文件下载程序源码 php版 1.0下载" href="https://www.likecs.com/down-33314.html" target="_blank">小哦<em>远程</em>文件下载<em>程序</em>源码 php版 1.0下载</a> 
+                        <span>2022-12-31</span>
+                    </li>
+                                </ul>
+   </div>
+   
+    <div style="height: auto;" class="carditem litem">
+     <div class="cardtit">相似解决方案 </div>
+         <ul class="cardcont">
+                                   <li>
+                     <a title="使用 Eclipse 远程调试 gdbserver" href="https://www.likecs.com/ask-444971.html" target="_blank">使用 Eclipse <em>远</em><em>程</em><em>调</em><em>试</em> <em>gdbserver</em></a> 
+                     <span>2011-03-10</span>
+                 </li>
+                                       <li>
+                     <a title="使用 Eclipse gdb/gdbserver 调试远程应用程序" href="https://www.likecs.com/ask-5763896.html" target="_blank">使用 Eclipse gdb/<em>gdbserver</em> <em>调</em><em>试</em><em>远</em><em>程</em>应用<em>程</em><em>序</em></a> 
+                     <span>1970-01-01</span>
+                 </li>
+                                       <li>
+                     <a title="使用 gdbServer 进行远程调试" href="https://www.likecs.com/ask-2730021.html" target="_blank">使用 <em>gdbServer</em> 进行<em>远</em><em>程</em><em>调</em><em>试</em></a> 
+                     <span>2014-02-09</span>
+                 </li>
+                                       <li>
+                     <a title="Visual Studio 2017 Linux 远程调试（gdbserver）" href="https://www.likecs.com/ask-5081053.html" target="_blank">Visual Studio 2017 Linux <em>远</em><em>程</em><em>调</em><em>试</em>（<em>gdbserver</em>）</a> 
+                     <span>1970-01-01</span>
+                 </li>
+                                       <li>
+                     <a title="使用 MinGW gdbserver 进行远程调试" href="https://www.likecs.com/ask-7275494.html" target="_blank">使用 MinGW <em>gdbserver</em> 进行<em>远</em><em>程</em><em>调</em><em>试</em></a> 
+                     <span>1970-01-01</span>
+                 </li>
+                                       <li>
+                     <a title="无法通过串口远程调试 gdbserver" href="https://www.likecs.com/ask-2730697.html" target="_blank">无法通过串口<em>远</em><em>程</em><em>调</em><em>试</em> <em>gdbserver</em></a> 
+                     <span>2018-05-21</span>
+                 </li>
+                                       <li>
+                     <a title="GDB 远程调试：让 GDB 等待 gdbserver 启动" href="https://www.likecs.com/ask-2730679.html" target="_blank">GDB <em>远</em><em>程</em><em>调</em><em>试</em>：让 GDB 等待 <em>gdbserver</em> 启动</a> 
+                     <span>2015-04-29</span>
+                 </li>
+                                       <li>
+                     <a title="通过 ssh 使用 gdbserver 进行远程调试" href="https://www.likecs.com/ask-444966.html" target="_blank">通过 ssh 使用 <em>gdbserver</em> 进行<em>远</em><em>程</em><em>调</em><em>试</em></a> 
+                     <span>2015-01-19</span>
+                 </li>
+                                       <li>
+                     <a title="gdb - gdbserver 跟踪远程程序执行" href="https://www.likecs.com/ask-2730688.html" target="_blank">gdb - <em>gdbserver</em> 跟踪<em>远</em><em>程</em><em>程</em><em>序</em>执行</a> 
+                     <span>2013-05-15</span>
+                 </li>
+                                       <li>
+                     <a title="使用 Eclipse CDT gdbserver 进行远程调试：stdin/stdout" href="https://www.likecs.com/ask-2729295.html" target="_blank">使用 Eclipse CDT <em>gdbserver</em> 进行<em>远</em><em>程</em><em>调</em><em>试</em>：stdin/stdout</a> 
+                     <span>2012-02-20</span>
+                 </li>
+                              </ul>
+    </div>
+  
+   <div style="height: auto;background-color: #ddd;text-align: center;" class="carditem litem">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5446233687289962" data-ad-slot="2607637140" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div> 
+   <div style="height: auto;" class="carditem litem mt20">
+    <div class="cardtit">热门标签  </div>
+    <div class="tagbox">
+                    <a target="_blank" title="Java" href="https://www.likecs.com/default/index/tags?cid=164&amp;cname=Java">Java</a>
+                        <a target="_blank" title="Python" href="https://www.likecs.com/default/index/tags?cid=367&amp;cname=Python">Python</a>
+                        <a target="_blank" title="linux" href="https://www.likecs.com/default/index/tags?cid=274&amp;cname=linux">linux</a>
+                        <a target="_blank" title="javascript" href="https://www.likecs.com/default/index/tags?cid=169&amp;cname=javascript">javascript</a>
+                        <a target="_blank" title="Mysql" href="https://www.likecs.com/default/index/tags?cid=237&amp;cname=Mysql">Mysql</a>
+                        <a target="_blank" title="C#" href="https://www.likecs.com/default/index/tags?cid=187&amp;cname=C%23">C#</a>
+                        <a target="_blank" title="Docker" href="https://www.likecs.com/default/index/tags?cid=243&amp;cname=Docker">Docker</a>
+                        <a target="_blank" title="算法" href="https://www.likecs.com/default/index/tags?cid=344&amp;cname=%E7%AE%97%E6%B3%95">算法</a>
+                        <a target="_blank" title="前端" href="https://www.likecs.com/default/index/tags?cid=160&amp;cname=%E5%89%8D%E7%AB%AF">前端</a>
+                        <a target="_blank" title="SpringBoot" href="https://www.likecs.com/default/index/tags?cid=168&amp;cname=SpringBoot">SpringBoot</a>
+                        <a target="_blank" title="Redis" href="https://www.likecs.com/default/index/tags?cid=227&amp;cname=Redis">Redis</a>
+                        <a target="_blank" title="Vue" href="https://www.likecs.com/default/index/tags?cid=236&amp;cname=Vue">Vue</a>
+                        <a target="_blank" title="spring" href="https://www.likecs.com/default/index/tags?cid=696&amp;cname=spring">spring</a>
+                        <a target="_blank" title="设计模式" href="https://www.likecs.com/default/index/tags?cid=632&amp;cname=%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</a>
+                        <a target="_blank" title=".net core" href="https://www.likecs.com/default/index/tags?cid=381&amp;cname=.net+core">.net core</a>
+                        <a target="_blank" title="kubernetes" href="https://www.likecs.com/default/index/tags?cid=2179&amp;cname=kubernetes">kubernetes</a>
+                        <a target="_blank" title=".net" href="https://www.likecs.com/default/index/tags?cid=300&amp;cname=.net">.net</a>
+                        <a target="_blank" title="c++" href="https://www.likecs.com/default/index/tags?cid=312&amp;cname=c%2B%2B">c++</a>
+                        <a target="_blank" title="数据库" href="https://www.likecs.com/default/index/tags?cid=284&amp;cname=%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                        <a target="_blank" title="数据结构" href="https://www.likecs.com/default/index/tags?cid=247&amp;cname=%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84">数据结构</a>
+                        <a target="_blank" title="大数据" href="https://www.likecs.com/default/index/tags?cid=888&amp;cname=%E5%A4%A7%E6%95%B0%E6%8D%AE">大数据</a>
+                        <a target="_blank" title="js" href="https://www.likecs.com/default/index/tags?cid=159&amp;cname=js">js</a>
+                        <a target="_blank" title="机器学习" href="https://www.likecs.com/default/index/tags?cid=171&amp;cname=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0">机器学习</a>
+                        <a target="_blank" title="微服务" href="https://www.likecs.com/default/index/tags?cid=832&amp;cname=%E5%BE%AE%E6%9C%8D%E5%8A%A1">微服务</a>
+                        <a target="_blank" title="Android" href="https://www.likecs.com/default/index/tags?cid=282&amp;cname=Android">Android</a>
+                        <a target="_blank" title="Go" href="https://www.likecs.com/default/index/tags?cid=839&amp;cname=Go">Go</a>
+                        <a target="_blank" title="程序员" href="https://www.likecs.com/default/index/tags?cid=327&amp;cname=%E7%A8%8B%E5%BA%8F%E5%91%98">程序员</a>
+                        <a target="_blank" title="面试" href="https://www.likecs.com/default/index/tags?cid=637&amp;cname=%E9%9D%A2%E8%AF%95">面试</a>
+                        <a target="_blank" title="JVM" href="https://www.likecs.com/default/index/tags?cid=727&amp;cname=JVM">JVM</a>
+                        <a target="_blank" title="人工智能" href="https://www.likecs.com/default/index/tags?cid=270&amp;cname=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD">人工智能</a>
+                        <a target="_blank" title="ASP.net core" href="https://www.likecs.com/default/index/tags?cid=179&amp;cname=ASP.net+core">ASP.net core</a>
+                        <a target="_blank" title="云原生" href="https://www.likecs.com/default/index/tags?cid=22056&amp;cname=%E4%BA%91%E5%8E%9F%E7%94%9F">云原生</a>
+                        <a target="_blank" title="后端" href="https://www.likecs.com/default/index/tags?cid=1089&amp;cname=%E5%90%8E%E7%AB%AF">后端</a>
+                        <a target="_blank" title="git" href="https://www.likecs.com/default/index/tags?cid=226&amp;cname=git">git</a>
+                        <a target="_blank" title="CSS" href="https://www.likecs.com/default/index/tags?cid=817&amp;cname=CSS">CSS</a>
+                        <a target="_blank" title="PHP" href="https://www.likecs.com/default/index/tags?cid=281&amp;cname=PHP">PHP</a>
+                        <a target="_blank" title="golang" href="https://www.likecs.com/default/index/tags?cid=409&amp;cname=golang">golang</a>
+                        <a target="_blank" title="k8s" href="https://www.likecs.com/default/index/tags?cid=5067&amp;cname=k8s">k8s</a>
+                        <a target="_blank" title="深度学习" href="https://www.likecs.com/default/index/tags?cid=345&amp;cname=%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0">深度学习</a>
+                        <a target="_blank" title="Django" href="https://www.likecs.com/default/index/tags?cid=634&amp;cname=Django">Django</a>
+                        <a target="_blank" title="Nginx" href="https://www.likecs.com/default/index/tags?cid=373&amp;cname=Nginx">Nginx</a>
+                        <a target="_blank" title="mybatis" href="https://www.likecs.com/default/index/tags?cid=720&amp;cname=mybatis">mybatis</a>
+                        <a target="_blank" title="多线程" href="https://www.likecs.com/default/index/tags?cid=986&amp;cname=%E5%A4%9A%E7%BA%BF%E7%A8%8B">多线程</a>
+                        <a target="_blank" title="React" href="https://www.likecs.com/default/index/tags?cid=560&amp;cname=React">React</a>
+                        <a target="_blank" title="架构" href="https://www.likecs.com/default/index/tags?cid=2070&amp;cname=%E6%9E%B6%E6%9E%84">架构</a>
+                        <a target="_blank" title="devops" href="https://www.likecs.com/default/index/tags?cid=2662&amp;cname=devops">devops</a>
+                        <a target="_blank" title="云计算" href="https://www.likecs.com/default/index/tags?cid=361&amp;cname=%E4%BA%91%E8%AE%A1%E7%AE%97">云计算</a>
+                        <a target="_blank" title="爬虫" href="https://www.likecs.com/default/index/tags?cid=905&amp;cname=%E7%88%AC%E8%99%AB">爬虫</a>
+                        <a target="_blank" title="Spring Boot" href="https://www.likecs.com/default/index/tags?cid=201&amp;cname=Spring+Boot">Spring Boot</a>
+                        <a target="_blank" title="LeetCode" href="https://www.likecs.com/default/index/tags?cid=342&amp;cname=LeetCode">LeetCode</a>
+                </div>
+       
+   </div>
+   
+        <div id="rightadbox" style="height: 300px; background-color: rgb(221, 221, 221); text-align: center; top: 0px; width: 378px; left: 1080px;" class="carditem litem">
+            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5446233687289962" data-ad-slot="2607637140" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div> 
+</div>
+<div class="clearfix"></div>
+</main>
+    
+<div class="yllinks alink"></div>
+ 
+
+<footer class="site-footer clearfix">
+<section class="copyright">By © 2023 <a href="https://www.likecs.com/" title="www.likecs.com">likecs</a> 版权所有,<br>本站所有数据收集于网络如有侵犯到您的权益请联系 进行下架处理1。 </section>
+<section class="poweredby">  <a target="_blank" href="https://beian.miit.gov.cn/">粤ICP备22038628号</a>Powered By  WordPress </section>
+<script charset="UTF-8" id="LA_COLLECT" src="./[转]IDA + GDBServer实现iPhone程序远程调试 - 爱码网_files/js-sdk-pro.min.js.下载"></script>
+<script>LA.init({id: "Je3PjbvUssp6BbvY",ck: "Je3PjbvUssp6BbvY"})</script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?2eb031e42d29b7c1a1f16948d2ae2a9f";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</footer>  
+</div>
+<script>
+    $(function(){
+                    $(".post-content").append('<p style="padding: 20px;color: #cacaca;">原文链接：https://www.cnblogs.com/Proteas/archive/2012/12/20/2826893.html</p>')  
+            }) 
+</script> 
+
+</body></html>

@@ -1,0 +1,18 @@
+FF8268  FF82EB 1p
+FF83a8  FF842B 2p
+FF84e8  FF856B 3p
+FF8628  FF86AB 4p
+FF8768
+
+FFab68
+FFac28
+FFace8
+FFada8
+
+FF9F68,   0x14个, 大小 0x0C0, hp = 0x82
+
+wp ffada8+82,2,w,1，{printf "%8x %8x",wpdata,pc;g} 
+
+179ec
+
+ff017e ff5991 cdbfa cb820 1772c-17792 
