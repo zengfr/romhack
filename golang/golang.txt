@@ -1,0 +1,63 @@
+
+https://github.com/zengfr/romhack
+
+https://github.com/alphaSeclab/hooking
+
+https://github.com/unknownv2/LinuxDetours/tree/master
+https://github.com/plivepatch/plivepatch
+
+https://github.com/mem99/dl-go/blob/master/process.go ptrace injector in Go
+https://github.com/connorcl/go-ptrace/tree/main
+https://github.com/hjr265/ptrace.go
+
+https://github.com/xiaobing94/goinlinehook 
+goinlinehook 是go语言环境下的inline hook库。
+
+特征
+可以调用原函数
+可以hook私有函数
+可以hook成员函数
+可以hook runtime函数
+
+https://github.com/liuyx/inline-hook
+https://github.com/Menooker/PFishHook
+
+
+https://github.com/jmpews/evilELF/tree/master/InjectRuntimeELF
+https://github.com/NaniteFactory/memory/blob/master/memory.go
+https://github.com/topics/hooking?l=go
+
+https://pkg.go.dev/github.com/robotn/gohook@v0.41.0
+https://github.com/moutend/go-hook
+
+https://github.com/fengyoulin/hookingo
+https://github.com/brahma-adshonor/gohook
+https://www.cnblogs.com/catch/p/10973611.html
+
+
+https://github.com/go-vgo/robotgo
+https://github.com/jwping/wxbot
+
+https://github.com/Golang-Hooks/Golang-Hooks
+
+https://github.com/castaneai/hinako
+https://github.com/xiaobing94/goinlinehook
+
+API Hook libraries: Detours, Deviare, MHook, EasyHook 
+Microsoft Detours, EasyHook, Nektra Deviare, and Mhook
+https://github.com/unknownv2/CoreHook
+
+
+https://github.com/TsudaKageyu/minhook
+https://www.codeproject.com/articles/21414/powerful-x86-x64-mini-hook-engine
+https://github.com/mejedi/hook-engine/tree/master
+
+https://bbs.kanxue.com/thread-178320.htm LINUX ELF HOOK DEMO源码
+
+
+https://github.com/plivepatch/plivepatch  热补丁技术实践
+
+Linux x64 inline hook 详解及代码实现 https://bbs.kanxue.com/thread-272797.htm
+
+
+

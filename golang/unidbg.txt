@@ -1,0 +1,14 @@
+
+https://github.com/zengfr/romhack
+
+https://blog.csdn.net/freeking101/article/details/128519449
+
+
+https://github.com/cxapython/unidbg-server
+https://github.com/gl953236368/uls
+https://github.com/zhaoboy9692/unidbgweb
+https://github.com/anjia0532/unidbg-boot-server
+
+https://blog.csdn.net/qq_38851536/category_11102404.html
+
+https://github.com/bet4it/hyperpwn A hyper plugin to provide a flexible GDB GUI frontend with the help of GEF, pwndbg or peda

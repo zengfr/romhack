@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+        <meta charset="utf-8" />
+        <meta name="generator" content="Pelican" />
+        <title>ARM相关的笔记</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+        <meta name="description" content="很久之前看过一遍之后再也没用上，导致之后遇到arm也直接跳过，买了M1半年也没有正经用它的ARM，现在才打算好好看看，并把它记下来..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">B3taMa0's Field</a></h1>
+                <nav><ul>
+                    <li><a href="/pages/about/">About</a></li>
+                    <li><a href="/pages/archive-blog/">Old</a></li>
+                    <li><a href="/category/auto.html">Auto</a></li>
+                    <li class="active"><a href="/category/basic.html">Basic</a></li>
+                    <li><a href="/category/kernel.html">Kernel</a></li>
+                    <li><a href="/category/misc.html">Misc</a></li>
+                    <li><a href="/category/reverse.html">Reverse</a></li>
+                    <li><a href="/category/sk.html">SK</a></li>
+                    <li><a href="/category/vuln.html">Vuln</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/posts/2021/arm-notes/" rel="bookmark"
+           title="Permalink to ARM相关的笔记">ARM相关的笔记</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2021-11-10T07:20:00+08:00">
+                Published: 2021年11月10日
+        </abbr>
+
+<p>In <a href="/category/basic.html">Basic</a>.</p>
+
+</footer><!-- /.post-info -->      <style>.entry-content table, th, td {border: 1px solid black;} .entry-content th {text-align: center;color:#9f474f}</style>
+
+<p>ARM体系现在已经有9个版本了，不同体系指令集架构(ISA)和ABI有区别，但一般是向前兼容的，现在网上和书上的资料大多是指第6版ARMv6，本文暂时也只记录ARMv6，之后再慢慢升级。</p>
+<p>在此要说一下当前主流应该是ARMv8，在位数上它扩充到了64位，新的指令集叫AArch64，而兼容ARMv7的指令集叫AArch32，再旧的是A32，也是此处介绍ARM32的内容。</p>
+<h3 id="_1">工作状态</h3>
+<p>Arm状态和Thumb状态，前者使用4字节定长指令，后者使用2字节定长指令，重置或异常时恢复为ARM状态，可通过BX/BLX指令转换状态，当目标地址的低位为0时表示转换到thumb状态，否则为arm状态，返回时根据LR恢复状态，在插桩时特别要小心这一点，可通过指令长度确定目标片段的代码类型。</p>
+<h3 id="_2">工作模式</h3>
+<p>这里的工作模式是指当前运行的级别，在ARMv6下有如下七种：</p>
+<table>
+  <caption>表. 工作模式</caption>
+  <tr>
+    <th>Mode</th><th>ModeCode</th><th>说明</th>
+</tr>
+<tr>
+<td>User</td><td>10000</td><td>用户模式，用户进程执行时处于该模式</td>
+</tr>
+<tr>
+<td>System</td><td>11111</td><td>普通特权模式，如通常的系统内核执行时会进入该模式</td>
+</tr>
+<tr>
+<td>Supervisor</td><td>10011</td><td>重置时的模式，软中断与系统调用(swi指令)时也进入该模式</td>
+</tr>
+<tr>
+<td>Undefined</td><td>11011</td><td>获取到不能识别的指令时进入该模式，此时用户可通过软件仿真来模拟自定义的指令(类似中断服务例程)</td>
+</tr>
+<tr>
+<td>IRQ</td><td>10010</td><td>普通中断模式，一般硬件中断时会进入</td>
+</tr>
+<tr>
+<td>FIQ</td><td>10001</td><td>快速中断模式，处理紧急中断/高速数据处理时</td>
+</tr>
+<tr>
+<td>Abort</td><td>10111</td><td>访问异常触发保护机制时(如segment fault)会进入该模式</td>
+</tr>
+</table>
+
+<blockquote>
+<p>(在后来的版本中又增加了3种之后再补充。)</p>
+</blockquote>
+<h3 id="_3">寄存器</h3>
+<p>一般只提Arm有37个可见的寄存器，但在某一时刻只有部分寄存器能使用，如下所示不同的模式可见的寄存器差不多，但是对应的物理寄存器不一定一致，例如User和Supervisor模式下的R0-R12指向同样的物理寄存器，而R13和R14在两种模式下实际对应的物理寄存器并不一致，所以一般我们在代码中只能看到10多个寄存器，而实际上有30多个：</p>
+<table>
+    <caption>表. ARMv6 ARM寄存器</caption>
+  <tr>
+  <th>User</th><th>System</th> <th>Supervisor</th><th>Abort</th><th>Undefined</th><th>IRQ</th> <th>FIQ</th><th>说明</th>
+</tr>
+<tbody>
+<tr>
+  <td>R0</td> <td>R0</td> <td>R0</td> <td>R0</td> <td>R0</td> <td>R0</td> <td>R0</td><td rowspan=8>这一组寄存器在所有模式下指向相同的物理寄存器，其中R0-R3通常用于传参，R0-R1通常用于传输返回值</td>
+</tr>
+<tr>
+  <td>R1</td> <td>R1</td> <td>R1</td> <td>R1</td> <td>R1</td> <td>R1</td> <td>R1</td>
+</tr>
+<tr>
+  <td>R2</td> <td>R2</td> <td>R2</td> <td>R2</td> <td>R2</td> <td>R2</td> <td>R2</td>
+</tr>
+<tr>
+  <td>R3</td> <td>R3</td> <td>R3</td> <td>R3</td> <td>R3</td> <td>R3</td> <td>R3</td>
+</tr>
+<tr>
+  <td>R4</td> <td>R4</td> <td>R4</td> <td>R4</td> <td>R4</td> <td>R4</td> <td>R4</td>
+</tr>
+<tr>
+  <td>R5</td> <td>R5</td> <td>R5</td> <td>R5</td> <td>R5</td> <td>R5</td> <td>R5</td>
+</tr>
+<tr>
+  <td>R6</td> <td>R6</td> <td>R6</td> <td>R6</td> <td>R6</td> <td>R6</td> <td>R6</td>
+</tr>
+<tr>
+  <td>R7</td> <td>R7</td> <td>R7</td> <td>R7</td> <td>R7</td> <td>R7</td> <td>R7</td>
+</tr>
+<tr>
+  <td>R8</td> <td>R8</td> <td>R8</td> <td>R8</td> <td>R8</td> <td>R8</td><td>R8_fiq</td><td rowspan=3>这三个寄存器和R11，R12在thumb下不可见</td>
+</tr>
+<tr>
+  <td>R9</td> <td>R9</td> <td>R9</td> <td>R9</td> <td>R9</td> <td>R9</td> <td>R9_fiq</td>
+</tr>
+<tr>
+  <td>R10</td> <td>R10</td> <td>R10</td> <td>R10</td> <td>R10</td> <td>R10</td><td>R10_fiq</td>
+</tr>
+<tr>
+  <td>R11</td> <td>R11</td> <td>R11</td> <td>R11</td><td>R11</td><td>R11</td><td>R11_fiq</td><td>又叫FP(Frame Pointer)寄存器，通常用于指向栈桢</td>
+</tr>
+<tr>
+  <td>R12</td> <td>R12</td> <td>R12</td> <td>R12</td> <td>R12</td> <td>R12</td><td>R12_fiq</td><td>又名IP(Intra Procedure call scratch)寄存器，它不会被保存也默认数据不可用，因此可在过程中直接写读</td>
+</tr>
+<tr>
+  <td>R13</td><td>R13</td><td>R13_svc</td><td>R13_abt</td><td>R13_und</td><td>R13_irq</td><td>R13_fiq</td><td>又名SP(Stack Pointer)寄存器，保存了栈顶指针</td>
+</tr>
+<tr>
+  <td>R14</td><td>R14</td><td>R14_svc</td><td>R14_abt</td><td>R14_und</td><td>R14_irq</td><td>R14_fiq</td><td>又名LR(Linked Register)，保存了函数返回地址</td>
+</tr>
+<tr>
+  <td>R15</td><td>R15</td><td>R15</td><td>R15</td><td>R15</td><td>R15</td><td>R15</td><td>又名PC(Program Counter)寄存器，在计组中它可以保存当前指令位置也可以保存下一指令位置，在3级流水线的ARM系列中(据传未验证)保存了下一条要读取的指令的地址，它的值是当前正在执行的指令的地址+8</td>
+</tr>
+<tr>
+  <td>CPSR</td><td>CPSR</td><td>CPSR</td><td>CPSR</td><td>CPSR</td><td>CPSR</td><td>CPSR</td><td>Current Program State Register保存当前程序的状态</td>
+</tr>
+<tr>
+  <td></td><td></td><td>SPSR_svc</td><td>SPSR_abt</td><td>SPSR_und</td><td>SPSR_irq</td><td>SPSR_fiq</td><td>Stored Program State Register用于备份CPSR，如出现异常时就会保存并在异常处理完后恢复</td>
+</tr>
+</tbody>
+</table>
+
+<p>在这里面CPSR也是按位表示一些状态，它的结构如下(新版会使用更多位)：</p>
+<table>
+  <caption>表. 程序状态寄存器</caption>
+<thead>
+<tr>
+  <th>Bit</th><th>31</th><th>30</th><th>29</th><th>28</th><th>---</th><th>7</th><th>6</th><th>5</th><th>4</th><th>3</th><th>2</th><th>1</th><th>0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td></td><td>N</td><td>Z</td><td>C</td><td>V</td><td>---</td><td>I</td><td>F</td><td>T</td><td>M4</td><td>M3</td><td>M2</td><td>M1</td><td>M0</td>
+</tr>
+<tr>
+  <td>Description</td><td>Negative</td><td>Zero</td><td>Carry</td><td>oVerflow</td><td></td><td>IRQ</td><td>FIQ</td><td>Thumb</td><td colspan=5>Work Mode</td>
+</tr>
+</tbody>
+</table>
+<p>一般在指令集手册里它们叫ArmRegister，除此之外还有很多不可见的寄存器(<strong>我猜的</strong>)和协处理器，协处理器用于处理特殊任务，如多媒体任务，算数任务，加解密任务等，它只会执行和它功能相关的指令而忽略其他指令。</p>
+<h3 id="_4">指令</h3>
+<p>本段记录的是ARM指令，Thumb指令以后有需要再补充。ARM指令有如下特点：</p>
+<ol>
+<li>几乎所有指令都有4位共16种条件标志位，当使用时表示满足条件才执行指令，在汇编上以两个字符的助记符表示</li>
+<li>很多指令助记符通过S表示该操作会影响程序状态字</li>
+</ol>
+<blockquote>
+<p>注：下面的翻译并不一定正确，我只是为了好记！</p>
+</blockquote>
+<table>
+<caption>表. 条件码</caption>
+<thead>
+<tr><th>编码</th><th>条件助记符</th><th>标志位</th><th>含义</th></tr>
+</thead>
+<tbody>
+<tr><td>0000</td><td>EQ</td><td>Z=1</td><td>相等</td></tr>
+<tr><td>0001</td><td>NE</td><td>Z=0</td><td>不相等</td></tr>
+<tr><td>0010</td><td>CS</td><td>C=1</td><td>无符号大于或等于</td></tr>
+<tr><td>0011</td><td>CC</td><td>C=0</td><td>无符号小于</td></tr>
+<tr><td>0100</td><td>MI</td><td>N=1</td><td>负值</td></tr>
+<tr><td>0101</td><td>PL</td><td>N=0</td><td>正值或 0</td></tr>
+<tr><td>0110</td><td>VS</td><td>V=1</td><td>溢出</td></tr>
+<tr><td>0111</td><td>VC</td><td>V=0</td><td>无溢出</td></tr>
+<tr><td>1000</td><td>HI</td><td>C=1 且 Z=0</td><td>无符号大于</td></tr>
+<tr><td>1001</td><td>LS</td><td>C=0 且 Z=1</td><td>无符号小于或等于</td></tr>
+<tr><td>1010</td><td>GE</td><td>N 和 V 相同</td><td>有符号大于或等于</td></tr>
+<tr><td>1011</td><td>LT</td><td>N 和 V 不相同</td><td>有符号小于</td></tr>
+<tr><td>1100</td><td>GT</td><td>Z=0 且 N 等于 V</td><td>有符号大于</td></tr>
+<tr><td>1101</td><td>LE</td><td>Z=1 且 N 不等于 V</td><td>有符号小于或等于</td></tr>
+<tr><td>1110</td><td>AL</td><td>忽略</td><td>无条件执行（默认可省略）</td></tr>
+<tr><td>1111</td><td>NV</td><td>忽略</td><td>从不执行（系统保留）</td></tr>
+</tbody>
+</table>
+
+<table>
+  <caption>表. 常用指令</caption>
+<thead>
+<tr>
+  <th>类型</th><th>指令</th><th>助记</th><th>说明</th><th>例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>跳转指令</td><td>B/BL/BX/BLX</td><td>Branch{Link}{eXchange}</td><td>跳转到其他位置，带L将把返回地址放到LR，带X会根据目标切换状态</td><td>BLEQ main;Z标志置位时调用main函数</td>
+</tr>
+<tr>
+  <td rowspan=6>数据处理指令</td><td>MOV/MVN</td><td> </td><td>数据传输指令与取反传输</td><td> </td>
+</tr>
+<tr>
+  <td>CMP/CVN/TST/TEQ</td><td> </td><td>{算数比较｜反值比较｜逻辑位测｜逻辑位相等}</td><td> </td>
+</tr>
+<tr>
+  <td>ADD/ADC/SUB/SBC/RSB/RSC</td><td> </td><td>加减运算，C表示是否带进位，R表示逆向</td><td> </td>
+</tr>
+<tr>
+  <td>MUL/MULA/{S|U}MULL/{S|U}MUAL</td><td> </td><td>乘法与乘加指令，所谓乘加就是先乘再加，开头加S或U表示是否有符号，结束加L表示64位</td><td> </td>
+</tr>
+<tr>
+  <td>{L|A}S{L|R}/ROR/RRX</td><td> </td><td>{逻辑｜算数}{左|右}移，循环右移，带扩展的循环右移</td><td> </td>
+</tr>
+<tr>
+  <td>AND/ORR/EOR/BIC</td><td> </td><td>逻辑{与｜或｜异或｜位清除}</td><td> </td>
+</tr>
+<tr>
+  <td>PSR处理指令</td><td>MSR/MRS</td><td>Move State from Register｜...</td><td>可通过该指令读写状态寄存器</td><td>MSR CPSR, R0; 将R0的值赋给CPSR</td>
+</tr>
+<tr>
+  <td rowspan=2>加载/存储指令</td><td>{LD|ST}R{|B|H}</td><td>{LoaD|STore} Register{Doword|Byte|sHort}</td><td>从加载一个{双字|字节｜字}到寄存器或相反</td><td>LDR R0, [SP]; R0=[SP]</td>
+</tr>
+  <tr>
+  <td>{LD|ST}M</td><td>{LoaD|STore}Multi</td><td>从寄存器组存储数据到内存或反向操作</td><td></td>
+</tr>
+<tr>
+  <td rowspan=3>协处理器指令</td><td>CDP</td><td>Coprocessor Data Operation</td><td>让指定编码的协处理器执行指定的指令</td><td>CDP P3, 2, C12, C10, C3, 4; 让协处理器3执行2号指令，后面是它的源目的寄存器等参数</td>
+</tr>
+<tr>
+  <td>LDC/STC</td><td>{LoaD|STore} Coprocessor</td><td>让协处理器指定寄存器从指定内存加载/存储数据</td><td>LDC P15, C4, [R0]; 从R0所指位置加载一个dword的数据到15号协处理器的C4寄存器</td>
+</tr>
+<tr>
+  <td>MCR/MRC</td><td>Move Coprocessor from Register|...</td><td>协处理器与ARM寄存器间传送数据</td><td>MCR P3, 3, R0, C4, C5, 6; 将R0的内容传送到P3的C4 C5中</td>
+</tr>
+<tr>
+  <td rowspan=2>异常产生指令</td><td>SWI</td><td>SoftWare Interrupt</td><td>产生软中断，用于系统调用</td><td>SWI 2; 调用编号为2的系统例程</td>
+</tr>
+<tr>
+  <td>BKPT</td><td>BreaKPoinT</td><td>断点</td><td>BKPT 0x2233;</td>
+</tr>
+</tbody>
+</table>
+
+<h4 id="_5">寻址方式</h4>
+<p>1.立即数寻址：</p>
+<div class="highlight"><pre><span></span><code><span class="nf">ADD</span> <span class="no">R0</span><span class="p">,</span> <span class="no">R0</span><span class="p">,</span> <span class="mi">#0</span><span class="no">x10</span>       <span class="c1">; R0=R0+0x10，立即数以#开头</span>
+</code></pre></div>
+
+<p>2.寄存器寻址：</p>
+<div class="highlight"><pre><span></span><code><span class="nf">ADD</span> <span class="no">R0</span><span class="p">,</span> <span class="no">R1</span><span class="p">,</span> <span class="no">R2</span>          <span class="c1">; R0=R1+R2</span>
+</code></pre></div>
+
+<p>3.寄存器间接寻址：</p>
+<div class="highlight"><pre><span></span><code><span class="nf">ADD</span> <span class="no">R0</span><span class="p">,</span> <span class="no">R1</span><span class="p">,</span> <span class="p">[</span><span class="no">R2</span><span class="p">]</span>        <span class="c1">; R0=R1+[R2]</span>
+</code></pre></div>
+
+<p>4.基址变址寻址：</p>
+<div class="highlight"><pre><span></span><code><span class="nf">ADD</span> <span class="no">R0</span><span class="p">,</span> <span class="p">[</span><span class="no">R1</span><span class="p">,</span> <span class="mi">#4</span><span class="p">]</span>        <span class="c1">;   R0=[R1+4]</span>
+<span class="nf">ADD</span> <span class="no">R0</span><span class="p">,</span> <span class="p">[</span><span class="no">R1</span><span class="p">,</span> <span class="mi">#4</span><span class="p">]!</span>       <span class="c1">; R0=[R1+4],R1+=4</span>
+<span class="nf">ADD</span> <span class="no">R0</span><span class="p">,</span> <span class="p">[</span><span class="no">R1</span><span class="p">],</span> <span class="mi">#4</span>        <span class="c1">; R0=[R1], R1+=4</span>
+<span class="nf">ADD</span> <span class="no">R0</span><span class="p">,</span> <span class="p">[</span><span class="no">R1</span><span class="p">,</span> <span class="no">R2</span><span class="p">]</span>        <span class="c1">;   R0=[R1+R2]</span>
+</code></pre></div>
+
+<p>5.多寄存器寻址：</p>
+<div class="highlight"><pre><span></span><code><span class="nf">LDMIA</span> <span class="no">R0</span><span class="p">,</span> <span class="err">{</span><span class="no">R1</span><span class="p">,</span> <span class="no">R2</span><span class="p">,</span> <span class="no">R3</span><span class="p">,</span> <span class="no">R4</span><span class="err">}</span>  <span class="c1">; R1=[R0],R2=[R0+4]...</span>
+</code></pre></div>
+
+<p>这里的后缀有如下四种，用于表示每执行一个寄存器复制操作后原地址如何变化：</p>
+<table>
+<thead>
+<tr>
+<th>mode</th>
+<th>Full Name</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IA</td>
+<td>Increase After</td>
+<td>先传送再加</td>
+</tr>
+<tr>
+<td>DA</td>
+<td>Decrease After</td>
+<td>先传送再减</td>
+</tr>
+<tr>
+<td>IB</td>
+<td>Increase Before</td>
+<td>先加再传送</td>
+</tr>
+<tr>
+<td>DB</td>
+<td>Decrease Before</td>
+<td>先减再传送</td>
+</tr>
+</tbody>
+</table>
+<p>6.相对寻址：</p>
+<div class="highlight"><pre><span></span><code><span class="nf">BL</span> <span class="no">main</span>                         <span class="c1">; call main</span>
+</code></pre></div>
+
+<p>7.堆栈寻址：</p>
+<div class="highlight"><pre><span></span><code><span class="nf">LDMFD</span> <span class="no">SP</span><span class="p">!,</span> <span class="err">{</span><span class="no">R1</span><span class="p">,</span> <span class="no">R2</span><span class="p">,</span> <span class="no">R3</span><span class="err">}</span><span class="c1">; R1=[SP], SP-=4, R2=[SP], SP-=4, R3=[SP], SP-=4</span>
+</code></pre></div>
+
+<p>这里的后缀有如下四种，用于表示当前栈指针所指位置是否存放了元素(如若指向的是最后压入的元素则为满栈)以及栈的增长方向(如递减表示由高地址到低地址增长)：</p>
+<table>
+<thead>
+<tr>
+<th>mode</th>
+<th>Full Name</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FA</td>
+<td>Full Ascending</td>
+<td>满递增栈</td>
+</tr>
+<tr>
+<td>FD</td>
+<td>Full Descending</td>
+<td>满递减栈</td>
+</tr>
+<tr>
+<td>EA</td>
+<td>Empty Ascending</td>
+<td>空递增栈</td>
+</tr>
+<tr>
+<td>ED</td>
+<td>Empty Descending</td>
+<td>空递减栈</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_6">伪指令</h3>
+<p>伪指令是针对汇编器的，又汇编器转换成某特定结构，因此它大多和架构无关(但也有<code>.thumb</code>这种是特定于架构的)，比如在GCC上那些伪指令在ARM上也能用，因此这里只记录一些在在IDA里常看到的：</p>
+<table>
+  <caption>表. 常用伪指令</caption>
+<thead>
+<tr>
+  <th>类型</th><th>伪指令</th><th>助记</th><th>说明</th><th>例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td rowspan=4>符号定义伪指令</td><td>GBL&lt;A|L|S&gt;</td><td>GloBaL&lt;Arithmetic|Logical|String&gt; var</td><td>定义全局&lt;数字｜逻辑｜字符串&gt;变量，默认值分别为&lt;0｜False｜""&gt;</td><td>GBLA x;定义一个全局数字变量x它的值为0</td>
+</tr>
+<tr>
+  <td>LCL&lt;A|L|S}</td><td>LoCaL&lt;Arithmetic|Logical|String&gt; var</td><td>定义本地&lt;数字｜逻辑｜字符串}变量，默认值分别为&lt;0｜False｜""&gt;</td><td>LCLA x;定义一个局部数字变量x它的值为0</td>
+</tr>
+<tr>
+  <td>SET&lt;A|L|S}</td><td>SET&lt;Arithmetic|Logical|String&gt; var</td><td>为&lt;数字｜逻辑｜字符串&gt;变量赋值</td><td>SETA x 233;x=233</td>
+</tr>
+<tr>
+  <td>RLIST</td><td>Register LIST</td><td>将某个寄存器列表定义为一个变量</td><td>r0_5 RLIST {R0-R5};另R0-R5这个寄存器列表为r0_5</td>
+</tr>
+<tr>
+  <td rowspan=4>数据定义伪指令</td><td>DC&lt;B|W|D|FD|FS|Q&gt;{U}</td><td><p>DataContent&lt;Byte|Word|Dowrd</p><p>|FloatSingle|FloatDouble|Qword&gt;{Unpad}</p></td><td>定义各种长度的数据，U表示不对齐</td><td>Str DCB "B3taMa0";</td>
+</tr>
+<tr>
+  <td>SPACE</td><td> </td><td>定义连续的一片空间，初始化为0</td><td>somespace Sapce 100;定义somespace为100字节长度的空间并初始为0</td>
+</tr>
+<tr>
+  <td>MAP</td><td> </td><td>申明一个数据结构</td><td>MAP 0x10, R0; 在R0+0x10处申明一个结构，之后用Field指令定义结构域</td>
+</tr>
+<tr>
+  <td>FIELD</td><td> </td><td>定义结构里的域</td><td>vtbl FIELD 0x04; 定义一个域名为vtbl长度为4字节</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="_7">调用约定</h3>
+<p>在ARM中还有个概念易于和ISA混淆，且和ISA密切相关，那就是ABI，ARM支持<a href="https://github.com/ARM-software/abi-aa">多种ABI</a>，移动和嵌入式上常见的是EABI，不过这不重要，我们需要关注的是ABI里的调用约定，这里面常用的调用约定是<a href="https://github.com/ARM-software/abi-aa/blob/2bcab1e3b22d55170c563c3c7940134089176746/aapcs32/aapcs32.rst">AAPCS</a>(Procedure Call Standard for the Arm Architecture)和<a href="https://github.com/ARM-software/abi-aa/blob/2bcab1e3b22d55170c563c3c7940134089176746/aapcs64/aapcs64.rst">AAPCS64</a>，它们分别对应32位和64位，这里介绍前者，在官方文档的调用约定里它的字表示32字节，太奇怪了，它应该叫双字！！！它的寄存器使用如下：</p>
+<table><thead valign="bottom">
+<tr><th>Register</th><th>Synonym</th><th>Special</th><th>说明</th></tr>
+</thead>
+<tbody valign="top">
+<tr><td>r15</td><td> </td><td>PC</td><td>The Program Counter.</td></tr>
+<tr><td>r14</td><td> </td><td>LR</td><td>The Link Register.</td></tr>
+<tr><td>r13</td><td> </td><td>SP</td><td>The Stack Pointer.</td></tr>
+<tr><td>r12</td><td> </td><td>IP</td><td>The Intra-Procedure-call scratch
+register.</td></tr>
+<tr><td>r11</td><td>v8</td><td>FP</td><td>Frame Pointer or Variable-register 8.</td></tr>
+<tr><td>r10</td><td>v7</td><td> </td><td>同v1-v5</td></tr>
+<tr><td>r9</td><td> </td><td><p dir="auto">v6</p><p dir="auto">SB</p><p dir="auto">TR</p></td>
+<td>特定于平台，可做不同用途，如在PIC中当SB(Static Base)，在TLS中当TR(Thread Register)，也可以把它当作v6用。</p></td></tr>
+<tr><td>r4-r8</td><td>v1-v5</td><td> </td><td>作为本地变量，需要函数执行前保存结束前恢复。</td></tr>
+<tr><td>r0-r3</td><td>a1-a4</td><td> </td><td>依次传递参数，若参数大于32位可占用多个连续的寄存器，若4个寄存器不够用则通过栈传输，方向为从右到左入栈；也可保存返回值，返回值为32位保存在r0里，与参数类似若返回值大于32位依次存放</td></tr>
+</tbody>
+</table>
+
+<p>而它的栈使用满递减栈，使用时必须4字节对齐，关于字节序arm似乎可以采取大端和小端但默认是小端，根据<a href="https://developer.arm.com/documentation/ddi0337/e/Programmer-s-Model/Memory-formats">官方文档</a>可通过一个配置引脚修改，这是ABI的内容，现在一般遇到的其实都是小端序。</p>
+<h3 id="_8">参考</h3>
+<ol>
+<li><a href="http://www.coranac.com/tonc/text/asm.htm">Whirlwind Tour of ARM Assembly</a></li>
+<li><a href="https://developer.arm.com/documentation/dui0489/c/directives-reference">arm-directives-reference</a></li>
+<li><a href="https://www.keil.com/support/man/docs/armasm/armasm_dom1361289850039.htm">ARM and Thumb Instructions</a></li>
+<li>《Android 系统安全和反编译实战》-- 刘云[著];朱桂英[著]</li>
+<li>《ARM处理器开发详解：基于ARM Cortex-A9处理器的开发设计》-- 秦山虎[著];刘洪涛[著]</li>
+</ol>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <p> Powered by <a href="https://getpelican.com/">Pelican</a>,
+                  Theme by <a href="#">B3taMa0</a>,
+                  Based on <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>
+                  ICP证：<a href="https://beian.miit.gov.cn/" target="_blank">蜀ICP备17036105号</a>
+                </p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

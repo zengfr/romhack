@@ -1,0 +1,137 @@
+
+pyd逆向_by_zengfr
+https://github.com/zengfr/romhack/tree/master/
+
+目录里面有个sturct的文件，前几个字节就是python的版本号，详情请百度
+
+
+_Pyx_CreateStringTabAndInitStrings和 C 源码中的大致一致；_pyx_pymod_exec_hello_world把__Pyx_PrintOne展开编进了函数中（都被指定了__attribute__((cold))扩展的函数），这里调用主要是把__pyx_kp_s_Hello_World即字符串"Hello, World!"的 PyObject 打成一个 tuple，然后用PyObject_Call调用PyObject_GetAttr拿到的print函数的 PyCodeObject，完成了对print("Hello, World!")的调用。
+这也是普通函数的调用流程，有一个 tuple 存非关键字参数（args）、一个 dict 存关键字参数（kwargs），然后调用PyObject_Call，其三个参数分别是被调用函数的 PyCodeObject、args tuple、kwargs dict，这样就完成了对 Python 函数的调用。
+
+
+代码逆向定位
+都在slots里，所以是挨着的，确定了一个就能确定另一个。函数实现也是挨着的。
+
+__pyx_pymod_create
+__pyx_pymod_exec_modulename
+
+
+全局操作的执行一般在__pyx_moduledef_slots中Py_mod_exec槽的函数，__pyx_moduledef_slots一般在PyInit中可以引用到：
+
+
+关键函数为_Pyx_PyObject_GetAttrStr和PyObject_Call，详情看IDA注释。PyDict_SetItem将函数返回值赋值给_pyx_n_s_a变量。 __Pyx_GetModuleGlobalName将_pyx_n_s_a的值赋值给变量
+
+
+关于判断两个字符串或者两个数字是否相等
+无论以何种形式判断字符串或者数字相等，python编译的.pyd文件都会在判断代码之后返回一个Py_FalseStruct或者Py_TrueStruct的结构体
+然后调用__Pyx_PyObject_IsTrue或者PyObject_IsTrue判断，如果返回值是Py_FalseStruct返回0，如果是Py_TrueStruct返回1。汇编通过1和0跳转。这样如果能定位到大致代码段，可直接暴力破解。
+
+
+_Pyx_PyInt_EqObjC 判断数字相等，_Pyx_PyInt_EqObjC就算对PyObject_RichCompare的二次封装，返回值为Py_FalseStruct或者Py_TrueStruct的结构体
+
+
+PyObject_RichCompare应该是python里面的内置函数，可以在反汇编中找到，_Pyx_PyInt_EqObjC就是对PyObject_RichCompare的二次封装。
+
+
+__Pyx_PyString_Equals在python3中等于__Pyx_PyUnicode_Equals，在python2中等于__Pyx_PyBytes_Equals。
+符合python3中的字符串就是python2中的字节序列。
+
+------------------------------------------------------------------------------------------------
+自定义函数的区别
+/*--- Execution code ---*/
+其中自定义的函数部分，py生成的是
+
+__pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_4util_1func, 0, __pyx_n_s_func, NULL, __pyx_n_s_util, __pyx_d, ((PyObject *)__pyx_codeobj__2)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_func, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+pyx生成的是
+
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_4util_1func, NULL, __pyx_n_s_util); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_func, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+__Pyx_InitGlobals —— 字面值初始化
+
+
+__pyx_pymod_exec_模块名(PyObject *__pyx_pyinit_module)
+会有个PyModule_GetDict()通过这个module获取字典，获得一个dict对象__pyx_d。
+
+各种import，将import的结果保存在这个字典里。而且根据__Pyx_Import参数判断是直接import还是用了as当别名
+全局变量，直接在这里PyDict_SetItem()赋值了
+
+---------------------------------------------------------------------------------------
+typedef struct _object {
+_PyObject_HEAD_EXTRA
+Py_ssize_t ob_refcnt;
+struct _typeobject *ob_type;
+} PyObject;
+
+PyAPI_FUNC(PyObject *) PyObject_GetAttrString(PyObject *, const char *);
+PyAPI_FUNC(PyObject *) PyObject_GetAttr(PyObject *, PyObject *);
+PyAPI_FUNC(int) PyObject_SetAttrString(PyObject *, const char *, PyObject *);
+PyAPI_FUNC(int) PyObject_SetAttr(PyObject *, PyObject *, PyObject *);
+
+PyAPI_FUNC(PyObject *) PyObject_Call(PyObject *callable,PyObject *args, PyObject *kwargs)
+PyAPI_FUNC(PyObject*) _PyObject_CallMethod(PyObject *obj,PyObject *name,const char *format, ...);
+PyAPI_FUNC(PyObject *) PyObject_CallFunction(PyObject *callable,const char *format, ...);
+
+https://github.com/python/cpython/blob/main/Include/cpython/object.h
+https://github.com/python/cpython/blob/main/Include/cpython/classobject.h
+
+https://github.com/python/cpython/blob/main/Include/cpython/abstract.h
+https://github.com/python/cpython/blob/main/Include/internal/pycore_call.h
+
+https://github.com/python/cpython/blob/main/Doc/c-api/call.rst
+
+---------------------
+__Pyx_ImportDottedModule
+__Pyx_CyFunction_New
+
+PyMethodDef
+__Pyx_RefNannySetupContext("getActiveCode (wrapper)", 0);
+__Pyx_RefNannySetupContext("getActiveCode", 1);
+__Pyx_RefNannyFinishContext();
+__Pyx_GetModuleGlobalName
+
+__Pyx_Arg_FASTCALL
+__Pyx_PyObject_FastCall
+__Pyx_PyObject_GetAttrStr
+__Pyx_PyObject_CallNoArg
+__Pyx_PyObject_CallOneArg
+__Pyx_PyObject_Call(__pyx_builtin_input
+PyMethod_GET_SELF
+PyMethod_GET_FUNCTION
+__Pyx_AddTraceback
+
+__Pyx_PyDict_NewPresized
+PyDict_SetItem
+PyList_New
+__Pyx_PyList_SET_ITEM
+__Pyx_PyString_Equals
+__Pyx_PyObject_IsTrue
+__Pyx_PyTuple_SET_ITEM
+
+__Pyx_CreateStringTabAndInitStrings
+__Pyx_InitStrings
+__Pyx_InitCachedBuiltins
+__Pyx_InitCachedConstants
+__Pyx_InitConstants
+__Pyx_InitGlobals
+
+static CYTHON_SMALL_CODE int __Pyx_modinit_global_init_code(void); /*proto*/
+static CYTHON_SMALL_CODE int __Pyx_modinit_variable_export_code(void); /*proto*/
+static CYTHON_SMALL_CODE int __Pyx_modinit_function_export_code(void); /*proto*/
+static CYTHON_SMALL_CODE int __Pyx_modinit_type_init_code(void); /*proto*/
+static CYTHON_SMALL_CODE int __Pyx_modinit_type_import_code(void); /*proto*/
+static CYTHON_SMALL_CODE int __Pyx_modinit_variable_import_code(void); /*proto*/
+static CYTHON_SMALL_CODE int __Pyx_modinit_function_import_code(void); /*proto*/
+
+static PyObject* __pyx_pymod_create(PyObject *spec, PyModuleDef *def); /*proto*/
+static int __pyx_pymod_exec_gen(PyObject* module); /*proto*/
+static PyModuleDef_Slot __pyx_moduledef_slots[] = {
+  {Py_mod_create, (void*)__pyx_pymod_create},
+  {Py_mod_exec, (void*)__pyx_pymod_exec_gen},
+  {0, NULL}
+};

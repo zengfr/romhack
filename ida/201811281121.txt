@@ -1,0 +1,178 @@
+﻿4.33 IDA异常识别block致使F5代码残缺
+
+https://scz.617.cn/misc/201811281121.txt
+
+Q:
+
+F5一个函数时，发现代码不全，莫名其妙在调用atol()之后结束了:
+
+--------------------------------------------------------------------------
+0000829C 97 02 00 EB     BL      atol
+000082A0             ; --------------------------
+000082A0 0C 00 0B E5     STR     R0, [R11,#var_C]
+--------------------------------------------------------------------------
+
+IDA显示0x829C、0x82A0分属两个不同的block，用图形方式查看时，前一个block没
+有后继结点，莫名结束，后一个block没有前趋结点，凭空出现。而实际上0x82A0处
+没有任何交叉引用，与0x829C应属同一block。
+
+A: hume 2018-11-28 10:23
+
+如果碰上F5代码残缺，可以检查子函数是否noreturn。
+
+在IDA中发现atol()被标注成noreturn:
+
+--------------------------------------------------------------------------
+00008D00             ; Attributes: noreturn
+00008D00
+00008D00             atol
+00008D00 10 40 2D E9     STMFD   SP!, {R4,LR}
+00008D04 00 10 A0 E3     MOV     R1, #0
+00008D08 0A 20 A0 E3     MOV     R2, #0xA
+00008D0C 79 01 00 EB     BL      strtol
+00008D10             ; ----------------------
+00008D10 10 40 BD E8     LDMFD   SP!, {R4,LR}
+00008D14 1E FF 2F E1     BX      LR
+00008D14             ; End of function atol
+--------------------------------------------------------------------------
+
+正是这个原因导致IDA认为0x829C之后不会走向0x82A0，解决办法很简单:
+
+Edit function (Alt-P)
+
+清空
+
+Does not return
+
+仔细看atol()，0x8D0C、0x8D10也被切割到两个block，说明strtol()也noreturn。
+顺着这条线找下去，根源在于__aeabi_read_tp()被标注成noreturn:
+
+--------------------------------------------------------------------------
+00008CC0             ; Attributes: noreturn
+00008CC0
+00008CC0             __aeabi_read_tp
+00008CC0 0F 0A E0 E3     MOV     R0, #0xFFFF0FFF
+00008CC4 1F F0 40 E2     SUB     PC, R0, #0x1F
+00008CC4             ; End of function __aeabi_read_tp
+00008CC4
+00008CC8 00 00 A0 E1     NOP
+00008CCC 00 00 A0 E1     NOP
+00008CD0
+00008CD0             ; Attributes: noreturn
+00008CD0
+00008CD0             __errno_location
+00008CD0
+00008CD0             var_4= -4
+00008CD0
+00008CD0 04 E0 2D E5     STR     LR, [SP,#var_4]!
+00008CD4 10 30 9F E5     LDR     R3, =aObject_deps           ; "object_deps"
+--------------------------------------------------------------------------
+
+函数属性会向主调者传递，导致沿线的strtol()、atol()也noreturn。不过，
+__aeabi_read_tp()被标注成noreturn，是因为它的函数体与__errno_location()共
+用了一些代码，这应该是优化导致的，所以也不能怪IDA。
+
+D: bluerust
+
+猜测idaapi能修复这种情况，改block的前趋和后继，但未实践。
+
+D: hume 2019-03-12
+
+有时两条指令本应归属同一block，但莫名被切割到两个block，并且不涉及noreturn，
+这种可能是IDA的BUG。其表现形式是出现断头block，一个没有后继结点，一个没有
+前趋结点，F5时会丢失代码。
+
+可用如下办法将两个block串起来，消除断头block:
+
+add_cref(first,second,fl_F)
+
+其中first对应第一个block最后一条指令所在地址，second对应第二个block第一条
+指令所在地址。这个办法不能修正F5丢失的代码。
+
+fl_F在ida_xref.py中定义:
+
+fl_F = _ida_xref.fl_F
+
+D: scz 2019-03-12
+
+参看ida_gdl.py，这里定义了BasicBlock、FlowChart。
+
+查看当前函数中所有block:
+
+["%#x-%#x-%#x-%#x" % ( block.id, block.startEA, block.endEA, block.type ) for block in FlowChart(get_func(get_screen_ea()))]
+
+for block in FlowChart(get_func(get_screen_ea())) : print "[%#x] [%#x,%#x) %#x" % ( block.id, block.startEA, block.endEA, block.type )
+
+在其输出中可以搜到second。type可取值:
+
+0 normal
+1 indjump
+2 ret
+3 cndret
+4 noret
+5 enoret
+6 extern
+7 error
+
+参gdl.hpp
+
+enum fc_block_type_t
+{
+    fcb_normal,     // normal block
+    fcb_indjump,    // block ends with indirect jump
+    fcb_ret,        // return block
+    fcb_cndret,     // conditional return block
+    fcb_noret,      // noreturn block
+    fcb_enoret,     // external noreturn block (does not belong to the function)
+    fcb_extern,     // external normal block
+    fcb_error,      // block passes execution past the function end
+};
+
+[block.startEA,block.endEA)是左闭右开区间，为了取指定block最后一条指令所在
+地址，这样做:
+
+print "%#x" % idc.PrevHead(block.endEA)
+
+查看指定block:
+
+id=0x19;block=FlowChart(get_func(get_screen_ea()))[id];print "[%#x] [%#x,%#x) %#x" % ( block.id, block.startEA, block.endEA, block.type )
+
+查看指定block的后继结点:
+
+id=0x19;successors=FlowChart(get_func(get_screen_ea()))[id].succs()
+for block in successors : print "[%#x] [%#x,%#x) %#x" % ( block.id, block.startEA, block.endEA, block.type )
+
+查看指定block的前趋结点:
+
+id=0x1a;predecessors=FlowChart(get_func(get_screen_ea()),flags=FC_PREDS)[id].preds()
+for block in predecessors : print "[%#x] [%#x,%#x) %#x" % ( block.id, block.startEA, block.endEA, block.type )
+
+如果preds()返回空集，检查FlowChart()的flags是否指定成FC_PREDS。
+
+如果能修正指定block的startEA、endEA，或许能将两个block合并成一个。
+
+D: bluerust 2019-03-12
+
+https://www.hex-rays.com/products/ida/support/sdkdoc/classnetnode.html
+
+IDA database的底层实现就是netnode，change callee主要是从$vmm function那个
+node里去改数据，我遍历了下，发现里面记的都是间接调用，callee不确定的指令地
+址。
+
+$vmm function这个node里各个数据的信息没有文档化，需要逆IDA目录里的两个文件
+看它是怎么操作的。
+
+IDA 7.2\SDK 7.2\plugins\callee\callee.cpp
+
+我觉得在元数据层面去操作，应该可以，但是得干蛮多前置逆向工作。
+
+IDA打开ida64.exe，在字符串里搜索"$ "，能找到全部的关键node，然后
+
+x = idaapi.netnode( "$ vmm functions" )
+
+获得一个node，可以枚举这个node下的所有值，也可以修改，但是值的含义不清楚。
+建议参考
+
+https://github.com/williballenthin/python-idb
+
+当时没有把这茬事情干到底。

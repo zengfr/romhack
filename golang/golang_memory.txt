@@ -1,0 +1,24 @@
+
+
+https://github.com/zengfr/romhack
+
+https://github.com/Andoryuuta/kiwi
+
+https://github.com/cristeigabriel/gogo/tree/main
+
+
+https://github.com/xXNurioXx/go-memory-accessor
+
+https://github.com/Erarnitox/java-game-hacking
+
+https://github.com/angr/angr
+
+https://github.com/carlosgprado/jarvis
+
+https://github.com/lunixbochs/usercorn 模拟器
+
+https://github.com/jiusanzhou/injgo Golang实现的Windows下的进程DLL注入工具
+
+https://github.com/dulumao/remote-shell  Open a remote shell in context of a dynamic binary
+
+https://github.com/aclements/memtrace

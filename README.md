@@ -5,7 +5,9 @@ rom hack for Arcade mame mess sfc snes sega md geoneo.Data collection, collation
 - github: https://github.com/zengfr/romhack
 - gitee: https://gitee.com/zengfr/romhack
 - blog: https://my.oschina.net/zengfr
-
+### contact group
+- qq group: 1群 143824179 (IDA汇编逆向分析)
+- qq group: 2群 26318788 (romhacking)
 ### others game_romhacking_data
 - https://github.com/zengfr/arcade_game_romhacking_sourcecode_top_secret_data
 - https://gitee.com/zengfr/arcade_game_romhacking_sourcecode_top_secret_data
@@ -13,7 +15,8 @@ rom hack for Arcade mame mess sfc snes sega md geoneo.Data collection, collation
 ### game framework for 68k dev
 - https://github.com/zengfr/arcade-romhacking-framework
 
-### other id pro plugin recommend ##
+### other ida pro plugin recommend ##
+- XrefsExt https://github.com/zengfr/XrefsExt
 - ida_all_xrefs_from_viewer https://github.com/zengfr/ida_all_xrefs_from_viewer-plugin-for-ida-pro
 - ida_all_xrefs_to_viewer https://github.com/zengfr/ida_all_xrefs_to_viewer-plugin-for-ida-pro
 - winhex_diff_viewer-plugin https://github.com/zengfr/winhex_diff_viewer-plugin-for-ida-pro
@@ -61,6 +64,7 @@ https://my.oschina.net/zengfr/blog/3145223
 
 ### rom & video & demo
 - hacking rom下载: https://github.com/zengfr/romhack/tree/master/hackrom
+- hacking rom下载链接网盘: https://pan.baidu.com/s/1PqVyOSIcvd5KtMWireWLew?pwd=zfr8 提取码：zfr8
 - hacking ips下载: https://github.com/zengfr/romhack/tree/master/ips
 - hacking video演示视频: https://space.bilibili.com/492484080
 
