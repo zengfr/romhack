@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<mamecheat version="1">
+<cheat desc="Play Hidden Bonus Stage"> 
+    <parameter min="0" max="1" step="1"/>  
+	<script state="on"> 
+      <action>temp0=maincpu.mb@FF769B</action>
+	</script>   
+    <script state="run"> 
+      <action>maincpu.pb@FF769B=param</action>
+      <action>maincpu.pb@FF769F=0</action> 
+    </script> 
+	 <script state="off"> 
+      <action>maincpu.pb@FF769B=temp0</action> 
+    </script> 
+  </cheat>
+</mamecheat>

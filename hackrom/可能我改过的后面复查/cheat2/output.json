@@ -1,0 +1,220 @@
+[{
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "desc":"Infinite Time",
+    "script":{
+      "run":" maincpup:writev_u8(0xff18ab,0xbf) "
+    }
+  },{
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "desc":"Always have Gun drawn",
+    "script":{
+      "run":" maincpup:writev_u8(0xff5d96,0x01) "
+    }
+  },{
+    "comment":"When the enemies punch you won't drop any weapons you are holding (The only exception is when you die, launch, or when the level ends!)",
+    "region":{
+      "maincpum":":maincpu"
+    },
+    "desc":"Sticky Weapons",
+    "script":{
+      "on":" temp0 =maincpum:read_u8(0x01adee) ",
+      "off":" maincpum:write_u8(0x01adee,temp0) ",
+      "run":" maincpum:write_u8(0x01adee,0x60) "
+    }
+  },{
+    "comment":"Simply walk to the end, though on the First Level you will need the 'Always have Gun drawn' cheat to kill the Boss",
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "desc":"Finish this Level Now!",
+    "script":{
+      "on":" maincpup:writev_u8(0xff5fa1,0xff) "
+    }
+  },{
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "desc":"Select Starting Stage",
+    "script":{
+      "run":" if (maincpup:readv_u8(0xff5bb9)==0x00) then maincpup:writev_u8(0xff5bb9,param) end"
+    },
+    "parameter":{
+      "item":[{
+          "text":"Stage 1",
+          "value":"0x00"
+        },{
+          "text":"Stage 2",
+          "value":"0x01"
+        },{
+          "text":"Stage 3",
+          "value":"0x02"
+        },{
+          "text":"Bonus Stage",
+          "value":"0x07"
+        },{
+          "text":"Stage 4",
+          "value":"0x03"
+        },{
+          "text":"Stage 5",
+          "value":"0x04"
+        },{
+          "text":"Last Stage",
+          "value":"0x05"
+        },{
+          "text":"Hidden Bonus Stage",
+          "value":"0x06"
+        }]
+    }
+  },{
+    "region":{
+      "maincpum":":maincpu"
+    },
+    "desc":"Hit Anywhere",
+    "script":{
+      "on":" temp0 =maincpum:read_u16(0x0905c2)  temp1 =maincpum:read_u16(0x09135c)  temp2 =maincpum:read_u16(0x092fc4)  temp3 =maincpum:read_u16(0x0939ae) ",
+      "off":" maincpum:write_u16(0x0905c2,temp0)  maincpum:write_u16(0x09135c,temp1)  maincpum:write_u16(0x092fc4,temp2)  maincpum:write_u16(0x0939ae,temp3) ",
+      "run":" maincpum:write_u16(0x0905c2,0x4e71)  maincpum:write_u16(0x09135c,0x4e71)  maincpum:write_u16(0x092fc4,0x4e71)  maincpum:write_u16(0x0939ae,0x4e71) "
+    }
+  },{
+    "region":{
+      "maincpum":":maincpu"
+    },
+    "desc":"One Hit Kills",
+    "script":{
+      "on":" temp0 =maincpum:read_u16(0x096b4e)  temp1 =maincpum:read_u16(0x02c1d0)  temp2 =maincpum:read_u16(0x05c158)  temp3 =maincpum:read_u16(0x0913fe)  temp4 =maincpum:read_u16(0x095ff2)  temp5 =maincpum:read_u16(0x093a24) ",
+      "off":" maincpum:write_u16(0x096b4e,temp0)  maincpum:write_u16(0x02c1d0,temp1)  maincpum:write_u16(0x05c158,temp2)  maincpum:write_u16(0x0913fe,temp3)  maincpum:write_u16(0x095ff2,temp4)  maincpum:write_u16(0x093a24,temp5) ",
+      "run":" maincpum:write_u16(0x096b4e,0x6000)  maincpum:write_u16(0x02c1d0,0x6002)  maincpum:write_u16(0x05c158,0x6000)  maincpum:write_u16(0x0913fe,0x446c)  maincpum:write_u16(0x095ff2,0x446c)  maincpum:write_u16(0x093a24,0x446c) "
+    }
+  },{
+    "desc":""
+  },{
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "desc":"P1 Infinite Lives",
+    "script":{
+      "run":" maincpup:writev_u8(0xff5ba4,0x03) "
+    }
+  },{
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "desc":"P1 Infinite Energy",
+    "script":{
+      "run":" maincpup:writev_u8(0xff8e9f,0x88) "
+    }
+  },{
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "desc":"P1 Infinite Bombs",
+    "script":{
+      "run":" maincpup:writev_u8(0xff5bca,0x09) "
+    }
+  },{
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "desc":"P1 Invincibility",
+    "script":{
+      "run":" maincpup:writev_u8(0xff8eb5,0xf0) "
+    }
+  },{
+    "comment":"If you pick up the objects, they will become almost indestructable.",
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "desc":"P1 Infinite Weapon on Pickup",
+    "script":{
+      "run":" maincpup:writev_u8(((maincpup:readv_u16(0xff8ece))+0xff0037),0xfe) "
+    }
+  },{
+    "desc":""
+  },{
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "desc":"P2 Infinite Energy",
+    "script":{
+      "run":" maincpup:writev_u8(0xff8f9f,0x88) "
+    }
+  },{
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "desc":"P2 Infinite Bombs",
+    "script":{
+      "run":" maincpup:writev_u8(0xff5bcb,0x09) "
+    }
+  },{
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "desc":"P2 Infinite Lives",
+    "script":{
+      "run":" maincpup:writev_u8(0xff5ba5,0x03) "
+    }
+  },{
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "desc":"P2 Invincibility",
+    "script":{
+      "run":" maincpup:writev_u8(0xff8fb5,0xf0) "
+    }
+  },{
+    "comment":"If you pick up the objects, they will become almost indestructable.",
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "desc":"P2 Infinite Weapon on Pickup",
+    "script":{
+      "run":" maincpup:writev_u8(((maincpup:readv_u16(0xff8fce))+0xff0037),0xfe) "
+    }
+  }]
