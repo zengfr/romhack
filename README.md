@@ -64,7 +64,7 @@ https://my.oschina.net/zengfr/blog/3145223
 
 ### rom & video & demo
 - hacking rom下载: https://github.com/zengfr/romhack/tree/master/hackrom
-- hacking rom下载链接网盘: https://pan.baidu.com/s/1PqVyOSIcvd5KtMWireWLew?pwd=zfr8 提取码：zfr8
+- hacking rom下载链接网盘: https://pan.baidu.com/s/1QSAAlt5JTqZqgVCajpr8tA?pwd=gs64 提取码:gs64 
 - hacking ips下载: https://github.com/zengfr/romhack/tree/master/ips
 - hacking video演示视频: https://space.bilibili.com/492484080
 

@@ -1,0 +1,31 @@
+定制python解释器
+
+首先下载python源码：https://www.python.org/ftp/python/3.8.5/Python-3.8.5.tgz
+
+
+在源代码opcode.h里就定义了每个操作码对应的操作
+
+
+
+只需要将操作码随机呼唤，例如原来的0x01是POP_TOP，我们在opcode.h里将0x01换成NOP，同样的方式，我们随机的将更多opcode互换（注意小于90的只能和小于90的互换，因为90定义了操作是否有参数）。
+
+注意修改Include/opcode.h以后，一下2个文件里的opcode也要同步修改，这一步可以写脚本完成，注意要跟opcode.h的替换一致：
+Lib/opcode.py
+Python/opcode_targets.h
+
+然后编译我们自己的python解释器（按照官方文档，下载源代码按上面的修改后，直接一条龙configure，make，make install。install的时候可能会报错，这是因为编译过程会把一部分需要import的代码硬编码到一个数组里，我们修改了opcode会导致iimport失败，所以这儿我们还需要执行“make regen-importlib”）最后我们编写的py代码编译成pyc，那这个pyc在我们的环境能正常运行，别人拿到了无法运行也无法正常反编译。
+
+
+还需要进一步，将pyc代码加密。比如，我将pyc加密成pye格式。做这一步之前，我们简单看看pyc的结构。
+
+阅读python3.8.5源码，我们能发现，主入口在Program/python.c里面
+调用了Py_BytesMain函数，我们一路跟，跳转到Modules/main.c里的pymain_run_python函数。
+直接到pymain_run_file里看，一顿操作后，终于在Python/pythonrun.c里的PyRun_SimpleFileExFlags函数403行找到了pyc的运行逻辑：
+
+
+python解释器现在在import的时候还是不能正常import pye，所以我们还要继续改import的逻辑，让python能import我们加密后的pye。
+
+这部分代码是用python来实现的，所以修改起来相对比较容易，代码位置：/Lib/importlib/_bootstrap_external.py，在290行有个BYTECODE_SUFFIXES列表，这个就是import支持的格式，我们直接在这个列表里加上一个 ".pye"
+最后在SourcelessFileLoader(FileLoader, _LoaderBasics)这个类的get_code方法里加上一段对pye文件的处理就行
+
+https://www.52pojie.cn/thread-1514691-1-1.html

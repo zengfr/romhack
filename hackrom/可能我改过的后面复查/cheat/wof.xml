@@ -1,0 +1,294 @@
+<mamecheat version="1">
+<cheat desc="P1 抓人攻击模式">
+<parameter> 
+      <item value="0x00">00</item>  
+      <item value="0x01">01打一下</item>
+	  <item value="0x09">09打到跑</item>
+ </parameter>  
+    <script state="run">
+      <action>maincpu.pb@FFBED5=(param)</action>
+    </script>
+  </cheat>
+  <cheat desc="P1 神拳无敌">
+<parameter> 
+      <item value="0x00">00</item>  
+      <item value="0x100b">01斧拳</item>
+	  <item value="0xf009">02村正拳</item>
+	  <item value="0x800b">03叉拳</item>
+	  <item value="0x400b">04晕槌拳</item>
+	  <item value="0x7009">05草剃拳</item>
+	  <item value="0xb009">06倚天拳</item>
+	  <item value="0xf00a">07偃月拳</item>
+	  <item value="0xd009">08圣剑拳</item>
+	  <item value="0x9009">09青  拳</item>
+	  <item value="0x500b">10铁锤拳</item>
+ 
+ </parameter>  
+    <script state="run">
+      <action>maincpu.pw@FFBE96=param</action>
+    </script>
+  </cheat>
+  <cheat desc="Infinite Time">
+    <script state="run">
+      <action>maincpu.pb@FF81B2=3B</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Infinite Boss Time">
+    <script state="run">
+      <action>maincpu.pb@FF81DE=63</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Hit Anywhere (Both Players)"> <comment>Excludes throws. Disables boss ability to block player attacks. Does not work on bonus levels.</comment>
+    <script state="run">
+      <action>maincpu.rw@007F72=605E, maincpu.rw@0086F8=600C, maincpu.rw@0088C2=4E71, maincpu.rw@0088C8=4E71</action> <!-- This ROM cheat was made by Abystus -->
+      <action>maincpu.rw@0088DC=4E71, maincpu.rw@0088FE=4E71, maincpu.rw@00891A=6002, maincpu.rw@008940=6002</action>
+      <action>maincpu.rw@008948=6002, maincpu.rw@008960=6002, maincpu.rw@009176=600C, maincpu.rw@0093D6=6002</action>
+      <action>maincpu.rw@0093E8=6002, maincpu.rw@00940C=6002, maincpu.rw@00942A=6002, maincpu.rw@0097C2=4E71</action>
+      <action>maincpu.rw@00981C=6002, maincpu.rw@009840=6002, maincpu.rw@009856=6002, maincpu.rw@00999A=6006</action>
+      <action>maincpu.rw@009AC0=6002, maincpu.rw@009AD2=6002, maincpu.rw@009AF6=6002, maincpu.rw@009B14=6002</action>
+    </script>
+    <script state="off">
+      <action>maincpu.rw@007F72=6B00, maincpu.rw@0086F8=6F18, maincpu.rw@0088C2=67D2, maincpu.rw@0088C8=6604</action>
+      <action>maincpu.rw@0088DC=62B8, maincpu.rw@0088FE=6296, maincpu.rw@00891A=6200, maincpu.rw@008940=6700</action>
+      <action>maincpu.rw@008948=6700, maincpu.rw@008960=6200, maincpu.rw@009176=6F18, maincpu.rw@0093D6=6700</action>
+      <action>maincpu.rw@0093E8=6200, maincpu.rw@00940C=6200, maincpu.rw@00942A=6200, maincpu.rw@0097C2=6F0C</action>
+      <action>maincpu.rw@00981C=6700, maincpu.rw@009840=6200, maincpu.rw@009856=6200, maincpu.rw@00999A=6F12</action>
+      <action>maincpu.rw@009AC0=6700, maincpu.rw@009AD2=6200, maincpu.rw@009AF6=6200, maincpu.rw@009B14=6200</action>
+    </script>
+  </cheat>
+
+  <cheat desc="One Hit Kills">
+    <script state="on">
+      <action>temp0 =maincpu.mb@007FD6</action>
+    </script>
+    <script state="run">
+      <action>maincpu.mb@007FD6=44</action> <!-- This ROM cheat was made by solitarius -->
+    </script>
+    <script state="off">
+      <action>maincpu.mb@007FD6=temp0 </action>
+    </script>
+  </cheat>
+
+  <cheat desc="Kill all Enemies on this Level Now!">
+    <script state="on">
+      <action>maincpu.pb@FF8199=FF</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Kill all On-Screen Enemies Now!">
+    <script state="on">
+      <action>maincpu.pb@FFD1DE=FF</action>
+      <action>maincpu.pb@FFD0FE=FF</action>
+      <action>maincpu.pb@FFD01E=FF</action>
+      <action>maincpu.pb@FFCF3E=FF</action>
+      <action>maincpu.pb@FFCE5E=FF</action>
+      <action>maincpu.pb@FFCD7E=FF</action>
+      <action>maincpu.pb@FFCC9E=FF</action>
+      <action>maincpu.pb@FFCBBE=FF</action>
+      <action>maincpu.pb@FFCADE=FF</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Infinite Enemy Count">
+    <script state="run">
+      <action>maincpu.pb@FF81AD=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc="Weapons don't disappear">
+    <script state="on">
+      <action>temp0 =maincpu.mb@021FBA</action>
+    </script>
+    <script state="run">
+      <action>maincpu.mb@021FBA=02</action> <!-- This ROM cheat was made by invincibility -->
+    </script>
+    <script state="off">
+      <action>maincpu.mb@021FBA=temp0 </action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="P1 Infinite Credits">
+    <script state="run">
+      <action>maincpu.pb@FF62F7=09</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Infinite Lives">
+    <script state="run">
+      <action>maincpu.pb@FF7F9B=03</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Infinite Energy">
+    <script state="run">
+      <action>maincpu.pb@FFBE9F=68</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Invincibility">
+    <script state="run">
+      <action>maincpu.pb@FFBED5=02</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Always have Horse"> <comment>DO NOT have these cheats active before the player has been chosen (ie, don't set the cheats for P3 before P3 is playing, or the game will crash</comment>
+    <script state="run">
+      <action>maincpu.pb@FFBE7F=01</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Always have Horse with Invincibility">
+    <script state="run">
+      <action>maincpu.pb@FFBE45=00</action>
+      <action>maincpu.pw@FFBE7E=0001</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Always Have Kusanagi Sword">
+    <script state="run">
+      <action>maincpu.pw@FFAF1C=0081</action>
+      <action>maincpu.pb@FFAF20=01</action>
+      <action>maincpu.pb@FFAF3D=14</action>
+      <action>maincpu.pb@FFAF3F=00</action>
+      <action>maincpu.pd@FFAF64=00000004</action>
+      <action>maincpu.pb@FFAF68=00</action>
+      <action>maincpu.pw@FFAFA8=0000</action>
+      <action>maincpu.pw@FFBEA8=0000</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Punch Only Combo">
+    <script state="run">
+      <action>maincpu.pb@FFBECA=02</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Finish Only">
+    <script state="run">
+      <action>maincpu.pb@FFBECA=01</action>
+      <action>maincpu.pb@FFBEC9=FF</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Always Command ON"> <comment>CHOU-HI Only</comment>
+    <script state="run">
+      <action>maincpu.pb@FFBEDD=FF</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Quick Bow Motion"> <comment>KOU-CHUU Only</comment>
+    <script state="run">
+      <action>maincpu.pb@FFBECF=00</action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="P2 Infinite Credits">
+    <script state="run">
+      <action>maincpu.pb@FF6307=09</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Infinite Lives">
+    <script state="run">
+      <action>maincpu.pb@FF7F9C=03</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Infinite Energy">
+    <script state="run">
+      <action>maincpu.pb@FFBF7F=68</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Invincibility">
+    <script state="run">
+      <action>maincpu.pb@FFBFB5=02</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Always have Horse"> <comment>DO NOT have these cheats active before the player has been chosen (ie, don't set the cheats for P3 before P3 is playing, or the game will crash</comment>
+    <script state="run">
+      <action>maincpu.pb@FFBF5F=01</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Always have Horse with Invincibility">
+    <script state="run">
+      <action>maincpu.pb@FFBF25=00</action>
+      <action>maincpu.pw@FFBF5E=0001</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Always Have Kusanagi Sword">
+    <script state="run">
+      <action>maincpu.pw@FFAFDC=8101</action>
+      <action>maincpu.pb@FFAFE0=14</action>
+      <action>maincpu.pb@FFAFFD=00</action>
+      <action>maincpu.pb@FFAFFF=04</action>
+      <action>maincpu.pd@FFB024=00000000</action>
+      <action>maincpu.pb@FFB028=00</action>
+      <action>maincpu.pw@FFB068=BEFC</action>
+      <action>maincpu.pw@FFBF88=AFDC</action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="P3 Infinite Credits">
+    <script state="run">
+      <action>maincpu.pb@FF6317=09</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P3 Infinite Lives">
+    <script state="run">
+      <action>maincpu.pb@FF7F9D=03</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P3 Infinite Energy">
+    <script state="run">
+      <action>maincpu.pb@FFC05F=68</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P3 Invincibility">
+    <script state="run">
+      <action>maincpu.pb@FFC095=02</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P3 Always have Horse"> <comment>DO NOT have these cheats active before the player has been chosen (ie, don't set the cheats for P3 before P3 is playing, or the game will crash</comment>
+    <script state="run">
+      <action>maincpu.pb@FFC03F=01</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P3 Always have Horse with Invincibility">
+    <script state="run">
+      <action>maincpu.pb@FFC005=00</action>
+      <action>maincpu.pw@FFC03E=0001</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P3 Always Have Kusanagi Sword">
+    <script state="run">
+      <action>maincpu.pw@FFB09C=8101</action>
+      <action>maincpu.pb@FFB0A0=14</action>
+      <action>maincpu.pb@FFB0BD=00</action>
+      <action>maincpu.pb@FFB0BF=04</action>
+      <action>maincpu.pd@FFB0E4=00000000</action>
+      <action>maincpu.pb@FFB0E8=00</action>
+      <action>maincpu.pw@FFB128=BFDC</action>
+      <action>maincpu.pw@FFC068=B09C</action>
+    </script>
+  </cheat>
+
+</mamecheat>
+<!-- Cheat file downloaded from http://www.mamecheat.co.uk, see cheat.txt for list of contributors. -->
