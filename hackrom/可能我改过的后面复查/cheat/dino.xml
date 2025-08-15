@@ -1,0 +1,982 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<mamecheat version="1">
+<cheat desc="显示调试数据">
+
+<parameter min="0xFF8400" max="0xFFFF00" step="0x0100"/>
+
+<script state="run">
+
+<output format="场景:%02X 敌兵掉物:%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X" line="1" align="left">
+        <argument count="1">maincpu.pb@FF8786</argument>
+        <argument count="28">maincpu.pb@(ffD08A + 0x0E0*argindex)</argument> 
+        
+	  </output>
+<output format="模式:%02X 桶子出物:%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X" line="2" align="left"> 
+        <argument count="1">maincpu.pb@FF84EF</argument>
+        <argument count="28">maincpu.pb@(ff908A + 0x0C0*argindex)</argument> 
+      </output>
+	 <output format="敌兵血量01:%04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X" line="3" align="left"> 
+        <argument count="16">maincpu.pw@(FFC880 + 0xE0*argindex)</argument>		
+      </output>
+	  <output format="敌兵血量02:%04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X" line="4" align="left"> 
+        <argument count="16">maincpu.pw@(FFC880 +0xE0*0x10+ 0xE0*argindex)</argument>		
+      </output>
+	  <output format="兵量:%02X%02X头目血量:%04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X" line="5" align="left">
+	   
+		<argument count="1">maincpu.pb@(FF84F3)</argument>
+		<argument count="1">maincpu.pb@(FF84FB)</argument>
+		
+	    <argument count="1">maincpu.pw@(FFDF40)</argument>
+		<argument count="1">maincpu.pw@(FFDE60)</argument>
+        <argument count="1">maincpu.pw@(FFDD80)</argument>
+		<argument count="1">maincpu.pw@(FFDCA0)</argument>
+		<argument count="1">maincpu.pw@(FFDBC0)</argument>
+        <argument count="1">maincpu.pw@(FFDAE0)</argument>
+		<argument count="1">maincpu.pw@(FFDA00)</argument>
+		<argument count="1">maincpu.pw@(FFD920)</argument>
+		<argument count="1">maincpu.pw@(FFD840)</argument>
+		<argument count="1">maincpu.pw@(FFD760)</argument>
+		<argument count="1">maincpu.pw@(FFD680)</argument>
+		<argument count="1">maincpu.pw@(FFD5A0)</argument>
+		<argument count="1">maincpu.pw@(FFD4C0)</argument>
+		<argument count="1">maincpu.pw@(FFD3E0)</argument>
+		<argument count="1">maincpu.pw@(FFD300)</argument>
+		<argument count="1">maincpu.pw@(FFD220)</argument>
+		<argument count="1">maincpu.pw@(FFD140)</argument>
+		<argument count="1">maincpu.pw@(FFD060)</argument>
+	  </output>
+	  
+	  <output format="P1暴击:%02X 血:%02X 命:%02X 无敌:%02X %04X 控制:%02X %02X 分:%08X 拳:%02X|3P暴击:%02X %02X %02X 血:%02X %02X %02X 命:%02X %02X %02X|帧:%05X" line="6" align="left">
+        <argument count="1">maincpu.pb@(FFB33A)</argument> 
+		<argument count="1">maincpu.pb@(FFB2E1)</argument>
+		<argument count="1">maincpu.pb@(FFB317)</argument> 
+       
+		<argument count="1">maincpu.pb@(FFB274)</argument>
+		<argument count="1">maincpu.pw@(FFB360)</argument>
+	    <argument count="1">maincpu.pb@(FFB314)</argument>
+	    <argument count="1">maincpu.pb@(FFB326)</argument>
+		
+		<!--分 拳 击打-->
+		<argument count="1">maincpu.pd@(FFB374)</argument>
+		<argument count="1">maincpu.pb@(FFB2D2)</argument>
+		
+		<argument count="1">maincpu.pb@(FFB33A)</argument>
+		<argument count="1">maincpu.pb@(FFB4BA)</argument>
+		<argument count="1">maincpu.pb@(FFB63A)</argument>
+		
+		
+        <argument count="1">maincpu.pb@(FFB2E1)</argument>
+		<argument count="1">maincpu.pb@(FFB461)</argument>
+		<argument count="1">maincpu.pb@(FFB5E1)</argument>
+		
+		<argument count="1">maincpu.pb@(FFB317)</argument>
+		<argument count="1">maincpu.pb@(FFB497)</argument>
+		<argument count="1">maincpu.pb@(FFB617)</argument>
+		
+		<argument count="1">frame</argument>
+	  </output>
+	   
+</script> 
+  </cheat>
+  <cheat desc="显示内存数据0xFF8400-Main+0x0100">
+<parameter min="0xFF8200" max="0xFFFF00" step="0x0100"/>
+ 
+<script state="run">
+	  <output condition="(frame%60 lt 30)" format="MEM:%06X-%06X HACK:曾繁荣zengfr" line="23" align="left">
+        <argument count="1">param</argument>
+		<argument count="1">param+0x20*7+0x1F</argument>
+      </output>
+	  <output  format="1:%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|" line="24" align="left">
+        <argument count="32">maincpu.pb@(param+0x20*0 + 0x01*argindex)</argument>
+      </output>
+	  <output  format="2:%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|" line="25" align="left"> 
+	    <argument count="32">maincpu.pb@(param+0x20*1 + 0x01*argindex)</argument> 
+      </output>
+	  <output  format="3:%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|" line="26" align="left"> 
+	    <argument count="32">maincpu.pb@(param+0x20*2 + 0x01*argindex)</argument> 
+      </output>
+	  <output  format="4:%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|" line="27" align="left"> 
+	    <argument count="32">maincpu.pb@(param+0x20*3 + 0x01*argindex)</argument> 
+      </output>
+	  <output  format="5:%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|" line="28" align="left"> 
+	    <argument count="32">maincpu.pb@(param+0x20*4 + 0x01*argindex)</argument> 
+      </output>
+	  <output  format="6:%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|" line="29" align="left"> 
+	    <argument count="32">maincpu.pb@(param+0x20*5 + 0x01*argindex)</argument> 
+      </output>
+	  <output  format="7:%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|" line="30" align="left"> 
+	    <argument count="32">maincpu.pb@(param+0x20*6 + 0x01*argindex)</argument> 
+      </output>
+	   
+</script> 
+  </cheat>
+  <cheat desc="显示内存数据0xFFC880-敌兵+0x0E0">
+<parameter min="0xFFC8C4" max="0xFFFFFF" step="0x0E0"/>
+ 
+<script state="run">
+	  <output condition="(frame%60 lt 30)" format="MEM:%06X-%06X HACK:曾繁荣zengfr" line="23" align="left">
+        <argument count="1">param</argument>
+		<argument count="1">param+0x20*7+0x1F</argument>
+      </output>
+	  <output  format="0:%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|" line="24" align="left">
+        <argument count="32">maincpu.pb@(param+0x20*0 + 0x01*argindex)</argument>
+      </output>
+	  <output  format="2:%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|" line="25" align="left"> 
+	    <argument count="32">maincpu.pb@(param+0x20*1 + 0x01*argindex)</argument> 
+      </output>
+	  <output  format="4:%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|" line="26" align="left"> 
+	    <argument count="32">maincpu.pb@(param+0x20*2 + 0x01*argindex)</argument> 
+      </output>
+	  <output  format="6:%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|" line="27" align="left"> 
+	    <argument count="32">maincpu.pb@(param+0x20*3 + 0x01*argindex)</argument> 
+      </output>
+	  <output  format="8:%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|" line="28" align="left"> 
+	    <argument count="32">maincpu.pb@(param+0x20*4 + 0x01*argindex)</argument> 
+      </output>
+	  <output  format="A:%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|" line="29" align="left"> 
+	    <argument count="32">maincpu.pb@(param+0x20*5 + 0x01*argindex)</argument> 
+      </output>
+	  <output  format="C:%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|" line="30" align="left"> 
+	    <argument count="32">maincpu.pb@(param+0x20*6 + 0x01*argindex)</argument> 
+      </output>
+	   
+</script> 
+  </cheat>
+  <cheat desc="调试第一个敌兵0xFFD840基址D814"> 
+      
+	 <script state="run">
+	     <action condition="1==1">maincpu.md@0x3143a=0x303c0040</action>
+	     <action condition="1==1">maincpu.mw@0x3143e=0x4e71</action>
+	 
+	 </script> 
+  </cheat>
+   <cheat desc="调试第一个敌兵test0xFFD840"> 
+     <parameter min="0x00" max="0xFF" step="0x01"/> 
+	 <script state="run">
+       <output condition="(frame%60 lt 60)" format="击打:%02X 血长:%02X 血量:%02X %02X 掉物:%02X" line="22" align="left">
+        <argument count="1">maincpu.pb@0xFFD832</argument>
+		<argument count="1">maincpu.pb@0xFFD83F</argument>
+		<argument count="1">maincpu.pb@0xFFD843</argument>
+		<argument count="1">maincpu.pb@0xFFD841</argument>
+		<argument count="1">maincpu.pb@0xFFD86A</argument>
+        </output> 
+     <action condition="1==1">maincpu.pb@0xFFD83F=0x64</action>
+	 <action condition="1==1">maincpu.pb@0xFFD83A=0x35</action><!--28\29\2A\2C\35灵敏移动-->
+	 
+	 <action condition="1==1">maincpu.pb@0xFFD83C=0xDC</action>
+	 <action condition="1==1">maincpu.pb@0xFFD83D=0x34</action>
+	 
+	 <action condition="1==1">maincpu.pb@0xFFD86A=0x0D</action><!--掉物-->
+	 
+	 <action condition="maincpu.pb@0xFFD840 lt 0">maincpu.rb@0xFFD840=AA</action>
+    </script> 
+  </cheat>
+  <cheat desc="Rom敌兵替换test"> 
+     <parameter min="0x00" max="0xFF" step="0x01"/> 
+	 <script state="run">
+      
+	 <action condition="1==1">maincpu.mw@0x01033e=(0x0650)</action>
+	 
+	 <action condition="1==1">maincpu.mw@0x010340=(0x0650)</action>  
+	 <action condition="1==1">maincpu.mw@0x010342=(0x0650)</action> 
+	 <action condition="1==1">maincpu.mw@0x010344=(0x0650)</action> 
+	 <action condition="1==1">maincpu.mw@0x010346=(0x0650)</action> 
+	 <action condition="1==1">maincpu.mw@0x010348=(0x0650)</action> 
+	 <action condition="1==1">maincpu.mw@0x01034A=(0x0650)</action> 
+	 <action condition="1==1">maincpu.mw@0x01034C=(0x0650)</action> 
+	 <action condition="1==1">maincpu.mw@0x01034E=(0x0950)</action> 
+	 
+	 <action condition="1==1">maincpu.mw@0x010350=(0x0650)</action>  
+	 <action condition="1==1">maincpu.mw@0x010352=(0x0650)</action> 
+	 <action condition="1==1">maincpu.mw@0x010354=(0x0650)</action> 
+	 <action condition="1==1">maincpu.mw@0x010356=(0x0650)</action> 
+	 <action condition="1==1">maincpu.mw@0x010358=(0x0650)</action>
+	 
+	 <action condition="1==1">maincpu.mw@0x01035A=(0x0650)</action> 
+	 <action condition="1==1">maincpu.mw@0x01035C=(0x0650)</action> 
+	 <action condition="1==1">maincpu.mw@0x01035E=(0x0650)</action>
+	 
+	 <action condition="1==1">maincpu.mw@0x010360=(0x0650)</action>  
+	 <action condition="1==1">maincpu.mw@0x010362=(0x0650)</action> 
+	 <action condition="1==1">maincpu.mw@0x010364=(0x0650)</action> 
+	 <action condition="1==1">maincpu.mw@0x010366=(0x0650)</action> 
+	 <action condition="1==1">maincpu.mw@0x010368=(0x0650)</action> 
+	 <action condition="1==1">maincpu.mw@0x01036A=(0x0650)</action> 
+	 <action condition="1==1">maincpu.mw@0x01036C=(0x0650)</action> 
+	 <action condition="1==1">maincpu.mw@0x01036E=(0x0650)</action>
+	 
+	 <action condition="1==1">maincpu.mw@0x010370=(0x0650)</action>  
+	 <action condition="1==1">maincpu.mw@0x010372=(0x0650)</action> 
+	 <action condition="1==1">maincpu.mw@0x010374=(0x0650)</action> 
+	 <action condition="1==1">maincpu.mw@0x010376=(0x0650)</action> 
+	 <action condition="1==1">maincpu.mw@0x010378=(0x0650)</action> 
+	 <action condition="1==1">maincpu.mw@0x01037A=(0x0650)</action> 
+	 <action condition="1==1">maincpu.mw@0x01037C=(0x0650)</action>  
+	 
+	 <action condition="1==1">maincpu.mw@0x0104e2=(0x0650)</action>
+	 <action condition="1==1">maincpu.mw@0x0104ec=(0x0650)</action>
+	 
+	 <action condition="1==1">maincpu.mb@0x00659b=(0x02)</action>
+	 <action condition="1==1">maincpu.mb@0x00659d=(0x02)</action><!--模式-->
+	
+	<action condition="1==1">maincpu.mw@0x18bc4=0x4e71</action>
+<action condition="1==1">maincpu.mw@0x18bc6=0x4e71</action>
+ 
+<action condition="1==1">maincpu.mb@0x18bcb=(0x10)</action>
+ 
+<action condition="1==1">maincpu.mw@0x18bcc=0x46a0</action>
+  
+<action condition="1==1">maincpu.mw@0x19aa0=0x4eb9</action>
+<action condition="1==1">maincpu.mb@0x19aa3=(0x10)</action>
+ 
+<action condition="1==1">maincpu.mw@0x19aa4=0x469a</action>
+
+<action condition="1==1">maincpu.mw@0x1a348=0x4eb9</action>
+<action condition="1==1">maincpu.mb@0x1a34B=(0x10)</action>
+ 
+<action condition="1==1">maincpu.mw@0x1a34c=0x469a</action>
+ 
+<action condition="1==1">maincpu.mw@0x1b110=0x4eb9</action>
+<action condition="1==1">maincpu.mb@0x1b113=(0x10)</action>
+ 
+<action condition="1==1">maincpu.mw@0x1b114=0x469a</action>
+ 
+<action condition="1==1">maincpu.mw@0x1b240=0x4eb9</action>
+<action condition="1==1">maincpu.mb@0x1b243=(0x10)</action>
+  
+<action condition="1==1">maincpu.mw@0x1b244=0x469a</action>
+ 
+<action condition="1==1">maincpu.mw@0x1b370=0x4eb9</action>
+<action condition="1==1">maincpu.mb@0x1b373=(0x10)</action>
+  
+<action condition="1==1">maincpu.mw@0x1b374=0x469a</action>
+ 
+ <action condition="1==1">maincpu.mw@0x24b42=(0x64f2)</action>
+ 
+<action condition="1==1">maincpu.mw@0x5c878=0x4eb9</action>
+<action condition="1==1">maincpu.mb@0x5c87B=(0x10)</action>
+  
+<action condition="1==1">maincpu.mw@0x5c87c=(0x48a0)</action>
+    </script> 
+  </cheat>
+  <cheat desc="Rom按键换人"> 
+	 <script state="run">
+	   <action condition="(frame%60==0)">maincpu.mw@0x00A964=(0x0010)</action>
+	   <action condition="(frame%60==0)">maincpu.mw@0x00A966=(0x1d00)</action>
+	   <action condition="(frame%60==0)">maincpu.mw@0x0252F8=(0x4EF9)</action>
+	   <action condition="(frame%60==0)">maincpu.mw@0x0252FA=(0x0002)</action>
+	   <action condition="(frame%60==0)">maincpu.mw@0x0252FC=(0x531E)</action>
+	   </script> 
+  </cheat>
+  <cheat desc="Rom模式修改"> 
+      <parameter min="0x00" max="0xFF" step="0x01"/>
+	 <script state="run">
+	   <action condition="(frame%60==0)">maincpu.mb@0x00659b=(0x2)</action>
+	   <action condition="(frame%60==0)">maincpu.mb@0x00659d=(param)</action>
+	   </script> 
+  </cheat>
+    <cheat desc="Rom敌兵掉物"> 
+     <parameter min="0x00" max="0xFF" step="0x01"/> 
+	 <script state="run">
+      
+	 <action condition="(frame%60==0)">maincpu.mb@0x024b37=(param)</action>
+	 <action condition="(frame%60==0)">maincpu.mb@0x024b38=(0x4e)</action>
+	 <action condition="(frame%60==0)">maincpu.mb@0x024b39=(0xf9)</action>
+	 <action condition="(frame%60==0)">maincpu.mb@0x024b3A=(0x00)</action>
+	 <action condition="(frame%60==0)">maincpu.mb@0x024b3B=(0x02)</action>
+	 <action condition="(frame%60==0)">maincpu.mb@0x024b3C=(0x4b)</action>
+	 <action condition="(frame%60==0)">maincpu.mb@0x024b3D=(0x50)</action>
+	 <action condition="(frame%60==0)">maincpu.mb@0x024b36=(0x70)</action>
+	 
+    </script> 
+  </cheat>
+  <cheat desc="选择持续攻击力P1"> 
+    <parameter> 
+      <item value="0x00">00极低</item>
+      <item value="0x01">01极低</item>
+      <item value="0x02">02极低</item>	  
+      <item value="0x18">18较低</item>
+      <item value="0x20">20正常</item>
+      <item value="0x40">40高</item>
+	  <item value="0x63">63高</item>
+	  <item value="0x80">80高</item>
+	  <item value="0x99">99高</item>
+	  <item value="0xBA">BA高</item>
+	  <item value="0xEA">EA高</item>
+	  <item value="0xFA">F0高</item>
+      <item value="0xFE">FE终极</item>
+    </parameter>
+	 <script state="change"> 
+	  <action>maincpu.pb@FFB317=0x0f</action><!--生命-->
+      <action>maincpu.pb@FFB2E1=0xFE</action><!--能量-->
+	 </script>
+	 <script state="run">
+		 <action>maincpu.pb@FFB33A=(param)</action>
+		 <action condition="(maincpu.pb@FFB2E1==0x64)">maincpu.pb@FFB2E1=(0xFE)</action>
+         <action condition="(maincpu.pb@FFB2FE==0x64)">maincpu.pb@FFB2FE=(0xFE)</action>
+	     <action condition="(maincpu.pb@FFB2F3==0x64)">maincpu.pb@FFB2F3=(0xFE)</action>
+    </script> 
+  </cheat>
+  <cheat desc="选择持续攻击力P2"> 
+    <parameter> 
+      <item value="0x00">00极低</item>
+      <item value="0x01">01极低</item>
+      <item value="0x02">02极低</item>	  
+      <item value="0x18">18较低</item>
+      <item value="0x20">20正常</item>
+      <item value="0x40">40高</item>
+	  <item value="0x63">63高</item>
+	  <item value="0x80">80高</item>
+	  <item value="0x99">99高</item>
+	  <item value="0xBA">BA高</item>
+	  <item value="0xEA">EA高</item>
+	  <item value="0xFA">F0高</item>
+      <item value="0xFE">FE终极</item>
+    </parameter>
+	 <script state="change"> 
+	  <action>maincpu.pb@FFB497=0x0f</action><!--生命-->
+      <action>maincpu.pb@FFB461=0xFE</action><!--能量-->
+	 </script>
+	 <script state="run">
+         <action>maincpu.pb@FFB4BA=(param)</action>
+		 <action condition="(maincpu.pb@FFB461==0x64)">maincpu.pb@FFB461=(0xFE)</action>
+      
+    </script> 
+  </cheat>
+   <cheat desc="击打控制模式"> 
+   <script state="run"> 
+      <action  condition="(frame%60==0)">maincpu.pb@FFB326=00</action>
+      <action  condition="(frame%60==10)">maincpu.pb@FFB326=01</action>
+      <action  condition="(frame%60==20)">maincpu.pb@FFB326=02</action>
+      <action  condition="(frame%60==30)">maincpu.pb@FFB326=03</action>
+      <action  condition="(frame%60==40)">maincpu.pb@FFB326=04</action>
+      <action  condition="(frame%60==50)">maincpu.pb@FFB326=05</action>
+    </script> 
+  </cheat>
+  <cheat desc="Select Model选择单多人模式"> 
+    <parameter> 
+      <item value="0x00">单人</item>  
+      <item value="0x01">多人</item>
+      <item value="0x02">三人</item>
+	  <item value="0x08">九人</item>  
+      <item value="0x54">百人</item>
+    </parameter>
+	 <script state="run"> 
+      <action condition="(frame%300==0)">maincpu.pb@FF84EF=(param)</action>  
+    </script> 
+  </cheat>
+  <cheat desc="Select Model选择固定模式"> 
+    <parameter min="0x00" max="0xFF" step="0x01"/> 
+	 <script state="run"> 
+      <action condition="(frame%60==0)">maincpu.pb@FF84EF=(param)</action>
+      <action condition="((maincpu.pb@(FF84FB) lt 2) and (frame%150 lt 2))">maincpu.pb@FF84EF=0</action>	  
+    </script> 
+  </cheat>
+  <cheat desc="Select Model选择动态模式">
+   <parameter> 
+      <item value="0x00">00级别</item>  
+      <item value="0x01">01级别</item>
+      <item value="0x02">02级别</item>
+      <item value="0x03">03级别</item>
+      <item value="0x04">04级别</item>
+	  <item value="0x05">05全</item>
+	</parameter> 
+    <script state="run"> 
+      <action condition="(frame%30==0 and param==0x0)">maincpu.pb@FF84EF=(frame%0x0F+0x01)</action>
+	  <action condition="(frame%30==0 and param==0x1)">maincpu.pb@FF84EF=(frame%0x0F+0x0F)</action>
+	  <action condition="(frame%30==0 and param==0x2)">maincpu.pb@FF84EF=(frame%0x1F+0x1F)</action>
+	  <action condition="(frame%30==0 and param==0x3)">maincpu.pb@FF84EF=(frame%0x4F+0x2F)</action>
+	  <action condition="(frame%30==0 and param==0x4)">maincpu.pb@FF84EF=(frame%0x8F+0x6F)</action>
+	  <action condition="(frame%30==0 and param==0x5)">maincpu.pb@FF84EF=(frame%0xFF+0x01)</action>
+      <action condition="((maincpu.pb@(FF84FB) lt 2) and (frame%150 lt 2))">maincpu.pb@FF84EF=0</action><!--敌兵数小于2-->  
+    </script> 
+  </cheat>
+  <cheat desc="选择场景"> 
+    <parameter min="0" max="3" step="1"/>  
+	<script state="on"> 
+      <action>temp0=maincpu.mb@ff8786</action>
+	</script>   
+    <script state="run"> 
+      <action>maincpu.pb@FF8786=param</action> 
+    </script> 
+	 <script state="off"> 
+      <action>maincpu.pb@FF8786=temp0</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="food weapons when kill enemy灭敌人得到食物武器"> 
+    <parameter> 
+      <item value="0x00">00</item>  
+      <item value="0x01">01面包</item>
+      <item value="0x02">02表</item>
+      <item value="0x03">03无</item>
+      <item value="0x04">04咖啡</item>
+      <item value="0x05">05无</item>
+      <item value="0x06">06无</item>
+      <item value="0x07">07无</item>
+      <item value="0x08">08巧克力</item>
+      <item value="0x09">09无</item>
+      <item value="0x0A">0A热狗面包HOTDOG</item>	  
+      <item value="0x0B">0B龙虾LOBSTER</item>  
+      <item value="0x0C">0C无</item>  
+      <item value="0x0D">0D烤肉BARBECUE</item>  
+      <item value="0x10">10手雷</item>
+      <item value="0x11">11散弹枪</item>	  
+	  
+      <item value="0x12">12机枪</item>  
+	  <item value="0x13">13炸药</item> 
+	  
+      <item value="0x17">17</item>  
+      <item value="0x18">18冰激淋PAFFE Cake</item>  
+      <item value="0x1A">1A来复枪</item>  
+      <item value="0x1B">1B</item>  
+      <item value="0x1D">1D</item>
+      <item value="0x20">20Gun</item>	  
+      <item value="0x21">21全系列武器</item> 
+	  <item value="0x23">23甜甜圈</item>
+      <item value="0x27">27散弹与冲锋枪</item>	   
+	  
+      <item value="0x29">29机关枪M16</item>  
+      <item value="0x1E">1E</item>  
+	  <item value="0x2D">2D步枪</item> 
+	  
+      <item value="0x2F">2F奶油蛋糕CAKE</item>  
+      <item value="0x30">30牛排STEAK</item> 
+	  </parameter>  
+    <script state="run"> 
+      <output condition="(frame%60 gt 30 and frame%60 lt 45)" format="灭敌人得到:%02X" line="6" align="left"> 
+        <argument count="1">(param)</argument> 
+      </output>  
+      <action condition="(frame%60==0)">maincpu.pb@ffD08A=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ffD16A=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ffD24A=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ffD32A=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ffD40A=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ffD4EA=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ffD5CA=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ffD6AA=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ffD78A=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ffD86A=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ffD94A=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ffDA2A=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ffDB0A=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ffDBEA=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ffDCCA=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ffDDAA=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ffDE8A=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ffDF6A=(param)</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="food weapons for Boxes打铁桶得到食物武器"> 
+    <parameter> 
+      <item value="0x00">00</item>  
+      <item value="0x01">01手枪</item>
+      <item value="0x02">02</item>  
+      <item value="0x03">03咖啡</item>  
+      <item value="0x04">04</item>
+      <item value="0x05">05</item>
+      <item value="0x06">06机枪</item>  
+      <item value="0x07">07</item>
+	  <item value="0x08">08机关枪M16</item>  
+      <item value="0x09">09牛排STEAK</item>  
+      <item value="0x0A">0A寿司SUSHI</item>  
+      <item value="0x0B">0B烤肉BARBECUE</item>  
+      <item value="0x0C">0C蔬菜沙拉SALAD</item>  
+      <item value="0x11">11来复枪</item>  
+      <item value="0x16">16汉堡BURGER</item>  
+      <item value="0x18">18龙虾LOBSTER</item>  
+      <item value="0x19">19炸弹</item>  
+      <item value="0x1A">1A</item>  
+      <item value="0x1B">1B</item>  
+      <item value="0x21">21火箭筒</item>
+    </parameter>
+    <script state="on">	
+     
+	 </script>
+    <script state="run"> 
+      <action condition="(frame%60==0)">maincpu.pb@ff908A=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ff914A=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ff920A=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ff92CA=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ff938A=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ff944A=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ff950A=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ff95CA=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ff968A=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ff974A=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ff980A=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ff98CA=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ff998A=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ff9A4A=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ff9B0A=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ff9BCA=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ff9C8A=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ff9D4A=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ff9E0A=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ff9ECA=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ff9F8A=(param)</action> 
+    </script> 
+  </cheat>
+  <cheat desc="滚桶物品"> 
+    <parameter> 
+      <item value="0x00">00</item>  
+      <item value="0x01">01手枪</item>
+      <item value="0x02">02</item>  
+      <item value="0x03">03咖啡</item>  
+      <item value="0x04">04</item>
+      <item value="0x05">05</item>
+      <item value="0x06">06机枪</item>  
+      <item value="0x07">07</item>
+	  <item value="0x08">08机关枪M16</item>  
+      <item value="0x09">09牛排STEAK</item>  
+      <item value="0x0A">0A寿司SUSHI</item>  
+      <item value="0x0B">0B烤肉BARBECUE</item>  
+      <item value="0x0C">0C蔬菜沙拉SALAD</item>  
+      <item value="0x11">11来复枪</item>  
+      <item value="0x16">16汉堡BURGER</item>  
+      <item value="0x18">18龙虾LOBSTER</item>  
+      <item value="0x19">19炸弹</item>  
+      <item value="0x1A">1A</item>  
+      <item value="0x1B">1B</item>  
+      <item value="0x21">21火箭筒</item>
+    </parameter>
+    <script state="on">	
+     
+	 </script>
+    <script state="run"> 
+      <action condition="(frame%60==0)">maincpu.pb@ffd6aA=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ffd78A=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ffd86A=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ffd94A=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ffda2A=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ffdb0A=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ffdbeA=(param)</action>  
+      <action condition="(frame%60==0)">maincpu.pb@ffdcCA=(param)</action>  
+    </script> 
+  </cheat>
+  <cheat desc="SET Boss Energy Value敌兵1血量倍数">
+   <parameter min="0x01" max="0x0A" step="0x01"/>
+	 <script state="run">
+	   <action condition="(maincpu.pw@(0xFFDCA0-0xe0*0)==0x0)">temp0=0x1</action>
+	   <action condition="(maincpu.pw@(0xFFDCA0-0xe0*1)==0x0)">temp1=0x1</action>
+	   <action condition="(maincpu.pw@(0xFFDCA0-0xe0*2)==0x0)">temp2=0x1</action>
+	   <action condition="(maincpu.pw@(0xFFDCA0-0xe0*3)==0x0)">temp3=0x1</action>
+	   <action condition="(maincpu.pw@(0xFFDCA0-0xe0*4)==0x0)">temp4=0x1</action>
+	   <action condition="(maincpu.pw@(0xFFDCA0-0xe0*5)==0x0)">temp5=0x1</action>
+	   <action condition="(maincpu.pw@(0xFFDCA0-0xe0*6)==0x0)">temp6=0x1</action>
+	   <action condition="(maincpu.pw@(0xFFDCA0-0xe0*7)==0x0)">temp7=0x1</action>
+	   <action condition="(maincpu.pw@(0xFFDCA0-0xe0*8)==0x0)">temp8=0x1</action>
+	   <action condition="(maincpu.pw@(0xFFDCA0-0xe0*9)==0x0)">temp9=0x1</action>
+       <action condition="(maincpu.pw@(0xFFDCA0-0xe0*0) gt 3 and temp0==0x1)">temp0=maincpu.pw@(0xFFDCA0-0xe0*0),maincpu.pw@(0xFFDCA0-0xe0*0)=((temp0*param|0x00F0) band 0x12F0)
+	   </action>
+	   <action condition="(maincpu.pw@(0xFFDCA0-0xe0*1) gt 3 and temp1==0x1)">temp1=maincpu.pw@(0xFFDCA0-0xe0*1),maincpu.pw@(0xFFDCA0-0xe0*1)=((temp1*param|0x00F0) band 0x12F0)
+	   </action>
+	   <action condition="(maincpu.pw@(0xFFDCA0-0xe0*2) gt 3 and temp2==0x1)">temp2=maincpu.pw@(0xFFDCA0-0xe0*2),maincpu.pw@(0xFFDCA0-0xe0*2)=((temp2*param|0x00F0) band 0x12F0)</action>
+	   <action condition="(maincpu.pw@(0xFFDCA0-0xe0*3) gt 3 and temp3==0x1)">temp3=maincpu.pw@(0xFFDCA0-0xe0*3),maincpu.pw@(0xFFDCA0-0xe0*3)=((temp3*param|0x00F0) band 0x12F0)</action>
+	   <action condition="(maincpu.pw@(0xFFDCA0-0xe0*4) gt 3 and temp4==0x1)">temp4=maincpu.pw@(0xFFDCA0-0xe0*4),maincpu.pw@(0xFFDCA0-0xe0*4)=((temp4*param|0x00F0) band 0x12F0)</action>
+	  <action condition="(maincpu.pw@(0xFFDCA0-0xe0*5) gt 3 and temp5==0x1)">temp5=maincpu.pw@(0xFFDCA0-0xe0*5),maincpu.pw@(0xFFDCA0-0xe0*5)=((temp5*param|0x00F0) band 0x12F0)</action>
+	  <action condition="(maincpu.pw@(0xFFDCA0-0xe0*6) gt 3 and temp6==0x1)">temp6=maincpu.pw@(0xFFDCA0-0xe0*6),maincpu.pw@(0xFFDCA0-0xe0*6)=((temp6*param|0x00F0) band 0x12F0)</action>
+	  <action condition="(maincpu.pw@(0xFFDCA0-0xe0*7) gt 3 and temp7==0x1)">temp7=maincpu.pw@(0xFFDCA0-0xe0*7),maincpu.pw@(0xFFDCA0-0xe0*7)=((temp7*param|0x00F0) band 0x12F0)</action>
+	  <action condition="(maincpu.pw@(0xFFDCA0-0xe0*8) gt 3 and temp8==0x1)">temp8=maincpu.pw@(0xFFDCA0-0xe0*8),maincpu.pw@(0xFFDCA0-0xe0*8)=((temp8*param|0x00F0) band 0x12F0)</action>
+	   <action condition="(maincpu.pw@(0xFFDCA0-0xe0*9) gt 3 and temp9==0x1)">temp9=maincpu.pw@(0xFFDCA0-0xe0*9),maincpu.pw@(0xFFDCA0-0xe0*9)=((temp9*param|0x00F0) band 0x12F0)</action>
+	 </script>
+   </cheat>
+   <cheat desc="SET Boss Energy Value敌兵2血量倍数">
+     <parameter min="0x01" max="0x0A" step="0x01"/>
+	 <script state="run">
+	   <action condition="(maincpu.pw@(0xFFDCA0+0xe0*1)==0x0)">temp0=0x1</action>
+	   <action condition="(maincpu.pw@(0xFFDCA0+0xe0*2)==0x0)">temp1=0x1</action>
+	   <action condition="(maincpu.pw@(0xFFDCA0+0xe0*3)==0x0)">temp2=0x1</action>
+	   <action condition="(maincpu.pw@(0xFFDCA0+0xe0*4)==0x0)">temp3=0x1</action>
+	   <action condition="(maincpu.pw@(0xFFDCA0+0xe0*5)==0x0)">temp4=0x1</action>
+	   <action condition="(maincpu.pw@(0xFFDCA0+0xe0*6)==0x0)">temp5=0x1</action>
+	   <action condition="(maincpu.pw@(0xFFDCA0+0xe0*7)==0x0)">temp6=0x1</action>
+	   <action condition="(maincpu.pw@(0xFFDCA0+0xe0*8)==0x0)">temp7=0x1</action>
+	   <action condition="(maincpu.pw@(0xFFDCA0+0xe0*9)==0x0)">temp8=0x1</action>
+	   <action condition="(maincpu.pw@(0xFFDCA0+0xe0*0xA)==0x0)">temp9=0x1</action>
+       <action condition="(maincpu.pw@(0xFFDCA0+0xe0*1) gt 3 and temp0==0x1)">temp0=maincpu.pw@(0xFFDCA0+0xe0*1),maincpu.pw@(0xFFDCA0+0xe0*1)=((temp0*param|0x00F0) band 0x12F0)</action>
+	   <action condition="(maincpu.pw@(0xFFDCA0+0xe0*2) gt 3 and temp1==0x1)">temp1=maincpu.pw@(0xFFDCA0+0xe0*2),maincpu.pw@(0xFFDCA0+0xe0*2)=((temp1*param|0x00F0) band 0x12F0)</action>
+	   <action condition="(maincpu.pw@(0xFFDCA0+0xe0*3) gt 3 and temp2==0x1)">temp2=maincpu.pw@(0xFFDCA0+0xe0*3),maincpu.pw@(0xFFDCA0+0xe0*3)=((temp2*param|0x00F0) band 0x12F0)</action>
+	   <action condition="(maincpu.pw@(0xFFDCA0+0xe0*4) gt 3 and temp3==0x1)">temp3=maincpu.pw@(0xFFDCA0+0xe0*4),maincpu.pw@(0xFFDCA0+0xe0*4)=((temp3*param|0x00F0) band 0x12F0)</action>
+	   <action condition="(maincpu.pw@(0xFFDCA0+0xe0*5) gt 3 and temp4==0x1)">temp4=maincpu.pw@(0xFFDCA0+0xe0*5),maincpu.pw@(0xFFDCA0+0xe0*5)=((temp4*param|0x00F0) band 0x12F0)</action>
+	   <action condition="(maincpu.pw@(0xFFDCA0+0xe0*6) gt 3 and temp5==0x1)">temp5=maincpu.pw@(0xFFDCA0+0xe0*6),maincpu.pw@(0xFFDCA0+0xe0*6)=((temp5*param|0x00F0) band 0x12F0)</action>
+	   <action condition="(maincpu.pw@(0xFFDCA0+0xe0*7) gt 3 and temp6==0x1)">temp6=maincpu.pw@(0xFFDCA0+0xe0*7),maincpu.pw@(0xFFDCA0+0xe0*7)=((temp6*param|0x00F0) band 0x12F0)</action>
+	   <action condition="(maincpu.pw@(0xFFDCA0+0xe0*8) gt 3 and temp7==0x1)">temp7=maincpu.pw@(0xFFDCA0+0xe0*8),maincpu.pw@(0xFFDCA0+0xe0*8)=((temp7*param|0x00F0) band 0x12F0)</action>
+	   <action condition="(maincpu.pw@(0xFFDCA0+0xe0*9) gt 3 and temp8==0x1)">temp8=maincpu.pw@(0xFFDCA0+0xe0*9),maincpu.pw@(0xFFDCA0+0xe0*9)=((temp8*param|0x00F0) band 0x12F0)</action>
+	   <action condition="(maincpu.pw@(0xFFDCA0+0xe0*0xA) gt 3 and temp9==0x1)">temp9=maincpu.pw@(0xFFDCA0+0xe0*0xA),maincpu.pw@(0xFFDCA0+0xe0*0xA)=((temp9*param|0x00F0) band 0x12F0)</action>
+	  </script>
+   </cheat>
+   <cheat desc="Infinite Grapple Time PL1">
+    <script state="run">
+      <action>maincpu.pb@FFB2E7=FF</action>
+    </script>
+  </cheat>
+  
+  <cheat desc="Infinite Grapple Hits PL1">
+    <script state="run">
+      <action>maincpu.pb@FFB389=00</action>
+    </script>
+  </cheat>
+  
+  <cheat desc="Infinite Run Time PL1">
+    <script state="run">
+      <action condition="maincpu.pb@FFB36F GT 00">maincpu.pb@FFB36F=FF</action>
+    </script>
+  </cheat>
+  <!--zengfr--> 
+  <cheat desc="Infinite Time"> 
+    <script state="run"> 
+      <action>maincpu.pb@FF84E9=09</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="Infinite Character Select Time"> 
+    <script state="run"> 
+      <action>maincpu.pb@FF8635=0A</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="Select Starting Episode"> 
+    <parameter min="1" max="8" step="1"/>  
+    <script state="run"> 
+      <action condition="(maincpu.pb@FF84D9==00)">maincpu.pb@FF84D9=(param-1)</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="Hit Anywhere"> 
+    <script state="on"> 
+      <action>temp0 =maincpu.mw@0109C6</action>  
+      <action>temp1 =maincpu.mw@011020</action>  
+      <action>temp2 =maincpu.mw@011A0A</action>  
+      <action>temp3 =maincpu.mw@012154</action>  
+      <action>temp4 =maincpu.mw@01223A</action>  
+      <action>temp5 =maincpu.mw@01230E</action>  
+      <action>temp6 =maincpu.mw@0123A4</action> 
+    </script>  
+    <script state="run"> 
+      <action>maincpu.mw@0109C6=6002</action>  
+      <!-- This ROM cheat was made by nolberto82 -->  
+      <action>maincpu.mw@011020=6002</action>  
+      <action>maincpu.mw@011A0A=4E71</action>  
+      <action>maincpu.mw@012154=6002</action>  
+      <action>maincpu.mw@01223A=6002</action>  
+      <action>maincpu.mw@01230E=6002</action>  
+      <action>maincpu.mw@0123A4=6002</action> 
+    </script>  
+    <script state="off"> 
+      <action>maincpu.mw@0109C6=temp0</action>  
+      <action>maincpu.mw@011020=temp1</action>  
+      <action>maincpu.mw@011A0A=temp2</action>  
+      <action>maincpu.mw@012154=temp3</action>  
+      <action>maincpu.mw@01223A=temp4</action>  
+      <action>maincpu.mw@01230E=temp5</action>  
+      <action>maincpu.mw@0123A4=temp6</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="One Hit Kills"> 
+    <script state="on"> 
+      <action>temp0 =maincpu.mw@010A62</action>  
+      <action>temp1 =maincpu.mw@0110E2</action>  
+      <action>temp2 =maincpu.mw@0123E8</action>  
+      <action>temp3 =maincpu.mw@01256E</action> 
+    </script>  
+    <script state="run"> 
+      <action>maincpu.mw@010A62=6002</action>  
+      <!-- This ROM cheat was made by nolberto82 -->  
+      <action>maincpu.mw@0110E2=6002</action>  
+      <action>maincpu.mw@0123E8=6002</action>  
+      <action>maincpu.mw@01256E=6002</action> 
+    </script>  
+    <script state="off"> 
+      <action>maincpu.mw@010A62=temp0</action>  
+      <action>maincpu.mw@0110E2=temp1</action>  
+      <action>maincpu.mw@0123E8=temp2</action>  
+      <action>maincpu.mw@01256E=temp3</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="Infinite Ammo"> 
+    <comment>Works for Rifle, Gun, Uzi, M-16A1, Shotgun and Bazooka</comment>  
+    <script state="on"> 
+      <action>temp0 =maincpu.md@0239DE</action>  
+      <action>temp1 =maincpu.md@0239E2</action>  
+      <action>temp2 =maincpu.md@180000</action>  
+      <action>temp3 =maincpu.md@180004</action>  
+      <action>temp4 =maincpu.md@180008</action> 
+    </script>  
+    <script state="run"> 
+      <action>maincpu.md@0239DE=4EB90018</action>  
+      <action>maincpu.md@0239E2=00004E71</action>  
+      <!-- jsr $180000.l / nop -->  
+      <action>maincpu.md@180000=366A00B4</action>  
+      <!-- movea.w ($b4,A2), A3 -->  
+      <action>maincpu.md@180004=70323740</action>  
+      <!-- moveq #$32,D0 [ Always 50 bullets ] -->  
+      <action>maincpu.md@180008=006C4E75</action>  
+      <!-- move.w D0,($6c,A3) / rts --> 
+    </script>  
+    <script state="off"> 
+      <action>maincpu.md@0239DE=temp0</action>  
+      <action>maincpu.md@0239E2=temp1</action>  
+      <action>maincpu.md@180000=temp2</action>  
+      <action>maincpu.md@180004=temp3</action>  
+      <action>maincpu.md@180008=temp4</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="Never lose weapons"> 
+    <comment>After enemy hits, dropped weapons are never lost</comment>  
+    <script state="on"> 
+      <action>temp0 =maincpu.mb@0246B2</action> 
+    </script>  
+    <script state="run"> 
+      <action>maincpu.mb@0246B2=60</action>  
+      <!-- This ROM cheat was made by syndromtr --> 
+    </script>  
+    <script state="off"> 
+      <action>maincpu.mb@0246B2=temp0</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="Never drop weapons"> 
+    <comment>Weapons are never dropped unless Game Over happens.</comment>  
+    <script state="on"> 
+      <action>temp0 =maincpu.mb@010EA2</action>  
+      <action>temp1 =maincpu.mb@0117CC</action>  
+      <action>temp2 =maincpu.mb@01C26C</action>  
+      <action>temp3 =maincpu.mb@01C44C</action>  
+      <action>temp4 =maincpu.mb@01C612</action>  
+      <action>temp5 =maincpu.mb@01C7AA</action>  
+      <action>temp6 =maincpu.mb@01CC96</action>  
+      <action>temp7 =maincpu.mb@01D2FA</action> 
+    </script>  
+    <script state="run"> 
+      <action>maincpu.mb@010EA2=0C</action>  
+      <!-- This ROM cheat was made by syndromtr -->  
+      <action>maincpu.mb@0117CC=B2</action>  
+      <action>maincpu.mb@01C26C=B2</action>  
+      <action>maincpu.mb@01C44C=B2</action>  
+      <action>maincpu.mb@01C612=B2</action>  
+      <action>maincpu.mb@01C7AA=B2</action>  
+      <action>maincpu.mb@01CC96=B2</action>  
+      <action>maincpu.mb@01D2FA=B2</action> 
+    </script>  
+    <script state="off"> 
+      <action>maincpu.mb@010EA2=temp0</action>  
+      <action>maincpu.mb@0117CC=temp1</action>  
+      <action>maincpu.mb@01C26C=temp2</action>  
+      <action>maincpu.mb@01C44C=temp3</action>  
+      <action>maincpu.mb@01C612=temp4</action>  
+      <action>maincpu.mb@01C7AA=temp5</action>  
+      <action>maincpu.mb@01CC96=temp6</action>  
+      <action>maincpu.mb@01D2FA=temp7</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="Kill Vice T. with 1 hit Now!"> 
+    <script state="on"> 
+      <action>maincpu.pw@FFDCA0=0001</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="Kill Butcher with 1 hit Now!"> 
+    <script state="on"> 
+      <action>maincpu.pw@FFDCA0=0001</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="Kill Hogg with 1 hit Now!"> 
+    <script state="on"> 
+      <action>maincpu.pw@FFD3E0=0001</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="Kill Slice with 1 hit Now!"> 
+    <script state="on"> 
+      <action>maincpu.pw@FFDAE0=0001</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="Kill Morgan/Morgue with 1 hit Now!"> 
+    <script state="on"> 
+      <action>maincpu.pw@FFDCA0=0001</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="Kill Tyrog with 1 hit Now!"> 
+    <script state="on"> 
+      <action>maincpu.pw@FFDCA0=0001</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="Kill Slisaur 1 with 1 hit Now!"> 
+    <script state="on"> 
+      <action>maincpu.pw@FFD680=0001</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="Kill Slisaur 2 with 1 hit Now!"> 
+    <script state="on"> 
+      <action>maincpu.pw@FFD5A0=0001</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="Kill the one headed Fessenden with 1 hit Now!"> 
+    <script state="on"> 
+      <action>maincpu.pw@FFD920=0001</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="Kill the several headed Fessenden with 1 hit Now!"> 
+    <script state="on"> 
+      <action>maincpu.pw@FFD4C0=0001</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="Finish Episode Now!"> 
+    <script state="on"> 
+      <action>maincpu.pb@FF84D1=06</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="See End Sequence Now!"> 
+    <script state="on"> 
+      <action>maincpu.pb@FF84D1=06</action>  
+      <action>maincpu.pb@FF84D9=07</action> 
+    </script> 
+  </cheat>  
+  <cheat desc=" "/>  
+  <cheat desc="P1 Infinite Lives"> 
+    <script state="run"> 
+      <action>maincpu.pb@FFB317=03</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="P1 Infinite Energy"> 
+    <script state="run"> 
+      <action>maincpu.pb@FFB2E1=64</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="P1 Invincibility"> 
+    <script state="run"> 
+      <action>maincpu.pb@FFB274=02</action>  
+      <action>maincpu.pw@FFB360=0002</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="P1 Select Character"> 
+    <parameter> 
+      <item value="0x01">Jack.T</item>  
+      <item value="0x02">Hannah.D</item>  
+      <item value="0x03">Mustapha.C</item>  
+      <item value="0x04">Mess.O</item>
+    </parameter>  
+    <script state="run"> 
+      <action condition="(param==01)">maincpu.pb@FFB277=00</action>  
+      <action condition="(param==01)">maincpu.pb@FF863A=00</action>  
+      <action condition="(param==02)">maincpu.pb@FFB277=02</action>  
+      <action condition="(param==02)">maincpu.pb@FF863A=01</action>  
+      <action condition="(param==03)">maincpu.pb@FFB277=01</action>  
+      <action condition="(param==03)">maincpu.pb@FF863A=02</action>  
+      <action condition="(param==04)">maincpu.pb@FFB277=03</action>  
+      <action condition="(param==04)">maincpu.pb@FF863A=03</action>
+	  </script> 
+  </cheat>  
+  <cheat desc="P1 Rapid Fire - Normal"> 
+    <comment>Turn it OFF on the name entry screen</comment>  
+    <script state="run"> 
+      <action>maincpu.pb@FFB314=00|(maincpu.pb@FFB314 BAND ~10)</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="P1 Rapid Fire - Unlimited"> 
+    <comment>Turn it OFF on the name entry screen</comment>  
+    <script state="run"> 
+      <action>maincpu.pb@FFB314=00|(maincpu.pb@FFB314 BAND ~10)</action>  
+      <action>maincpu.pb@FFB326=00</action> 
+    </script> 
+  </cheat>  
+  <cheat desc=" "/>  
+  <cheat desc="P2 Infinite Lives"> 
+    <script state="run"> 
+      <action>maincpu.pb@FFB497=03</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="P2 Infinite Energy"> 
+    <script state="run"> 
+      <action>maincpu.pb@FFB461=64</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="P2 Invincibility"> 
+    <script state="run"> 
+      <action>maincpu.pb@FFB3F4=02</action>  
+      <action>maincpu.pw@FFB4E0=0002</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="P2 Select Character"> 
+    <parameter> 
+      <item value="0x01">Jack.T</item>  
+      <item value="0x02">Hannah.D</item>  
+      <item value="0x03">Mustapha.C</item>  
+      <item value="0x04">Mess.O</item> 
+    </parameter>  
+    <script state="run"> 
+      <action condition="(param==01)">maincpu.pb@FFB3F7=00</action>  
+      <action condition="(param==01)">maincpu.pb@FF8646=00</action>  
+      <action condition="(param==02)">maincpu.pb@FFB3F7=02</action>  
+      <action condition="(param==02)">maincpu.pb@FF8646=01</action>  
+      <action condition="(param==03)">maincpu.pb@FFB3F7=01</action>  
+      <action condition="(param==03)">maincpu.pb@FF8646=02</action>  
+      <action condition="(param==04)">maincpu.pb@FFB3F7=03</action>  
+      <action condition="(param==04)">maincpu.pb@FF8646=03</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="P2 Rapid Fire - Normal"> 
+    <comment>Turn it OFF on the name entry screen</comment>  
+    <script state="run"> 
+      <action>maincpu.pb@FFB494=00|(maincpu.pb@FFB494 BAND ~10)</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="P2 Rapid Fire - Unlimited"> 
+    <comment>Turn it OFF on the name entry screen</comment>  
+    <script state="run"> 
+      <action>maincpu.pb@FFB494=00|(maincpu.pb@FFB494 BAND ~10)</action>  
+      <action>maincpu.pb@FFB4A6=00</action> 
+    </script> 
+  </cheat>  
+  <cheat desc=" "/>  
+  <cheat desc="P3 Infinite Lives"> 
+    <script state="run"> 
+      <action>maincpu.pb@FFB617=03</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="P3 Infinite Energy"> 
+    <script state="run"> 
+      <action>maincpu.pb@FFB5E1=64</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="P3 Invincibility"> 
+    <script state="run"> 
+      <action>maincpu.pb@FFB574=02</action>  
+      <action>maincpu.pw@FFB660=0002</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="P3 Select Character"> 
+    <parameter> 
+      <item value="0x01">Jack.T</item>  
+      <item value="0x02">Hannah.D</item>  
+      <item value="0x03">Mustapha.C</item>  
+      <item value="0x04">Mess.O</item> 
+    </parameter>  
+    <script state="run"> 
+      <action condition="(param==01)">maincpu.pb@FFB577=00</action>  
+      <action condition="(param==01)">maincpu.pb@FF8652=00</action>  
+      <action condition="(param==02)">maincpu.pb@FFB577=02</action>  
+      <action condition="(param==02)">maincpu.pb@FF8652=01</action>  
+      <action condition="(param==03)">maincpu.pb@FFB577=01</action>  
+      <action condition="(param==03)">maincpu.pb@FF8652=02</action>  
+      <action condition="(param==04)">maincpu.pb@FFB577=03</action>  
+      <action condition="(param==04)">maincpu.pb@FF8652=03</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="P3 Rapid Fire - Normal"> 
+    <comment>Turn it OFF on the name entry screen</comment>  
+    <script state="run"> 
+      <action>maincpu.pb@FFB614=00|(maincpu.pb@FFB614 BAND ~10)</action> 
+    </script> 
+  </cheat>  
+  <cheat desc="P3 Rapid Fire - Unlimited"> 
+    <comment>Turn it OFF on the name entry screen</comment>  
+    <script state="run"> 
+      <action>maincpu.pb@FFB614=00|(maincpu.pb@FFB614 BAND ~10)</action>  
+      <action>maincpu.pb@FFB626=00</action> 
+    </script> 
+  </cheat>  
+  <cheat desc=" "/>  
+  <cheat desc="Enable Hidden OBJECT TEST and SCROLL TEST"> 
+    <comment>Press F2 and get OBJECT Test on '10' and SCROLL TEST on '11'</comment>  
+    <script state="run"> 
+      <action>maincpu.pb@FF84C3=01</action> 
+    </script> 
+  </cheat> 
+</mamecheat>
+<!-- Cheat file downloaded from http://www.mamecheat.co.uk, see cheat.txt for list of contributors. -->

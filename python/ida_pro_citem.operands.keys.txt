@@ -1,0 +1,22 @@
+for citem in cfunc.treeitems: 
+citem = citem.to_specific_type
+#print(citem.opname,citem.operands.keys())
+
+var dict_keys(['v'])
+ptr dict_keys(['x'])
+obj dict_keys(['obj_ea'])
+ref dict_keys(['x'])
+num dict_keys(['n'])
+helper dict_keys(['helper'])
+
+asg dict_keys(['x', 'y'])
+eq dict_keys(['x', 'y'])
+add dict_keys(['x', 'y'])
+idx dict_keys(['x', 'y'])
+
+call dict_keys(['x', 'a'])
+cast dict_keys(['type', 'x'])
+
+
+memref dict_keys(['x', 'm'])
+memptr dict_keys(['x', 'm'])

@@ -1,0 +1,13 @@
+ccps sdk
+
+https://fabiensanglard.net/ccps/
+
+https://fabiensanglard.net/cpsb/
+
+https://github.com/fabiensanglard/ccps
+
+https://pkg.go.dev/github.com/fabiensanglard/ccps
+
+CCPS is a compiler/tools driver. 
+It needs GCC to compile code to 68000 and SDCC to compile code to Z-80. 
+Everything else is self-contained.

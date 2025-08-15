@@ -1,0 +1,302 @@
+[{
+    "space":{
+      "cpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "script":{
+      "on":"
+ --[[--CPS-2 beatem up hitbox viewer]]
+ --[[--November 11, 2011]]
+ --[[--http://code.google.com/p/mame-rr/wiki/Hitboxes]]
+
+
+boxes = {
+        [\"vulnerability\"] = {color = 0x7777FF, fill = 0x40, outline = 0xFF},
+               [\"attack\"] = {color = 0xFF0000, fill = 0x40, outline = 0xFF},
+  [\"proj. vulnerability\"] = {color = 0x00FFFF, fill = 0x40, outline = 0xFF},
+         [\"proj. attack\"] = {color = 0xFF66FF, fill = 0x40, outline = 0xFF},
+}
+
+globals = {
+  axis_color     = 0xFFFFFFFF,
+  blank_color    = 0xFFFFFFFF,
+  axis_size      = 12,
+  mini_axis_size = 2,
+  blank_screen   = false,
+  draw_axis      = true,
+  draw_mini_axis = false,
+  no_alpha       = false, --fill = 0x00, outline = 0xFF for all box types
+}
+
+--------------------------------------------------------------------------------
+-- game-specific modules
+
+--invulnerable: if > 0, don't draw blue
+--alive: if == 0, don't draw blue
+--hp: if < 0, don't draw blue
+--harmless: never draw red
+--active: if none == 0, don't draw red
+
+game = {
+  gamename = \"dino\",
+  address = {
+    screen_left = 0xFF8744,
+    game_phase  = 0xFF0A4B,
+  },
+  offset = {
+    flip_x = 0x24,
+    pos_x  = 0x08,
+    pos_z  = 0x10,
+  },
+  objects = {
+    {address = 0xFF8874, number = 0x18, space = 0x0C0, active = {0x14,0x16,0x4C,0xB0}, projectile = true}, --items
+    {address = 0xFFB274, number = 0x03, space = 0x180, alive = 0x6C, invulnerable = 0x118}, --players
+    {address = 0xFFB6F4, number = 0x18, space = 0x0C0, alive = 0x6C, projectile = true}, --etc
+    {address = 0xFFC8F4, number = 0x18, space = 0x0E0, alive = 0x6C}, --enemies
+  },
+  box = {
+    --radius_read = cpup:read_u16,
+    val_x = 0x4, val_y = 0x8, rad_x = 0x6, rad_y = 0xA,
+    radscale = 2,
+  },
+  box_list = {
+    {id_ptr = 0x48, type = \"vulnerability\", special_offset = 0x2},
+    {id_ptr = 0x48, type = \"vulnerability\", special_offset = 0xE},
+    {id_ptr = 0x49, type = \"attack\", special_offset = 0x2},
+  },
+  --id_read = cpup:read_u8,
+  --cpup:read_u8,
+  exist_val = 0x0101,
+  box_address = function(obj, box, box_entry)
+    local address = cpup:read_u32(obj.base + 0x44)
+    if address == 0x106000 then --dinosaurs
+      address = address + cpup:read_u16(address + box.id * 2)
+      if not box_entry.special_offset or (cpup:read_u16(address) == 0 and box_entry.special_offset > 0x2) then
+        return nil
+      end
+      return address + box_entry.special_offset
+    end
+    return address + box.id * 0xC --everything else
+  end,
+}
+
+
+--------------------------------------------------------------------------------
+-- post-process modules
+
+
+--game.box.offset_read = game.box.radius_read == cpup:read_u8 and cpup:read_i8 or cpup:read_i16
+game.offset.pos_y = game.offset.pos_x + 0x4
+game.exist_val = game.exist_val or 0x0100
+
+for _, box in pairs(boxes) do
+  box.fill    = box.color | ((globals.no_alpha and 0x00 or box.fill) << 24)
+  box.outline = box.color | ((globals.no_alpha and 0xFF or box.outline) << 24)
+end
+
+framebuffer = {}
+DRAW_DELAY = 1
+
+function copytable(orig)
+  local copy = {}
+  for orig_key, orig_value in pairs(orig) do
+    copy[orig_key] = orig_value
+  end
+  return copy
+end
+
+function max(a, b)
+  if a > b then
+    return a
+  end
+  return b
+end
+
+--------------------------------------------------------------------------------
+-- prepare the hitboxes
+
+set_box_center = {
+  function(obj, box)
+    return
+      obj.pos_x + box.val_x * (obj.flip_x > 0 and -1 or 1),
+      obj.pos_y - box.val_y
+  end,
+
+  function(obj, box)
+    if box.type==\"attack\" then
+      return
+        obj.pos_x + (box.val_x + box.rad_x) * (obj.flip_x > 0 and -1 or 1),
+        obj.pos_y - (box.val_y + box.rad_y)
+    end
+
+    return
+      obj.pos_x,
+      obj.pos_y - (box.val_y + box.rad_y)
+  end,
+}
+
+
+function define_box(obj, box_entry)
+  local box = {type = box_entry.type}
+
+  local base_id = box_entry.anim_ptr and cpup:read_u32(obj.base + box_entry.anim_ptr) or obj.base
+  box.id = cpup:read_u8(base_id + box_entry.id_ptr)
+
+  if base_id == 0 or box.id <= 0 or
+    (obj.invulnerable and box.type == \"vulnerability\") or
+    (obj.harmless and box.type == \"attack\") then
+    return nil
+  elseif obj.projectile then
+    box.type = (box.type == \"vulnerability\" and \"proj. vulnerability\") or box.type
+    box.type = (box.type == \"attack\" and \"proj. attack\") or box.type
+  end
+
+  box.address = game.box_address(obj, box, box_entry)
+  if not box.address then
+    return nil
+  end
+  box.rad_x = cpup:read_u16(box.address + game.box.rad_x)/game.box.radscale
+  box.rad_y = cpup:read_u16(box.address + game.box.rad_y)/game.box.radscale
+  box.val_x = cpup:read_i16(box.address + game.box.val_x)
+  box.val_y = cpup:read_i16(box.address + game.box.val_y)
+
+  box.val_x, box.val_y = set_box_center[game.box.radscale](obj, box)
+  box.left   = box.val_x - box.rad_x
+  box.right  = box.val_x + box.rad_x
+  box.top    = box.val_y - box.rad_y
+  box.bottom = box.val_y + box.rad_y
+
+  return box
+end
+
+
+function update_object(f, obj)
+  obj.flip_x = cpup:read_u8(obj.base + game.offset.flip_x)
+  obj.pos_z  = game.offset.pos_z and cpup:read_i16(obj.base + game.offset.pos_z) or 0
+  obj.pos_x  = cpup:read_i16(obj.base + game.offset.pos_x) - f.screen_left
+  obj.pos_y  = cpup:read_i16(obj.base + game.offset.pos_y) + obj.pos_z
+  obj.pos_y  = screen:height() - (obj.pos_y - 0x0F) + f.screen_top
+
+  for entry in ipairs(game.box_list) do
+    table.insert(obj, define_box(obj, game.box_list[entry]))
+  end
+  return obj
+end
+
+function inactive(base, active)
+  for _, offset in ipairs(active) do
+    if cpup:read_u16(base + offset) > 0 then
+      return false
+    end
+  end
+  return true
+end
+
+
+function update_hitboxes()
+  if not game then
+    return
+  end
+  for f = 1, DRAW_DELAY do
+    framebuffer[f] = copytable(framebuffer[f+1])
+  end
+
+  framebuffer[DRAW_DELAY+1] = {game_active = cpup:read_u8(game.address.game_phase) > 0}
+  local f = framebuffer[DRAW_DELAY+1]
+  if not f.game_active then
+    return
+  end
+
+  f.screen_left = cpup:read_i16(game.address.screen_left)
+  f.screen_top  = cpup:read_i16(game.address.screen_left + 0x4)
+
+
+  for _, set in ipairs(game.objects) do
+    for n = 1, set.number do
+      local obj = {base = set.address + (n-1) * set.space}
+      if cpup:read_i16(obj.base) >= game.exist_val then
+        obj.projectile = set.projectile
+        obj.invulnerable = (set.hp and cpup:read_i16(obj.base + set.hp) < 0) or
+          (set.alive and cpup:read_u16(obj.base + set.alive) == 0) or
+          (set.invulnerable and cpup:read_u16(obj.base + set.invulnerable) > 0)
+        obj.harmless = set.harmless or (set.active and inactive(obj.base, set.active))
+        obj.addr_table = set.addr_table
+        table.insert(f, update_object(f, obj))
+        if obj.box_count then
+          f.box_count = obj.box_count
+        end
+      end
+    end
+  end
+end
+
+--------------------------------------------------------------------------------
+-- draw the hitboxes
+
+function draw_hitbox(hb)
+  if not hb then
+    return
+  end
+
+  if globals.draw_mini_axis then
+    draw_line(screen,hb.val_x, hb.val_y-globals.mini_axis_size, hb.val_x, hb.val_y+globals.mini_axis_size, boxes[hb.type].outline)
+    draw_line(screen,hb.val_x-globals.mini_axis_size, hb.val_y, hb.val_x+globals.mini_axis_size, hb.val_y, boxes[hb.type].outline)
+  end
+
+  draw_box(screen,hb.left, hb.top, hb.right, hb.bottom, boxes[hb.type].fill, boxes[hb.type].outline)
+  --draw_text(screen,hb.left,hb.bottom,0xFFFF0000,\"%s\",hb.type)
+end
+
+function draw_axis(obj)
+  draw_line(screen,obj.pos_x, obj.pos_y-globals.axis_size, obj.pos_x, obj.pos_y+globals.axis_size, globals.axis_color)
+  draw_line(screen,obj.pos_x-globals.axis_size, obj.pos_y, obj.pos_x+globals.axis_size, obj.pos_y, globals.axis_color)
+  --draw_text(screen,obj.pos_x, obj.pos_y,0xFFFFFFFF, \"%06X\", obj.base) --debug
+end
+
+
+function render_hitboxes()
+  local f = framebuffer[1]
+  if not f.game_active then
+    return
+  end
+
+  if globals.blank_screen then
+    draw_box(screen,0, 0, screen:width(), screen:height(), globals.blank_color)
+  end
+
+  for entry = 1, f.box_count or #game.box_list do
+    for _, obj in ipairs(f) do
+      draw_hitbox(obj[entry])
+    end
+  end
+
+  if globals.draw_axis then
+    for _, obj in ipairs(f) do
+      draw_axis(obj)
+    end
+  end
+end
+
+--------------------------------------------------------------------------------
+-- initialize on game startup
+
+function initialize_fb()
+  framebuffer = {}
+  for f = 1, DRAW_DELAY + 1 do
+    framebuffer[f] = {}
+  end
+end
+
+
+initialize_fb()
+",
+      "run":"update_hitboxes() render_hitboxes()"
+    },
+    "screen":{
+      "screen":":screen"
+    },
+    "desc":"Hitbox viewer"
+}]
+--[[-- Cheat file downloaded from http://www.mamecheat.co.uk, see cheat.txt for list of contributors. ]]

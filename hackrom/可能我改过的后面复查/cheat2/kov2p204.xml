@@ -1,0 +1,366 @@
+<mamecheat version="1">
+
+  <cheat desc=" "/>
+  <cheat desc="Original Characters - Lower Row (L to R)"/>
+  <cheat desc="ZhaoYun, GuanYu, ZhangFei, MaChao, HuangZhong"/>
+  <cheat desc="Special Characters - Middle Row (L to R)"/>
+  <cheat desc="Zhuge, DiaoChan, PangTong, SunQuan"/>
+  <cheat desc=" "/>
+<cheat desc="选关" default="0">
+        <parameter>
+            <item value="0x01">第1关</item>
+			<item value="0x02">第2关</item>
+			<item value="0x03">第3关</item>
+			<item value="0x04">第4关</item>
+			<item value="0x05">第5关</item>
+			<item value="0x06">第6关</item>
+        </parameter>
+        <script state="run">
+      <action>maincpu.pb@813AD1=param</action>
+    </script>
+	<script state="on">
+      <action>temp0 =maincpu.pb@813AD1</action>
+    </script>
+	<script state="off">
+      <action>maincpu.pb@813AD1=temp0</action>
+    </script>
+	</cheat>
+	<cheat desc="选择场景" default="0">
+		<parameter>
+            <item value="0x00">0</item>
+			<item value="0x01">1</item>
+			<item value="0x02">2</item>
+			<item value="0x03">3</item>
+			<item value="0x04">4</item>
+			<item value="0x05">5</item>
+			<item value="0x06">6</item>
+			<item value="0x07">7</item>
+			<item value="0x08">8</item>
+			<item value="0x09">9</item>
+        </parameter>
+        <script state="run">
+      <action>maincpu.pb@813AD4=param</action>
+    </script>
+	<script state="on">
+      <action>temp0 =maincpu.pb@813AD4</action>
+    </script>
+	<script state="off">
+      <action>maincpu.pb@813AD4=temp0</action>
+    </script>
+	</cheat>
+	<cheat desc="无限气 PL1" default="0">
+        
+        <script state="run">
+       <action>maincpu.pb@814018=0x80</action>
+	   <action>maincpu.pb@4800906d=0x80</action>
+    </script>
+	</cheat>
+	<cheat desc="道具1无限 PL1" default="0">
+        <script state="run">
+	   <action>maincpu.pb@8114D6=0x9</action>
+    </script>
+    </cheat>
+	<cheat desc="选择道具1 PL1" default="0">
+       
+        <parameter  >
+            <item  value="0x0237">吕布37</item>
+        </parameter>
+        <script state="run">
+	   <action>maincpu.pw@8114D4=param</action>
+    </script>
+    </cheat>
+	<cheat desc=" "/>
+  <cheat desc="Infinite Stage Time">
+    <script state="run">
+      <action>maincpu.pb@813B16=64</action>
+    </script>
+  </cheat>
+
+	
+  <cheat desc=" "/>
+
+
+  <cheat desc="P1 Invincibility">
+    <script state="run">
+      <action>maincpu.pw@D090D2=0003</action>
+      <action>maincpu.pw@D090F1=D0B0</action>
+      <action>maincpu.pw@D091E2=0001</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Infinite Energy"> <comment>BUGGY!</comment>
+    <script state="run">
+      <action>maincpu.pw@D0906C=0080</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Maximum Power">
+    <script state="run">
+      <action>maincpu.pw@D09286=0006</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Infinite Items">
+    <script state="run">
+      <action>maincpu.pb@8F14D6=09</action>
+      <action>maincpu.pb@8F14DA=09</action>
+      <action>maincpu.pb@8F14DE=09</action>
+      <action>maincpu.pb@8F14E2=09</action>
+      <action>maincpu.pb@8F14E6=09</action>
+      <action>maincpu.pb@8F14EA=09</action>
+      <action>maincpu.pb@8F14EE=09</action>
+      <action>maincpu.pb@8F14F2=09</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Select 1st Item">
+    <parameter>
+      <item value="0x022A">Iron Gun</item>
+      <item value="0x022B">Fire Bomb</item>
+      <item value="0x022C">Smoke Bomb</item>
+      <item value="0x022D">Iron Lily</item>
+      <item value="0x021C">Cure Herb</item>
+      <item value="0x021E">Detoxify Herb</item>
+      <item value="0x021B">Holy Water - Restores Morale</item>
+      <item value="0x021F">*(Zhuge Liang+Pang Tong)SevenStar</item>
+      <item value="0x0220">*(Zhuge Liang+Pang Tong)Supply Horse</item>
+      <item value="0x0221">*(Zhuge Liang+Pang Tong)Supply Bull</item>
+      <item value="0x0223">Book of Knifemen-Formation</item>
+      <item value="0x0224">Book of Ballista-Formation</item>
+      <item value="0x0227">Book of Sailors-Formation</item>
+      <item value="0x0225">Sunzi's Book of War-Power +25 sec</item>
+      <item value="0x0226">WuZi's Book of War-Defense +25 sec</item>
+      <item value="0x0228">Taoist Fire Scroll</item>
+      <item value="0x0229">Taoist Wind Scroll</item>
+      <item value="0x0218">Taoist Commoner's Scroll</item>
+      <item value="0x022E">Command of General Cheng Yu</item>
+      <item value="0x022F">Command of General Xia Hou Yuan</item>
+      <item value="0x0230">Command of General Xia Hou Dun</item>
+      <item value="0x0231">Command of General Xu Huang</item>
+      <item value="0x0232">Command of General Xu Zhu</item>
+      <item value="0x0233">Command of General Zhang He</item>
+      <item value="0x0234">Command of General Niu Jin</item>
+      <item value="0x0235">Command of General Gan Ning</item>
+      <item value="0x0236">Command of General Zhou Tai</item>
+      <item value="0x0237">Command of General Lu Bu</item>
+      <item value="0x0238">Command of General Caocao</item>
+      <item value="0x0239">Command of General Meng Huo</item>
+      <item value="0x023A">Command of General Cao Ren</item>
+      <item value="0x023B">Command of Wooden-man</item>
+      <item value="0x0212">Blue Dragon - Infinit Morale +25sec</item>
+      <item value="0x0213">WhiteTiger - Confuses opponents +25sec</item>
+      <item value="0x0214">Red Sparrow - Defense Up + Attack Up +25sec</item>
+      <item value="0x0215">BlackBeast - Increases Score Speed +25sec</item>
+      <item value="0x023C">*(All Characters)No Weapon</item>
+      <item value="0x023D">*(Guan Yu)BroadSword</item>
+      <item value="0x023E">*(Guan Yu)DragonKnife W+12%</item>
+      <item value="0x0259">*(Guan Yu)FireKnife W+28%</item>
+      <item value="0x0240">*(ZhangFei)SnakeLance</item>
+      <item value="0x0241">*(ZhangFei)SuperLance W+12%</item>
+      <item value="0x0242">*(ZhaoYun)Spear</item>
+      <item value="0x0243">*(ZhaoYun)FireArm W+18%</item>
+      <item value="0x0244">*(HuangZhong)Bow</item>
+      <item value="0x0245">*(HuangZhong)PoisonBow W+12%</item>
+      <item value="0x0246">*(HuangZhong)FireBow W+37%</item>
+      <item value="0x025D">*(HuangZhong)GoldenBow W+28%</item>
+      <item value="0x0247">*(HuangZhong)GodBow W+100%</item>
+      <item value="0x0248">*(MaChao)LongSword</item>
+      <item value="0x0249">*(MaChao)YiSword W+25%</item>
+      <item value="0x024A">*(MaChao)ChingSword W+50%</item>
+      <item value="0x024B">*(MaChao)IronSword W+10%</item>
+      <item value="0x024C">*(Zhuge)FireFan W+50%</item>
+      <item value="0x024D">*(Zhuge)WaterFan W+28%</item>
+      <item value="0x0261">*(Zhuge)ExplosiveFan W+42%</item>
+      <item value="0x0262">*(Zhuge)LightningSword W+20%</item>
+      <item value="0x024E">*(DiaoChan)Dragger</item>
+      <item value="0x024F">*(DiaoChan)RedDragger W+18%</item>
+      <item value="0x0250">*(DiaoChan)FlyClaw W+32%</item>
+      <item value="0x0251">*(PangTong)CurveKnife</item>
+      <item value="0x0252">*(PangTong)HookKnife W+25%</item>
+      <item value="0x0253">*(PangTong)WizardKnife W+20%</item>
+      <item value="0x0254">*(SunQuan)LongLance</item>
+      <item value="0x0255">*(SunQuan)ThreeSection W-18%</item>
+      <item value="0x023F">*(Guan Yu+ZhangFei+ZhaoYun)Halberd W+45%</item>
+      <item value="0x025C">*(Guan Yu+ZhangFei+ZhaoYun)RealHalberd W+14%</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pw@8F14D4=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P1 Select Armour">
+    <parameter>
+      <item value="0x2690100">Copper Armour</item>
+      <item value="0x26A0100">Chain Armour</item>
+      <item value="0x26B0100">Bright Armour</item>
+      <item value="0x26C0100">Oldest Armour</item>
+      <item value="0x26D0100">Emperor Armour</item>
+      <item value="0x26E0100">King Armour</item>
+      <item value="0x26F0100">Savage Armour</item>
+      <item value="0x2710100">Scale Clothes</item>
+      <item value="0x2720100">God Clothes</item>
+      <item value="0x2730100">Peace Robe</item>
+      <item value="0x2740100">Heaven Robe</item>
+      <item value="0x2750100">War Robe</item>
+      <item value="0x2760100">Feather Clothes</item>
+      <item value="0x2770100">Thorns Armour</item>
+      <item value="0x2790100">Golden Robe</item>
+      <item value="0x27A0100">Cloud Robe</item>
+      <item value="0x27B0100">Yellow Robe</item>
+    </parameter>
+    <script state="on">
+      <action>temp0 =maincpu.pd@8F1534</action>
+      <action>maincpu.pd@8F1534=01000100</action>
+    </script>
+    <script state="run">
+      <action>maincpu.pd@8F1514=param</action>
+    </script>
+    <script state="off">
+      <action>maincpu.pd@8F1534=temp0</action>
+    </script>
+  </cheat>
+
+  <cheat desc=" "/>
+
+  <cheat desc="P2 Invincibility">
+    <script state="run">
+      <action>maincpu.pw@D094D2=0003</action>
+      <action>maincpu.pw@D094F1=D0B0</action>
+      <action>maincpu.pw@D095E2=0001</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Infinite Energy"> <comment>BUGGY!</comment>
+    <script state="run">
+      <action>maincpu.pw@D0946C=0080</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Maximum Power">
+    <script state="run">
+      <action>maincpu.pw@D09686=0006</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Infinite Items">
+    <script state="run">
+      <action>maincpu.pb@8F1604=09</action>
+      <action>maincpu.pb@8F1608=09</action>
+      <action>maincpu.pb@8F160C=09</action>
+      <action>maincpu.pb@8F1610=09</action>
+      <action>maincpu.pb@8F1614=09</action>
+      <action>maincpu.pb@8F1618=09</action>
+      <action>maincpu.pb@8F161C=09</action>
+      <action>maincpu.pb@8F1620=09</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Select 1st Item">
+    <parameter>
+      <item value="0x022A">Iron Gun</item>
+      <item value="0x022B">Fire Bomb</item>
+      <item value="0x022C">Smoke Bomb</item>
+      <item value="0x022D">Iron Lily</item>
+      <item value="0x021C">Cure Herb</item>
+      <item value="0x021E">Detoxify Herb</item>
+      <item value="0x021B">Holy Water - Restores Morale</item>
+      <item value="0x021F">*(Zhuge Liang+Pang Tong)SevenStar</item>
+      <item value="0x0220">*(Zhuge Liang+Pang Tong)Supply Horse</item>
+      <item value="0x0221">*(Zhuge Liang+Pang Tong)Supply Bull</item>
+      <item value="0x0223">Book of Knifemen-Formation</item>
+      <item value="0x0224">Book of Ballista-Formation</item>
+      <item value="0x0227">Book of Sailors-Formation</item>
+      <item value="0x0225">Sunzi's Book of War-Power +25 sec</item>
+      <item value="0x0226">WuZi's Book of War-Defense +25 sec</item>
+      <item value="0x0228">Taoist Fire Scroll</item>
+      <item value="0x0229">Taoist Wind Scroll</item>
+      <item value="0x0218">Taoist Commoner's Scroll</item>
+      <item value="0x022E">Command of General Cheng Yu</item>
+      <item value="0x022F">Command of General Xia Hou Yuan</item>
+      <item value="0x0230">Command of General Xia Hou Dun</item>
+      <item value="0x0231">Command of General Xu Huang</item>
+      <item value="0x0232">Command of General Xu Zhu</item>
+      <item value="0x0233">Command of General Zhang He</item>
+      <item value="0x0234">Command of General Niu Jin</item>
+      <item value="0x0235">Command of General Gan Ning</item>
+      <item value="0x0236">Command of General Zhou Tai</item>
+      <item value="0x0237">Command of General Lu Bu</item>
+      <item value="0x0238">Command of General Caocao</item>
+      <item value="0x0239">Command of General Meng Huo</item>
+      <item value="0x023A">Command of General Cao Ren</item>
+      <item value="0x023B">Command of Wooden-man</item>
+      <item value="0x0212">Blue Dragon - Infinit Morale +25sec</item>
+      <item value="0x0213">WhiteTiger - Confuses opponents +25sec</item>
+      <item value="0x0214">Red Sparrow - Defense Up + Attack Up +25sec</item>
+      <item value="0x0215">BlackBeast - Increases Score Speed +25sec</item>
+      <item value="0x023C">*(All Characters)No Weapon</item>
+      <item value="0x023D">*(Guan Yu)BroadSword</item>
+      <item value="0x023E">*(Guan Yu)DragonKnife W+12%</item>
+      <item value="0x0259">*(Guan Yu)FireKnife W+28%</item>
+      <item value="0x0240">*(ZhangFei)SnakeLance</item>
+      <item value="0x0241">*(ZhangFei)SuperLance W+12%</item>
+      <item value="0x0242">*(ZhaoYun)Spear</item>
+      <item value="0x0243">*(ZhaoYun)FireArm W+18%</item>
+      <item value="0x0244">*(HuangZhong)Bow</item>
+      <item value="0x0245">*(HuangZhong)PoisonBow W+12%</item>
+      <item value="0x0246">*(HuangZhong)FireBow W+37%</item>
+      <item value="0x025D">*(HuangZhong)GoldenBow W+28%</item>
+      <item value="0x0247">*(HuangZhong)GodBow W+100%</item>
+      <item value="0x0248">*(MaChao)LongSword</item>
+      <item value="0x0249">*(MaChao)YiSword W+25%</item>
+      <item value="0x024A">*(MaChao)ChingSword W+50%</item>
+      <item value="0x024B">*(MaChao)IronSword W+10%</item>
+      <item value="0x024C">*(Zhuge)FireFan W+50%</item>
+      <item value="0x024D">*(Zhuge)WaterFan W+28%</item>
+      <item value="0x0261">*(Zhuge)ExplosiveFan W+42%</item>
+      <item value="0x0262">*(Zhuge)LightningSword W+20%</item>
+      <item value="0x024E">*(DiaoChan)Dragger</item>
+      <item value="0x024F">*(DiaoChan)RedDragger W+18%</item>
+      <item value="0x0250">*(DiaoChan)FlyClaw W+32%</item>
+      <item value="0x0251">*(PangTong)CurveKnife</item>
+      <item value="0x0252">*(PangTong)HookKnife W+25%</item>
+      <item value="0x0253">*(PangTong)WizardKnife W+20%</item>
+      <item value="0x0254">*(SunQuan)LongLance</item>
+      <item value="0x0255">*(SunQuan)ThreeSection W-18%</item>
+      <item value="0x023F">*(Guan Yu+ZhangFei+ZhaoYun)Halberd W+45%</item>
+      <item value="0x025C">*(Guan Yu+ZhangFei+ZhaoYun)RealHalberd W+14%</item>
+    </parameter>
+    <script state="run">
+      <action>maincpu.pw@8F1602=param</action>
+    </script>
+  </cheat>
+
+  <cheat desc="P2 Select Armour">
+    <parameter>
+      <item value="0x2690100">Copper Armour</item>
+      <item value="0x26A0100">Chain Armour</item>
+      <item value="0x26B0100">Bright Armour</item>
+      <item value="0x26C0100">Oldest Armour</item>
+      <item value="0x26D0100">Emperor Armour</item>
+      <item value="0x26E0100">King Armour</item>
+      <item value="0x26F0100">Savage Armour</item>
+      <item value="0x2710100">Scale Clothes</item>
+      <item value="0x2720100">God Clothes</item>
+      <item value="0x2730100">Peace Robe</item>
+      <item value="0x2740100">Heaven Robe</item>
+      <item value="0x2750100">War Robe</item>
+      <item value="0x2760100">Feather Clothes</item>
+      <item value="0x2770100">Thorns Armour</item>
+      <item value="0x2790100">Golden Robe</item>
+      <item value="0x27A0100">Cloud Robe</item>
+      <item value="0x27B0100">Yellow Robe</item>
+    </parameter>
+    <script state="on">
+      <action>temp0 =maincpu.pd@8F1662</action>
+      <action>maincpu.pd@8F1662=01000100</action>
+    </script>
+    <script state="run">
+      <action>maincpu.pd@8F1642=param</action>
+    </script>
+    <script state="off">
+      <action>maincpu.pd@8F1662=temp0</action>
+    </script>
+  </cheat>
+
+</mamecheat>
+<!-- Cheat file downloaded from http://www.mamecheat.co.uk, see cheat.txt for list of contributors. -->

@@ -1,0 +1,1225 @@
+[{
+    "screen":{
+      "screen":":screen"
+    },
+    "desc":"Hitbox viewer",
+    "script":{
+      "run":"update_hitboxes() render_hitboxes()",
+      "on":"\r\n --[[--CPS-2 beatem up hitbox viewer]]\r\n --[[--November 11, 2011]]\r\n --[[--http://code.google.com/p/mame-rr/wiki/Hitboxes]]\r\n\r\n\r\nboxes = {\r\n        [\"vulnerability\"] = {color = 0x7777FF, fill = 0x40, outline = 0xFF},\r\n               [\"attack\"] = {color = 0xFF0000, fill = 0x40, outline = 0xFF},\r\n  [\"proj. vulnerability\"] = {color = 0x00FFFF, fill = 0x40, outline = 0xFF},\r\n         [\"proj. attack\"] = {color = 0xFF66FF, fill = 0x40, outline = 0xFF},\r\n}\r\n\r\nglobals = {\r\n  axis_color     = 0xFFFFFFFF,\r\n  blank_color    = 0xFFFFFFFF,\r\n  axis_size      = 12,\r\n  mini_axis_size = 2,\r\n  blank_screen   = false,\r\n  draw_axis      = true,\r\n  draw_mini_axis = false,\r\n  no_alpha       = false, --fill = 0x00, outline = 0xFF for all box types\r\n}\r\n\r\n--------------------------------------------------------------------------------\r\n-- game-specific modules\r\n\r\n--invulnerable: if > 0, don't draw blue\r\n--alive: if == 0, don't draw blue\r\n--hp: if < 0, don't draw blue\r\n--harmless: never draw red\r\n--active: if none == 0, don't draw red\r\n\r\ngame = {\r\n  gamename = \"dino\",\r\n  address = {\r\n    screen_left = 0xFF8744,\r\n    game_phase  = 0xFF0A4B,\r\n  },\r\n  offset = {\r\n    flip_x = 0x24,\r\n    pos_x  = 0x08,\r\n    pos_z  = 0x10,\r\n  },\r\n  objects = {\r\n    {address = 0xFF8874, number = 0x18, space = 0x0C0, active = {0x14,0x16,0x4C,0xB0}, projectile = true}, --items\r\n    {address = 0xFFB274, number = 0x03, space = 0x180, alive = 0x6C, invulnerable = 0x118}, --players\r\n    {address = 0xFFB6F4, number = 0x18, space = 0x0C0, alive = 0x6C, projectile = true}, --etc\r\n    {address = 0xFFC8F4, number = 0x18, space = 0x0E0, alive = 0x6C}, --enemies\r\n  },\r\n  box = {\r\n    --radius_read = cpup:read_u16,\r\n    val_x = 0x4, val_y = 0x8, rad_x = 0x6, rad_y = 0xA,\r\n    radscale = 2,\r\n  },\r\n  box_list = {\r\n    {id_ptr = 0x48, type = \"vulnerability\", special_offset = 0x2},\r\n    {id_ptr = 0x48, type = \"vulnerability\", special_offset = 0xE},\r\n    {id_ptr = 0x49, type = \"attack\", special_offset = 0x2},\r\n  },\r\n  --id_read = cpup:read_u8,\r\n  --cpup:read_u8,\r\n  exist_val = 0x0101,\r\n  box_address = function(obj, box, box_entry)\r\n    local address = cpup:read_u32(obj.base + 0x44)\r\n    if address == 0x106000 then --dinosaurs\r\n      address = address + cpup:read_u16(address + box.id * 2)\r\n      if not box_entry.special_offset or (cpup:read_u16(address) == 0 and box_entry.special_offset > 0x2) then\r\n        return nil\r\n      end\r\n      return address + box_entry.special_offset\r\n    end\r\n    return address + box.id * 0xC --everything else\r\n  end,\r\n}\r\n\r\n\r\n--------------------------------------------------------------------------------\r\n-- post-process modules\r\n\r\n\r\n--game.box.offset_read = game.box.radius_read == cpup:read_u8 and cpup:read_i8 or cpup:read_i16\r\ngame.offset.pos_y = game.offset.pos_x + 0x4\r\ngame.exist_val = game.exist_val or 0x0100\r\n\r\nfor _, box in pairs(boxes) do\r\n  box.fill    = box.color | ((globals.no_alpha and 0x00 or box.fill) << 24)\r\n  box.outline = box.color | ((globals.no_alpha and 0xFF or box.outline) << 24)\r\nend\r\n\r\nframebuffer = {}\r\nDRAW_DELAY = 1\r\n\r\nfunction copytable(orig)\r\n  local copy = {}\r\n  for orig_key, orig_value in pairs(orig) do\r\n    copy[orig_key] = orig_value\r\n  end\r\n  return copy\r\nend\r\n\r\nfunction max(a, b)\r\n  if a > b then\r\n    return a\r\n  end\r\n  return b\r\nend\r\n\r\n--------------------------------------------------------------------------------\r\n-- prepare the hitboxes\r\n\r\nset_box_center = {\r\n  function(obj, box)\r\n    return\r\n      obj.pos_x + box.val_x * (obj.flip_x > 0 and -1 or 1),\r\n      obj.pos_y - box.val_y\r\n  end,\r\n\r\n  function(obj, box)\r\n    if box.type==\"attack\" then\r\n      return\r\n        obj.pos_x + (box.val_x + box.rad_x) * (obj.flip_x > 0 and -1 or 1),\r\n        obj.pos_y - (box.val_y + box.rad_y)\r\n    end\r\n\r\n    return\r\n      obj.pos_x,\r\n      obj.pos_y - (box.val_y + box.rad_y)\r\n  end,\r\n}\r\n\r\n\r\nfunction define_box(obj, box_entry)\r\n  local box = {type = box_entry.type}\r\n\r\n  local base_id = box_entry.anim_ptr and cpup:read_u32(obj.base + box_entry.anim_ptr) or obj.base\r\n  box.id = cpup:read_u8(base_id + box_entry.id_ptr)\r\n\r\n  if base_id == 0 or box.id <= 0 or\r\n    (obj.invulnerable and box.type == \"vulnerability\") or\r\n    (obj.harmless and box.type == \"attack\") then\r\n    return nil\r\n  elseif obj.projectile then\r\n    box.type = (box.type == \"vulnerability\" and \"proj. vulnerability\") or box.type\r\n    box.type = (box.type == \"attack\" and \"proj. attack\") or box.type\r\n  end\r\n\r\n  box.address = game.box_address(obj, box, box_entry)\r\n  if not box.address then\r\n    return nil\r\n  end\r\n  box.rad_x = cpup:read_u16(box.address + game.box.rad_x)/game.box.radscale\r\n  box.rad_y = cpup:read_u16(box.address + game.box.rad_y)/game.box.radscale\r\n  box.val_x = cpup:read_i16(box.address + game.box.val_x)\r\n  box.val_y = cpup:read_i16(box.address + game.box.val_y)\r\n\r\n  box.val_x, box.val_y = set_box_center[game.box.radscale](obj, box)\r\n  box.left   = box.val_x - box.rad_x\r\n  box.right  = box.val_x + box.rad_x\r\n  box.top    = box.val_y - box.rad_y\r\n  box.bottom = box.val_y + box.rad_y\r\n\r\n  return box\r\nend\r\n\r\n\r\nfunction update_object(f, obj)\r\n  obj.flip_x = cpup:read_u8(obj.base + game.offset.flip_x)\r\n  obj.pos_z  = game.offset.pos_z and cpup:read_i16(obj.base + game.offset.pos_z) or 0\r\n  obj.pos_x  = cpup:read_i16(obj.base + game.offset.pos_x) - f.screen_left\r\n  obj.pos_y  = cpup:read_i16(obj.base + game.offset.pos_y) + obj.pos_z\r\n  obj.pos_y  = screen:height() - (obj.pos_y - 0x0F) + f.screen_top\r\n\r\n  for entry in ipairs(game.box_list) do\r\n    table.insert(obj, define_box(obj, game.box_list[entry]))\r\n  end\r\n  return obj\r\nend\r\n\r\nfunction inactive(base, active)\r\n  for _, offset in ipairs(active) do\r\n    if cpup:read_u16(base + offset) > 0 then\r\n      return false\r\n    end\r\n  end\r\n  return true\r\nend\r\n\r\n\r\nfunction update_hitboxes()\r\n  if not game then\r\n    return\r\n  end\r\n  for f = 1, DRAW_DELAY do\r\n    framebuffer[f] = copytable(framebuffer[f+1])\r\n  end\r\n\r\n  framebuffer[DRAW_DELAY+1] = {game_active = cpup:read_u8(game.address.game_phase) > 0}\r\n  local f = framebuffer[DRAW_DELAY+1]\r\n  if not f.game_active then\r\n    return\r\n  end\r\n\r\n  f.screen_left = cpup:read_i16(game.address.screen_left)\r\n  f.screen_top  = cpup:read_i16(game.address.screen_left + 0x4)\r\n\r\n\r\n  for _, set in ipairs(game.objects) do\r\n    for n = 1, set.number do\r\n      local obj = {base = set.address + (n-1) * set.space}\r\n      if cpup:read_i16(obj.base) >= game.exist_val then\r\n        obj.projectile = set.projectile\r\n        obj.invulnerable = (set.hp and cpup:read_i16(obj.base + set.hp) < 0) or\r\n          (set.alive and cpup:read_u16(obj.base + set.alive) == 0) or\r\n          (set.invulnerable and cpup:read_u16(obj.base + set.invulnerable) > 0)\r\n        obj.harmless = set.harmless or (set.active and inactive(obj.base, set.active))\r\n        obj.addr_table = set.addr_table\r\n        table.insert(f, update_object(f, obj))\r\n        if obj.box_count then\r\n          f.box_count = obj.box_count\r\n        end\r\n      end\r\n    end\r\n  end\r\nend\r\n\r\n--------------------------------------------------------------------------------\r\n-- draw the hitboxes\r\n\r\nfunction draw_hitbox(hb)\r\n  if not hb then\r\n    return\r\n  end\r\n\r\n  if globals.draw_mini_axis then\r\n    draw_line(screen,hb.val_x, hb.val_y-globals.mini_axis_size, hb.val_x, hb.val_y+globals.mini_axis_size, boxes[hb.type].outline)\r\n    draw_line(screen,hb.val_x-globals.mini_axis_size, hb.val_y, hb.val_x+globals.mini_axis_size, hb.val_y, boxes[hb.type].outline)\r\n  end\r\n\r\n  draw_box(screen,hb.left, hb.top, hb.right, hb.bottom, boxes[hb.type].fill, boxes[hb.type].outline)\r\n  --draw_text(screen,hb.left,hb.bottom,0xFFFF0000,\"%s\",hb.type)\r\nend\r\n\r\nfunction draw_axis(obj)\r\n  draw_line(screen,obj.pos_x, obj.pos_y-globals.axis_size, obj.pos_x, obj.pos_y+globals.axis_size, globals.axis_color)\r\n  draw_line(screen,obj.pos_x-globals.axis_size, obj.pos_y, obj.pos_x+globals.axis_size, obj.pos_y, globals.axis_color)\r\n  --draw_text(screen,obj.pos_x, obj.pos_y,0xFFFFFFFF, \"%06X\", obj.base) --debug\r\nend\r\n\r\n\r\nfunction render_hitboxes()\r\n  local f = framebuffer[1]\r\n  if not f.game_active then\r\n    return\r\n  end\r\n\r\n  if globals.blank_screen then\r\n    draw_box(screen,0, 0, screen:width(), screen:height(), globals.blank_color)\r\n  end\r\n\r\n  for entry = 1, f.box_count or #game.box_list do\r\n    for _, obj in ipairs(f) do\r\n      draw_hitbox(obj[entry])\r\n    end\r\n  end\r\n\r\n  if globals.draw_axis then\r\n    for _, obj in ipairs(f) do\r\n      draw_axis(obj)\r\n    end\r\n  end\r\nend\r\n\r\n--------------------------------------------------------------------------------\r\n-- initialize on game startup\r\n\r\nfunction initialize_fb()\r\n  framebuffer = {}\r\n  for f = 1, DRAW_DELAY + 1 do\r\n    framebuffer[f] = {}\r\n  end\r\nend\r\n\r\n\r\ninitialize_fb()\r\n"
+    },
+    "space":{
+      "cpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    }
+  },{
+    "parameter":{
+      "step":"0x0100",
+      "max":"0xFFFF00",
+      "min":"0xFF8400"
+    },
+    "screen":{
+      "screen":":screen",
+      "ui":"ui"
+    },
+    "desc":"显示调试数据",
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "script":{
+      "run":" draw_text(ui,left,\"1\", nil,\"场景:%02X 敌兵掉物:%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X\",maincpup:readv_u8(0xff8786),maincpup:readv_u8((0xffd08a + 0x0e0*0)),maincpup:readv_u8((0xffd08a + 0x0e0*1)),maincpup:readv_u8((0xffd08a + 0x0e0*2)),maincpup:readv_u8((0xffd08a + 0x0e0*3)),maincpup:readv_u8((0xffd08a + 0x0e0*4)),maincpup:readv_u8((0xffd08a + 0x0e0*5)),maincpup:readv_u8((0xffd08a + 0x0e0*6)),maincpup:readv_u8((0xffd08a + 0x0e0*7)),maincpup:readv_u8((0xffd08a + 0x0e0*8)),maincpup:readv_u8((0xffd08a + 0x0e0*9)),maincpup:readv_u8((0xffd08a + 0x0e0*10)),maincpup:readv_u8((0xffd08a + 0x0e0*11)),maincpup:readv_u8((0xffd08a + 0x0e0*12)),maincpup:readv_u8((0xffd08a + 0x0e0*13)),maincpup:readv_u8((0xffd08a + 0x0e0*14)),maincpup:readv_u8((0xffd08a + 0x0e0*15)),maincpup:readv_u8((0xffd08a + 0x0e0*16)),maincpup:readv_u8((0xffd08a + 0x0e0*17)),maincpup:readv_u8((0xffd08a + 0x0e0*18)),maincpup:readv_u8((0xffd08a + 0x0e0*19)),maincpup:readv_u8((0xffd08a + 0x0e0*20)),maincpup:readv_u8((0xffd08a + 0x0e0*21)),maincpup:readv_u8((0xffd08a + 0x0e0*22)),maincpup:readv_u8((0xffd08a + 0x0e0*23)),maincpup:readv_u8((0xffd08a + 0x0e0*24)),maincpup:readv_u8((0xffd08a + 0x0e0*25)),maincpup:readv_u8((0xffd08a + 0x0e0*26)),maincpup:readv_u8((0xffd08a + 0x0e0*27)))  draw_text(ui,left,\"2\", nil,\"模式:%02X 桶子出物:%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X\",maincpup:readv_u8(0xff84ef),maincpup:readv_u8((0xff908a + 0x0c0*0)),maincpup:readv_u8((0xff908a + 0x0c0*1)),maincpup:readv_u8((0xff908a + 0x0c0*2)),maincpup:readv_u8((0xff908a + 0x0c0*3)),maincpup:readv_u8((0xff908a + 0x0c0*4)),maincpup:readv_u8((0xff908a + 0x0c0*5)),maincpup:readv_u8((0xff908a + 0x0c0*6)),maincpup:readv_u8((0xff908a + 0x0c0*7)),maincpup:readv_u8((0xff908a + 0x0c0*8)),maincpup:readv_u8((0xff908a + 0x0c0*9)),maincpup:readv_u8((0xff908a + 0x0c0*10)),maincpup:readv_u8((0xff908a + 0x0c0*11)),maincpup:readv_u8((0xff908a + 0x0c0*12)),maincpup:readv_u8((0xff908a + 0x0c0*13)),maincpup:readv_u8((0xff908a + 0x0c0*14)),maincpup:readv_u8((0xff908a + 0x0c0*15)),maincpup:readv_u8((0xff908a + 0x0c0*16)),maincpup:readv_u8((0xff908a + 0x0c0*17)),maincpup:readv_u8((0xff908a + 0x0c0*18)),maincpup:readv_u8((0xff908a + 0x0c0*19)),maincpup:readv_u8((0xff908a + 0x0c0*20)),maincpup:readv_u8((0xff908a + 0x0c0*21)),maincpup:readv_u8((0xff908a + 0x0c0*22)),maincpup:readv_u8((0xff908a + 0x0c0*23)),maincpup:readv_u8((0xff908a + 0x0c0*24)),maincpup:readv_u8((0xff908a + 0x0c0*25)),maincpup:readv_u8((0xff908a + 0x0c0*26)),maincpup:readv_u8((0xff908a + 0x0c0*27)))  draw_text(ui,left,\"3\", nil,\"敌兵血量01:%04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X\",maincpup:readv_u16((0xffc880 + 0xe0*0)),maincpup:readv_u16((0xffc880 + 0xe0*1)),maincpup:readv_u16((0xffc880 + 0xe0*2)),maincpup:readv_u16((0xffc880 + 0xe0*3)),maincpup:readv_u16((0xffc880 + 0xe0*4)),maincpup:readv_u16((0xffc880 + 0xe0*5)),maincpup:readv_u16((0xffc880 + 0xe0*6)),maincpup:readv_u16((0xffc880 + 0xe0*7)),maincpup:readv_u16((0xffc880 + 0xe0*8)),maincpup:readv_u16((0xffc880 + 0xe0*9)),maincpup:readv_u16((0xffc880 + 0xe0*10)),maincpup:readv_u16((0xffc880 + 0xe0*11)),maincpup:readv_u16((0xffc880 + 0xe0*12)),maincpup:readv_u16((0xffc880 + 0xe0*13)),maincpup:readv_u16((0xffc880 + 0xe0*14)),maincpup:readv_u16((0xffc880 + 0xe0*15)))  draw_text(ui,left,\"4\", nil,\"敌兵血量02:%04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X\",maincpup:readv_u16((0xffc880 +0xe0*0x10+ 0xe0*0)),maincpup:readv_u16((0xffc880 +0xe0*0x10+ 0xe0*1)),maincpup:readv_u16((0xffc880 +0xe0*0x10+ 0xe0*2)),maincpup:readv_u16((0xffc880 +0xe0*0x10+ 0xe0*3)),maincpup:readv_u16((0xffc880 +0xe0*0x10+ 0xe0*4)),maincpup:readv_u16((0xffc880 +0xe0*0x10+ 0xe0*5)),maincpup:readv_u16((0xffc880 +0xe0*0x10+ 0xe0*6)),maincpup:readv_u16((0xffc880 +0xe0*0x10+ 0xe0*7)),maincpup:readv_u16((0xffc880 +0xe0*0x10+ 0xe0*8)),maincpup:readv_u16((0xffc880 +0xe0*0x10+ 0xe0*9)),maincpup:readv_u16((0xffc880 +0xe0*0x10+ 0xe0*10)),maincpup:readv_u16((0xffc880 +0xe0*0x10+ 0xe0*11)),maincpup:readv_u16((0xffc880 +0xe0*0x10+ 0xe0*12)),maincpup:readv_u16((0xffc880 +0xe0*0x10+ 0xe0*13)),maincpup:readv_u16((0xffc880 +0xe0*0x10+ 0xe0*14)),maincpup:readv_u16((0xffc880 +0xe0*0x10+ 0xe0*15)))  draw_text(ui,left,\"5\", nil,\"兵量:%02X%02X头目血量:%04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X %04X\",maincpup:readv_u8((0xff84f3)),maincpup:readv_u8((0xff84fb)),maincpup:readv_u16((0xffdf40)),maincpup:readv_u16((0xffde60)),maincpup:readv_u16((0xffdd80)),maincpup:readv_u16((0xffdca0)),maincpup:readv_u16((0xffdbc0)),maincpup:readv_u16((0xffdae0)),maincpup:readv_u16((0xffda00)),maincpup:readv_u16((0xffd920)),maincpup:readv_u16((0xffd840)),maincpup:readv_u16((0xffd760)),maincpup:readv_u16((0xffd680)),maincpup:readv_u16((0xffd5a0)),maincpup:readv_u16((0xffd4c0)),maincpup:readv_u16((0xffd3e0)),maincpup:readv_u16((0xffd300)),maincpup:readv_u16((0xffd220)),maincpup:readv_u16((0xffd140)),maincpup:readv_u16((0xffd060)))  draw_text(ui,left,\"6\", nil,\"P1暴击:%02X 血:%02X 命:%02X 无敌:%02X %04X 控制:%02X %02X 分:%08X 拳:%02X|3P暴击:%02X %02X %02X 血:%02X %02X %02X 命:%02X %02X %02X|帧:%05X\",maincpup:readv_u8((0xffb33a)),maincpup:readv_u8((0xffb2e1)),maincpup:readv_u8((0xffb317)),maincpup:readv_u8((0xffb274)),maincpup:readv_u16((0xffb360)),maincpup:readv_u8((0xffb314)),maincpup:readv_u8((0xffb326)),maincpup:readv_u32((0xffb374)),maincpup:readv_u8((0xffb2d2)),maincpup:readv_u8((0xffb33a)),maincpup:readv_u8((0xffb4ba)),maincpup:readv_u8((0xffb63a)),maincpup:readv_u8((0xffb2e1)),maincpup:readv_u8((0xffb461)),maincpup:readv_u8((0xffb5e1)),maincpup:readv_u8((0xffb317)),maincpup:readv_u8((0xffb497)),maincpup:readv_u8((0xffb617)),screen:frame_number()) "
+    }
+  },{
+    "parameter":{
+      "step":"0x0100",
+      "max":"0xFFFF00",
+      "min":"0xFF8200"
+    },
+    "screen":{
+      "screen":":screen",
+      "ui":"ui"
+    },
+    "desc":"显示内存数据0xFF8400-Main+0x0100",
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "script":{
+      "run":" if screen:frame_number()%0x60 < 0x30 then draw_text(ui,left,\"23\", nil,\"MEM:%06X-%06X HACK:曾繁荣zengfr\",param,param+0x20*0x7+0x1f) end  draw_text(ui,left,\"24\", nil,\"1:%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|\",maincpup:readv_u8((param+0x20*0x0 + 0x01*0)),maincpup:readv_u8((param+0x20*0x0 + 0x01*1)),maincpup:readv_u8((param+0x20*0x0 + 0x01*2)),maincpup:readv_u8((param+0x20*0x0 + 0x01*3)),maincpup:readv_u8((param+0x20*0x0 + 0x01*4)),maincpup:readv_u8((param+0x20*0x0 + 0x01*5)),maincpup:readv_u8((param+0x20*0x0 + 0x01*6)),maincpup:readv_u8((param+0x20*0x0 + 0x01*7)),maincpup:readv_u8((param+0x20*0x0 + 0x01*8)),maincpup:readv_u8((param+0x20*0x0 + 0x01*9)),maincpup:readv_u8((param+0x20*0x0 + 0x01*10)),maincpup:readv_u8((param+0x20*0x0 + 0x01*11)),maincpup:readv_u8((param+0x20*0x0 + 0x01*12)),maincpup:readv_u8((param+0x20*0x0 + 0x01*13)),maincpup:readv_u8((param+0x20*0x0 + 0x01*14)),maincpup:readv_u8((param+0x20*0x0 + 0x01*15)),maincpup:readv_u8((param+0x20*0x0 + 0x01*16)),maincpup:readv_u8((param+0x20*0x0 + 0x01*17)),maincpup:readv_u8((param+0x20*0x0 + 0x01*18)),maincpup:readv_u8((param+0x20*0x0 + 0x01*19)),maincpup:readv_u8((param+0x20*0x0 + 0x01*20)),maincpup:readv_u8((param+0x20*0x0 + 0x01*21)),maincpup:readv_u8((param+0x20*0x0 + 0x01*22)),maincpup:readv_u8((param+0x20*0x0 + 0x01*23)),maincpup:readv_u8((param+0x20*0x0 + 0x01*24)),maincpup:readv_u8((param+0x20*0x0 + 0x01*25)),maincpup:readv_u8((param+0x20*0x0 + 0x01*26)),maincpup:readv_u8((param+0x20*0x0 + 0x01*27)),maincpup:readv_u8((param+0x20*0x0 + 0x01*28)),maincpup:readv_u8((param+0x20*0x0 + 0x01*29)),maincpup:readv_u8((param+0x20*0x0 + 0x01*30)),maincpup:readv_u8((param+0x20*0x0 + 0x01*31)))  draw_text(ui,left,\"25\", nil,\"2:%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|\",maincpup:readv_u8((param+0x20*0x1 + 0x01*0)),maincpup:readv_u8((param+0x20*0x1 + 0x01*1)),maincpup:readv_u8((param+0x20*0x1 + 0x01*2)),maincpup:readv_u8((param+0x20*0x1 + 0x01*3)),maincpup:readv_u8((param+0x20*0x1 + 0x01*4)),maincpup:readv_u8((param+0x20*0x1 + 0x01*5)),maincpup:readv_u8((param+0x20*0x1 + 0x01*6)),maincpup:readv_u8((param+0x20*0x1 + 0x01*7)),maincpup:readv_u8((param+0x20*0x1 + 0x01*8)),maincpup:readv_u8((param+0x20*0x1 + 0x01*9)),maincpup:readv_u8((param+0x20*0x1 + 0x01*10)),maincpup:readv_u8((param+0x20*0x1 + 0x01*11)),maincpup:readv_u8((param+0x20*0x1 + 0x01*12)),maincpup:readv_u8((param+0x20*0x1 + 0x01*13)),maincpup:readv_u8((param+0x20*0x1 + 0x01*14)),maincpup:readv_u8((param+0x20*0x1 + 0x01*15)),maincpup:readv_u8((param+0x20*0x1 + 0x01*16)),maincpup:readv_u8((param+0x20*0x1 + 0x01*17)),maincpup:readv_u8((param+0x20*0x1 + 0x01*18)),maincpup:readv_u8((param+0x20*0x1 + 0x01*19)),maincpup:readv_u8((param+0x20*0x1 + 0x01*20)),maincpup:readv_u8((param+0x20*0x1 + 0x01*21)),maincpup:readv_u8((param+0x20*0x1 + 0x01*22)),maincpup:readv_u8((param+0x20*0x1 + 0x01*23)),maincpup:readv_u8((param+0x20*0x1 + 0x01*24)),maincpup:readv_u8((param+0x20*0x1 + 0x01*25)),maincpup:readv_u8((param+0x20*0x1 + 0x01*26)),maincpup:readv_u8((param+0x20*0x1 + 0x01*27)),maincpup:readv_u8((param+0x20*0x1 + 0x01*28)),maincpup:readv_u8((param+0x20*0x1 + 0x01*29)),maincpup:readv_u8((param+0x20*0x1 + 0x01*30)),maincpup:readv_u8((param+0x20*0x1 + 0x01*31)))  draw_text(ui,left,\"26\", nil,\"3:%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|\",maincpup:readv_u8((param+0x20*0x2 + 0x01*0)),maincpup:readv_u8((param+0x20*0x2 + 0x01*1)),maincpup:readv_u8((param+0x20*0x2 + 0x01*2)),maincpup:readv_u8((param+0x20*0x2 + 0x01*3)),maincpup:readv_u8((param+0x20*0x2 + 0x01*4)),maincpup:readv_u8((param+0x20*0x2 + 0x01*5)),maincpup:readv_u8((param+0x20*0x2 + 0x01*6)),maincpup:readv_u8((param+0x20*0x2 + 0x01*7)),maincpup:readv_u8((param+0x20*0x2 + 0x01*8)),maincpup:readv_u8((param+0x20*0x2 + 0x01*9)),maincpup:readv_u8((param+0x20*0x2 + 0x01*10)),maincpup:readv_u8((param+0x20*0x2 + 0x01*11)),maincpup:readv_u8((param+0x20*0x2 + 0x01*12)),maincpup:readv_u8((param+0x20*0x2 + 0x01*13)),maincpup:readv_u8((param+0x20*0x2 + 0x01*14)),maincpup:readv_u8((param+0x20*0x2 + 0x01*15)),maincpup:readv_u8((param+0x20*0x2 + 0x01*16)),maincpup:readv_u8((param+0x20*0x2 + 0x01*17)),maincpup:readv_u8((param+0x20*0x2 + 0x01*18)),maincpup:readv_u8((param+0x20*0x2 + 0x01*19)),maincpup:readv_u8((param+0x20*0x2 + 0x01*20)),maincpup:readv_u8((param+0x20*0x2 + 0x01*21)),maincpup:readv_u8((param+0x20*0x2 + 0x01*22)),maincpup:readv_u8((param+0x20*0x2 + 0x01*23)),maincpup:readv_u8((param+0x20*0x2 + 0x01*24)),maincpup:readv_u8((param+0x20*0x2 + 0x01*25)),maincpup:readv_u8((param+0x20*0x2 + 0x01*26)),maincpup:readv_u8((param+0x20*0x2 + 0x01*27)),maincpup:readv_u8((param+0x20*0x2 + 0x01*28)),maincpup:readv_u8((param+0x20*0x2 + 0x01*29)),maincpup:readv_u8((param+0x20*0x2 + 0x01*30)),maincpup:readv_u8((param+0x20*0x2 + 0x01*31)))  draw_text(ui,left,\"27\", nil,\"4:%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|\",maincpup:readv_u8((param+0x20*0x3 + 0x01*0)),maincpup:readv_u8((param+0x20*0x3 + 0x01*1)),maincpup:readv_u8((param+0x20*0x3 + 0x01*2)),maincpup:readv_u8((param+0x20*0x3 + 0x01*3)),maincpup:readv_u8((param+0x20*0x3 + 0x01*4)),maincpup:readv_u8((param+0x20*0x3 + 0x01*5)),maincpup:readv_u8((param+0x20*0x3 + 0x01*6)),maincpup:readv_u8((param+0x20*0x3 + 0x01*7)),maincpup:readv_u8((param+0x20*0x3 + 0x01*8)),maincpup:readv_u8((param+0x20*0x3 + 0x01*9)),maincpup:readv_u8((param+0x20*0x3 + 0x01*10)),maincpup:readv_u8((param+0x20*0x3 + 0x01*11)),maincpup:readv_u8((param+0x20*0x3 + 0x01*12)),maincpup:readv_u8((param+0x20*0x3 + 0x01*13)),maincpup:readv_u8((param+0x20*0x3 + 0x01*14)),maincpup:readv_u8((param+0x20*0x3 + 0x01*15)),maincpup:readv_u8((param+0x20*0x3 + 0x01*16)),maincpup:readv_u8((param+0x20*0x3 + 0x01*17)),maincpup:readv_u8((param+0x20*0x3 + 0x01*18)),maincpup:readv_u8((param+0x20*0x3 + 0x01*19)),maincpup:readv_u8((param+0x20*0x3 + 0x01*20)),maincpup:readv_u8((param+0x20*0x3 + 0x01*21)),maincpup:readv_u8((param+0x20*0x3 + 0x01*22)),maincpup:readv_u8((param+0x20*0x3 + 0x01*23)),maincpup:readv_u8((param+0x20*0x3 + 0x01*24)),maincpup:readv_u8((param+0x20*0x3 + 0x01*25)),maincpup:readv_u8((param+0x20*0x3 + 0x01*26)),maincpup:readv_u8((param+0x20*0x3 + 0x01*27)),maincpup:readv_u8((param+0x20*0x3 + 0x01*28)),maincpup:readv_u8((param+0x20*0x3 + 0x01*29)),maincpup:readv_u8((param+0x20*0x3 + 0x01*30)),maincpup:readv_u8((param+0x20*0x3 + 0x01*31)))  draw_text(ui,left,\"28\", nil,\"5:%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|\",maincpup:readv_u8((param+0x20*0x4 + 0x01*0)),maincpup:readv_u8((param+0x20*0x4 + 0x01*1)),maincpup:readv_u8((param+0x20*0x4 + 0x01*2)),maincpup:readv_u8((param+0x20*0x4 + 0x01*3)),maincpup:readv_u8((param+0x20*0x4 + 0x01*4)),maincpup:readv_u8((param+0x20*0x4 + 0x01*5)),maincpup:readv_u8((param+0x20*0x4 + 0x01*6)),maincpup:readv_u8((param+0x20*0x4 + 0x01*7)),maincpup:readv_u8((param+0x20*0x4 + 0x01*8)),maincpup:readv_u8((param+0x20*0x4 + 0x01*9)),maincpup:readv_u8((param+0x20*0x4 + 0x01*10)),maincpup:readv_u8((param+0x20*0x4 + 0x01*11)),maincpup:readv_u8((param+0x20*0x4 + 0x01*12)),maincpup:readv_u8((param+0x20*0x4 + 0x01*13)),maincpup:readv_u8((param+0x20*0x4 + 0x01*14)),maincpup:readv_u8((param+0x20*0x4 + 0x01*15)),maincpup:readv_u8((param+0x20*0x4 + 0x01*16)),maincpup:readv_u8((param+0x20*0x4 + 0x01*17)),maincpup:readv_u8((param+0x20*0x4 + 0x01*18)),maincpup:readv_u8((param+0x20*0x4 + 0x01*19)),maincpup:readv_u8((param+0x20*0x4 + 0x01*20)),maincpup:readv_u8((param+0x20*0x4 + 0x01*21)),maincpup:readv_u8((param+0x20*0x4 + 0x01*22)),maincpup:readv_u8((param+0x20*0x4 + 0x01*23)),maincpup:readv_u8((param+0x20*0x4 + 0x01*24)),maincpup:readv_u8((param+0x20*0x4 + 0x01*25)),maincpup:readv_u8((param+0x20*0x4 + 0x01*26)),maincpup:readv_u8((param+0x20*0x4 + 0x01*27)),maincpup:readv_u8((param+0x20*0x4 + 0x01*28)),maincpup:readv_u8((param+0x20*0x4 + 0x01*29)),maincpup:readv_u8((param+0x20*0x4 + 0x01*30)),maincpup:readv_u8((param+0x20*0x4 + 0x01*31)))  draw_text(ui,left,\"29\", nil,\"6:%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|\",maincpup:readv_u8((param+0x20*0x5 + 0x01*0)),maincpup:readv_u8((param+0x20*0x5 + 0x01*1)),maincpup:readv_u8((param+0x20*0x5 + 0x01*2)),maincpup:readv_u8((param+0x20*0x5 + 0x01*3)),maincpup:readv_u8((param+0x20*0x5 + 0x01*4)),maincpup:readv_u8((param+0x20*0x5 + 0x01*5)),maincpup:readv_u8((param+0x20*0x5 + 0x01*6)),maincpup:readv_u8((param+0x20*0x5 + 0x01*7)),maincpup:readv_u8((param+0x20*0x5 + 0x01*8)),maincpup:readv_u8((param+0x20*0x5 + 0x01*9)),maincpup:readv_u8((param+0x20*0x5 + 0x01*10)),maincpup:readv_u8((param+0x20*0x5 + 0x01*11)),maincpup:readv_u8((param+0x20*0x5 + 0x01*12)),maincpup:readv_u8((param+0x20*0x5 + 0x01*13)),maincpup:readv_u8((param+0x20*0x5 + 0x01*14)),maincpup:readv_u8((param+0x20*0x5 + 0x01*15)),maincpup:readv_u8((param+0x20*0x5 + 0x01*16)),maincpup:readv_u8((param+0x20*0x5 + 0x01*17)),maincpup:readv_u8((param+0x20*0x5 + 0x01*18)),maincpup:readv_u8((param+0x20*0x5 + 0x01*19)),maincpup:readv_u8((param+0x20*0x5 + 0x01*20)),maincpup:readv_u8((param+0x20*0x5 + 0x01*21)),maincpup:readv_u8((param+0x20*0x5 + 0x01*22)),maincpup:readv_u8((param+0x20*0x5 + 0x01*23)),maincpup:readv_u8((param+0x20*0x5 + 0x01*24)),maincpup:readv_u8((param+0x20*0x5 + 0x01*25)),maincpup:readv_u8((param+0x20*0x5 + 0x01*26)),maincpup:readv_u8((param+0x20*0x5 + 0x01*27)),maincpup:readv_u8((param+0x20*0x5 + 0x01*28)),maincpup:readv_u8((param+0x20*0x5 + 0x01*29)),maincpup:readv_u8((param+0x20*0x5 + 0x01*30)),maincpup:readv_u8((param+0x20*0x5 + 0x01*31)))  draw_text(ui,left,\"30\", nil,\"7:%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|\",maincpup:readv_u8((param+0x20*0x6 + 0x01*0)),maincpup:readv_u8((param+0x20*0x6 + 0x01*1)),maincpup:readv_u8((param+0x20*0x6 + 0x01*2)),maincpup:readv_u8((param+0x20*0x6 + 0x01*3)),maincpup:readv_u8((param+0x20*0x6 + 0x01*4)),maincpup:readv_u8((param+0x20*0x6 + 0x01*5)),maincpup:readv_u8((param+0x20*0x6 + 0x01*6)),maincpup:readv_u8((param+0x20*0x6 + 0x01*7)),maincpup:readv_u8((param+0x20*0x6 + 0x01*8)),maincpup:readv_u8((param+0x20*0x6 + 0x01*9)),maincpup:readv_u8((param+0x20*0x6 + 0x01*10)),maincpup:readv_u8((param+0x20*0x6 + 0x01*11)),maincpup:readv_u8((param+0x20*0x6 + 0x01*12)),maincpup:readv_u8((param+0x20*0x6 + 0x01*13)),maincpup:readv_u8((param+0x20*0x6 + 0x01*14)),maincpup:readv_u8((param+0x20*0x6 + 0x01*15)),maincpup:readv_u8((param+0x20*0x6 + 0x01*16)),maincpup:readv_u8((param+0x20*0x6 + 0x01*17)),maincpup:readv_u8((param+0x20*0x6 + 0x01*18)),maincpup:readv_u8((param+0x20*0x6 + 0x01*19)),maincpup:readv_u8((param+0x20*0x6 + 0x01*20)),maincpup:readv_u8((param+0x20*0x6 + 0x01*21)),maincpup:readv_u8((param+0x20*0x6 + 0x01*22)),maincpup:readv_u8((param+0x20*0x6 + 0x01*23)),maincpup:readv_u8((param+0x20*0x6 + 0x01*24)),maincpup:readv_u8((param+0x20*0x6 + 0x01*25)),maincpup:readv_u8((param+0x20*0x6 + 0x01*26)),maincpup:readv_u8((param+0x20*0x6 + 0x01*27)),maincpup:readv_u8((param+0x20*0x6 + 0x01*28)),maincpup:readv_u8((param+0x20*0x6 + 0x01*29)),maincpup:readv_u8((param+0x20*0x6 + 0x01*30)),maincpup:readv_u8((param+0x20*0x6 + 0x01*31))) "
+    }
+  },{
+    "parameter":{
+      "step":"0x0E0",
+      "max":"0xFFFFFF",
+      "min":"0xFFC8C4"
+    },
+    "screen":{
+      "screen":":screen",
+      "ui":"ui"
+    },
+    "desc":"显示内存数据0xFFC880-敌兵+0x0E0",
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "script":{
+      "run":" if screen:frame_number()%0x60 < 0x30 then draw_text(ui,left,\"23\", nil,\"MEM:%06X-%06X HACK:曾繁荣zengfr\",param,param+0x20*0x7+0x1f) end  draw_text(ui,left,\"24\", nil,\"0:%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|\",maincpup:readv_u8((param+0x20*0x0 + 0x01*0)),maincpup:readv_u8((param+0x20*0x0 + 0x01*1)),maincpup:readv_u8((param+0x20*0x0 + 0x01*2)),maincpup:readv_u8((param+0x20*0x0 + 0x01*3)),maincpup:readv_u8((param+0x20*0x0 + 0x01*4)),maincpup:readv_u8((param+0x20*0x0 + 0x01*5)),maincpup:readv_u8((param+0x20*0x0 + 0x01*6)),maincpup:readv_u8((param+0x20*0x0 + 0x01*7)),maincpup:readv_u8((param+0x20*0x0 + 0x01*8)),maincpup:readv_u8((param+0x20*0x0 + 0x01*9)),maincpup:readv_u8((param+0x20*0x0 + 0x01*10)),maincpup:readv_u8((param+0x20*0x0 + 0x01*11)),maincpup:readv_u8((param+0x20*0x0 + 0x01*12)),maincpup:readv_u8((param+0x20*0x0 + 0x01*13)),maincpup:readv_u8((param+0x20*0x0 + 0x01*14)),maincpup:readv_u8((param+0x20*0x0 + 0x01*15)),maincpup:readv_u8((param+0x20*0x0 + 0x01*16)),maincpup:readv_u8((param+0x20*0x0 + 0x01*17)),maincpup:readv_u8((param+0x20*0x0 + 0x01*18)),maincpup:readv_u8((param+0x20*0x0 + 0x01*19)),maincpup:readv_u8((param+0x20*0x0 + 0x01*20)),maincpup:readv_u8((param+0x20*0x0 + 0x01*21)),maincpup:readv_u8((param+0x20*0x0 + 0x01*22)),maincpup:readv_u8((param+0x20*0x0 + 0x01*23)),maincpup:readv_u8((param+0x20*0x0 + 0x01*24)),maincpup:readv_u8((param+0x20*0x0 + 0x01*25)),maincpup:readv_u8((param+0x20*0x0 + 0x01*26)),maincpup:readv_u8((param+0x20*0x0 + 0x01*27)),maincpup:readv_u8((param+0x20*0x0 + 0x01*28)),maincpup:readv_u8((param+0x20*0x0 + 0x01*29)),maincpup:readv_u8((param+0x20*0x0 + 0x01*30)),maincpup:readv_u8((param+0x20*0x0 + 0x01*31)))  draw_text(ui,left,\"25\", nil,\"2:%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|\",maincpup:readv_u8((param+0x20*0x1 + 0x01*0)),maincpup:readv_u8((param+0x20*0x1 + 0x01*1)),maincpup:readv_u8((param+0x20*0x1 + 0x01*2)),maincpup:readv_u8((param+0x20*0x1 + 0x01*3)),maincpup:readv_u8((param+0x20*0x1 + 0x01*4)),maincpup:readv_u8((param+0x20*0x1 + 0x01*5)),maincpup:readv_u8((param+0x20*0x1 + 0x01*6)),maincpup:readv_u8((param+0x20*0x1 + 0x01*7)),maincpup:readv_u8((param+0x20*0x1 + 0x01*8)),maincpup:readv_u8((param+0x20*0x1 + 0x01*9)),maincpup:readv_u8((param+0x20*0x1 + 0x01*10)),maincpup:readv_u8((param+0x20*0x1 + 0x01*11)),maincpup:readv_u8((param+0x20*0x1 + 0x01*12)),maincpup:readv_u8((param+0x20*0x1 + 0x01*13)),maincpup:readv_u8((param+0x20*0x1 + 0x01*14)),maincpup:readv_u8((param+0x20*0x1 + 0x01*15)),maincpup:readv_u8((param+0x20*0x1 + 0x01*16)),maincpup:readv_u8((param+0x20*0x1 + 0x01*17)),maincpup:readv_u8((param+0x20*0x1 + 0x01*18)),maincpup:readv_u8((param+0x20*0x1 + 0x01*19)),maincpup:readv_u8((param+0x20*0x1 + 0x01*20)),maincpup:readv_u8((param+0x20*0x1 + 0x01*21)),maincpup:readv_u8((param+0x20*0x1 + 0x01*22)),maincpup:readv_u8((param+0x20*0x1 + 0x01*23)),maincpup:readv_u8((param+0x20*0x1 + 0x01*24)),maincpup:readv_u8((param+0x20*0x1 + 0x01*25)),maincpup:readv_u8((param+0x20*0x1 + 0x01*26)),maincpup:readv_u8((param+0x20*0x1 + 0x01*27)),maincpup:readv_u8((param+0x20*0x1 + 0x01*28)),maincpup:readv_u8((param+0x20*0x1 + 0x01*29)),maincpup:readv_u8((param+0x20*0x1 + 0x01*30)),maincpup:readv_u8((param+0x20*0x1 + 0x01*31)))  draw_text(ui,left,\"26\", nil,\"4:%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|\",maincpup:readv_u8((param+0x20*0x2 + 0x01*0)),maincpup:readv_u8((param+0x20*0x2 + 0x01*1)),maincpup:readv_u8((param+0x20*0x2 + 0x01*2)),maincpup:readv_u8((param+0x20*0x2 + 0x01*3)),maincpup:readv_u8((param+0x20*0x2 + 0x01*4)),maincpup:readv_u8((param+0x20*0x2 + 0x01*5)),maincpup:readv_u8((param+0x20*0x2 + 0x01*6)),maincpup:readv_u8((param+0x20*0x2 + 0x01*7)),maincpup:readv_u8((param+0x20*0x2 + 0x01*8)),maincpup:readv_u8((param+0x20*0x2 + 0x01*9)),maincpup:readv_u8((param+0x20*0x2 + 0x01*10)),maincpup:readv_u8((param+0x20*0x2 + 0x01*11)),maincpup:readv_u8((param+0x20*0x2 + 0x01*12)),maincpup:readv_u8((param+0x20*0x2 + 0x01*13)),maincpup:readv_u8((param+0x20*0x2 + 0x01*14)),maincpup:readv_u8((param+0x20*0x2 + 0x01*15)),maincpup:readv_u8((param+0x20*0x2 + 0x01*16)),maincpup:readv_u8((param+0x20*0x2 + 0x01*17)),maincpup:readv_u8((param+0x20*0x2 + 0x01*18)),maincpup:readv_u8((param+0x20*0x2 + 0x01*19)),maincpup:readv_u8((param+0x20*0x2 + 0x01*20)),maincpup:readv_u8((param+0x20*0x2 + 0x01*21)),maincpup:readv_u8((param+0x20*0x2 + 0x01*22)),maincpup:readv_u8((param+0x20*0x2 + 0x01*23)),maincpup:readv_u8((param+0x20*0x2 + 0x01*24)),maincpup:readv_u8((param+0x20*0x2 + 0x01*25)),maincpup:readv_u8((param+0x20*0x2 + 0x01*26)),maincpup:readv_u8((param+0x20*0x2 + 0x01*27)),maincpup:readv_u8((param+0x20*0x2 + 0x01*28)),maincpup:readv_u8((param+0x20*0x2 + 0x01*29)),maincpup:readv_u8((param+0x20*0x2 + 0x01*30)),maincpup:readv_u8((param+0x20*0x2 + 0x01*31)))  draw_text(ui,left,\"27\", nil,\"6:%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|\",maincpup:readv_u8((param+0x20*0x3 + 0x01*0)),maincpup:readv_u8((param+0x20*0x3 + 0x01*1)),maincpup:readv_u8((param+0x20*0x3 + 0x01*2)),maincpup:readv_u8((param+0x20*0x3 + 0x01*3)),maincpup:readv_u8((param+0x20*0x3 + 0x01*4)),maincpup:readv_u8((param+0x20*0x3 + 0x01*5)),maincpup:readv_u8((param+0x20*0x3 + 0x01*6)),maincpup:readv_u8((param+0x20*0x3 + 0x01*7)),maincpup:readv_u8((param+0x20*0x3 + 0x01*8)),maincpup:readv_u8((param+0x20*0x3 + 0x01*9)),maincpup:readv_u8((param+0x20*0x3 + 0x01*10)),maincpup:readv_u8((param+0x20*0x3 + 0x01*11)),maincpup:readv_u8((param+0x20*0x3 + 0x01*12)),maincpup:readv_u8((param+0x20*0x3 + 0x01*13)),maincpup:readv_u8((param+0x20*0x3 + 0x01*14)),maincpup:readv_u8((param+0x20*0x3 + 0x01*15)),maincpup:readv_u8((param+0x20*0x3 + 0x01*16)),maincpup:readv_u8((param+0x20*0x3 + 0x01*17)),maincpup:readv_u8((param+0x20*0x3 + 0x01*18)),maincpup:readv_u8((param+0x20*0x3 + 0x01*19)),maincpup:readv_u8((param+0x20*0x3 + 0x01*20)),maincpup:readv_u8((param+0x20*0x3 + 0x01*21)),maincpup:readv_u8((param+0x20*0x3 + 0x01*22)),maincpup:readv_u8((param+0x20*0x3 + 0x01*23)),maincpup:readv_u8((param+0x20*0x3 + 0x01*24)),maincpup:readv_u8((param+0x20*0x3 + 0x01*25)),maincpup:readv_u8((param+0x20*0x3 + 0x01*26)),maincpup:readv_u8((param+0x20*0x3 + 0x01*27)),maincpup:readv_u8((param+0x20*0x3 + 0x01*28)),maincpup:readv_u8((param+0x20*0x3 + 0x01*29)),maincpup:readv_u8((param+0x20*0x3 + 0x01*30)),maincpup:readv_u8((param+0x20*0x3 + 0x01*31)))  draw_text(ui,left,\"28\", nil,\"8:%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|\",maincpup:readv_u8((param+0x20*0x4 + 0x01*0)),maincpup:readv_u8((param+0x20*0x4 + 0x01*1)),maincpup:readv_u8((param+0x20*0x4 + 0x01*2)),maincpup:readv_u8((param+0x20*0x4 + 0x01*3)),maincpup:readv_u8((param+0x20*0x4 + 0x01*4)),maincpup:readv_u8((param+0x20*0x4 + 0x01*5)),maincpup:readv_u8((param+0x20*0x4 + 0x01*6)),maincpup:readv_u8((param+0x20*0x4 + 0x01*7)),maincpup:readv_u8((param+0x20*0x4 + 0x01*8)),maincpup:readv_u8((param+0x20*0x4 + 0x01*9)),maincpup:readv_u8((param+0x20*0x4 + 0x01*10)),maincpup:readv_u8((param+0x20*0x4 + 0x01*11)),maincpup:readv_u8((param+0x20*0x4 + 0x01*12)),maincpup:readv_u8((param+0x20*0x4 + 0x01*13)),maincpup:readv_u8((param+0x20*0x4 + 0x01*14)),maincpup:readv_u8((param+0x20*0x4 + 0x01*15)),maincpup:readv_u8((param+0x20*0x4 + 0x01*16)),maincpup:readv_u8((param+0x20*0x4 + 0x01*17)),maincpup:readv_u8((param+0x20*0x4 + 0x01*18)),maincpup:readv_u8((param+0x20*0x4 + 0x01*19)),maincpup:readv_u8((param+0x20*0x4 + 0x01*20)),maincpup:readv_u8((param+0x20*0x4 + 0x01*21)),maincpup:readv_u8((param+0x20*0x4 + 0x01*22)),maincpup:readv_u8((param+0x20*0x4 + 0x01*23)),maincpup:readv_u8((param+0x20*0x4 + 0x01*24)),maincpup:readv_u8((param+0x20*0x4 + 0x01*25)),maincpup:readv_u8((param+0x20*0x4 + 0x01*26)),maincpup:readv_u8((param+0x20*0x4 + 0x01*27)),maincpup:readv_u8((param+0x20*0x4 + 0x01*28)),maincpup:readv_u8((param+0x20*0x4 + 0x01*29)),maincpup:readv_u8((param+0x20*0x4 + 0x01*30)),maincpup:readv_u8((param+0x20*0x4 + 0x01*31)))  draw_text(ui,left,\"29\", nil,\"A:%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|\",maincpup:readv_u8((param+0x20*0x5 + 0x01*0)),maincpup:readv_u8((param+0x20*0x5 + 0x01*1)),maincpup:readv_u8((param+0x20*0x5 + 0x01*2)),maincpup:readv_u8((param+0x20*0x5 + 0x01*3)),maincpup:readv_u8((param+0x20*0x5 + 0x01*4)),maincpup:readv_u8((param+0x20*0x5 + 0x01*5)),maincpup:readv_u8((param+0x20*0x5 + 0x01*6)),maincpup:readv_u8((param+0x20*0x5 + 0x01*7)),maincpup:readv_u8((param+0x20*0x5 + 0x01*8)),maincpup:readv_u8((param+0x20*0x5 + 0x01*9)),maincpup:readv_u8((param+0x20*0x5 + 0x01*10)),maincpup:readv_u8((param+0x20*0x5 + 0x01*11)),maincpup:readv_u8((param+0x20*0x5 + 0x01*12)),maincpup:readv_u8((param+0x20*0x5 + 0x01*13)),maincpup:readv_u8((param+0x20*0x5 + 0x01*14)),maincpup:readv_u8((param+0x20*0x5 + 0x01*15)),maincpup:readv_u8((param+0x20*0x5 + 0x01*16)),maincpup:readv_u8((param+0x20*0x5 + 0x01*17)),maincpup:readv_u8((param+0x20*0x5 + 0x01*18)),maincpup:readv_u8((param+0x20*0x5 + 0x01*19)),maincpup:readv_u8((param+0x20*0x5 + 0x01*20)),maincpup:readv_u8((param+0x20*0x5 + 0x01*21)),maincpup:readv_u8((param+0x20*0x5 + 0x01*22)),maincpup:readv_u8((param+0x20*0x5 + 0x01*23)),maincpup:readv_u8((param+0x20*0x5 + 0x01*24)),maincpup:readv_u8((param+0x20*0x5 + 0x01*25)),maincpup:readv_u8((param+0x20*0x5 + 0x01*26)),maincpup:readv_u8((param+0x20*0x5 + 0x01*27)),maincpup:readv_u8((param+0x20*0x5 + 0x01*28)),maincpup:readv_u8((param+0x20*0x5 + 0x01*29)),maincpup:readv_u8((param+0x20*0x5 + 0x01*30)),maincpup:readv_u8((param+0x20*0x5 + 0x01*31)))  draw_text(ui,left,\"30\", nil,\"C:%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X|\",maincpup:readv_u8((param+0x20*0x6 + 0x01*0)),maincpup:readv_u8((param+0x20*0x6 + 0x01*1)),maincpup:readv_u8((param+0x20*0x6 + 0x01*2)),maincpup:readv_u8((param+0x20*0x6 + 0x01*3)),maincpup:readv_u8((param+0x20*0x6 + 0x01*4)),maincpup:readv_u8((param+0x20*0x6 + 0x01*5)),maincpup:readv_u8((param+0x20*0x6 + 0x01*6)),maincpup:readv_u8((param+0x20*0x6 + 0x01*7)),maincpup:readv_u8((param+0x20*0x6 + 0x01*8)),maincpup:readv_u8((param+0x20*0x6 + 0x01*9)),maincpup:readv_u8((param+0x20*0x6 + 0x01*10)),maincpup:readv_u8((param+0x20*0x6 + 0x01*11)),maincpup:readv_u8((param+0x20*0x6 + 0x01*12)),maincpup:readv_u8((param+0x20*0x6 + 0x01*13)),maincpup:readv_u8((param+0x20*0x6 + 0x01*14)),maincpup:readv_u8((param+0x20*0x6 + 0x01*15)),maincpup:readv_u8((param+0x20*0x6 + 0x01*16)),maincpup:readv_u8((param+0x20*0x6 + 0x01*17)),maincpup:readv_u8((param+0x20*0x6 + 0x01*18)),maincpup:readv_u8((param+0x20*0x6 + 0x01*19)),maincpup:readv_u8((param+0x20*0x6 + 0x01*20)),maincpup:readv_u8((param+0x20*0x6 + 0x01*21)),maincpup:readv_u8((param+0x20*0x6 + 0x01*22)),maincpup:readv_u8((param+0x20*0x6 + 0x01*23)),maincpup:readv_u8((param+0x20*0x6 + 0x01*24)),maincpup:readv_u8((param+0x20*0x6 + 0x01*25)),maincpup:readv_u8((param+0x20*0x6 + 0x01*26)),maincpup:readv_u8((param+0x20*0x6 + 0x01*27)),maincpup:readv_u8((param+0x20*0x6 + 0x01*28)),maincpup:readv_u8((param+0x20*0x6 + 0x01*29)),maincpup:readv_u8((param+0x20*0x6 + 0x01*30)),maincpup:readv_u8((param+0x20*0x6 + 0x01*31))) "
+    }
+  },{
+    "desc":"调试第一个敌兵0xFFD840基址D814",
+    "script":{
+      "run":" if (0x1==0x1) then maincpum:write_u32(0x3143a,0x303c0040) end if (0x1==0x1) then maincpum:write_u16(0x3143e,0x4e71) end"
+    },
+    "region":{
+      "maincpum":":maincpu"
+    }
+  },{
+    "parameter":{
+      "step":"0x01",
+      "max":"0xFF",
+      "min":"0x00"
+    },
+    "screen":{
+      "screen":":screen",
+      "ui":"ui"
+    },
+    "desc":"调试第一个敌兵test0xFFD840",
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "script":{
+      "run":" if (0x1==0x1) then maincpup:writev_u8(0xffd83f,0x64) end if (0x1==0x1) then maincpup:writev_u8(0xffd83a,0x35) end if (0x1==0x1) then maincpup:writev_u8(0xffd83c,0xdc) end if (0x1==0x1) then maincpup:writev_u8(0xffd83d,0x34) end if (0x1==0x1) then maincpup:writev_u8(0xffd86a,0x0d) end if (maincpup:readv_u8(0xffd840)< 0x0) then maincpup:write_direct_u8(0xffd840,0xaa) end if screen:frame_number()%0x60 < 0x60 then draw_text(ui,left,\"22\", nil,\"击打:%02X 血长:%02X 血量:%02X %02X 掉物:%02X\",maincpup:readv_u8(0xffd832),maincpup:readv_u8(0xffd83f),maincpup:readv_u8(0xffd843),maincpup:readv_u8(0xffd841),maincpup:readv_u8(0xffd86a)) end "
+    }
+  },{
+    "region":{
+      "maincpum":":maincpu"
+    },
+    "desc":"Rom敌兵替换test",
+    "script":{
+      "run":" if (0x1==0x1) then maincpum:write_u16(0x01033e,(0x0650)) end if (0x1==0x1) then maincpum:write_u16(0x010340,(0x0650)) end if (0x1==0x1) then maincpum:write_u16(0x010342,(0x0650)) end if (0x1==0x1) then maincpum:write_u16(0x010344,(0x0650)) end if (0x1==0x1) then maincpum:write_u16(0x010346,(0x0650)) end if (0x1==0x1) then maincpum:write_u16(0x010348,(0x0650)) end if (0x1==0x1) then maincpum:write_u16(0x01034a,(0x0650)) end if (0x1==0x1) then maincpum:write_u16(0x01034c,(0x0650)) end if (0x1==0x1) then maincpum:write_u16(0x01034e,(0x0950)) end if (0x1==0x1) then maincpum:write_u16(0x010350,(0x0650)) end if (0x1==0x1) then maincpum:write_u16(0x010352,(0x0650)) end if (0x1==0x1) then maincpum:write_u16(0x010354,(0x0650)) end if (0x1==0x1) then maincpum:write_u16(0x010356,(0x0650)) end if (0x1==0x1) then maincpum:write_u16(0x010358,(0x0650)) end if (0x1==0x1) then maincpum:write_u16(0x01035a,(0x0650)) end if (0x1==0x1) then maincpum:write_u16(0x01035c,(0x0650)) end if (0x1==0x1) then maincpum:write_u16(0x01035e,(0x0650)) end if (0x1==0x1) then maincpum:write_u16(0x010360,(0x0650)) end if (0x1==0x1) then maincpum:write_u16(0x010362,(0x0650)) end if (0x1==0x1) then maincpum:write_u16(0x010364,(0x0650)) end if (0x1==0x1) then maincpum:write_u16(0x010366,(0x0650)) end if (0x1==0x1) then maincpum:write_u16(0x010368,(0x0650)) end if (0x1==0x1) then maincpum:write_u16(0x01036a,(0x0650)) end if (0x1==0x1) then maincpum:write_u16(0x01036c,(0x0650)) end if (0x1==0x1) then maincpum:write_u16(0x01036e,(0x0650)) end if (0x1==0x1) then maincpum:write_u16(0x010370,(0x0650)) end if (0x1==0x1) then maincpum:write_u16(0x010372,(0x0650)) end if (0x1==0x1) then maincpum:write_u16(0x010374,(0x0650)) end if (0x1==0x1) then maincpum:write_u16(0x010376,(0x0650)) end if (0x1==0x1) then maincpum:write_u16(0x010378,(0x0650)) end if (0x1==0x1) then maincpum:write_u16(0x01037a,(0x0650)) end if (0x1==0x1) then maincpum:write_u16(0x01037c,(0x0650)) end if (0x1==0x1) then maincpum:write_u16(0x0104e2,(0x0650)) end if (0x1==0x1) then maincpum:write_u16(0x0104ec,(0x0650)) end if (0x1==0x1) then maincpum:write_u8(0x00659b,(0x02)) end if (0x1==0x1) then maincpum:write_u8(0x00659d,(0x02)) end if (0x1==0x1) then maincpum:write_u16(0x18bc4,0x4e71) end if (0x1==0x1) then maincpum:write_u16(0x18bc6,0x4e71) end if (0x1==0x1) then maincpum:write_u8(0x18bcb,(0x10)) end if (0x1==0x1) then maincpum:write_u16(0x18bcc,0x46a0) end if (0x1==0x1) then maincpum:write_u16(0x19aa0,0x4eb9) end if (0x1==0x1) then maincpum:write_u8(0x19aa3,(0x10)) end if (0x1==0x1) then maincpum:write_u16(0x19aa4,0x469a) end if (0x1==0x1) then maincpum:write_u16(0x1a348,0x4eb9) end if (0x1==0x1) then maincpum:write_u8(0x1a34b,(0x10)) end if (0x1==0x1) then maincpum:write_u16(0x1a34c,0x469a) end if (0x1==0x1) then maincpum:write_u16(0x1b110,0x4eb9) end if (0x1==0x1) then maincpum:write_u8(0x1b113,(0x10)) end if (0x1==0x1) then maincpum:write_u16(0x1b114,0x469a) end if (0x1==0x1) then maincpum:write_u16(0x1b240,0x4eb9) end if (0x1==0x1) then maincpum:write_u8(0x1b243,(0x10)) end if (0x1==0x1) then maincpum:write_u16(0x1b244,0x469a) end if (0x1==0x1) then maincpum:write_u16(0x1b370,0x4eb9) end if (0x1==0x1) then maincpum:write_u8(0x1b373,(0x10)) end if (0x1==0x1) then maincpum:write_u16(0x1b374,0x469a) end if (0x1==0x1) then maincpum:write_u16(0x24b42,(0x64f2)) end if (0x1==0x1) then maincpum:write_u16(0x5c878,0x4eb9) end if (0x1==0x1) then maincpum:write_u8(0x5c87b,(0x10)) end if (0x1==0x1) then maincpum:write_u16(0x5c87c,(0x48a0)) end"
+    },
+    "parameter":{
+      "step":"0x01",
+      "max":"0xFF",
+      "min":"0x00"
+    }
+  },{
+    "screen":{
+      "screen":":screen",
+      "ui":"ui"
+    },
+    "desc":"Rom按键换人",
+    "script":{
+      "run":" if (screen:frame_number()%0x60==0x0) then maincpum:write_u16(0x00a964,(0x0010)) end if (screen:frame_number()%0x60==0x0) then maincpum:write_u16(0x00a966,(0x1d00)) end if (screen:frame_number()%0x60==0x0) then maincpum:write_u16(0x0252f8,(0x4ef9)) end if (screen:frame_number()%0x60==0x0) then maincpum:write_u16(0x0252fa,(0x0002)) end if (screen:frame_number()%0x60==0x0) then maincpum:write_u16(0x0252fc,(0x531e)) end"
+    },
+    "region":{
+      "maincpum":":maincpu"
+    }
+  },{
+    "parameter":{
+      "step":"0x01",
+      "max":"0xFF",
+      "min":"0x00"
+    },
+    "screen":{
+      "screen":":screen",
+      "ui":"ui"
+    },
+    "desc":"Rom模式修改",
+    "region":{
+      "maincpum":":maincpu"
+    },
+    "script":{
+      "run":" if (screen:frame_number()%0x60==0x0) then maincpum:write_u8(0x00659b,(0x2)) end if (screen:frame_number()%0x60==0x0) then maincpum:write_u8(0x00659d,(param)) end"
+    }
+  },{
+    "parameter":{
+      "step":"0x01",
+      "max":"0xFF",
+      "min":"0x00"
+    },
+    "screen":{
+      "screen":":screen",
+      "ui":"ui"
+    },
+    "desc":"Rom敌兵掉物",
+    "region":{
+      "maincpum":":maincpu"
+    },
+    "script":{
+      "run":" if (screen:frame_number()%0x60==0x0) then maincpum:write_u8(0x024b37,(param)) end if (screen:frame_number()%0x60==0x0) then maincpum:write_u8(0x024b38,(0x4e)) end if (screen:frame_number()%0x60==0x0) then maincpum:write_u8(0x024b39,(0xf9)) end if (screen:frame_number()%0x60==0x0) then maincpum:write_u8(0x024b3a,(0x00)) end if (screen:frame_number()%0x60==0x0) then maincpum:write_u8(0x024b3b,(0x02)) end if (screen:frame_number()%0x60==0x0) then maincpum:write_u8(0x024b3c,(0x4b)) end if (screen:frame_number()%0x60==0x0) then maincpum:write_u8(0x024b3d,(0x50)) end if (screen:frame_number()%0x60==0x0) then maincpum:write_u8(0x024b36,(0x70)) end"
+    }
+  },{
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "desc":"选择持续攻击力P1",
+    "script":{
+      "run":" maincpup:writev_u8(0xffb33a,(param))  if (maincpup:readv_u8(0xffb2e1)==0x64) then maincpup:writev_u8(0xffb2e1,(0xfe)) end if (maincpup:readv_u8(0xffb2fe)==0x64) then maincpup:writev_u8(0xffb2fe,(0xfe)) end if (maincpup:readv_u8(0xffb2f3)==0x64) then maincpup:writev_u8(0xffb2f3,(0xfe)) end",
+      "change":" maincpup:writev_u8(0xffb317,0x0f)  maincpup:writev_u8(0xffb2e1,0xfe) "
+    },
+    "parameter":{
+      "item":[{
+          "text":"00极低",
+          "value":"0x00"
+        },{
+          "text":"01极低",
+          "value":"0x01"
+        },{
+          "text":"02极低",
+          "value":"0x02"
+        },{
+          "text":"18较低",
+          "value":"0x18"
+        },{
+          "text":"20正常",
+          "value":"0x20"
+        },{
+          "text":"40高",
+          "value":"0x40"
+        },{
+          "text":"63高",
+          "value":"0x63"
+        },{
+          "text":"80高",
+          "value":"0x80"
+        },{
+          "text":"99高",
+          "value":"0x99"
+        },{
+          "text":"BA高",
+          "value":"0xBA"
+        },{
+          "text":"EA高",
+          "value":"0xEA"
+        },{
+          "text":"F0高",
+          "value":"0xFA"
+        },{
+          "text":"FE终极",
+          "value":"0xFE"
+        }]
+    }
+  },{
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "desc":"选择持续攻击力P2",
+    "script":{
+      "run":" maincpup:writev_u8(0xffb4ba,(param))  if (maincpup:readv_u8(0xffb461)==0x64) then maincpup:writev_u8(0xffb461,(0xfe)) end",
+      "change":" maincpup:writev_u8(0xffb497,0x0f)  maincpup:writev_u8(0xffb461,0xfe) "
+    },
+    "parameter":{
+      "item":[{
+          "text":"00极低",
+          "value":"0x00"
+        },{
+          "text":"01极低",
+          "value":"0x01"
+        },{
+          "text":"02极低",
+          "value":"0x02"
+        },{
+          "text":"18较低",
+          "value":"0x18"
+        },{
+          "text":"20正常",
+          "value":"0x20"
+        },{
+          "text":"40高",
+          "value":"0x40"
+        },{
+          "text":"63高",
+          "value":"0x63"
+        },{
+          "text":"80高",
+          "value":"0x80"
+        },{
+          "text":"99高",
+          "value":"0x99"
+        },{
+          "text":"BA高",
+          "value":"0xBA"
+        },{
+          "text":"EA高",
+          "value":"0xEA"
+        },{
+          "text":"F0高",
+          "value":"0xFA"
+        },{
+          "text":"FE终极",
+          "value":"0xFE"
+        }]
+    }
+  },{
+    "screen":{
+      "screen":":screen",
+      "ui":"ui"
+    },
+    "desc":"击打控制模式",
+    "script":{
+      "run":" if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xffb326,0x00) end if (screen:frame_number()%0x60==0x10) then maincpup:writev_u8(0xffb326,0x01) end if (screen:frame_number()%0x60==0x20) then maincpup:writev_u8(0xffb326,0x02) end if (screen:frame_number()%0x60==0x30) then maincpup:writev_u8(0xffb326,0x03) end if (screen:frame_number()%0x60==0x40) then maincpup:writev_u8(0xffb326,0x04) end if (screen:frame_number()%0x60==0x50) then maincpup:writev_u8(0xffb326,0x05) end"
+    },
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    }
+  },{
+    "parameter":{
+      "item":[{
+          "text":"单人",
+          "value":"0x00"
+        },{
+          "text":"多人",
+          "value":"0x01"
+        },{
+          "text":"三人",
+          "value":"0x02"
+        },{
+          "text":"九人",
+          "value":"0x08"
+        },{
+          "text":"百人",
+          "value":"0x54"
+        }]
+    },
+    "screen":{
+      "screen":":screen",
+      "ui":"ui"
+    },
+    "desc":"Select Model选择单多人模式",
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "script":{
+      "run":" if (screen:frame_number()%0x300==0x0) then maincpup:writev_u8(0xff84ef,(param)) end"
+    }
+  },{
+    "parameter":{
+      "step":"0x01",
+      "max":"0xFF",
+      "min":"0x00"
+    },
+    "screen":{
+      "screen":":screen",
+      "ui":"ui"
+    },
+    "desc":"Select Model选择固定模式",
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "script":{
+      "run":" if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xff84ef,(param)) end if ((maincpup:readv_u8((0xff84fb))< 0x2) and (screen:frame_number()%0x150 < 0x2)) then maincpup:writev_u8(0xff84ef,0x0) end"
+    }
+  },{
+    "parameter":{
+      "item":[{
+          "text":"00级别",
+          "value":"0x00"
+        },{
+          "text":"01级别",
+          "value":"0x01"
+        },{
+          "text":"02级别",
+          "value":"0x02"
+        },{
+          "text":"03级别",
+          "value":"0x03"
+        },{
+          "text":"04级别",
+          "value":"0x04"
+        },{
+          "text":"05全",
+          "value":"0x05"
+        }]
+    },
+    "screen":{
+      "screen":":screen",
+      "ui":"ui"
+    },
+    "desc":"Select Model选择动态模式",
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "script":{
+      "run":" if (screen:frame_number()%0x30==0x0 and param==0x0) then maincpup:writev_u8(0xff84ef,(screen:frame_number()%0x0f+0x01)) end if (screen:frame_number()%0x30==0x0 and param==0x1) then maincpup:writev_u8(0xff84ef,(screen:frame_number()%0x0f+0x0f)) end if (screen:frame_number()%0x30==0x0 and param==0x2) then maincpup:writev_u8(0xff84ef,(screen:frame_number()%0x1f+0x1f)) end if (screen:frame_number()%0x30==0x0 and param==0x3) then maincpup:writev_u8(0xff84ef,(screen:frame_number()%0x4f+0x2f)) end if (screen:frame_number()%0x30==0x0 and param==0x4) then maincpup:writev_u8(0xff84ef,(screen:frame_number()%0x8f+0x6f)) end if (screen:frame_number()%0x30==0x0 and param==0x5) then maincpup:writev_u8(0xff84ef,(screen:frame_number()%0xff+0x01)) end if ((maincpup:readv_u8((0xff84fb))< 0x2) and (screen:frame_number()%0x150 < 0x2)) then maincpup:writev_u8(0xff84ef,0x0) end"
+    }
+  },{
+    "parameter":{
+      "step":"1",
+      "max":"3",
+      "min":"0"
+    },
+    "region":{
+      "maincpum":":maincpu"
+    },
+    "desc":"选择场景",
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "script":{
+      "run":" maincpup:writev_u8(0xff8786,param) ",
+      "on":" temp0=maincpum:read_u8(0xff8786) ",
+      "off":" maincpup:writev_u8(0xff8786,temp0) "
+    }
+  },{
+    "parameter":{
+      "item":[{
+          "text":"00",
+          "value":"0x00"
+        },{
+          "text":"01面包",
+          "value":"0x01"
+        },{
+          "text":"02表",
+          "value":"0x02"
+        },{
+          "text":"03无",
+          "value":"0x03"
+        },{
+          "text":"04咖啡",
+          "value":"0x04"
+        },{
+          "text":"05无",
+          "value":"0x05"
+        },{
+          "text":"06无",
+          "value":"0x06"
+        },{
+          "text":"07无",
+          "value":"0x07"
+        },{
+          "text":"08巧克力",
+          "value":"0x08"
+        },{
+          "text":"09无",
+          "value":"0x09"
+        },{
+          "text":"0A热狗面包HOTDOG",
+          "value":"0x0A"
+        },{
+          "text":"0B龙虾LOBSTER",
+          "value":"0x0B"
+        },{
+          "text":"0C无",
+          "value":"0x0C"
+        },{
+          "text":"0D烤肉BARBECUE",
+          "value":"0x0D"
+        },{
+          "text":"10手雷",
+          "value":"0x10"
+        },{
+          "text":"11散弹枪",
+          "value":"0x11"
+        },{
+          "text":"12机枪",
+          "value":"0x12"
+        },{
+          "text":"13炸药",
+          "value":"0x13"
+        },{
+          "text":"17",
+          "value":"0x17"
+        },{
+          "text":"18冰激淋PAFFE Cake",
+          "value":"0x18"
+        },{
+          "text":"1A来复枪",
+          "value":"0x1A"
+        },{
+          "text":"1B",
+          "value":"0x1B"
+        },{
+          "text":"1D",
+          "value":"0x1D"
+        },{
+          "text":"20Gun",
+          "value":"0x20"
+        },{
+          "text":"21全系列武器",
+          "value":"0x21"
+        },{
+          "text":"23甜甜圈",
+          "value":"0x23"
+        },{
+          "text":"27散弹与冲锋枪",
+          "value":"0x27"
+        },{
+          "text":"29机关枪M16",
+          "value":"0x29"
+        },{
+          "text":"1E",
+          "value":"0x1E"
+        },{
+          "text":"2D步枪",
+          "value":"0x2D"
+        },{
+          "text":"2F奶油蛋糕CAKE",
+          "value":"0x2F"
+        },{
+          "text":"30牛排STEAK",
+          "value":"0x30"
+        }]
+    },
+    "screen":{
+      "screen":":screen",
+      "ui":"ui"
+    },
+    "desc":"food weapons when kill enemy灭敌人得到食物武器",
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "script":{
+      "run":" if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xffd08a,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xffd16a,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xffd24a,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xffd32a,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xffd40a,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xffd4ea,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xffd5ca,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xffd6aa,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xffd78a,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xffd86a,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xffd94a,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xffda2a,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xffdb0a,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xffdbea,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xffdcca,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xffddaa,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xffde8a,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xffdf6a,(param)) end if screen:frame_number()%0x60 > 0x30 and screen:frame_number()%0x60 < 0x45 then draw_text(ui,left,\"6\", nil,\"灭敌人得到:%02X\",param) end "
+    }
+  },{
+    "parameter":{
+      "item":[{
+          "text":"00",
+          "value":"0x00"
+        },{
+          "text":"01手枪",
+          "value":"0x01"
+        },{
+          "text":"02",
+          "value":"0x02"
+        },{
+          "text":"03咖啡",
+          "value":"0x03"
+        },{
+          "text":"04",
+          "value":"0x04"
+        },{
+          "text":"05",
+          "value":"0x05"
+        },{
+          "text":"06机枪",
+          "value":"0x06"
+        },{
+          "text":"07",
+          "value":"0x07"
+        },{
+          "text":"08机关枪M16",
+          "value":"0x08"
+        },{
+          "text":"09牛排STEAK",
+          "value":"0x09"
+        },{
+          "text":"0A寿司SUSHI",
+          "value":"0x0A"
+        },{
+          "text":"0B烤肉BARBECUE",
+          "value":"0x0B"
+        },{
+          "text":"0C蔬菜沙拉SALAD",
+          "value":"0x0C"
+        },{
+          "text":"11来复枪",
+          "value":"0x11"
+        },{
+          "text":"16汉堡BURGER",
+          "value":"0x16"
+        },{
+          "text":"18龙虾LOBSTER",
+          "value":"0x18"
+        },{
+          "text":"19炸弹",
+          "value":"0x19"
+        },{
+          "text":"1A",
+          "value":"0x1A"
+        },{
+          "text":"1B",
+          "value":"0x1B"
+        },{
+          "text":"21火箭筒",
+          "value":"0x21"
+        }]
+    },
+    "screen":{
+      "screen":":screen",
+      "ui":"ui"
+    },
+    "desc":"food weapons for Boxes打铁桶得到食物武器",
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "script":{
+      "run":" if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xff908a,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xff914a,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xff920a,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xff92ca,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xff938a,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xff944a,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xff950a,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xff95ca,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xff968a,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xff974a,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xff980a,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xff98ca,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xff998a,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xff9a4a,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xff9b0a,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xff9bca,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xff9c8a,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xff9d4a,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xff9e0a,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xff9eca,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xff9f8a,(param)) end",
+      "on":""
+    }
+  },{
+    "parameter":{
+      "item":[{
+          "text":"00",
+          "value":"0x00"
+        },{
+          "text":"01手枪",
+          "value":"0x01"
+        },{
+          "text":"02",
+          "value":"0x02"
+        },{
+          "text":"03咖啡",
+          "value":"0x03"
+        },{
+          "text":"04",
+          "value":"0x04"
+        },{
+          "text":"05",
+          "value":"0x05"
+        },{
+          "text":"06机枪",
+          "value":"0x06"
+        },{
+          "text":"07",
+          "value":"0x07"
+        },{
+          "text":"08机关枪M16",
+          "value":"0x08"
+        },{
+          "text":"09牛排STEAK",
+          "value":"0x09"
+        },{
+          "text":"0A寿司SUSHI",
+          "value":"0x0A"
+        },{
+          "text":"0B烤肉BARBECUE",
+          "value":"0x0B"
+        },{
+          "text":"0C蔬菜沙拉SALAD",
+          "value":"0x0C"
+        },{
+          "text":"11来复枪",
+          "value":"0x11"
+        },{
+          "text":"16汉堡BURGER",
+          "value":"0x16"
+        },{
+          "text":"18龙虾LOBSTER",
+          "value":"0x18"
+        },{
+          "text":"19炸弹",
+          "value":"0x19"
+        },{
+          "text":"1A",
+          "value":"0x1A"
+        },{
+          "text":"1B",
+          "value":"0x1B"
+        },{
+          "text":"21火箭筒",
+          "value":"0x21"
+        }]
+    },
+    "screen":{
+      "screen":":screen",
+      "ui":"ui"
+    },
+    "desc":"滚桶物品",
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "script":{
+      "run":" if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xffd6aa,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xffd78a,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xffd86a,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xffd94a,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xffda2a,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xffdb0a,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xffdbea,(param)) end if (screen:frame_number()%0x60==0x0) then maincpup:writev_u8(0xffdcca,(param)) end",
+      "on":""
+    }
+  },{
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "desc":"SET Boss Energy Value敌兵1血量倍数",
+    "script":{
+      "run":" if (maincpup:readv_u16((0xffdca0-0xe0*0x0))==0x0) then temp0=0x1 end if (maincpup:readv_u16((0xffdca0-0xe0*0x1))==0x0) then temp1=0x1 end if (maincpup:readv_u16((0xffdca0-0xe0*0x2))==0x0) then temp2=0x1 end if (maincpup:readv_u16((0xffdca0-0xe0*0x3))==0x0) then temp3=0x1 end if (maincpup:readv_u16((0xffdca0-0xe0*0x4))==0x0) then temp4=0x1 end if (maincpup:readv_u16((0xffdca0-0xe0*0x5))==0x0) then temp5=0x1 end if (maincpup:readv_u16((0xffdca0-0xe0*0x6))==0x0) then temp6=0x1 end if (maincpup:readv_u16((0xffdca0-0xe0*0x7))==0x0) then temp7=0x1 end if (maincpup:readv_u16((0xffdca0-0xe0*0x8))==0x0) then temp8=0x1 end if (maincpup:readv_u16((0xffdca0-0xe0*0x9))==0x0) then temp9=0x1 end if (maincpup:readv_u16((0xffdca0-0xe0*0x0))> 0x3 and temp0==0x1) then temp0=maincpup:readv_u16((0xffdca0-0xe0*0x0)) maincpup:writev_u16((0xffdca0-0xe0*0x0),((temp0*param|0x00f0) & 0x12f0)) end if (maincpup:readv_u16((0xffdca0-0xe0*0x1))> 0x3 and temp1==0x1) then temp1=maincpup:readv_u16((0xffdca0-0xe0*0x1)) maincpup:writev_u16((0xffdca0-0xe0*0x1),((temp1*param|0x00f0) & 0x12f0)) end if (maincpup:readv_u16((0xffdca0-0xe0*0x2))> 0x3 and temp2==0x1) then temp2=maincpup:readv_u16((0xffdca0-0xe0*0x2)) maincpup:writev_u16((0xffdca0-0xe0*0x2),((temp2*param|0x00f0) & 0x12f0)) end if (maincpup:readv_u16((0xffdca0-0xe0*0x3))> 0x3 and temp3==0x1) then temp3=maincpup:readv_u16((0xffdca0-0xe0*0x3)) maincpup:writev_u16((0xffdca0-0xe0*0x3),((temp3*param|0x00f0) & 0x12f0)) end if (maincpup:readv_u16((0xffdca0-0xe0*0x4))> 0x3 and temp4==0x1) then temp4=maincpup:readv_u16((0xffdca0-0xe0*0x4)) maincpup:writev_u16((0xffdca0-0xe0*0x4),((temp4*param|0x00f0) & 0x12f0)) end if (maincpup:readv_u16((0xffdca0-0xe0*0x5))> 0x3 and temp5==0x1) then temp5=maincpup:readv_u16((0xffdca0-0xe0*0x5)) maincpup:writev_u16((0xffdca0-0xe0*0x5),((temp5*param|0x00f0) & 0x12f0)) end if (maincpup:readv_u16((0xffdca0-0xe0*0x6))> 0x3 and temp6==0x1) then temp6=maincpup:readv_u16((0xffdca0-0xe0*0x6)) maincpup:writev_u16((0xffdca0-0xe0*0x6),((temp6*param|0x00f0) & 0x12f0)) end if (maincpup:readv_u16((0xffdca0-0xe0*0x7))> 0x3 and temp7==0x1) then temp7=maincpup:readv_u16((0xffdca0-0xe0*0x7)) maincpup:writev_u16((0xffdca0-0xe0*0x7),((temp7*param|0x00f0) & 0x12f0)) end if (maincpup:readv_u16((0xffdca0-0xe0*0x8))> 0x3 and temp8==0x1) then temp8=maincpup:readv_u16((0xffdca0-0xe0*0x8)) maincpup:writev_u16((0xffdca0-0xe0*0x8),((temp8*param|0x00f0) & 0x12f0)) end if (maincpup:readv_u16((0xffdca0-0xe0*0x9))> 0x3 and temp9==0x1) then temp9=maincpup:readv_u16((0xffdca0-0xe0*0x9)) maincpup:writev_u16((0xffdca0-0xe0*0x9),((temp9*param|0x00f0) & 0x12f0)) end"
+    },
+    "parameter":{
+      "step":"0x01",
+      "max":"0x0A",
+      "min":"0x01"
+    }
+  },{
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "desc":"SET Boss Energy Value敌兵2血量倍数",
+    "script":{
+      "run":" if (maincpup:readv_u16((0xffdca0+0xe0*0x1))==0x0) then temp0=0x1 end if (maincpup:readv_u16((0xffdca0+0xe0*0x2))==0x0) then temp1=0x1 end if (maincpup:readv_u16((0xffdca0+0xe0*0x3))==0x0) then temp2=0x1 end if (maincpup:readv_u16((0xffdca0+0xe0*0x4))==0x0) then temp3=0x1 end if (maincpup:readv_u16((0xffdca0+0xe0*0x5))==0x0) then temp4=0x1 end if (maincpup:readv_u16((0xffdca0+0xe0*0x6))==0x0) then temp5=0x1 end if (maincpup:readv_u16((0xffdca0+0xe0*0x7))==0x0) then temp6=0x1 end if (maincpup:readv_u16((0xffdca0+0xe0*0x8))==0x0) then temp7=0x1 end if (maincpup:readv_u16((0xffdca0+0xe0*0x9))==0x0) then temp8=0x1 end if (maincpup:readv_u16((0xffdca0+0xe0*0xa))==0x0) then temp9=0x1 end if (maincpup:readv_u16((0xffdca0+0xe0*0x1))> 0x3 and temp0==0x1) then temp0=maincpup:readv_u16((0xffdca0+0xe0*0x1)) maincpup:writev_u16((0xffdca0+0xe0*0x1),((temp0*param|0x00f0) & 0x12f0)) end if (maincpup:readv_u16((0xffdca0+0xe0*0x2))> 0x3 and temp1==0x1) then temp1=maincpup:readv_u16((0xffdca0+0xe0*0x2)) maincpup:writev_u16((0xffdca0+0xe0*0x2),((temp1*param|0x00f0) & 0x12f0)) end if (maincpup:readv_u16((0xffdca0+0xe0*0x3))> 0x3 and temp2==0x1) then temp2=maincpup:readv_u16((0xffdca0+0xe0*0x3)) maincpup:writev_u16((0xffdca0+0xe0*0x3),((temp2*param|0x00f0) & 0x12f0)) end if (maincpup:readv_u16((0xffdca0+0xe0*0x4))> 0x3 and temp3==0x1) then temp3=maincpup:readv_u16((0xffdca0+0xe0*0x4)) maincpup:writev_u16((0xffdca0+0xe0*0x4),((temp3*param|0x00f0) & 0x12f0)) end if (maincpup:readv_u16((0xffdca0+0xe0*0x5))> 0x3 and temp4==0x1) then temp4=maincpup:readv_u16((0xffdca0+0xe0*0x5)) maincpup:writev_u16((0xffdca0+0xe0*0x5),((temp4*param|0x00f0) & 0x12f0)) end if (maincpup:readv_u16((0xffdca0+0xe0*0x6))> 0x3 and temp5==0x1) then temp5=maincpup:readv_u16((0xffdca0+0xe0*0x6)) maincpup:writev_u16((0xffdca0+0xe0*0x6),((temp5*param|0x00f0) & 0x12f0)) end if (maincpup:readv_u16((0xffdca0+0xe0*0x7))> 0x3 and temp6==0x1) then temp6=maincpup:readv_u16((0xffdca0+0xe0*0x7)) maincpup:writev_u16((0xffdca0+0xe0*0x7),((temp6*param|0x00f0) & 0x12f0)) end if (maincpup:readv_u16((0xffdca0+0xe0*0x8))> 0x3 and temp7==0x1) then temp7=maincpup:readv_u16((0xffdca0+0xe0*0x8)) maincpup:writev_u16((0xffdca0+0xe0*0x8),((temp7*param|0x00f0) & 0x12f0)) end if (maincpup:readv_u16((0xffdca0+0xe0*0x9))> 0x3 and temp8==0x1) then temp8=maincpup:readv_u16((0xffdca0+0xe0*0x9)) maincpup:writev_u16((0xffdca0+0xe0*0x9),((temp8*param|0x00f0) & 0x12f0)) end if (maincpup:readv_u16((0xffdca0+0xe0*0xa))> 0x3 and temp9==0x1) then temp9=maincpup:readv_u16((0xffdca0+0xe0*0xa)) maincpup:writev_u16((0xffdca0+0xe0*0xa),((temp9*param|0x00f0) & 0x12f0)) end"
+    },
+    "parameter":{
+      "step":"0x01",
+      "max":"0x0A",
+      "min":"0x01"
+    }
+  },{
+    "desc":"Infinite Grapple Time PL1",
+    "script":{
+      "run":" maincpup:writev_u8(0xffb2e7,0xff) "
+    },
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    }
+  },{
+    "desc":"Infinite Grapple Hits PL1",
+    "script":{
+      "run":" maincpup:writev_u8(0xffb389,0x00) "
+    },
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    }
+  },{
+    "desc":"Infinite Run Time PL1",
+    "script":{
+      "run":" if (maincpup:readv_u8(0xffb36f)> 0x00) then maincpup:writev_u8(0xffb36f,0xff) end"
+    },
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    }
+  },{
+    "desc":"Infinite Time",
+    "script":{
+      "run":" maincpup:writev_u8(0xff84e9,0x09) "
+    },
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    }
+  },{
+    "desc":"Infinite Character Select Time",
+    "script":{
+      "run":" maincpup:writev_u8(0xff8635,0x0a) "
+    },
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    }
+  },{
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "desc":"Select Starting Episode",
+    "script":{
+      "run":" if (maincpup:readv_u8(0xff84d9)==0x00) then maincpup:writev_u8(0xff84d9,(param-0x1)) end"
+    },
+    "parameter":{
+      "step":"1",
+      "max":"8",
+      "min":"1"
+    }
+  },{
+    "desc":"Hit Anywhere",
+    "script":{
+      "run":" maincpum:write_u16(0x0109c6,0x6002)  maincpum:write_u16(0x011020,0x6002)  maincpum:write_u16(0x011a0a,0x4e71)  maincpum:write_u16(0x012154,0x6002)  maincpum:write_u16(0x01223a,0x6002)  maincpum:write_u16(0x01230e,0x6002)  maincpum:write_u16(0x0123a4,0x6002) ",
+      "on":" temp0 =maincpum:read_u16(0x0109c6)  temp1 =maincpum:read_u16(0x011020)  temp2 =maincpum:read_u16(0x011a0a)  temp3 =maincpum:read_u16(0x012154)  temp4 =maincpum:read_u16(0x01223a)  temp5 =maincpum:read_u16(0x01230e)  temp6 =maincpum:read_u16(0x0123a4) ",
+      "off":" maincpum:write_u16(0x0109c6,temp0)  maincpum:write_u16(0x011020,temp1)  maincpum:write_u16(0x011a0a,temp2)  maincpum:write_u16(0x012154,temp3)  maincpum:write_u16(0x01223a,temp4)  maincpum:write_u16(0x01230e,temp5)  maincpum:write_u16(0x0123a4,temp6) "
+    },
+    "region":{
+      "maincpum":":maincpu"
+    }
+  },{
+    "desc":"One Hit Kills",
+    "script":{
+      "run":" maincpum:write_u16(0x010a62,0x6002)  maincpum:write_u16(0x0110e2,0x6002)  maincpum:write_u16(0x0123e8,0x6002)  maincpum:write_u16(0x01256e,0x6002) ",
+      "on":" temp0 =maincpum:read_u16(0x010a62)  temp1 =maincpum:read_u16(0x0110e2)  temp2 =maincpum:read_u16(0x0123e8)  temp3 =maincpum:read_u16(0x01256e) ",
+      "off":" maincpum:write_u16(0x010a62,temp0)  maincpum:write_u16(0x0110e2,temp1)  maincpum:write_u16(0x0123e8,temp2)  maincpum:write_u16(0x01256e,temp3) "
+    },
+    "region":{
+      "maincpum":":maincpu"
+    }
+  },{
+    "region":{
+      "maincpum":":maincpu"
+    },
+    "comment":"Works for Rifle, Gun, Uzi, M-16A1, Shotgun and Bazooka",
+    "script":{
+      "run":" maincpum:write_u32(0x0239de,0x4eb90018)  maincpum:write_u32(0x0239e2,0x00004e71)  maincpum:write_u32(0x180000,0x366a00b4)  maincpum:write_u32(0x180004,0x70323740)  maincpum:write_u32(0x180008,0x006c4e75) ",
+      "on":" temp0 =maincpum:read_u32(0x0239de)  temp1 =maincpum:read_u32(0x0239e2)  temp2 =maincpum:read_u32(0x180000)  temp3 =maincpum:read_u32(0x180004)  temp4 =maincpum:read_u32(0x180008) ",
+      "off":" maincpum:write_u32(0x0239de,temp0)  maincpum:write_u32(0x0239e2,temp1)  maincpum:write_u32(0x180000,temp2)  maincpum:write_u32(0x180004,temp3)  maincpum:write_u32(0x180008,temp4) "
+    },
+    "desc":"Infinite Ammo"
+  },{
+    "region":{
+      "maincpum":":maincpu"
+    },
+    "comment":"After enemy hits, dropped weapons are never lost",
+    "script":{
+      "run":" maincpum:write_u8(0x0246b2,0x60) ",
+      "on":" temp0 =maincpum:read_u8(0x0246b2) ",
+      "off":" maincpum:write_u8(0x0246b2,temp0) "
+    },
+    "desc":"Never lose weapons"
+  },{
+    "region":{
+      "maincpum":":maincpu"
+    },
+    "comment":"Weapons are never dropped unless Game Over happens.",
+    "script":{
+      "run":" maincpum:write_u8(0x010ea2,0x0c)  maincpum:write_u8(0x0117cc,0xb2)  maincpum:write_u8(0x01c26c,0xb2)  maincpum:write_u8(0x01c44c,0xb2)  maincpum:write_u8(0x01c612,0xb2)  maincpum:write_u8(0x01c7aa,0xb2)  maincpum:write_u8(0x01cc96,0xb2)  maincpum:write_u8(0x01d2fa,0xb2) ",
+      "on":" temp0 =maincpum:read_u8(0x010ea2)  temp1 =maincpum:read_u8(0x0117cc)  temp2 =maincpum:read_u8(0x01c26c)  temp3 =maincpum:read_u8(0x01c44c)  temp4 =maincpum:read_u8(0x01c612)  temp5 =maincpum:read_u8(0x01c7aa)  temp6 =maincpum:read_u8(0x01cc96)  temp7 =maincpum:read_u8(0x01d2fa) ",
+      "off":" maincpum:write_u8(0x010ea2,temp0)  maincpum:write_u8(0x0117cc,temp1)  maincpum:write_u8(0x01c26c,temp2)  maincpum:write_u8(0x01c44c,temp3)  maincpum:write_u8(0x01c612,temp4)  maincpum:write_u8(0x01c7aa,temp5)  maincpum:write_u8(0x01cc96,temp6)  maincpum:write_u8(0x01d2fa,temp7) "
+    },
+    "desc":"Never drop weapons"
+  },{
+    "desc":"Kill Vice T. with 1 hit Now!",
+    "script":{
+      "on":" maincpup:writev_u16(0xffdca0,0x0001) "
+    },
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    }
+  },{
+    "desc":"Kill Butcher with 1 hit Now!",
+    "script":{
+      "on":" maincpup:writev_u16(0xffdca0,0x0001) "
+    },
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    }
+  },{
+    "desc":"Kill Hogg with 1 hit Now!",
+    "script":{
+      "on":" maincpup:writev_u16(0xffd3e0,0x0001) "
+    },
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    }
+  },{
+    "desc":"Kill Slice with 1 hit Now!",
+    "script":{
+      "on":" maincpup:writev_u16(0xffdae0,0x0001) "
+    },
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    }
+  },{
+    "desc":"Kill Morgan/Morgue with 1 hit Now!",
+    "script":{
+      "on":" maincpup:writev_u16(0xffdca0,0x0001) "
+    },
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    }
+  },{
+    "desc":"Kill Tyrog with 1 hit Now!",
+    "script":{
+      "on":" maincpup:writev_u16(0xffdca0,0x0001) "
+    },
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    }
+  },{
+    "desc":"Kill Slisaur 1 with 1 hit Now!",
+    "script":{
+      "on":" maincpup:writev_u16(0xffd680,0x0001) "
+    },
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    }
+  },{
+    "desc":"Kill Slisaur 2 with 1 hit Now!",
+    "script":{
+      "on":" maincpup:writev_u16(0xffd5a0,0x0001) "
+    },
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    }
+  },{
+    "desc":"Kill the one headed Fessenden with 1 hit Now!",
+    "script":{
+      "on":" maincpup:writev_u16(0xffd920,0x0001) "
+    },
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    }
+  },{
+    "desc":"Kill the several headed Fessenden with 1 hit Now!",
+    "script":{
+      "on":" maincpup:writev_u16(0xffd4c0,0x0001) "
+    },
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    }
+  },{
+    "desc":"Finish Episode Now!",
+    "script":{
+      "on":" maincpup:writev_u8(0xff84d1,0x06) "
+    },
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    }
+  },{
+    "desc":"See End Sequence Now!",
+    "script":{
+      "on":" maincpup:writev_u8(0xff84d1,0x06)  maincpup:writev_u8(0xff84d9,0x07) "
+    },
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    }
+  },{
+    "desc":""
+  },{
+    "desc":"P1 Infinite Lives",
+    "script":{
+      "run":" maincpup:writev_u8(0xffb317,0x03) "
+    },
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    }
+  },{
+    "desc":"P1 Infinite Energy",
+    "script":{
+      "run":" maincpup:writev_u8(0xffb2e1,0x64) "
+    },
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    }
+  },{
+    "desc":"P1 Invincibility",
+    "script":{
+      "run":" maincpup:writev_u8(0xffb274,0x02)  maincpup:writev_u16(0xffb360,0x0002) "
+    },
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    }
+  },{
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "desc":"P1 Select Character",
+    "script":{
+      "run":" if (param==0x01) then maincpup:writev_u8(0xffb277,0x00) end if (param==0x01) then maincpup:writev_u8(0xff863a,0x00) end if (param==0x02) then maincpup:writev_u8(0xffb277,0x02) end if (param==0x02) then maincpup:writev_u8(0xff863a,0x01) end if (param==0x03) then maincpup:writev_u8(0xffb277,0x01) end if (param==0x03) then maincpup:writev_u8(0xff863a,0x02) end if (param==0x04) then maincpup:writev_u8(0xffb277,0x03) end if (param==0x04) then maincpup:writev_u8(0xff863a,0x03) end"
+    },
+    "parameter":{
+      "item":[{
+          "text":"Jack.T",
+          "value":"0x01"
+        },{
+          "text":"Hannah.D",
+          "value":"0x02"
+        },{
+          "text":"Mustapha.C",
+          "value":"0x03"
+        },{
+          "text":"Mess.O",
+          "value":"0x04"
+        }]
+    }
+  },{
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "comment":"Turn it OFF on the name entry screen",
+    "script":{
+      "run":" maincpup:writev_u8(0xffb314,0x00|(maincpup:readv_u8(0xffb314)& ~0x10)) "
+    },
+    "desc":"P1 Rapid Fire - Normal"
+  },{
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "comment":"Turn it OFF on the name entry screen",
+    "script":{
+      "run":" maincpup:writev_u8(0xffb314,0x00|(maincpup:readv_u8(0xffb314)& ~0x10))  maincpup:writev_u8(0xffb326,0x00) "
+    },
+    "desc":"P1 Rapid Fire - Unlimited"
+  },{
+    "desc":""
+  },{
+    "desc":"P2 Infinite Lives",
+    "script":{
+      "run":" maincpup:writev_u8(0xffb497,0x03) "
+    },
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    }
+  },{
+    "desc":"P2 Infinite Energy",
+    "script":{
+      "run":" maincpup:writev_u8(0xffb461,0x64) "
+    },
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    }
+  },{
+    "desc":"P2 Invincibility",
+    "script":{
+      "run":" maincpup:writev_u8(0xffb3f4,0x02)  maincpup:writev_u16(0xffb4e0,0x0002) "
+    },
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    }
+  },{
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "desc":"P2 Select Character",
+    "script":{
+      "run":" if (param==0x01) then maincpup:writev_u8(0xffb3f7,0x00) end if (param==0x01) then maincpup:writev_u8(0xff8646,0x00) end if (param==0x02) then maincpup:writev_u8(0xffb3f7,0x02) end if (param==0x02) then maincpup:writev_u8(0xff8646,0x01) end if (param==0x03) then maincpup:writev_u8(0xffb3f7,0x01) end if (param==0x03) then maincpup:writev_u8(0xff8646,0x02) end if (param==0x04) then maincpup:writev_u8(0xffb3f7,0x03) end if (param==0x04) then maincpup:writev_u8(0xff8646,0x03) end"
+    },
+    "parameter":{
+      "item":[{
+          "text":"Jack.T",
+          "value":"0x01"
+        },{
+          "text":"Hannah.D",
+          "value":"0x02"
+        },{
+          "text":"Mustapha.C",
+          "value":"0x03"
+        },{
+          "text":"Mess.O",
+          "value":"0x04"
+        }]
+    }
+  },{
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "comment":"Turn it OFF on the name entry screen",
+    "script":{
+      "run":" maincpup:writev_u8(0xffb494,0x00|(maincpup:readv_u8(0xffb494)& ~0x10)) "
+    },
+    "desc":"P2 Rapid Fire - Normal"
+  },{
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "comment":"Turn it OFF on the name entry screen",
+    "script":{
+      "run":" maincpup:writev_u8(0xffb494,0x00|(maincpup:readv_u8(0xffb494)& ~0x10))  maincpup:writev_u8(0xffb4a6,0x00) "
+    },
+    "desc":"P2 Rapid Fire - Unlimited"
+  },{
+    "desc":""
+  },{
+    "desc":"P3 Infinite Lives",
+    "script":{
+      "run":" maincpup:writev_u8(0xffb617,0x03) "
+    },
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    }
+  },{
+    "desc":"P3 Infinite Energy",
+    "script":{
+      "run":" maincpup:writev_u8(0xffb5e1,0x64) "
+    },
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    }
+  },{
+    "desc":"P3 Invincibility",
+    "script":{
+      "run":" maincpup:writev_u8(0xffb574,0x02)  maincpup:writev_u16(0xffb660,0x0002) "
+    },
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    }
+  },{
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "desc":"P3 Select Character",
+    "script":{
+      "run":" if (param==0x01) then maincpup:writev_u8(0xffb577,0x00) end if (param==0x01) then maincpup:writev_u8(0xff8652,0x00) end if (param==0x02) then maincpup:writev_u8(0xffb577,0x02) end if (param==0x02) then maincpup:writev_u8(0xff8652,0x01) end if (param==0x03) then maincpup:writev_u8(0xffb577,0x01) end if (param==0x03) then maincpup:writev_u8(0xff8652,0x02) end if (param==0x04) then maincpup:writev_u8(0xffb577,0x03) end if (param==0x04) then maincpup:writev_u8(0xff8652,0x03) end"
+    },
+    "parameter":{
+      "item":[{
+          "text":"Jack.T",
+          "value":"0x01"
+        },{
+          "text":"Hannah.D",
+          "value":"0x02"
+        },{
+          "text":"Mustapha.C",
+          "value":"0x03"
+        },{
+          "text":"Mess.O",
+          "value":"0x04"
+        }]
+    }
+  },{
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "comment":"Turn it OFF on the name entry screen",
+    "script":{
+      "run":" maincpup:writev_u8(0xffb614,0x00|(maincpup:readv_u8(0xffb614)& ~0x10)) "
+    },
+    "desc":"P3 Rapid Fire - Normal"
+  },{
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "comment":"Turn it OFF on the name entry screen",
+    "script":{
+      "run":" maincpup:writev_u8(0xffb614,0x00|(maincpup:readv_u8(0xffb614)& ~0x10))  maincpup:writev_u8(0xffb626,0x00) "
+    },
+    "desc":"P3 Rapid Fire - Unlimited"
+  },{
+    "desc":""
+  },{
+    "space":{
+      "maincpup":{
+        "type":"program",
+        "tag":":maincpu"
+      }
+    },
+    "comment":"Press F2 and get OBJECT Test on '10' and SCROLL TEST on '11'",
+    "script":{
+      "run":" maincpup:writev_u8(0xff84c3,0x01) "
+    },
+    "desc":"Enable Hidden OBJECT TEST and SCROLL TEST"
+  }]
